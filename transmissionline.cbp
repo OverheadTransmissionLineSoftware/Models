@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="transmissionline" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/debug/transmissionline" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/debug/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/release/transmissionline" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/release/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-std=c++11" />
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="Cable.cpp" />
+		<Unit filename="Cable.hpp" />
+		<Unit filename="CableUnitLoadCalculator.cpp" />
+		<Unit filename="CableUnitLoadCalculator.hpp" />
+		<Unit filename="Catenary.cpp" />
+		<Unit filename="Catenary.hpp" />
+		<Unit filename="GeometricShapes.cpp" />
+		<Unit filename="GeometricShapes.hpp" />
+		<Unit filename="LoadCase_Weather.cpp" />
+		<Unit filename="LoadCase_Weather.hpp" />
+		<Unit filename="SupportLibrary.cpp" />
+		<Unit filename="SupportLibrary.hpp" />
+		<Extensions>
+			<envvars />
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
