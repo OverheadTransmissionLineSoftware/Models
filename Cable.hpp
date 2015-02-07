@@ -7,41 +7,54 @@
 #include <vector>
 #include <string>
 
+enum class Type_Polynomial
+{
+    CREEP,
+    LOADSTRAIN
+};
 
 /**
- * @par CABLE COMPONENT OVERVIEW
+ * @par COMPONENT CABLE OVERVIEW
  *
  * This class models a transmission cable component.
  *
- * @par INPUT VERIFICATION
+ * @par VALIDATION
  *
- * This class contains built-in input verification. To avoid runtime errors when using this class,
- * use the error checking functionality before extracting information.
+ * This class contains built-in member validation. To avoid runtime errors when using this class,
+ * use the validation functionality before extracting information.
  */
-class CableComponent
+class Component_Cable
 {
 public:
     /**
      * @brief Default constructor.
      */
-    CableComponent();
+    Component_Cable();
 
     /**
      * @brief Destructor.
      */
-    ~CableComponent();
+    ~Component_Cable();
 
     /**
-     * @brief Check for errors and warnings in class data.
-     * @param includeWarnings An option that includes data warnings in the return list.
-     * @return A list of strings containing class data errors/warnings.
+     * @brief Validate class members.
+     * @param is_included_warnings An optional flag that includes warnings when validating class
+     *        members. Warnings have a tightened acceptable value range.
+     * @param messages_error An optional list that will be appended to with detailed messages of
+     *        class validation errors.
+     * @return A boolean value indicating status of class data.
      */
-    std::list<std::string> CheckData(bool includeWarnings = true) const;
+    bool Validate(bool is_included_warnings = true,
+                  std::list<std::string>* messages_error = nullptr) const;
 
     // member variables
-    double					m_ElasticAreaModulus;
-    std::vector<double> 	m_LoadStrainCoefficients;
-    double					m_ThermalExpansionCoefficient;
+    double                  m_coefficient_expansion_thermal_linear;
+    std::vector<double>     m_coefficients_polynomial_creep;
+    std::vector<double>     m_coefficients_polynomial_loadstrain;
+    double                  m_load_limit_polynomial_creep;
+    double                  m_load_limit_polynomial_loadstrain;
+    double                  m_modulus_compression_elastic_area;
+    double                  m_modulus_tension_elastic_area;
 };
 
 
@@ -50,10 +63,10 @@ public:
  *
  * This class models a transmission cable.
  *
- * @par INPUT VERIFICATION
+ * @par VALIDATION
  *
- * This class contains built-in input verification. To avoid runtime errors when using this class,
- * use the error checking functionality before extracting information.
+ * This class contains built-in member validation. To avoid runtime errors when using this class,
+ * use the validation functionality before extracting information.
  */
 class Cable
 {
@@ -69,21 +82,26 @@ public:
     ~Cable();
 
     /**
-     * @brief Check for errors and warnings in class data.
-     * @param includeWarnings An option that includes data warnings in the return list.
-     * @return A list of strings containing class data errors/warnings.
+     * @brief Validate class members.
+     * @param is_included_warnings An optional flag that includes warnings when validating class
+     *        members. Warnings have a tightened acceptable value range.
+     * @param messages_error An optional list that will be appended to with detailed messages of
+     *        class validation errors.
+     * @return A boolean value indicating status of class data.
      */
-    std::list<std::string> CheckData(bool includeWarnings = true) const;
+    bool Validate(bool is_included_warnings = true,
+                  std::list<std::string>* messages_error = nullptr) const;
 
     // member variables
-    double          m_Area_CrossSection;
-    double			m_Area_Electrical;
-    CableComponent	m_Core;
-    double			m_Diameter;
-    std::string 	m_Name;
-    double 			m_RatedBreakingStrength;
-    CableComponent	m_Shell;
-    double 			m_Temperature_LoadStrainCoefficients;
-    std::string		m_Type;
-    double			m_UnitWeight;
+    double          m_area_physical;
+    double          m_area_electrical;
+    Component_Cable m_component_core;
+    Component_Cable m_component_shell;
+    double          m_diameter;
+    std::string     m_name;
+    double          m_strength_rated;
+    double          m_temperature_component_properties;
+    std::string     m_type_construction;
+    Type_Polynomial m_type_polynomial_active;
+    double          m_weight_unit;
 };
