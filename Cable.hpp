@@ -7,15 +7,11 @@
 #include <vector>
 #include <string>
 
-//enum class Type_Component{
-//    CORE,
-//    SHELL
-//}
-//
-//enum class Type_Polynomial{
-//    CREEP,
-//    LOADSTRAIN
-//}
+enum class Type_Polynomial
+{
+    CREEP,
+    LOADSTRAIN
+};
 
 /**
  * @par COMPONENT CABLE OVERVIEW
@@ -106,6 +102,6 @@ public:
     double          m_strength_rated;
     double          m_temperature_component_properties;
     std::string     m_type_construction;
-//    Type_Polynomial m_type_polynomial_active;
+    Type_Polynomial m_type_polynomial_active;
     double          m_weight_unit;
 };
