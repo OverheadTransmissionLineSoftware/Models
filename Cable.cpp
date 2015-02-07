@@ -234,7 +234,15 @@ bool Cable::Validate(bool is_included_warnings,
     // nothing to validate
 
     // validate type-polynomial-active
-    // ADD CODE
+    if (m_type_polynomial_active != Type_Polynomial::CREEP
+            || m_type_polynomial_active != Type_Polynomial::LOADSTRAIN)
+    {
+        is_valid = false;
+        if (is_included_messages == true)
+        {
+            messages_error->push_back("CABLE - Invalid active polynomial type");
+        }
+    }
 
     // validate weight-unit
     if (m_weight_unit <= 0
