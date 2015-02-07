@@ -133,7 +133,6 @@ Cable::Cable()
     m_strength_rated = -999999;
     m_temperature_component_properties = -999999;
     m_type_construction = "";
-    //m_type_polynomial_active = ;
     m_weight_unit = -999999;
 }
 
@@ -186,7 +185,7 @@ bool Cable::Validate(bool is_included_warnings,
         is_valid = false;
         if (is_included_messages == true)
         {
-            messages_error->push_back("CABLE - Invalid cross sectional area");
+            messages_error->push_back("CABLE - Invalid physical area");
         }
     }
 
