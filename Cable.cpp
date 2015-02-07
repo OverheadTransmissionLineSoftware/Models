@@ -198,7 +198,7 @@ bool Cable::Validate(bool is_included_warnings,
 
     // validate diameter
     if (m_diameter <= 0
-        || (3 < m_diameter && is_included_warnings == true))
+            || (3 < m_diameter && is_included_warnings == true))
     {
         is_valid = false;
         if (is_included_messages == true)
@@ -238,7 +238,7 @@ bool Cable::Validate(bool is_included_warnings,
 
     // validate weight-unit
     if (m_weight_unit <= 0
-        || (10 < m_weight_unit && is_included_warnings == true))
+            || (10 < m_weight_unit && is_included_warnings == true))
     {
         is_valid = false;
         if (is_included_messages == true)
