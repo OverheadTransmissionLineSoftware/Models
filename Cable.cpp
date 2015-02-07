@@ -9,13 +9,18 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-CableComponent::CableComponent()
+Component_Cable::Component_Cable()
 {
-    m_ElasticAreaModulus = -999999;
-    m_ThermalExpansionCoefficient = -999999;
+    m_coefficient_expansion_thermal_linear = -999999;
+//    m_coefficients_polynomial_creep;
+//    m_coefficients_polynomial_loadstrain;
+    m_load_limit_polynomial_creep = -999999;
+    m_load_limit_polynomial_loadstrain = -999999;
+    m_modulus_compression_elastic_area = -999999;
+    m_modulus_tension_elastic_area = -999999;
 }
 
-CableComponent::~CableComponent()
+Component_Cable::~Component_Cable()
 {}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -30,14 +35,32 @@ CableComponent::~CableComponent()
  * Data warnings indicate that a class data member contains an extreme value that is typically
  * outside of the normal bounds, but will still provide a calculable result.
  */
-std::list<std::string> CableComponent::CheckData(bool includeWarnings) const
+bool Component_Cable::Validate(bool is_included_warnings,
+                               std::list<std::string>* messages_error) const
 {
-    std::list<std::string> checkList;
+    bool is_valid = true;
 
-    // check elastic area modulus
-    if (m_ElasticAreaModulus < 0)
+    //determine if error messages are to be included
+    bool is_included_messages;
+    if (messages_error == nullptr)
     {
-        checkList.push_back("CABLE COMPONENT - Invalid area elastic modulus");
+        is_included_messages = false;
+    }
+    else
+    {
+        is_included_messages = true;
+    }
+
+    // validate coefficient-expansion-thermal-linear
+    if (m_coefficient_expansion_thermal_linear <= -0.005
+            || 0.005 < m_coefficient_expansion_thermal_linear)
+    {
+        is_valid = false;
+        if (is_included_messages == true)
+        {
+            messages_error->push_back("COMPONENT | CABLE - Invalid coefficient of thermal "
+                                      "expansion");
+        }
     }
 
 //    // check load-strain coefficients
@@ -45,13 +68,54 @@ std::list<std::string> CableComponent::CheckData(bool includeWarnings) const
 //        checkList.push_back("CABLE COMPONENT - Invalid load-strain coefficients")
 //    }
 
-    // check thermal expansion coefficient
-    if (m_ThermalExpansionCoefficient <= -0.005 || 0.005 < m_ThermalExpansionCoefficient)
+//    // check load-strain coefficients
+//    if (m_LoadStrainCoefficients.count() != 5) {
+//        checkList.push_back("CABLE COMPONENT - Invalid load-strain coefficients")
+//    }
+
+    // validate load-limit-polynomial-creep
+    if (m_load_limit_polynomial_creep < 0)
     {
-        checkList.push_back("CABLE COMPONENT - Invalid thermal coefficient");
+        is_valid = false;
+        if (is_included_messages == true)
+        {
+            messages_error->push_back("COMPONENT | CABLE - Invalid creep polynomial limit");
+        }
     }
 
-    return checkList;
+    // validate load-limit-polynomial-loadstrain
+    if (m_load_limit_polynomial_loadstrain < 0)
+    {
+        is_valid = false;
+        if (is_included_messages == true)
+        {
+            messages_error->push_back("COMPONENT | CABLE - Invalid load-strain polynomial limit");
+        }
+    }
+
+    // validate modulus-compression-elastic-area
+    if (m_modulus_compression_elastic_area < 0)
+    {
+        is_valid = false;
+        if (is_included_messages == true)
+        {
+            messages_error->push_back("COMPONENT | CABLE - Invalid compression elastic area "
+                                      "modulus");
+        }
+    }
+
+    // validate modulus-tension-elastic-area
+    if (m_modulus_tension_elastic_area < 0)
+    {
+        is_valid = false;
+        if (is_included_messages == true)
+        {
+            messages_error->push_back("COMPONENT | CABLE - Invalid tension elastic area modulus");
+        }
+    }
+
+    //return validation status
+    return is_valid;
 }
 
 
@@ -62,14 +126,15 @@ std::list<std::string> CableComponent::CheckData(bool includeWarnings) const
 
 Cable::Cable()
 {
-    m_Area_CrossSection = -999999;
-    m_Area_Electrical = -999999;
-    m_Diameter = -999999;
-    m_Name = "";
-    m_RatedBreakingStrength = -999999;
-    m_Temperature_LoadStrainCoefficients = -999999;
-    m_Type = "";
-    m_UnitWeight = -999999;
+    m_area_electrical = -999999;
+    m_area_physical = -999999;
+    m_diameter = -999999;
+    m_name = "";
+    m_strength_rated = -999999;
+    m_temperature_component_properties = -999999;
+    m_type_construction = "";
+    //m_type_polynomial_active = ;
+    m_weight_unit = -999999;
 }
 
 Cable::~Cable()
@@ -89,59 +154,99 @@ Cable::~Cable()
  * Data warnings indicate that a class data member contains an extreme value that is typically
  * outside of the normal bounds, but will still provide a calculable result.
  */
-std::list<std::string> Cable::CheckData(bool includeWarnings) const
+bool Cable::Validate(bool is_included_warnings,
+                     std::list<std::string>* messages_error) const
 {
-    std::list<std::string> checkList;
+    bool is_valid = true;
 
-    // check cross sectional area
-    if (m_Area_CrossSection < 0)
+    //determine if error messages are to be included
+    bool is_included_messages;
+    if (messages_error == nullptr)
     {
-        checkList.push_back("CABLE - Invalid cross sectional area");
+        is_included_messages = false;
+    }
+    else
+    {
+        is_included_messages = true;
     }
 
-    // check electrical area
-    if (m_Area_Electrical < 0)
+    // validate area-electrical
+    if (m_area_electrical < 0)
     {
-        checkList.push_back("CABLE - Invalid electrical area");
+        is_valid = false;
+        if (is_included_messages == true)
+        {
+            messages_error->push_back("CABLE - Invalid electrical area");
+        }
     }
 
-    // check core
-    checkList.splice(checkList.end(), m_Core.CheckData(includeWarnings));
-
-    // check diameter
-    if (m_Diameter <= 0)
+    // validate area-physical
+    if (m_area_physical < 0)
     {
-        checkList.push_back("CABLE - Invalid diameter");
-    }
-    else if (3 < m_Diameter && includeWarnings == true)
-    {
-        checkList.push_back("CABLE - Diameter exceeds 3 inches");
+        is_valid = false;
+        if (is_included_messages == true)
+        {
+            messages_error->push_back("CABLE - Invalid cross sectional area");
+        }
     }
 
-    // check rated breaking strength
-    if (m_RatedBreakingStrength < 0)
+    // validate component-core
+    m_component_core.Validate(is_included_warnings, messages_error);
+
+    // validate component-shell
+    m_component_shell.Validate(is_included_warnings, messages_error);
+
+    // validate diameter
+    if (m_diameter <= 0
+        || (3 < m_diameter && is_included_warnings == true))
     {
-        checkList.push_back("CABLE - Invalid rated breaking strength");
+        is_valid = false;
+        if (is_included_messages == true)
+        {
+            messages_error->push_back("CABLE - Invalid diameter");
+        }
     }
 
-    // check shell
-    checkList.splice(checkList.end(), m_Shell.CheckData(includeWarnings));
+    // validate name
+    // nothing to validate
 
-    // check temperature of load-strain coefficients
-    if (m_Temperature_LoadStrainCoefficients < 0)
+    // validate strength-rated
+    if (m_strength_rated < 0)
     {
-        checkList.push_back("CABLE - Invalid temperature for load-strain coefficients");
+        is_valid = false;
+        if (is_included_messages == true)
+        {
+            messages_error->push_back("CABLE - Invalid rated strength");
+        }
     }
 
-    // check unit weight
-    if (m_UnitWeight <= 0)
+    // validate temperature-component-properties
+    if (m_temperature_component_properties < 0)
     {
-        checkList.push_back("CABLE - Invalid unit weight");
-    }
-    else if (10 < m_UnitWeight && includeWarnings == true)
-    {
-        checkList.push_back("CABLE - Unit weight exceeds 10 lbs/ft");
+        is_valid = false;
+        if (is_included_messages == true)
+        {
+            messages_error->push_back("CABLE - Invalid component properties temperature");
+        }
     }
 
-    return checkList;
+    // validate type-construction
+    // nothing to validate
+
+    // validate type-polynomial-active
+    // ADD CODE
+
+    // validate weight-unit
+    if (m_weight_unit <= 0
+        || (10 < m_weight_unit && is_included_warnings == true))
+    {
+        is_valid = false;
+        if (is_included_messages == true)
+        {
+            messages_error->push_back("CABLE - Invalid unit weight");
+        }
+    }
+
+    // return validation status
+    return is_valid;
 }
