@@ -1,99 +1,134 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#pragma once
+#ifndef TRANSMISSIONLINE_SUPPORTLIBRARY_H_
+#define TRANSMISSIONLINE_SUPPORTLIBRARY_H_
 
-#include <iostream>
 #include <string>
 
-// COMMON CONSTANTS
 const double pi = 3.14159265358979;
-const double radians_to_degrees = (180 / pi);
-const double degrees_to_radians = (pi / 180);
+const double kRadiansToDegrees = (180 / pi);
+const double kDegreesToRadians = (pi / 180);
 
-double Round(double number, int precision);
-std::string RemoveExtraZeroes(std::string number);
+double Round(const double& number, const int& precision);
 
 /**
  * @par POINT 2D OVERVIEW
  *
- * This data structure represents a 2D point, with members being of the type 'double'.
+ * This is a 2D point, with members being of type 'double'.
  */
-struct Point2D
-{
-    double x;
-    double y;
+struct Point2D {
+  double x;
+  double y;
 };
 
 /**
  * @par POINT 3D OVERVIEW
  *
- * This data structure represents a 3D point, with members being of the type 'double'.
+ * This is a 3D point, with members being of type 'double'.
  */
-struct Point3D
-{
-    double x;
-    double y;
-    double z;
+struct Point3D {
+  double x;
+  double y;
+  double z;
+};
+
+enum class Plane2D{
+  XY,
+  XZ,
+  YX,
+  YZ,
+  ZX,
+  ZY,
 };
 
 /**
  * @par VECTOR 2D OVERVIEW
  *
- * This class represents a mathematical vector in a 2D Cartesian coordinate system. Although the
- * variables of this class are defined using the Cartesian coordinate system, components of the radial
- * coordinate system (magnitude and angle) are member functions.
+ * This class is a mathematical vector in a 2D Cartesian coordinate system.
+ * Although the variables of this class are defined using the Cartesian
+ * coordinate system, components of the radial coordinate system (magnitude
+ * and angle) are member functions.
  *
  * The vector can be manipulated by rotating and scaling.
  */
-class Vector2D
-{
+class Vector2D {
 public:
-    /**
-     * @brief Default constructor.
-     */
-    Vector2D();
+  /**
+   * @brief Default constructor.
+   */
+  Vector2D();
 
-    /**
-     * @brief Alternate constructor.
-     * @param X vector component
-     * @param Y vector component
-     */
-    Vector2D(double X, double Y);
+  /**
+   * @brief Alternate constructor.
+   * @param x vector component
+   * @param y vector component
+   */
+  Vector2D(const double& X, const double& Y);
 
-    /**
-     * @brief Destructor.
-     */
-    ~Vector2D();
+  /**
+   * @brief Destructor.
+   */
+  ~Vector2D();
 
-    double x;
-    double y;
+  /**
+   * @brief Gets the angle from the positive x axis, in degrees.
+   * @param is_enabled_negative_angles A boolean that indicates whether
+   *        negative angles are returned when the positive angle is between
+   *        180-360 degrees (quadrants III and IV).
+   * @return The angle between the positive horizontal axis and the vector, in
+   *         degrees, defined using a counter-clockwise orientation.
+   */
+  double Angle(const bool& is_enabled_negative_angles = false) const;
 
-    /**
-     * @brief Get the angle, in degrees.
-     * @return The angle between the positive horizontal axis and the vector in degrees, defined
-     * using a counter-clockwise orientation. A positive value will always be returned.
-     */
-    double Angle() const;
+  /**
+   * @brief Gets the magnitude.
+   * @return Magnitude of the vector.
+   */
+  double Magnitude() const;
 
-    /**
-     * @brief Get the magnitude.
-     * @return Vector length.
-     */
-    double Magnitude() const;
+  /**
+   * @brief Rotates the vector, in degrees.
+   * @param angle_rotation The angle to rotate the vector, in degrees. Positive
+   *        values rotate counter-clockwise, while negative values rotate
+   *        clockwise.
+   */
+  void Rotate(const double& angle_rotation);
 
-    /**
-     * @brief Rotate the vector, in degrees.
-     * @param rotationAngle The angle to rotate, in degrees. Positive values rotate counter-clockwise,
-     *        while negative values rotate clockwise.
-     */
-    void Rotate(const double& rotationAngle);
+  /**
+   * @brief Scales the vector by increasing or decreasing the magnitude.
+   * @param factor_scale The scaling factor for adjusting the magnitude.
+   */
+  void Scale(const double& factor_scale);
 
-    /**
-     * @brief Scale the vector.
-     * @param scaleFactor The scaling factor for the magnitude. Must be greater than or equal to 0.
-     */
-    void Scale(const double& scaleFactor);
+  /**
+   * @brief Sets the x component of the vector.
+   * @param The x component of the vector.
+   */
+  void set_x(const double& x);
+
+  /**
+   * @brief Sets the y component of the vector.
+   * @param The y component of the vector.
+   */
+  void set_y(const double& y);
+
+  /**
+   * @brief Gets the x component of the vector.
+   * @return The x component of the vector.
+   */
+  double x() const;
+
+  /**
+   * @brief Gets the y component of the vector.
+   * @return The y component of the vector.
+   */
+  double y() const;
+
+private:
+  // member variables
+  double x_;
+  double y_;
 };
 
 /**
@@ -105,56 +140,98 @@ public:
  *
  * The vector can be manipulated by rotating and scaling.
  */
-class Vector3D
-{
+class Vector3D {
 public:
-    /**
-     * @brief Default constructor.
-     */
-    Vector3D();
+  /**
+   * @brief Default constructor.
+   */
+  Vector3D();
 
-    /**
-     * @brief Alternate constructor.
-     * @param X vector component
-     * @param Y vector component
-     * @param Z vector component
-     */
-    Vector3D(double X, double Y, double Z);
+  /**
+   * @brief Alternate constructor.
+   * @param x vector component
+   * @param y vector component
+   * @param z vector component
+   */
+  Vector3D(const double& x, const double& y, const double& z);
 
-    /**
-     * @brief Destructor.
-     */
-    ~Vector3D();
+  /**
+   * @brief Destructor.
+   */
+  ~Vector3D();
 
-    double x;
-    double y;
-    double z;
+  /**
+   * @brief Get the angle in a specific plane, in degrees.
+   * @param plane The 2D plane which is referenced. The first axis is the
+   *        horizontal axis.
+   * @return The angle from the 2D plane positive horizontal axis.
+   */
+  double Angle(const Plane2D& plane) const;
 
-    /**
-     * @brief Get the angle in a specific plane, in degrees.
-     * @param plane The specified plane. Can be the following options: (XY, YX, YZ, ZY, ZX, XZ).
-     * @return The angle between the positive horizontal axis and the vector in degrees, defined
-     * using a counter-clockwise orientation. A positive value will always be returned.
-     */
-    double Angle(const std::string& plane) const;
+  /**
+   * @brief Get the magnitude.
+   * @return Vector length.
+   */
+  double Magnitude() const;
 
-    /**
-     * @brief Get the magnitude.
-     * @return Vector length.
-     */
-    double Magnitude() const;
+  /**
+   * @brief Rotate the vector in a specific plane, in degrees.
+   * @param plane The 2D plane which is referenced. The first axis is the
+   *        horizontal axis.
+   * @param angle_rotation The angle to rotate the vector, in degrees. Positive
+   *        values rotate counter-clockwise, while negative values rotate
+   *        clockwise.
+   */
+  void Rotate(const Plane2D& plane, const double& angle_rotation);
 
-    /**
-     * @brief Rotate the vector in a specific plane, in degrees.
-     * @param plane The plane to rotate. Can be the following options: (XY, YX, YZ, ZY, ZX, XZ).
-     * @param rotationAngle The angle to rotate, in degrees. Positive values rotate counter-clockwise,
-     *        while negative values rotate clockwise.
-     */
-    void Rotate(const std::string& plane, const double& rotationAngle);
+  /**
+   * @brief Scales the vector by increasing or decreasing the magnitude.
+   * @param factor_scale The scaling factor for adjusting the magnitude.
+   */
+  void Scale(const double& factor_scale);
 
-    /**
-     * @brief Scale the vector.
-     * @param scaleFactor The scaling factor for the magnitude. Must be greater than or equal to 0.
-     */
-    void Scale(const double& scaleFactor);
+  /**
+   * @brief Sets the x component of the vector.
+   * @param The x component of the vector.
+   */
+  void set_x(const double& x);
+
+  /**
+   * @brief Sets the y component of the vector.
+   * @param The y component of the vector.
+   */
+  void set_y(const double& y);
+
+  /**
+   * @brief Sets the z component of the vector.
+   * @param The z component of the vector.
+   */
+  void set_z(const double& z);
+
+  /**
+   * @brief Gets the x component of the vector.
+   * @return The x component of the vector.
+   */
+  double x() const;
+
+  /**
+   * @brief Gets the y component of the vector.
+   * @return The y component of the vector.
+   */
+  double y() const;
+
+  /**
+   * @brief Gets the z component of the vector.
+   * @return The z component of the vector.
+   */
+  double z() const;
+
+private:
+  // member variables
+  double x_;
+  double y_;
+  double z_;
+
 };
+
+#endif // TRANSMISSIONLINE_SUPPORTLIBRARY_H_
