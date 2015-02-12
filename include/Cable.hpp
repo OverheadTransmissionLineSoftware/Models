@@ -23,7 +23,7 @@ enum class Type_Polynomial
  * This class contains built-in member validation. To avoid runtime errors when using this class,
  * use the validation functionality before extracting information.
  */
-class Component_Cable
+class CableComponent
 {
 public:
     /**
