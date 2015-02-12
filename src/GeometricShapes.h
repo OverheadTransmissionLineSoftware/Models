@@ -1,7 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#pragma once
+#ifndef TRANSMISSIONLINE_GEOMETRICSHAPES_H_
+#define TRANSMISSIONLINE_GEOMETRICSHAPES_H_
 
 #include <list>
 #include <string>
@@ -9,18 +10,16 @@
 /**
  * @par SHAPE OVERVIEW
  *
- * This class models a generic shape. It must not be used directly, but instead, derived from by the
- * a unique shape.
+ * This class models a generic shape. It is a purely virtual class, and must be
+ * inherited by a unique shape.
  */
-class Shape
-{
+class Shape {
 public:
-    Shape() {};
-    ~Shape() {};
+  Shape() {};
+  ~Shape() {};
 
-    virtual double Get_CrossSectionArea() = 0;
-    virtual double Get_SurfaceArea() = 0;
-    virtual double Get_Volume() = 0;
+  virtual double AreaCrossSection() = 0;
+  virtual double Volume() = 0;
 };
 
 /**
@@ -29,111 +28,69 @@ public:
  * This class models a cylinder.
  * @see Shape
  *
- * @par INPUT VERIFICATION
- * This class contains built-in input verification. To avoid runtime errors when using this class,
- * use the error checking functionality before extracting information.
  */
-class Cylinder : public Shape
-{
+class Cylinder : public Shape {
 public:
-    /**
-     * @brief Default constructor.
-     */
-    Cylinder();
+  /**
+   * @brief Default constructor.
+   */
+  Cylinder();
 
-    /**
-     * @brief Destructor.
-     */
-    ~Cylinder();
+  /**
+   * @brief Destructor.
+   */
+  ~Cylinder();
 
-    /**
-     * @brief Check for errors and warnings in class data.
-     * @param includeWarnings An option that includes data warnings in the return list.
-     * @return A list of strings containing class data errors/warnings.
-     */
-    std::list<std::string> CheckData(bool includeWarnings = true) const;
+  /**
+   * @brief Gets the cross-sectional area.
+   * @return The cross-sectional area.
+   */
+  double AreaCrossSection();
 
-    /**
-     * @brief Get the cross-sectional area.
-     * @return The cross-sectional area.
-     */
-    double  Get_CrossSectionArea();
+  /**
+   * @brief Validates class data.
+   * @param is_included_warnings A flag that tightens the acceptable value
+   *        range.
+   * @param messages_error A list of detailed error messages. If this is
+   *        provided, any validation errors will be appended to the list.
+   * @return A boolean value indicating status of class data.
+   */
+  bool Validate(bool is_included_warnings = true,
+                std::list<std::string>* messages_error = nullptr) const;
 
-    /**
-     * @brief Get the diameter.
-     * @return The diameter.
-     */
-    double  Get_Diameter();
+  /**
+   * @brief Gets the volume.
+   * @return The volume.
+   */
+  double Volume();
 
-    /**
-     * @brief Get the length.
-     * @return The length.
-     */
-    double  Get_Length();
+  /**
+   * @brief Gets the diameter.
+   * @return The diameter.
+   */
+  double diameter();
 
-    /**
-     * @brief Get the surface area.
-     * @return The surface area.
-     */
-    double Get_SurfaceArea();
+  /**
+   * @brief Gets the length.
+   * @return The length.
+   */
+  double length();
 
-    /**
-     * @brief Get the volume.
-     * @return The volume.
-     */
-    double  Get_Volume();
+  /**
+   * @brief Sets the diameter.
+   * @param diameter The diameter.
+   */
+  void set_diameter(const double& diameter);
 
-    /**
-     * @brief Save the class data for file output.
-     * @return A list of strings containing class data.
-     */
-    std::list<std::string> SaveData() const;
+  /**
+   * @brief Sets the length.
+   * @param length The length.
+   */
+  void set_length(const double& length);
 
-    /**
-     * @brief Set the diameter.
-     * @param diameter The diameter.
-     */
-    void    Set_Diameter(const double& diameter);
-
-    /**
-     * @brief Set the length.
-     * @param length The length.
-     */
-    void    Set_Length(const double& length);
-
-protected:
-    double  m_Diameter;
-    double  m_Length;
+private:
+  double  diameter_;
+  double  length_;
 };
 
-//
-//SPHERE
-//November 2013
-//
-//'OVERVIEW
-//'This class models a sphere, and provides some geometric calculations.
-//
-//'ERROR CHECKING
-//'This class contains built-in error checking. To avoid runtime errors when using this class, use the
-//'error checking functionality before extracting information.
-//*/
-//
-//class Sphere : public Shape
-//{
-//public:
-//	// constructor/destructor
-//	Sphere();
-//	~Sphere();
-//
-//	// access protected variables
-//	void    Set_Diameter(const double& Diameter);
-//
-//	double  Get_Diameter();
-//
-//	// calculation functions
-//	double  Get_Volume();
-//
-//protected:
-//	// members
-//	double  m_Diameter;
-//};
+#endif // TRANSMISSIONLINE_GEOMETRICSHAPES_H_
