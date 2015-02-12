@@ -34,18 +34,22 @@
 			<Add option="-std=c++11" />
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="include/Cable.hpp" />
-		<Unit filename="include/CableUnitLoadCalculator.hpp" />
-		<Unit filename="include/Catenary.hpp" />
-		<Unit filename="include/GeometricShapes.hpp" />
-		<Unit filename="include/LoadCase_Weather.hpp" />
-		<Unit filename="include/SupportLibrary.hpp" />
-		<Unit filename="src/Cable.cpp" />
-		<Unit filename="src/CableUnitLoadCalculator.cpp" />
-		<Unit filename="src/Catenary.cpp" />
-		<Unit filename="src/GeometricShapes.cpp" />
-		<Unit filename="src/LoadCase_Weather.cpp" />
-		<Unit filename="src/SupportLibrary.cpp" />
+		<Unit filename="src/Cable.cc" />
+		<Unit filename="src/Cable.h" />
+		<Unit filename="src/CableLoadCase.cc" />
+		<Unit filename="src/CableLoadCase.h" />
+		<Unit filename="src/CableLoadConstraint.cc" />
+		<Unit filename="src/CableLoadConstraint.h" />
+		<Unit filename="src/CableUnitLoadCalculator.cc" />
+		<Unit filename="src/CableUnitLoadCalculator.h" />
+		<Unit filename="src/Catenary.cc" />
+		<Unit filename="src/Catenary.h" />
+		<Unit filename="src/GeometricShapes.cc" />
+		<Unit filename="src/GeometricShapes.h" />
+		<Unit filename="src/SupportLibrary.cc" />
+		<Unit filename="src/SupportLibrary.h" />
+		<Unit filename="src/WeatherLoadCase.cc" />
+		<Unit filename="src/WeatherLoadCase.h" />
 		<Extensions>
 			<envvars />
 			<code_completion />
