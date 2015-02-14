@@ -9,6 +9,11 @@
 
 #include "SupportLibrary.h"
 
+/**
+ * @par CABLE LOAD CASE OVERVIEW
+ *
+ * This struct contains information for a cable load case.
+ */
 struct CableLoadCase {
 public:
   /**

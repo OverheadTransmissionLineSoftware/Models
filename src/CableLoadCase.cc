@@ -17,8 +17,8 @@ bool CableLoadCase::Validate (bool is_included_warnings,
   bool is_valid = true;
 
   // validate load-unit transverse
-  if (load_unit.x < 0
-      || ((25 < load_unit.x) && (is_included_warnings == true))) {
+  if (load_unit.x() < 0
+      || ((25 < load_unit.x()) && (is_included_warnings == true))) {
 
     is_valid = false;
     if (messages_error != nullptr) {
@@ -27,8 +27,8 @@ bool CableLoadCase::Validate (bool is_included_warnings,
   }
 
   // validate load-unit vertical
-  if (load_unit.y <= 0
-      || ((25 < load_unit.y) && (is_included_warnings == true))) {
+  if (load_unit.y() <= 0
+      || ((25 < load_unit.y()) && (is_included_warnings == true))) {
 
     is_valid = false;
     if (messages_error != nullptr) {
