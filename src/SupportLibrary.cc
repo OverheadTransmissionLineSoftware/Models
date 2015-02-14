@@ -37,9 +37,9 @@ double Vector2D::Angle(const bool& is_enabled_negative_angles) const
 
   // use standard trigonometry to solve for angle of vector
   if (x_ == 0 && 0 < y_) {
-    angle = (pi / 2) * kRadiansToDegrees;
+    angle = (kPi / 2) * kRadiansToDegrees;
   } else if (x_ == 0 && y_ < 0) {
-    angle = 3 * (pi / 2) * kRadiansToDegrees;
+    angle = 3 * (kPi / 2) * kRadiansToDegrees;
   } else {
     // select quadrant
     if (0 < y_) {
