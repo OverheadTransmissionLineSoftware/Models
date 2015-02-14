@@ -9,7 +9,9 @@
 #include <vector>
 
 /**
-    // need description here
+ * @par CABLE POLYNOMIAL TYPE
+ *
+ * This enum contains types of cable polynomials.
  */
 enum class CablePolynomialType {
   CREEP,
