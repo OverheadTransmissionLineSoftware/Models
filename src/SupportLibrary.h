@@ -4,11 +4,9 @@
 #ifndef TRANSMISSIONLINE_SUPPORTLIBRARY_H_
 #define TRANSMISSIONLINE_SUPPORTLIBRARY_H_
 
-#include <string>
-
-const double pi = 3.14159265358979;
-const double kRadiansToDegrees = (180 / pi);
-const double kDegreesToRadians = (pi / 180);
+const double kPi = 3.14159265358979;
+const double kRadiansToDegrees = (180 / kPi);
+const double kDegreesToRadians = (kPi / 180);
 
 double Round(const double& number, const int& precision);
 
@@ -33,7 +31,7 @@ struct Point3D {
   double z;
 };
 
-enum class Plane2D{
+enum class Plane2D {
   XY,
   XZ,
   YX,
@@ -42,13 +40,18 @@ enum class Plane2D{
   ZY,
 };
 
+enum class AxisDirection {
+  NEGATIVE,
+  POSITIVE,
+};
+
 /**
  * @par VECTOR 2D OVERVIEW
  *
  * This class is a mathematical vector in a 2D Cartesian coordinate system.
- * Although the variables of this class are defined using the Cartesian
- * coordinate system, components of the radial coordinate system (magnitude
- * and angle) are member functions.
+ * Although the members of this class are defined using the Cartesian coordinate
+ * system, components of the radial coordinate system (magnitude and angle) are
+ * member functions.
  *
  * The vector can be manipulated by rotating and scaling.
  */
@@ -134,9 +137,10 @@ private:
 /**
  * @par VECTOR 3D OVERVIEW
  *
- * This class represents a mathematical vector in a 3D Cartesian coordinate system. Although the
- * variables of this class are defined using the Cartesian coordinate system, components of the radial
- * coordinate system (magnitude and angle) are member functions.
+ * This class is a mathematical vector in a 3D Cartesian coordinate system.
+ * Although the members of this class are defined using the Cartesian coordinate
+ * system, components of the radial coordinate system (magnitude and angle) are
+ * member functions.
  *
  * The vector can be manipulated by rotating and scaling.
  */
