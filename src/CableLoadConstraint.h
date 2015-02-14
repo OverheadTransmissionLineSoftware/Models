@@ -9,18 +9,33 @@
 
 #include "CableLoadCase.h"
 
+/**
+ * @par CONSTRAINT LIMIT TYPE OVERVIEW
+ *
+ * This enum contains types of cable load constraints.
+ */
 enum class ConstraintLimitType {
   HORIZONTAL,
   HW,
   SUPPORT
 };
 
+/**
+ * @par CONDITION TYPE OVERVIEW
+ *
+ * This enum contains types of cable conditions.
+ */
 enum class ConditionType {
   CREEP,
   INITIAL,
   LOAD
 };
 
+/**
+ * @par CABLE LOAD CONSTRAINT OVERVIEW
+ *
+ * This struct contains information for a cable load constraint.
+ */
 struct CableLoadConstraint {
 public:
   /**
