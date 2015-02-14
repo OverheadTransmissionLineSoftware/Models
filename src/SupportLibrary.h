@@ -31,7 +31,12 @@ struct Point3D {
   double z;
 };
 
-enum class Plane2D {
+/**
+ * @par PLANE 2D TYPE
+ *
+ * This enum contains types of 2D planes.
+ */
+enum class Plane2dType {
   XY,
   XZ,
   YX,
@@ -40,7 +45,12 @@ enum class Plane2D {
   ZY,
 };
 
-enum class AxisDirection {
+/**
+ * @par AXIS DIRECTION TYPE
+ *
+ * This enum contains types of axis directions.
+ */
+enum class AxisDirectionType {
   NEGATIVE,
   POSITIVE,
 };
@@ -170,7 +180,7 @@ public:
    *        horizontal axis.
    * @return The angle from the 2D plane positive horizontal axis.
    */
-  double Angle(const Plane2D& plane) const;
+  double Angle(const Plane2dType& plane) const;
 
   /**
    * @brief Get the magnitude.
@@ -186,7 +196,7 @@ public:
    *        values rotate counter-clockwise, while negative values rotate
    *        clockwise.
    */
-  void Rotate(const Plane2D& plane, const double& angle_rotation);
+  void Rotate(const Plane2dType& plane, const double& angle_rotation);
 
   /**
    * @brief Scales the vector by increasing or decreasing the magnitude.
