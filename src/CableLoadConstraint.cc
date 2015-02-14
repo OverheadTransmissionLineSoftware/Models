@@ -28,8 +28,9 @@ bool CableLoadConstraint::Validate(bool is_included_warnings,
 
     is_valid = false;
     if (messages_error != nullptr) {
-      messages_error->push_back("CABLE COMPONENT - Invalid coefficient of "
-                                "thermal expansion");
+      messages_error->push_back("CABLE LOAD CONSTRAINT - Invalid limit");
     }
   }
+
+  return is_valid;
 }
