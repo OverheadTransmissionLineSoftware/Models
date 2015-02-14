@@ -147,28 +147,28 @@ Vector3D::~Vector3D()
  * calculated using the Vector2D::Angle function.
  * @see Vector2D
  */
-double Vector3D::Angle(const Plane2D& plane) const
+double Vector3D::Angle(const Plane2dType& plane) const
 {
   // create a 2D vector of planar components
   Vector2D vector_2d;
 
   // set vector components based on selected plane
-  if (plane == Plane2D::XY) {
+  if (plane == Plane2dType::XY) {
     vector_2d.set_x(x_);
     vector_2d.set_y(y_);
-  } else if (plane == Plane2D::XZ) {
+  } else if (plane == Plane2dType::XZ) {
     vector_2d.set_x(x_);
     vector_2d.set_y(z_);
-  } else if (plane == Plane2D::YX) {
+  } else if (plane == Plane2dType::YX) {
     vector_2d.set_x(y_);
     vector_2d.set_y(x_);
-  } else if (plane == Plane2D::YZ) {
+  } else if (plane == Plane2dType::YZ) {
     vector_2d.set_x(y_);
     vector_2d.set_y(z_);
-  } else if (plane == Plane2D::ZX) {
+  } else if (plane == Plane2dType::ZX) {
     vector_2d.set_x(z_);
     vector_2d.set_y(x_);
-  } else if (plane == Plane2D::ZY) {
+  } else if (plane == Plane2dType::ZY) {
     vector_2d.set_x(z_);
     vector_2d.set_y(y_);
   }
@@ -189,7 +189,7 @@ double Vector3D::Magnitude() const
  * done using the Vector2D::Rotate function.
  * @see Vector2D
  */
-void Vector3D::Rotate(const Plane2D& plane, const double& angle_rotation)
+void Vector3D::Rotate(const Plane2dType& plane, const double& angle_rotation)
 {
   // check if rotation angle is zero
   if (std::abs(angle_rotation) < 0.00005) {
@@ -200,22 +200,22 @@ void Vector3D::Rotate(const Plane2D& plane, const double& angle_rotation)
   Vector2D vector_2d;
 
   // set vector components based on selected plane
-  if (plane == Plane2D::XY) {
+  if (plane == Plane2dType::XY) {
     vector_2d.set_x(x_);
     vector_2d.set_y(y_);
-  } else if (plane == Plane2D::XZ) {
+  } else if (plane == Plane2dType::XZ) {
     vector_2d.set_x(x_);
     vector_2d.set_y(z_);
-  } else if (plane == Plane2D::YX) {
+  } else if (plane == Plane2dType::YX) {
     vector_2d.set_x(y_);
     vector_2d.set_y(x_);
-  } else if (plane == Plane2D::YZ) {
+  } else if (plane == Plane2dType::YZ) {
     vector_2d.set_x(y_);
     vector_2d.set_y(z_);
-  } else if (plane == Plane2D::ZX) {
+  } else if (plane == Plane2dType::ZX) {
     vector_2d.set_x(z_);
     vector_2d.set_y(x_);
-  } else if (plane == Plane2D::ZY) {
+  } else if (plane == Plane2dType::ZY) {
     vector_2d.set_x(z_);
     vector_2d.set_y(y_);
   }
@@ -224,22 +224,22 @@ void Vector3D::Rotate(const Plane2D& plane, const double& angle_rotation)
   vector_2d.Rotate(angle_rotation);
 
   // assign rotated 2D vector components to new planar components
-  if (plane == Plane2D::XY) {
+  if (plane == Plane2dType::XY) {
     x_ = vector_2d.x();
     y_ = vector_2d.y();
-  } else if (plane == Plane2D::XZ) {
+  } else if (plane == Plane2dType::XZ) {
     x_ = vector_2d.x();
     z_ = vector_2d.y();
-  } else if (plane == Plane2D::YX) {
+  } else if (plane == Plane2dType::YX) {
     y_ = vector_2d.x();
     x_ = vector_2d.y();
-  } else if (plane == Plane2D::YZ) {
+  } else if (plane == Plane2dType::YZ) {
     y_ = vector_2d.x();
     z_ = vector_2d.y();
-  } else if (plane == Plane2D::ZX) {
+  } else if (plane == Plane2dType::ZX) {
     z_ = vector_2d.x();
     x_ = vector_2d.y();
-  } else if (plane == Plane2D::ZY) {
+  } else if (plane == Plane2dType::ZY) {
     z_ = vector_2d.x();
     y_ = vector_2d.y();
   }
