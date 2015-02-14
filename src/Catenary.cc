@@ -1,204 +1,183 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
+#include "Catenary.h"
+
 #include <cmath>
-
-#include "Catenary.hpp"
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////// CONSTRUCTOR / DESTRUCTOR ////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 Catenary2D::Catenary2D()
 {
-    m_HorizontalTension = -999999;
-    m_UnitWeight = -999999;
+  tension_horizontal_ = -999999;
+  weight_unit_ = -999999;
 
-    bUpdateRequired = true;
+  is_updated_points_end_ = true;
 }
 
 Catenary2D::~Catenary2D()
 {}
 
+/**
+ * \f[ \frac{H}{w} = \frac{HorizontalTension}{UnitWeight} \f]
+ */
+double Catenary2D::Constant() const
+{
+  double constant = -999999;
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////// PUBLIC MEMBER FUNCTIONS /////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-//
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return constant;
+    }
+  }
+
+  const double H = tension_horizontal_;
+  const double w = weight_unit_;
+
+  return H / w;
+}
+
+/**
+ * Solves for length and direction from origin, and then converts to
+ * coordinates.
+ */
+Point2D Catenary2D::Coordinate(const double& position_fraction,
+                               const bool& is_shifted_origin) const
+{
+  Point2D coordinate;
+
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return coordinate;
+    }
+  }
+
+  // length from left end to position
+  double length_left_to_position = position_fraction * Length();
+
+  // length from origin to left endpoint
+  const double length_origin_to_left = LengthFromOrigin(point_end_left_);
+
+  // solve for length from origin and direction from origin
+  double length_origin_to_position;
+  AxisDirectionType direction_origin_to_position;
+
+  // select how to calculate length and position from origin based on
+  // endpoint coordinates
+
+  // both endpoints are left from origin
+  if (point_end_left_.x < 0 && point_end_right_.x < 0) {
+    length_origin_to_position = length_origin_to_left -
+                                length_left_to_position;
+    direction_origin_to_position = AxisDirectionType::POSITIVE;
+  }
+  // one endpoint left from origin, one endpoint right from origin
+  else if (point_end_left_.x < 0 && 0 < point_end_right_.x) {
+
+    // left from origin
+    if (length_left_to_position < length_origin_to_left) {
+      length_origin_to_position = length_origin_to_left -
+                                  length_left_to_position;
+      direction_origin_to_position = AxisDirectionType::NEGATIVE;
+    }
+    // at origin
+    else if (length_left_to_position == length_origin_to_left) {
+      length_origin_to_position = 0;
+      direction_origin_to_position = AxisDirectionType::POSITIVE;
+    }
+    // right from origin
+    else if (length_origin_to_left < length_left_to_position) {
+      length_origin_to_position = length_left_to_position -
+                                  length_origin_to_left;
+      direction_origin_to_position = AxisDirectionType::POSITIVE;
+    }
+  }
+  // both endpoints are AOL of origin
+  else if (0 < point_end_left_.x && 0 < point_end_right_.x) {
+    length_origin_to_position = length_origin_to_left +
+                                length_left_to_position;
+    direction_origin_to_position = AxisDirectionType::POSITIVE;
+  }
+
+  // solve for catenary coordinate
+  coordinate.x = CoordinateX(length_origin_to_position,
+                             direction_origin_to_position);
+  coordinate.y = CoordinateY(length_origin_to_position,
+                             direction_origin_to_position);
+
+  return coordinate;
+}
+
+Point2D Catenary2D::CoordinateChord(const double& position_fraction,
+                                    const bool& is_shifted_origin) const
+{
+  Point2D coordinate_chord;
+
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return coordinate_chord;
+    }
+  }
+
+  // get a catenary coordinate
+  Point2D coordinate_catenary = Coordinate(position_fraction,
+                                is_shifted_origin);
+
+  // calculate a chord coordinate
+  coordinate_chord.x = coordinate_catenary.x;
+                       coordinate_chord.y = point_end_left_.y
+                           + ((coordinate_catenary.x - point_end_left_.x)
+                           * (spacing_endpoints_.y() / spacing_endpoints_.x()));
+
+  // check if shifted coordinate is requested, modify if necessary
+  if (is_shifted_origin == true) {
+    coordinate_chord.x = coordinate_chord.x - point_end_left_.x;
+                         coordinate_chord.y = coordinate_chord.y
+                                                - point_end_left_.y;
+  }
+
+  return coordinate_chord;
+}
+
 ///**
-// * This function should be used before extracting any information from the class.
-// *
-// * Data errors indicate that a class data member contains an invalid value, and that the class will
-// * provide unpredictable results and may generate run-time calculation errors.
-// * Data warnings indicate that a class data member contains an extreme value that is typically
-// * outside of the normal bounds, but will still provide a calculable result.
+// * If the lowpoint is within the curve section being used, the length from the
+// * origin to the left endpoint and the length from the origin to the right
+// * endpoint are summed. If the origin is beyond an endpoint, the length to the
+// * closest endpoint is treated as negative.
+// * @see Catenary2D::LengthFromOrigin
 // */
-//std::list<std::string> Catenary2D::CheckData(bool includeWarnings) const
+//double Catenary2D::Length() const
 //{
-//    std::list<std::string> checkList;
+//  if (bUpdateRequired == true) {
+//    Update_CoordinateSystem();
+//  }
 //
-//    // check horizontal tension
-//    if (m_HorizontalTension <= 0) {
-//        checkList.push_back("CATENARY - Invalid horizontal tension");
-//    }
-//    else if (100000 < m_HorizontalTension && includeWarnings == true) {
-//        checkList.push_back("CATENARY - Horizontal tension exceeds 100,000 lb");
-//    }
+//  // calculate curve length to endpoints
+//  const double curveLength_OriginToEndPointBOL = Get_CurveLength_FromOrigin(
+//        point_end_left_.x);
+//  const double curveLength_OriginToEndPointAOL = Get_CurveLength_FromOrigin(
+//        point_end_right_.x);
 //
-//    // check unit weight
-//    if (m_UnitWeight <= 0) {
-//        checkList.push_back("CATENARY - Invalid unit weight");
-//    }
-//    else if (15 < m_UnitWeight && includeWarnings == true) {
-//        checkList.push_back("CATENARY - Unit weight exceeds 15 lb/ft");
-//    }
+//  double CurveLength;
 //
-//    // check endpoint spacing - horizontal
-//    if (m_EndPointSpacing.x < 0) {
-//        checkList.push_back("CATENARY - Invalid horizontal endpoint spacing");
-//    }
-//    else if (5000 < m_EndPointSpacing.x && includeWarnings == true) {
-//        checkList.push_back("CATENARY - Horizontal endpoint spacing exceeds 5000 ft");
-//    }
+//  // selects calculation based on endpoint coordinate positions
+//  if (point_end_left_.x < 0 && point_end_right_.x < 0) {
+//    CurveLength = curveLength_OriginToEndPointBOL - curveLength_OriginToEndPointAOL;
+//  } else if (point_end_left_.x < 0 && 0 < point_end_right_.x) {
+//    CurveLength = curveLength_OriginToEndPointBOL + curveLength_OriginToEndPointAOL;
+//  } else if (0 < point_end_left_.x && 0 < point_end_right_.x) {
+//    CurveLength = curveLength_OriginToEndPointAOL - curveLength_OriginToEndPointBOL;
+//  }
 //
-//    // endpoint spacing - vertical
-//    if (m_EndPointSpacing.y  <= -2000 || 2000 <= m_EndPointSpacing.y) {
-//        checkList.push_back("CATENARY - Invalid vertical endpoint spacing");
-//    }
-//    else if ((m_EndPointSpacing.y <=-1000 || 1000 <= m_EndPointSpacing.y) && includeWarnings == true) {
-//        checkList.push_back("CATENARY - Vertical endpoint spacing exceeds 1000 ft");
-//    }
-//
-//    return checkList;
-//}
-//
-///**
-// * \f[ \frac{H}{w} = \frac{HorizontalTension}{UnitWeight} \f]
-// */
-//double Catenary2D::Get_Constant() const
-//{
-//    if (bUpdateRequired == true)
-//    {
-//        Update_CoordinateSystem();
-//    }
-//
-//    const double H = m_HorizontalTension;
-//    const double w = m_UnitWeight;
-//
-//    return H / w;
-//}
-//
-///**
-// * The position is identified as either back-on-line from the catenary origin, or ahead-on-line. The
-// * curve length from the origin is calculated, allowing for hyperbolic functions to solve for the
-// * x and y coordinate points.
-// * @see Catenary::Get_Coordinate_x
-// * @see Catenary::Get_Coordinate_y
-// */
-//Point2D Catenary::Get_Coordinate(const double& positionAlongCurve_Fraction) const
-//{
-//    if (bUpdateRequired == true) {
-//        Update_CoordinateSystem();
-//    }
-//
-//    // calculate position along curve and curve length from origin to BOL endpoint
-//    const double curveLength_EndPointBOL_ToPosition = positionAlongCurve_Fraction * Get_CurveLength();
-//    const double curveLength_OriginToEndPointBOL = Get_CurveLength_FromOrigin(m_EndPointBOL.x);
-//
-//    // solve for curve length from origin and direction from origin
-//    double curveLength_OriginToPosition;
-//    std::string direction_OriginToPosition;
-//
-//    // select how to calculate length and position from origin based on endpoint coordinates
-//    // both endpoints are BOL from origin
-//    if (m_EndPointBOL.x < 0 && m_EndPointAOL.x < 0)
-//    {
-//        curveLength_OriginToPosition = curveLength_OriginToEndPointBOL - curveLength_EndPointBOL_ToPosition;
-//        direction_OriginToPosition = "BOL";
-//    }
-//    // one endpoint BOL from origin, one endpoint AOL from origin
-//    else if (m_EndPointBOL.x < 0 && 0 < m_EndPointAOL.x)
-//    {
-//        // BOL from origin
-//        if (curveLength_EndPointBOL_ToPosition < curveLength_OriginToEndPointBOL)
-//        {
-//            curveLength_OriginToPosition = curveLength_OriginToEndPointBOL - curveLength_EndPointBOL_ToPosition;
-//            direction_OriginToPosition = "BOL";
-//        }
-//        // at origin
-//        else if (curveLength_EndPointBOL_ToPosition == curveLength_OriginToEndPointBOL)
-//        {
-//            curveLength_OriginToPosition = 0;
-//            direction_OriginToPosition = "";
-//        }
-//        // AOL from origin
-//        else if (curveLength_OriginToEndPointBOL < curveLength_EndPointBOL_ToPosition)
-//        {
-//            curveLength_OriginToPosition = curveLength_EndPointBOL_ToPosition - curveLength_OriginToEndPointBOL;
-//            direction_OriginToPosition = "AOL";
-//        }
-//    }
-//    // both endpoints are AOL of origin
-//    else if (0 < m_EndPointBOL.x && 0 < m_EndPointAOL.x)
-//    {
-//        curveLength_OriginToPosition = curveLength_OriginToEndPointBOL + curveLength_EndPointBOL_ToPosition;
-//        direction_OriginToPosition = "AOL";
-//    }
-//
-//    // solve for catenary coordinate
-//    Point2D coordinate;
-//    coordinate.x = Get_Coordinate_x(curveLength_OriginToPosition, direction_OriginToPosition);
-//    coordinate.y = Get_Coordinate_y(coordinate.x);
-//
-//    return coordinate;
-//}
-//
-///**
-// * If the lowpoint is within the curve section being used, the length from the origin to the
-// * back-on-line endpoint and the length from the origin to the ahead-on-line endpoint are summed.
-// * If the origin is beyond an endpoint, the length to that endpoint is treated as negative.
-// * @see Catenary::Get_CurveLength_FromOrigin
-// */
-//double Catenary::Get_CurveLength() const
-//{
-//    if (bUpdateRequired == true)
-//    {
-//        Update_CoordinateSystem();
-//    }
-//
-//    // calculate curve length to endpoints
-//    const double curveLength_OriginToEndPointBOL = Get_CurveLength_FromOrigin(m_EndPointBOL.x);
-//    const double curveLength_OriginToEndPointAOL = Get_CurveLength_FromOrigin(m_EndPointAOL.x);
-//
-//    double CurveLength;
-//
-//    // selects calculation based on endpoint coordinate positions
-//    if (m_EndPointBOL.x < 0 && m_EndPointAOL.x < 0)
-//    {
-//        CurveLength = curveLength_OriginToEndPointBOL - curveLength_OriginToEndPointAOL;
-//    }
-//    else if (m_EndPointBOL.x < 0 && 0 < m_EndPointAOL.x)
-//    {
-//        CurveLength = curveLength_OriginToEndPointBOL + curveLength_OriginToEndPointAOL;
-//    }
-//    else if (0 < m_EndPointBOL.x && 0 < m_EndPointAOL.x)
-//    {
-//        CurveLength = curveLength_OriginToEndPointAOL - curveLength_OriginToEndPointBOL;
-//    }
-//
-//    return CurveLength;
+//  return CurveLength;
 //}
 //
 //Vector2D Catenary::Get_EndPointSpacing() const
 //{
-//    return m_EndPointSpacing;
+//  return m_EndPointSpacing;
 //}
 //
 //double Catenary::Get_HorizontalTension() const
 //{
-//    return m_HorizontalTension;
+//  return tension_horizontal_;
 //}
 //
 ///**
@@ -210,37 +189,35 @@ Catenary2D::~Catenary2D()
 //Vector2D Catenary::Get_TangentVector(const double& positionAlongCurve_Fraction,
 //                                     const std::string& direction) const
 //{
-//    if (bUpdateRequired == true)
-//    {
-//        Update_CoordinateSystem();
-//    }
+//  if (bUpdateRequired == true) {
+//    Update_CoordinateSystem();
+//  }
 //
-//    // get coordinate at position
-//    const Point2D coordinate = Get_Coordinate(positionAlongCurve_Fraction);
+//  // get coordinate at position
+//  const Point2D coordinate = Get_Coordinate(positionAlongCurve_Fraction);
 //
-//    // calculate slope at position
-//    const double H = m_HorizontalTension;
-//    const double w = m_UnitWeight;
-//    const double x = coordinate.x;
+//  // calculate slope at position
+//  const double H = tension_horizontal_;
+//  const double w = weight_unit_;
+//  const double x = coordinate.x;
 //
-//    const double Slope = sinh(x / (H / w));
+//  const double Slope = sinh(x / (H / w));
 //
-//    // calculate magnitude of x (= 1) and y (= slope) vector components
-//    const double VectorMagnitude = sqrt(pow(Slope, 2) + pow(1, 2));
+//  // calculate magnitude of x (= 1) and y (= slope) vector components
+//  const double VectorMagnitude = sqrt(pow(Slope, 2) + pow(1, 2));
 //
-//    // solve for a 2D tangent unit vector
-//    // BOL reverses the sign on both the x and y components, AOL remains the same sign
-//    Vector2D TangentVector;
-//    if (direction == "BOL") {
-//        TangentVector.x = -(1 / VectorMagnitude);
-//        TangentVector.y = -(Slope / VectorMagnitude);
-//    }
-//    else if (direction == "AOL") {
-//        TangentVector.x = 1 / VectorMagnitude;
-//        TangentVector.y = Slope / VectorMagnitude;
-//    }
+//  // solve for a 2D tangent unit vector
+//  // BOL reverses the sign on both the x and y components, AOL remains the same sign
+//  Vector2D TangentVector;
+//  if (direction == "BOL") {
+//    TangentVector.x = -(1 / VectorMagnitude);
+//    TangentVector.y = -(Slope / VectorMagnitude);
+//  } else if (direction == "AOL") {
+//    TangentVector.x = 1 / VectorMagnitude;
+//    TangentVector.y = Slope / VectorMagnitude;
+//  }
 //
-//    return TangentVector;
+//  return TangentVector;
 //}
 //
 ///**
@@ -252,34 +229,35 @@ Catenary2D::~Catenary2D()
 //Vector2D Catenary::Get_Tension(const double& positionAlongCurve_Fraction,
 //                               const std::string& direction) const
 //{
-//    if (bUpdateRequired == true) {
-//        Update_CoordinateSystem();
-//    }
+//  if (bUpdateRequired == true) {
+//    Update_CoordinateSystem();
+//  }
 //
-//    // get coordinate at position
-//    const Point2D Coordinate = Get_Coordinate(positionAlongCurve_Fraction);
+//  // get coordinate at position
+//  const Point2D Coordinate = Get_Coordinate(positionAlongCurve_Fraction);
 //
-//    // calculate tension magnitude
-//    const double H = m_HorizontalTension;
-//    const double w = m_UnitWeight;
-//    const double x = Coordinate.x;
+//  // calculate tension magnitude
+//  const double H = tension_horizontal_;
+//  const double w = weight_unit_;
+//  const double x = Coordinate.x;
 //
-//    const double TensionMagnitude = H * cosh(x / (H / w));
+//  const double TensionMagnitude = H * cosh(x / (H / w));
 //
-//    // get tangent vector
-//    const Vector2D TangentVector = Get_TangentVector(positionAlongCurve_Fraction, direction);
+//  // get tangent vector
+//  const Vector2D TangentVector = Get_TangentVector(positionAlongCurve_Fraction,
+//                                 direction);
 //
-//    // resolve tension magnitude to tangent vector
-//    Vector2D Tension;
-//    Tension.x = TensionMagnitude * TangentVector.x;
-//    Tension.y = TensionMagnitude * TangentVector.y;
+//  // resolve tension magnitude to tangent vector
+//  Vector2D Tension;
+//  Tension.x = TensionMagnitude * TangentVector.x;
+//  Tension.y = TensionMagnitude * TangentVector.y;
 //
-//    return Tension;
+//  return Tension;
 //}
 //
 //double Catenary::Get_UnitWeight() const
 //{
-//    return m_UnitWeight;
+//  return weight_unit_;
 //}
 //
 ///**
@@ -287,32 +265,33 @@ Catenary2D::~Catenary2D()
 // */
 //void Catenary::Set_EndpointSpacing(const double& x, const double& y)
 //{
-//    m_EndPointSpacing.x = x;
-//	m_EndPointSpacing.y = y;
+//  m_EndPointSpacing.x = x;
+//  m_EndPointSpacing.y = y;
 //
-//    bUpdateRequired_CoordinateSystem = true;
+//  bUpdateRequired_CoordinateSystem = true;
 //}
 //
 ///**
 // * Assigns parameter value to a member variable and marks that an update is required.
 // */
-//void Catenary::Set_Tension(const double& tension, const double& positionAlongCurve_Fraction)
+//void Catenary::Set_Tension(const double& tension,
+//                           const double& positionAlongCurve_Fraction)
 //{
-//	// if an invalid tension position is provided, mark as a horizontal tension
-//	if (positionAlongCurve_Fraction < 0) {
-//		m_HorizontalTension = tension;
-//		m_PositionAlongCurve_Fraction = -999999;
-//		bUpdateRequired_HorizontalTension = false;
-//	}
+//  // if an invalid tension position is provided, mark as a horizontal tension
+//  if (positionAlongCurve_Fraction < 0) {
+//    tension_horizontal_ = tension;
+//    m_PositionAlongCurve_Fraction = -999999;
+//    bUpdateRequired_HorizontalTension = false;
+//  }
 //
-//	// if a valid tension position is provided, mark that horizontal tension needs to be solved for
-//	else if (0 <= positionAlongCurve_Fraction) {
-//		m_HorizontalTension = tension;
-//		m_PositionAlongCurve_Fraction = positionAlongCurve_Fraction;
-//		bUpdateRequired_HorizontalTension = true;
-//	}
+//  // if a valid tension position is provided, mark that horizontal tension needs to be solved for
+//  else if (0 <= positionAlongCurve_Fraction) {
+//    tension_horizontal_ = tension;
+//    m_PositionAlongCurve_Fraction = positionAlongCurve_Fraction;
+//    bUpdateRequired_HorizontalTension = true;
+//  }
 //
-//    bUpdateRequired_CoordinateSystem = true;
+//  bUpdateRequired_CoordinateSystem = true;
 //}
 //
 ///**
@@ -320,16 +299,46 @@ Catenary2D::~Catenary2D()
 // */
 //void Catenary::Set_UnitWeight(const double& unitWeight)
 //{
-//	m_UnitWeight = unitWeight;
+//  weight_unit_ = unitWeight;
 //
-//    bUpdateRequired_CoordinateSystem = true;
+//  bUpdateRequired_CoordinateSystem = true;
 //}
 //
+//std::list<std::string> Catenary2D::Validate(bool includeWarnings) const
+//{
+//  std::list<std::string> checkList;
 //
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////// PROTECTED MEMBER FUNCTIONS ////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////
+//  // check horizontal tension
+//  if (tension_horizontal_ <= 0) {
+//    checkList.push_back("CATENARY - Invalid horizontal tension");
+//  } else if (100000 < tension_horizontal_ && includeWarnings == true) {
+//    checkList.push_back("CATENARY - Horizontal tension exceeds 100,000 lb");
+//  }
 //
+//  // check unit weight
+//  if (weight_unit_ <= 0) {
+//    checkList.push_back("CATENARY - Invalid unit weight");
+//  } else if (15 < weight_unit_ && includeWarnings == true) {
+//    checkList.push_back("CATENARY - Unit weight exceeds 15 lb/ft");
+//  }
+//
+//  // check endpoint spacing - horizontal
+//  if (m_EndPointSpacing.x < 0) {
+//    checkList.push_back("CATENARY - Invalid horizontal endpoint spacing");
+//  } else if (5000 < m_EndPointSpacing.x && includeWarnings == true) {
+//    checkList.push_back("CATENARY - Horizontal endpoint spacing exceeds 5000 ft");
+//  }
+//
+//  // endpoint spacing - vertical
+//  if (m_EndPointSpacing.y  <= -2000 || 2000 <= m_EndPointSpacing.y) {
+//    checkList.push_back("CATENARY - Invalid vertical endpoint spacing");
+//  } else if ((m_EndPointSpacing.y <=-1000 || 1000 <= m_EndPointSpacing.y)
+//             && includeWarnings == true) {
+//    checkList.push_back("CATENARY - Vertical endpoint spacing exceeds 1000 ft");
+//  }
+//
+//  return checkList;
+//}
 //
 ///**
 // * The function is a derivation of the equation for curve length.
@@ -337,37 +346,37 @@ Catenary2D::~Catenary2D()
 // * \f[ x = \frac{H}{w} sinh^{-1} \left(\frac{L}{\frac{H}{w}}\right) \f]
 // */
 //double Catenary::Coordinate_x(const double& curveLength_FromOrigin,
-//                                  const std::string& directionFromOrigin) const
+//                              const std::string& directionFromOrigin) const
 //{
-//    const double L = curveLength_FromOrigin;
-//    const double H = m_HorizontalTension;
-//    const double w = m_UnitWeight;
+//  const double L = curveLength_FromOrigin;
+//  const double H = tension_horizontal_;
+//  const double w = weight_unit_;
 //
-//    double coordinate_x;
+//  double coordinate_x;
 //
-//    // BOL from origin - negative x coordinate
-//    if (directionFromOrigin == "BOL") {
-//        coordinate_x = - (H / w) * (asinh(L / (H / w)));
-//    }
-//    // AOL from origin - positive x coordinate
-//    else if (direction == "AOL") {
-//        coordinate_x = (H / w) * (asinh(L / (H / w)));
-//    }
+//  // BOL from origin - negative x coordinate
+//  if (directionFromOrigin == "BOL") {
+//    coordinate_x = - (H / w) * (asinh(L / (H / w)));
+//  }
+//  // AOL from origin - positive x coordinate
+//  else if (direction == "AOL") {
+//    coordinate_x = (H / w) * (asinh(L / (H / w)));
+//  }
 //
-//    return coordinate_x;
+//  return coordinate_x;
 //}
 //
 ///**
 // * \f[ y = \frac{H}{w} \cosh \left(\frac{x}{\frac{H}{w}-1}\right) \f]
 // */
 //double Catenary::Coordinate_y(const double& curveLengthFromOrigin,
-//							  const double& directionFromOrigin) const
+//                              const double& directionFromOrigin) const
 //{
-//    const double x = Coordinate_x(curveLengthFromOrigin, directionFromOrigin);
-//    const double H = m_HorizontalTension;
-//    const double w = m_UnitWeight;
+//  const double x = Coordinate_x(curveLengthFromOrigin, directionFromOrigin);
+//  const double H = tension_horizontal_;
+//  const double w = weight_unit_;
 //
-//    return (H / w) * (cosh(x / (H / w)) - 1);
+//  return (H / w) * (cosh(x / (H / w)) - 1);
 //}
 //
 ///**
@@ -375,11 +384,11 @@ Catenary2D::~Catenary2D()
 // */
 //double Catenary::CurveLength_FromOrigin(const Point2D coordinate) const
 //{
-//    const double x = coordinate.x;
-//    const double H = m_HorizontalTension;
-//    const double w = m_UnitWeight;
+//  const double x = coordinate.x;
+//  const double H = tension_horizontal_;
+//  const double w = weight_unit_;
 //
-//    return std::abs((H / w) * sinh(x / (H / w)));
+//  return std::abs((H / w) * sinh(x / (H / w)));
 //}
 //
 ///**
@@ -401,26 +410,26 @@ Catenary2D::~Catenary2D()
 // */
 //void Catenary::Update_CoordinateSystem() const
 //{
-//    // check class inputs and exit if errors are present
-//    std::list<std::string> errorList = CheckData(false);
-//    if (0 < errorList.size()) {
-//        return;
-//    }
+//  // check class inputs and exit if errors are present
+//  std::list<std::string> errorList = CheckData(false);
+//  if (0 < errorList.size()) {
+//    return;
+//  }
 //
-//    // define equation variables
-//    const double H = m_HorizontalTension;
-//    const double w = m_UnitWeight;
-//    const double A = m_EndPointSpacing.x;
-//    const double B = m_EndPointSpacing.y;
-//    const double z = (A / 2) / (H / w);
+//  // define equation variables
+//  const double H = tension_horizontal_;
+//  const double w = weight_unit_;
+//  const double A = m_EndPointSpacing.x;
+//  const double B = m_EndPointSpacing.y;
+//  const double z = (A / 2) / (H / w);
 //
-//    // solve for back-on-line endpoint coordinate
-//    m_EndPointBOL.x = (H / w) * (asinh(B * z) / (A * sinh(z)) - z);
-//    m_EndPointAOL.y =
+//  // solve for back-on-line endpoint coordinate
+//  point_end_left_.x = (H / w) * (asinh(B * z) / (A * sinh(z)) - z);
+//  point_end_right_.y =
 //
 //    // solve for ahead-on-line endpoint coordinate
-//    m_EndPointAOL.x = (H / w) * (asinh(B * z) / (A * sinh(z)) + z);
-//    m_EndPointAOL.y =
+//    point_end_right_.x = (H / w) * (asinh(B * z) / (A * sinh(z)) + z);
+//  point_end_right_.y =
 //
 //    // reset update flag
 //    bUpdateRequired = false;
@@ -618,9 +627,9 @@ Catenary2D::~Catenary2D()
 ////
 ////    // formatted so "=" aligns for all columns with an 8 space tab character (most text files)
 ////    saveList.push_back("[SPANCABLE]");
-////    saveList.push_back("attachment spacing - horizontal	= " + std::to_string(m_AttachmentSpacing.x));
-////    saveList.push_back("attachment spacing - vertical	= " + std::to_string(m_AttachmentSpacing.z));
-////    saveList.push_back("catenary horizontal tension		= " + std::to_string(m_CatenaryHorizontalTension));
+////    saveList.push_back("attachment spacing - horizontal = " + std::to_string(m_AttachmentSpacing.x));
+////    saveList.push_back("attachment spacing - vertical = " + std::to_string(m_AttachmentSpacing.z));
+////    saveList.push_back("catenary horizontal tension   = " + std::to_string(m_CatenaryHorizontalTension));
 ////    saveList.splice(saveList.end(), m_Cable.SaveData());
 ////    saveList.splice(saveList.end(), m_CableLoadCase.SaveData());
 ////
