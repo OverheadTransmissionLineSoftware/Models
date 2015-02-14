@@ -12,7 +12,7 @@
  * This class is a container for weather load cases.
  *
  */
-class WeatherLoadCase {
+struct WeatherLoadCase {
 public:
   /**
    * @brief Default constructor.
