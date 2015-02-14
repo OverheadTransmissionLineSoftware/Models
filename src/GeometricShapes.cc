@@ -38,7 +38,7 @@ bool Cylinder::Validate(bool is_included_warnings,
 
   // validate length
   if (length_ <= 0
-    || ((120 < length_) && (is_included_warnings == true))) {
+      || ((120 < length_) && (is_included_warnings == true))) {
 
     is_valid = false;
     if (messages_error != nullptr) {
