@@ -1,7 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#pragma once
+#ifndef TRANSMISSIONLINE_WEATHERLOADCASE_H_
+#define TRANSMISSIONLINE_WEATHERLOADCASE_H_
 
 #include <list>
 #include <string>
@@ -42,3 +43,5 @@ public:
   double      temperature_cable;
   double      thickness_ice;
 };
+
+#endif // TRANSMISSIONLINE_WEATHERLOADCASE_H_
