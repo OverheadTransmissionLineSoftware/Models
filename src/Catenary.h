@@ -281,7 +281,7 @@ private:
    * @brief Updates the endpoint coordinates.
    * @return A boolean indicating the success status of the update.
    */
-  void UpdateEndPoints() const;
+  bool UpdateEndPoints() const;
 
   // member variables
   mutable bool    is_updated_points_end_;
