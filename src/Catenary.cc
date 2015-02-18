@@ -125,15 +125,15 @@ Point2D Catenary2D::CoordinateChord(const double& position_fraction,
 
   // calculate a chord coordinate
   coordinate_chord.x = coordinate_catenary.x;
-                       coordinate_chord.y = point_end_left_.y
-                           + ((coordinate_catenary.x - point_end_left_.x)
-                           * (spacing_endpoints_.y() / spacing_endpoints_.x()));
+  coordinate_chord.y = point_end_left_.y
+                       + ((coordinate_catenary.x - point_end_left_.x)
+                          * (spacing_endpoints_.y() / spacing_endpoints_.x()));
 
   // check if shifted coordinate is requested, modify if necessary
   if (is_shifted_origin == true) {
     coordinate_chord.x = coordinate_chord.x - point_end_left_.x;
-                         coordinate_chord.y = coordinate_chord.y
-                                                - point_end_left_.y;
+    coordinate_chord.y = coordinate_chord.y
+                         - point_end_left_.y;
   }
 
   return coordinate_chord;
@@ -235,7 +235,7 @@ double Catenary2D::Sag() const
 }
 
 double Catenary2D::TangentAngle(const double& position_fraction,
-                                      const AxisDirectionType& direction) const
+                                const AxisDirectionType& direction) const
 {
   if (IsUpdated() == false) {
     if (Update() == false) {
@@ -304,7 +304,7 @@ double Catenary2D::Tension(const double& position_fraction) const
   Point2D coordinate = Coordinate(position_fraction);
 
   return tension_horizontal_
-          * cosh( coordinate.x / (tension_horizontal_/weight_unit_));
+         * cosh( coordinate.x / (tension_horizontal_/weight_unit_));
 }
 
 /**
@@ -351,13 +351,13 @@ double Catenary2D::TensionAverage(const int& num_points) const
 
     const double term_1 = (pow(h, 2) / (2 * w * l));
     const double term_2 = sinh(point_end_right_.x / (h / w))
-                                    * cosh(point_end_right_.x / (h / w));
+                          * cosh(point_end_right_.x / (h / w));
     const double term_3 = sinh(point_end_left_.x / (h / w))
-                                    * cosh(point_end_left_.x / (h / w));
+                          * cosh(point_end_left_.x / (h / w));
     const double term_4 = (point_end_right_.x - point_end_left_.x)
-                                    / (h / w);
+                          / (h / w);
 
-    return term_1 * (term_2 - term_3 + term_4);
+    tension_average = term_1 * (term_2 - term_3 + term_4);
 
   } else if (0 < num_points) {
 
@@ -370,9 +370,11 @@ double Catenary2D::TensionAverage(const int& num_points) const
       const double tension_magnitude = Tension(position_fraction);
       sum = sum + tension_magnitude;
     }
-  } else {
-    return -999999;
+
+    tension_average = sum / num_points;
   }
+
+  return tension_average;
 }
 
 double Catenary2D::TensionMax() const
@@ -400,7 +402,7 @@ bool Catenary2D::Validate(bool is_included_warnings,
 
   // validate tension-horizontal
   if (tension_horizontal_ <= 0
-    || (100000 < tension_horizontal_ && is_included_warnings == true)) {
+      || (100000 < tension_horizontal_ && is_included_warnings == true)) {
 
     is_valid = false;
     if (messages_error != nullptr) {
@@ -410,7 +412,7 @@ bool Catenary2D::Validate(bool is_included_warnings,
 
   // validate weight-unit
   if (weight_unit_ <= 0
-    || (15 < weight_unit_ && is_included_warnings == true)) {
+      || (15 < weight_unit_ && is_included_warnings == true)) {
 
     is_valid = false;
     if (messages_error != nullptr) {
@@ -420,7 +422,7 @@ bool Catenary2D::Validate(bool is_included_warnings,
 
   // validate spacing-endpoints-horizontal
   if (spacing_endpoints_.x() <= 0
-    || (5000 < spacing_endpoints_.x() && is_included_warnings == true)) {
+      || (5000 < spacing_endpoints_.x() && is_included_warnings == true)) {
 
     is_valid = false;
     if (messages_error != nullptr) {
@@ -430,7 +432,7 @@ bool Catenary2D::Validate(bool is_included_warnings,
 
   // validate spacing-endpoint-vertical
   if (10000 < abs(spacing_endpoints_.y())
-    || 2000 <= abs(spacing_endpoints_.y()) ) {
+      || 2000 <= abs(spacing_endpoints_.y()) ) {
 
     is_valid = false;
     if (messages_error != nullptr) {
@@ -477,103 +479,103 @@ double Catenary2D::weight_unit() const
   return weight_unit_;
 }
 
-///**
-// * The function is a derivation of the equation for curve length.
-// * @see Catenary::Get_CurveLength_FromOrigin
-// * \f[ x = \frac{H}{w} sinh^{-1} \left(\frac{L}{\frac{H}{w}}\right) \f]
-// */
-//double Catenary::Coordinate_x(const double& curveLength_FromOrigin,
-//                              const std::string& directionFromOrigin) const
-//{
-//  const double L = curveLength_FromOrigin;
-//  const double H = tension_horizontal_;
-//  const double w = weight_unit_;
-//
-//  double coordinate_x;
-//
-//  // BOL from origin - negative x coordinate
-//  if (directionFromOrigin == "BOL") {
-//    coordinate_x = - (H / w) * (asinh(L / (H / w)));
-//  }
-//  // AOL from origin - positive x coordinate
-//  else if (direction == "AOL") {
-//    coordinate_x = (H / w) * (asinh(L / (H / w)));
-//  }
-//
-//  return coordinate_x;
-//}
-//
-///**
-// * \f[ y = \frac{H}{w} \cosh \left(\frac{x}{\frac{H}{w}-1}\right) \f]
-// */
-//double Catenary::Coordinate_y(const double& curveLengthFromOrigin,
-//                              const double& directionFromOrigin) const
-//{
-//  const double x = Coordinate_x(curveLengthFromOrigin, directionFromOrigin);
-//  const double H = tension_horizontal_;
-//  const double w = weight_unit_;
-//
-//  return (H / w) * (cosh(x / (H / w)) - 1);
-//}
-//
-///**
-// * \f[ CurveLength = \left| \frac{H}{w} sinh^{-1} \left(\frac{x}{\frac{H}{w}}\right) \right| \f]
-// */
-//double Catenary::CurveLength_FromOrigin(const Point2D coordinate) const
-//{
-//  const double x = coordinate.x;
-//  const double H = tension_horizontal_;
-//  const double w = weight_unit_;
-//
-//  return std::abs((H / w) * sinh(x / (H / w)));
-//}
-//
-///**
-// *
-// */
-//bool Catenary2D::Update()
-//{
-//
-//}
-//
-///**
-// * Hyperbolic identity equations are used to determine the x distance that each endpoint is from the
-// * origin. They are as follows:
-// * \f[ xBOL = \frac{A}{2} - \frac{H}{w} sinh^{-1} \left( \frac{\frac{B}{2}}{ \frac{H}{w} sinh \left( \frac{\frac{A}{2}}{\frac{H}{w}} \right)} \right) \f]
-// * \f[ xAOL = \frac{A}{2} + \frac{H}{w} sinh^{-1} \left( \frac{\frac{B}{2}}{ \frac{H}{w} sinh \left( \frac{\frac{A}{2}}{\frac{H}{w}} \right)} \right) \f]
-// * If a negative value is the solution of either equation, it indicates that the origin is not
-// * bound by the endpoints. The endpoint coordinates are then solved for and stored for later
-// * calculations.
-// */
-//void Catenary::Update_CoordinateSystem() const
-//{
-//  // check class inputs and exit if errors are present
-//  std::list<std::string> errorList = CheckData(false);
-//  if (0 < errorList.size()) {
-//    return;
-//  }
-//
-//  // define equation variables
-//  const double H = tension_horizontal_;
-//  const double w = weight_unit_;
-//  const double A = m_EndPointSpacing.x;
-//  const double B = m_EndPointSpacing.y;
-//  const double z = (A / 2) / (H / w);
-//
-//  // solve for back-on-line endpoint coordinate
-//  point_end_left_.x = (H / w) * (asinh(B * z) / (A * sinh(z)) - z);
-//  point_end_right_.y =
-//
-//    // solve for ahead-on-line endpoint coordinate
-//    point_end_right_.x = (H / w) * (asinh(B * z) / (A * sinh(z)) + z);
-//  point_end_right_.y =
-//
-//    // reset update flag
-//    bUpdateRequired = false;
-//}
-//
-//
-//
+/**
+ * The function is a derivation of the equation for curve length.
+ * @see Catenary::Get_CurveLength_FromOrigin
+ * \f[ x = \frac{H}{w} sinh^{-1} \left(\frac{L}{\frac{H}{w}}\right) \f]
+ */
+double Catenary2D::CoordinateX(const double& length_origin_to_position,
+                               const AxisDirectionType& direction_origin_to_position)
+const
+{
+  const double l = length_origin_to_position;
+  const double h = tension_horizontal_;
+  const double w = weight_unit_;
+
+  double coordinate_x = -999999;
+
+  // BOL from origin - negative x coordinate
+  if (direction_origin_to_position == AxisDirectionType::NEGATIVE) {
+    coordinate_x = -(h/w) * (asinh(l / (h/w)));
+  }
+  // AOL from origin - positive x coordinate
+  else if (direction_origin_to_position == AxisDirectionType::POSITIVE) {
+    coordinate_x = (h/w) * (asinh(l / (h/w)));
+  }
+
+  return coordinate_x;
+}
+
+/**
+ * \f[ y = \frac{H}{w} \cosh \left(\frac{x}{\frac{H}{w}-1}\right) \f]
+ */
+double Catenary2D::CoordinateY(const double& length_origin_to_position,
+                               const AxisDirectionType& direction_origin_to_position)
+const
+{
+  const double x = CoordinateX(length_origin_to_position,
+                               direction_origin_to_position);
+  const double h = tension_horizontal_;
+  const double w = weight_unit_;
+
+  return (h/w) * (cosh(x / (h/w)) - 1);
+}
+
+/**
+ * \f[ CurveLength = \left| \frac{H}{w} sinh^{-1} \left(\frac{x}{\frac{H}{w}}\right) \right| \f]
+ */
+double Catenary2D::LengthFromOrigin(const Point2D& coordinate) const
+{
+  const double x = coordinate.x;
+  const double h = tension_horizontal_;
+  const double w = weight_unit_;
+
+  return std::abs((h/w) * sinh(x / (h/w)));
+}
+
+/**
+ *
+ */
+bool Catenary2D::Update() const
+{
+  if (is_updated_points_end_ == false) {
+
+    is_updated_points_end_ = UpdateEndPoints();
+    if (is_updated_points_end_ == false) {
+      return false;
+    }
+  }
+
+  // if it reaches this point, update was successful
+  return true;
+}
+
+/**
+ * Hyperbolic identity equations are used to solve for the endpoint coordinates:
+ * \f[ xBOL = \frac{A}{2} - \frac{H}{w} sinh^{-1} \left( \frac{\frac{B}{2}}{ \frac{H}{w} sinh \left( \frac{\frac{A}{2}}{\frac{H}{w}} \right)} \right) \f]
+ * \f[ xAOL = \frac{A}{2} + \frac{H}{w} sinh^{-1} \left( \frac{\frac{B}{2}}{ \frac{H}{w} sinh \left( \frac{\frac{A}{2}}{\frac{H}{w}} \right)} \right) \f]
+ */
+bool Catenary2D::UpdateEndPoints() const
+{
+  const double h = tension_horizontal_;
+  const double w = weight_unit_;
+  const double a = spacing_endpoints_.x();
+  const double b = spacing_endpoints_.y();
+  const double z = (a/2) / (h/w);
+
+  // solve for left endpoint coordinate
+  point_end_left_.x = (h/w) * (asinh(b * z) / (a * sinh(z)) - z);
+  point_end_left_.y = CoordinateY(LengthFromOrigin(point_end_left_),
+                                  AxisDirectionType::NEGATIVE);
+
+  // solve for right endpoint coordinate
+  point_end_right_.x = (h/w) * (asinh(b * z) / (a * sinh(z)) + z);
+  point_end_right_.y = CoordinateY(LengthFromOrigin(point_end_right_),
+                                   AxisDirectionType::POSITIVE);
+
+  return true;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////// CONSTRUCTOR / DESTRUCTOR ////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
