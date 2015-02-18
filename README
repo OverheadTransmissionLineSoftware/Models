@@ -1,11 +1,18 @@
 transmission-line
 ========================
 
-
-This repository is a static library that is meant to model a transmission line and its components. 
+This repository is a library that models a transmission line and its components. 
 
 This includes:
   - structures
   - cables
+  - hardware assemblies
 
+GET INVOLVED!
+This is an open source effort to create transmission line design software. This
+software is released in the public domain (see UNLICENSE file), so we can
+contribute to this collectively without worrying about intellectual property.
 
+Existing software distributors are encouraged to contribute as well. With a 
+consistent base functionality, software distributors can focus more on user 
+interface improvements, which makes everyone happier as a whole.
