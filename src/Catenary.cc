@@ -1,11 +1,11 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "Catenary.h"
+#include "include/Catenary.h"
 
 #include <cmath>
 
-#include "SupportLibrary.h"
+#include "include/SupportLibrary.h"
 
 Catenary2D::Catenary2D()
 {

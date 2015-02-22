@@ -14,6 +14,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add directory="../include" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -34,22 +35,22 @@
 			<Add option="-std=c++11" />
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="include/Cable.h" />
+		<Unit filename="include/CableLoadCase.h" />
+		<Unit filename="include/CableLoadConstraint.h" />
+		<Unit filename="include/CableUnitLoadCalculator.h" />
+		<Unit filename="include/Catenary.h" />
+		<Unit filename="include/GeometricShapes.h" />
+		<Unit filename="include/SupportLibrary.h" />
+		<Unit filename="include/WeatherLoadCase.h" />
 		<Unit filename="src/Cable.cc" />
-		<Unit filename="src/Cable.h" />
 		<Unit filename="src/CableLoadCase.cc" />
-		<Unit filename="src/CableLoadCase.h" />
 		<Unit filename="src/CableLoadConstraint.cc" />
-		<Unit filename="src/CableLoadConstraint.h" />
 		<Unit filename="src/CableUnitLoadCalculator.cc" />
-		<Unit filename="src/CableUnitLoadCalculator.h" />
 		<Unit filename="src/Catenary.cc" />
-		<Unit filename="src/Catenary.h" />
 		<Unit filename="src/GeometricShapes.cc" />
-		<Unit filename="src/GeometricShapes.h" />
 		<Unit filename="src/SupportLibrary.cc" />
-		<Unit filename="src/SupportLibrary.h" />
 		<Unit filename="src/WeatherLoadCase.cc" />
-		<Unit filename="src/WeatherLoadCase.h" />
 		<Extensions>
 			<envvars />
 			<code_completion />
