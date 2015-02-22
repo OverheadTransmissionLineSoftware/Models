@@ -1,11 +1,11 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "GeometricShapes.h"
+#include "include/GeometricShapes.h"
 
 #include <cmath>
 
-#include "SupportLibrary.h"
+#include "include/SupportLibrary.h"
 
 Cylinder::Cylinder()
 {
@@ -18,7 +18,7 @@ Cylinder::~Cylinder()
 
 double Cylinder::AreaCrossSection()
 {
-  return (pi / 4) * pow(diameter_, 2);
+  return (kPi / 4) * pow(diameter_, 2);
 }
 
 bool Cylinder::Validate(bool is_included_warnings,
