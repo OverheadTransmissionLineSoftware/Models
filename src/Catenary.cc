@@ -31,10 +31,7 @@ double Catenary2D::Constant() const
     }
   }
 
-  const double H = tension_horizontal_;
-  const double w = weight_unit_;
-
-  return H / w;
+  return tension_horizontal_ / weight_unit_;
 }
 
 /**
@@ -521,6 +518,15 @@ const
   return (h/w) * (cosh(x / (h/w)) - 1);
 }
 
+bool Catenary2D::IsUpdated() const
+{
+  if (is_updated_points_end_ == true) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 /**
  * \f[ CurveLength = \left| \frac{H}{w} sinh^{-1} \left(\frac{x}{\frac{H}{w}}\right) \right| \f]
  */
@@ -533,9 +539,6 @@ double Catenary2D::LengthFromOrigin(const Point2D& coordinate) const
   return std::abs((h/w) * sinh(x / (h/w)));
 }
 
-/**
- *
- */
 bool Catenary2D::Update() const
 {
   if (is_updated_points_end_ == false) {
@@ -576,262 +579,446 @@ bool Catenary2D::UpdateEndPoints() const
   return true;
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////// CONSTRUCTOR / DESTRUCTOR ////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-////
-////
-////SpanCable::SpanCable()
-////{
-////    m_CatenaryHorizontalTension = -9999;
-////
-////    bUpdateRequired_CatenaryFit = true;
-////}
-////
-////SpanCable::~SpanCable()
-////{}
-////
-////
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////// PUBLIC MEMBER FUNCTIONS /////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-////
-////
-/////**
-//// * This function should be used before extracting any information from the class.
-//// *
-//// * Data errors indicate that a class data member contains an invalid value, and that the class will
-//// * provide unpredictable results and may generate run-time calculation errors.
-//// * Data warnings indicate that a class data member contains an extreme value that is typically
-//// * outside of the normal bounds, but will still provide a calculable result.
-//// */
-////std::list<std::string> SpanCable::CheckData(bool includeWarnings) const
-////{
-////    std::list<std::string> checkList;
-////
-////    // check base class
-////    checkList.splice(checkList.end(), UnitCable::CheckData(includeWarnings));
-////
-////    // attachment spacing
-////    if (m_AttachmentSpacing.x <= 0)
-////    {
-////        checkList.push_back("SPANCABLE - Invalid horizontal attachment spacing");
-////    }
-////    else if (5000 < m_AttachmentSpacing.x && includeWarnings == true)
-////    {
-////        checkList.push_back("SPANCABLE - Horizontal attachment spacing exceeds 5000 ft");
-////    }
-////
-////    if (m_AttachmentSpacing.z < -2000 && 2000 < m_AttachmentSpacing.z)
-////    {
-////        checkList.push_back("SPANCABLE - Invalid vertical attachment spacing");
-////    }
-////    else if (m_AttachmentSpacing.z < -1000 && 1000 < m_AttachmentSpacing.z)
-////    {
-////        checkList.push_back("SPANCABLE - Invalid vertical attachment spacing");
-////    }
-////
-////    // horizontal tension
-////    if (m_CatenaryHorizontalTension <= 0)
-////    {
-////        checkList.push_back("Invalid horizontal tension");
-////    }
-////    else if (100000 < m_CatenaryHorizontalTension && includeWarnings == true)
-////    {
-////        checkList.push_back("Horizontal tension exceeds 100,000 lb");
-////    }
-////
-////    return checkList;
-////}
-////
-////Vector3D SpanCable::Get_AttachmentSpacing() const
-////{
-////    return m_AttachmentSpacing;
-////}
-////
-////
-////double SpanCable::Get_CableLength() const
-////{
-////    if (bUpdateRequired_CatenaryFit == true)
-////    {
-////        Update_CatenaryFit();
-////    }
-////
-////    return m_Catenary.Get_CurveLength();
-////}
-////
-/////**
-//// * The cable slack is the difference between the cable length and straight line distance between
-//// * attachment points
-//// */
-////double SpanCable::Get_CableSlack() const
-////{
-////    if (bUpdateRequired_CatenaryFit == true)
-////    {
-////        Update_CatenaryFit();
-////    }
-////
-////    return Get_CableLength() - m_AttachmentSpacing.Magnitude();
-////}
-////
-////double SpanCable::Get_CatenaryCurveConstant() const
-////{
-////    if (bUpdateRequired_CatenaryFit == true)
-////    {
-////        Update_CatenaryFit();
-////    }
-////
-////    return m_Catenary.Get_CurveConstant();
-////}
-////
-////double SpanCable::Get_CatenaryHorizontalTension() const
-////{
-////    return m_CatenaryHorizontalTension;
-////}
-////
-/////**
-//// *
-//// */
-////// GET COORDINATE
-////// position of spancable, using spancable coordinate system
-////Point3D SpanCable::Get_Coordinate(const double& PositionAlongCable_Fraction) const
-////{
-////    if (bUpdateRequired_CatenaryFit == true)
-////    {
-////        Update_CatenaryFit();
-////    }
-////
-////    // solve for length along the cable
-////    const double PositionAlongCable = PositionAlongCable_Fraction * Get_CableLength();
-////
-////    // get coordinates and endpoint spacing from catenary
-////    Vector2D CatenaryEndPointSpacing = m_Catenary.Get_EndPointSpacing();
-////    const Point2D CatenaryEndPointBOL = m_Catenary.Get_Coordinate(0);
-////    const Point2D CatenaryCoordinate = m_Catenary.Get_Coordinate(PositionAlongCable_Fraction);
-////
-////    // solve for spancable coordinate
-////    Point3D Coordinate;
-////    Coordinate.x = PositionAlongCable * (m_AttachmentSpacing.Magnitude() / CatenaryEndPointSpacing.Magnitude());
-////    Coordinate.y = (CatenaryCoordinate.y - CatenaryEndPointBOL.y) * sin(Get_SwingAngle() * degrees_to_radians);
-////    Coordinate.z = (CatenaryCoordinate.y - CatenaryEndPointBOL.y) * cos(Get_SwingAngle() * degrees_to_radians);
-////    return Coordinate;
-////}
-////
-////// GET SAG
-////// vector magnitude spacing between straight line connecting attachment points and parallel tangency line on catenary
-////double SpanCable::Get_Sag() const
-////{
-////    if (bUpdateRequired_CatenaryFit == true)
-////    {
-////        Update_CatenaryFit();
-////    }
-////
-////    // insert code here
-////
-////    return 0;
-////}
-////
-////Vector3D SpanCable::Get_TangentVector(const double& PositionAlongCable_Fraction,
-////                                      const std::string& Direction_BOLorAOL) const
-////{
-////    if (bUpdateRequired_CatenaryFit == true)
-////    {
-////        Update_CatenaryFit();
-////    }
-////
-////    Vector3D tangentVector;
-////
-////    // do stuff
-////
-////    return tangentVector;
-////}
-////
-////Vector3D SpanCable::Get_Tension(const double& PositionAlongCable_Fraction,
-////                                const std::string& Direction_BOLorAOL) const
-////{
-////    if (bUpdateRequired_CatenaryFit == true)
-////    {
-////        Update_CatenaryFit();
-////    }
-////
-////    Vector3D Tension;
-////    // solve for tension here
-////
-////    return Tension;
-////}
-////
-////std::list<std::string> SpanCable::SaveData() const
-////{
-////    std::list<std::string> saveList;
-////
-////    // formatted so "=" aligns for all columns with an 8 space tab character (most text files)
-////    saveList.push_back("[SPANCABLE]");
-////    saveList.push_back("attachment spacing - horizontal = " + std::to_string(m_AttachmentSpacing.x));
-////    saveList.push_back("attachment spacing - vertical = " + std::to_string(m_AttachmentSpacing.z));
-////    saveList.push_back("catenary horizontal tension   = " + std::to_string(m_CatenaryHorizontalTension));
-////    saveList.splice(saveList.end(), m_Cable.SaveData());
-////    saveList.splice(saveList.end(), m_CableLoadCase.SaveData());
-////
-////    return saveList;
-////}
-////
-/////**
-//// * This method defines the cable attachment spacing and marks the catenary to be updated.
-//// */
-////void SpanCable::Set_AttachmentSpacing(const double& horizontalSpacing, const double& verticalSpacing)
-////{
-////    m_AttachmentSpacing.x = horizontalSpacing;
-////    m_AttachmentSpacing.y= 0;
-////    m_AttachmentSpacing.z = verticalSpacing;
-////
-////    bUpdateRequired_CatenaryFit = true;
-////}
-////
-/////**
-//// * This method defines the catenary horizontal tension and marks the catenary to be updated.
-//// */
-////void SpanCable::Set_CatenaryHorizontalTension(const double& horizontalTension)
-////{
-////    m_CatenaryHorizontalTension = horizontalTension;
-////
-////    bUpdateRequired_CatenaryFit = true;
-////}
-////
-////
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////// PROTECTED MEMBER FUNCTIONS ////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-////
-////
-////// CATENARY FIT
-////// use unit loads and attachment spacing to fit a catenary curve, which models spancable position
-////void SpanCable::Update_CatenaryFit() const
-////{
-////    // check all spancable data before fitting catenary
-////    std::list<std::string> errorList = CheckData(false);
-////    if (0 < errorList.size())
-////    {
-////        return;
-////    }
-////
-////    // fit a catenary to spancable attachments while under the unit loads solved for above
-////
-////    const double B = m_AttachmentSpacing.z;
-////    const double C = m_AttachmentSpacing.Magnitude();
-////    const double V = std::abs(m_UnitLoads.z);
-////    const double w = m_UnitLoads.Magnitude();
-////    const double H = m_CatenaryHorizontalTension;
-////
-////    // solve for adjusted catenary endpoint spacing due to shifted plane relative to vertical
-////    const double b = B * (V / w));
-////    const double a = sqrt( pow(C,2) - pow(B * (V / w), 2) );
-////
-////    // set catenary parameters
-////    m_Catenary.Set_EndpointSpacing(a, b);
-////    m_Catenary.Set_HorizontalTension(H);
-////    m_Catenary.Set_UnitWeight(w);
-////
-////
-////    // reset update flag
-////    bUpdateRequired_CatenaryFit = false;
-////}
+Catenary3D::Catenary3D()
+{
+  is_updated_catenary_2d_ = false;
+}
+
+Catenary3D::~Catenary3D()
+{}
+
+double Catenary3D::Constant() const
+{
+  double constant = -999999;
+
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return constant;
+    }
+  }
+
+  return catenary_2d_.Constant();
+}
+
+Point3D Catenary3D::Coordinate(const double& position_fraction,
+                               const bool& is_shifted_origin) const
+{
+  Point3D coordinate_catenary;
+
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return coordinate_catenary;
+    }
+  }
+
+  // get a 2D chord coordinate
+  Point2D coordinate_2d_chord = catenary_2d_.CoordinateChord(position_fraction,
+                                is_shifted_origin);
+
+  // get a 2D curve coordinate
+  Point2D coordinate_2d_curve = catenary_2d_.Coordinate(position_fraction,
+                                is_shifted_origin);
+
+  // create a vector between chord coordinate and curve coordinate
+  // rotate vector transversely according to unit loading
+  Vector3D vector_chord_to_curve;
+  vector_chord_to_curve.set_x(0);
+  vector_chord_to_curve.set_y(0);
+  vector_chord_to_curve.set_z(coordinate_2d_curve.y - coordinate_2d_chord.y);
+  vector_chord_to_curve.Rotate(Plane2dType::ZY,
+                               weight_unit_.Angle(Plane2dType::ZY));
+
+
+  // use 2D chord coordinate and chord-to-curve vector to solve for 3D curve
+  // coordinate
+  coordinate_catenary.x = coordinate_2d_chord.x;
+  coordinate_catenary.y = 0 + vector_chord_to_curve.y();
+  coordinate_catenary.z = coordinate_2d_chord.y + vector_chord_to_curve.z();
+
+  return coordinate_catenary;
+}
+
+Point3D Catenary3D::CoordinateChord(const double& position_fraction,
+                                    const bool& is_shifted_origin) const
+{
+  Point3D coordinate_chord;
+
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return coordinate_chord;
+    }
+  }
+
+  // get a 2d chord coordinate from 2D catenary
+  Point2D coordinate_2d_chord = catenary_2d_.CoordinateChord(position_fraction,
+                                is_shifted_origin);
+
+  // convert to 3D coordinate system
+  coordinate_chord.x = coordinate_2d_chord.x;
+  coordinate_chord.y = 0;
+  coordinate_chord.z = coordinate_2d_chord.y;
+
+  return coordinate_chord;
+}
+
+double Catenary3D::Length() const
+{
+  double length = -999999;
+
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return length;
+    }
+  }
+
+  return catenary_2d_.Length();
+}
+
+double Catenary3D::LengthSlack() const
+{
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return -999999;
+    }
+  }
+
+  return catenary_2d_.LengthSlack();
+}
+
+double Catenary3D::PositionFractionOrigin() const
+{
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return -999999;
+    }
+  }
+
+  return catenary_2d_.PositionFractionOrigin();
+}
+
+double Catenary3D::PositionFractionSagPoint() const
+{
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return -999999;
+    }
+  }
+
+  return catenary_2d_.PositionFractionSagPoint();
+}
+
+double Catenary3D::Sag() const
+{
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return -999999;
+    }
+  }
+
+  return catenary_2d_.Sag();
+}
+
+double Catenary3D::SwingAngle() const
+{
+  double angle_swing = -999999;
+
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return -999999;
+    }
+  }
+
+  angle_swing = atan(weight_unit_.y() / weight_unit_.z()) * kRadiansToDegrees;
+  return angle_swing;
+}
+
+double Catenary3D::TangentAngleTransverse(const double& position_fraction,
+    const AxisDirectionType& direction) const
+{
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return -999999;
+    }
+  }
+
+  // get the 3D tangent vector
+  Vector3D tangent_vector = TangentVector(position_fraction, direction);
+
+  // adjust components to use only positive values in unit circle
+  tangent_vector.set_y( abs(tangent_vector.y()) );
+  tangent_vector.set_z( abs(tangent_vector.z()) );
+
+  // return transverse angle
+  return tangent_vector.Angle(Plane2dType::ZY, true);
+}
+
+double Catenary3D::TangentAngleVertical(const double& position_fraction,
+                                        const AxisDirectionType& direction) const
+{
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return -999999;
+    }
+  }
+
+  // get the 3D tangent vector
+  Vector3D tangent_vector = TangentVector(position_fraction, direction);
+
+  // adjust x component to use only positive values in unit circle
+  tangent_vector.set_x( abs(tangent_vector.x()) );
+
+  // return vertical angle
+  return tangent_vector.Angle(Plane2dType::XZ, true);
+}
+
+Vector3D Catenary3D::TangentVector(const double& position_fraction,
+                                   const AxisDirectionType& direction) const
+{
+  Vector3D tangent_vector;
+
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return tangent_vector;
+    }
+  }
+
+  // get 2D tangent vector
+  Vector2D tangent_vector_2d = catenary_2d_.TangentVector(position_fraction,
+                               direction);
+
+  // set initial 3D vector values
+  tangent_vector.set_x(tangent_vector_2d.x());
+  tangent_vector.set_y(0);
+  tangent_vector.set_z(tangent_vector_2d.y());
+
+  // rotate 3D vector due to different endpoit spacing of 2D and 3D catenary
+  // only applicable when endpoint spacing has a vertical component, and
+  // transverse load is present
+  if (spacing_endpoints_.z() != 0 && weight_unit_.y() != 0) {
+
+    Vector2D spacing_endpoints_2d = catenary_2d_.spacing_endpoints();
+    double angle_endpoints_2d = spacing_endpoints_2d.Angle(true);
+    double angle_endpoints_3d = spacing_endpoints_.Angle(Plane2dType::XZ, true);
+
+    tangent_vector.Rotate(Plane2dType::XZ,
+                          angle_endpoints_3d - angle_endpoints_2d);
+  }
+
+  // rotate 3D vector due to transverse loading
+  if (weight_unit_.y() != 0) {
+
+    if (weight_unit_.y() < 0) {
+      tangent_vector.Rotate(Plane2dType::YZ,
+                            (atan(weight_unit_.y()/weight_unit_.z())
+                             * kRadiansToDegrees));
+    } else if (0 < weight_unit_.y()) {
+      tangent_vector.Rotate(Plane2dType::YZ,
+                            -(atan(weight_unit_.y()/weight_unit_.z())
+                              * kRadiansToDegrees));
+    }
+  }
+
+  return tangent_vector;
+}
+
+double Catenary3D::Tension(const double& position_fraction) const
+{
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return -999999;
+    }
+  }
+
+  return catenary_2d_.Tension(position_fraction);
+}
+
+Vector3D Catenary3D::Tension(const double& position_fraction,
+                             const AxisDirectionType& direction) const
+{
+  Vector3D tension_vector;
+
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return tension_vector;
+    }
+  }
+
+  // get tension magnitude
+  const double tension = catenary_2d_.Tension(position_fraction);
+
+  // get tangent vector
+  Vector3D tangent_vector = TangentVector(position_fraction, direction);
+
+  // scale vector
+  tangent_vector.Scale(tension);
+
+  return tangent_vector;
+}
+
+double Catenary3D::TensionAverage(const int& num_points) const
+{
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return -999999;
+    }
+  }
+
+  return catenary_2d_.TensionAverage(num_points);
+}
+
+double Catenary3D::TensionMax() const
+{
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return -999999;
+    }
+  }
+
+  return catenary_2d_.TensionMax();
+}
+
+bool Catenary3D::Validate(bool is_included_warnings,
+                          std::list<std::string>* messages_error) const
+{
+  bool is_valid = true;
+
+  // validate spacing-endpoints-horizontal
+  if (spacing_endpoints_.x() <= 0
+      || (5000 < spacing_endpoints_.x() && is_included_warnings == true)) {
+
+    is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back("CATENARY - Invalid horizontal endpoint spacing");
+    }
+  }
+
+  // validate spacing-endpoints-transverse
+  if (spacing_endpoints_.y() != 0) {
+
+    is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back("CATENARY - Transverse endpoint spacing must "
+                                "equal zero");
+    }
+  }
+
+  // validate spacing-endpoint-vertical
+  if (10000 < abs(spacing_endpoints_.z())
+      || 2000 <= abs(spacing_endpoints_.z()) ) {
+
+    is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back("CATENARY - Invalid vertical endpoint spacing");
+    }
+  }
+
+  // validate weight-unit-horizontal
+  if (weight_unit_.x() != 0) {
+
+    is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back("CATENARY - Horizontal unit weight must"
+                                "equal zero");
+    }
+  }
+
+  // validate weight-unit-transverse
+  if (0 < weight_unit_.y()
+      || (15 < weight_unit_.y() && is_included_warnings == true)) {
+
+    is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back("CATENARY - Invalid transverse unit weight");
+    }
+  }
+
+
+  // validate weight-unit-vertical
+  if (0 < weight_unit_.z()
+      || (25 < weight_unit_.z() && is_included_warnings == true)) {
+
+    is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back("CATENARY - Invalid vertical unit weight");
+    }
+  }
+
+  return is_valid;
+}
+
+void Catenary3D::set_spacing_endpoints(const Vector3D& spacing_endpoints)
+{
+  spacing_endpoints_ = spacing_endpoints;
+
+  is_updated_catenary_2d_ = false;
+}
+
+void Catenary3D::set_tension_horizontal(const double& tension_horizontal)
+{
+  catenary_2d_.set_tension_horizontal(tension_horizontal);
+}
+
+void Catenary3D::set_weight_unit(const Vector3D& weight_unit)
+{
+  weight_unit_ = weight_unit;
+
+  is_updated_catenary_2d_ = false;
+}
+
+Vector3D Catenary3D::spacing_endpoints() const
+{
+  return spacing_endpoints_;
+}
+
+double Catenary3D::tension_horizontal() const
+{
+  return catenary_2d_.tension_horizontal();
+}
+
+Vector3D Catenary3D::weight_unit() const
+{
+  return weight_unit_;
+}
+
+bool Catenary3D::IsUpdated() const
+{
+  if (is_updated_catenary_2d_ == true) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+bool Catenary3D::Update() const
+{
+  if (is_updated_catenary_2d_ == false) {
+
+    is_updated_catenary_2d_ = UpdateCatenary2D();
+    if (is_updated_catenary_2d_ == false) {
+      return false;
+    }
+  }
+
+  // if it reaches this point, update was successful
+  return true;
+}
+
+bool Catenary3D::UpdateCatenary2D() const
+{
+  const double b = spacing_endpoints_.z();
+  const double c = spacing_endpoints_.Magnitude();
+  const double v = abs(weight_unit_.z());
+  const double w = weight_unit_.Magnitude();
+
+  // 2D catenary endpoint spacing
+  Vector2D spacing_endpoints_2d;
+  spacing_endpoints_2d.set_y(b * (v/w));
+  spacing_endpoints_2d.set_x(sqrt( pow(c,2)-pow(spacing_endpoints_2d.y(), 2)));
+
+  // set catenary spacing and unit weight
+  catenary_2d_.set_spacing_endpoints(spacing_endpoints_2d);
+  catenary_2d_.set_weight_unit(weight_unit_.Magnitude());
+
+  // return update success status
+  return true;
+}
