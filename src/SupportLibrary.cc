@@ -147,7 +147,8 @@ Vector3D::~Vector3D()
  * calculated using the Vector2D::Angle function.
  * @see Vector2D
  */
-double Vector3D::Angle(const Plane2dType& plane) const
+double Vector3D::Angle(const Plane2dType& plane,
+                       const bool& is_enabled_negative_angles) const
 {
   // create a 2D vector of planar components
   Vector2D vector_2d;
@@ -173,7 +174,7 @@ double Vector3D::Angle(const Plane2dType& plane) const
     vector_2d.set_y(y_);
   }
 
-  return vector_2d.Angle();
+  return vector_2d.Angle(is_enabled_negative_angles);
 }
 
 /**

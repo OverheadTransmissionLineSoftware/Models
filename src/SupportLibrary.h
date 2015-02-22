@@ -178,9 +178,13 @@ public:
    * @brief Get the angle in a specific plane, in degrees.
    * @param plane The 2D plane which is referenced. The first axis is the
    *        horizontal axis.
+   * @param is_enabled_negative_angles A boolean that indicates whether
+   *        negative angles are returned when the positive angle is between
+   *        180-360 degrees (quadrants III and IV).
    * @return The angle from the 2D plane positive horizontal axis.
    */
-  double Angle(const Plane2dType& plane) const;
+  double Angle(const Plane2dType& plane,
+               const bool& is_enabled_negative_angle = false) const;
 
   /**
    * @brief Get the magnitude.
