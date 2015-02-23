@@ -18,8 +18,8 @@ public:
   Shape() {};
   ~Shape() {};
 
-  virtual double AreaCrossSection() = 0;
-  virtual double Volume() = 0;
+  virtual double AreaCrossSection() const = 0;
+  virtual double Volume() const = 0;
 };
 
 /**
@@ -45,7 +45,7 @@ public:
    * @brief Gets the cross-sectional area.
    * @return The cross-sectional area.
    */
-  double AreaCrossSection();
+  double AreaCrossSection() const;
 
   /**
    * @brief Validates class data.
@@ -62,19 +62,19 @@ public:
    * @brief Gets the volume.
    * @return The volume.
    */
-  double Volume();
+  double Volume() const;
 
   /**
    * @brief Gets the diameter.
    * @return The diameter.
    */
-  double diameter();
+  double diameter() const;
 
   /**
    * @brief Gets the length.
    * @return The length.
    */
-  double length();
+  double length() const;
 
   /**
    * @brief Sets the diameter.
