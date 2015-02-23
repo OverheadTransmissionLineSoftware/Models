@@ -1,0 +1,65 @@
+# depslib dependency file v1.0
+1424646956 source:/home/brett/github/transmission-line/src/Cable.cc
+	"include/Cable.h"
+
+1423715247 /home/brett/github/transmission-line/src/Cable.h
+	<list>
+	<string>
+	<vector>
+
+1424646986 source:/home/brett/github/transmission-line/src/Catenary.cc
+	"include/Catenary.h"
+	<cmath>
+	"include/SupportLibrary.h"
+
+1424272648 /home/brett/github/transmission-line/src/Catenary.h
+	<list>
+	<string>
+	"SupportLibrary.h"
+
+1424642484 /home/brett/github/transmission-line/src/SupportLibrary.h
+
+1424647110 source:/home/brett/github/transmission-line/src/SupportLibrary.cc
+	<cmath>
+	<string>
+	"include/SupportLibrary.h"
+
+1424275691 /home/brett/github/transmission-line//include/Cable.h
+	<list>
+	<string>
+	<vector>
+
+1424645606 /home/brett/github/transmission-line//include/Catenary.h
+	<list>
+	<string>
+	"SupportLibrary.h"
+
+1424642484 /home/brett/github/transmission-line//include/SupportLibrary.h
+
+1424646996 source:/home/brett/github/transmission-line/src/CableLoadConstraint.cc
+	"include/CableLoadConstraint.h"
+
+1424275691 /home/brett/github/transmission-line//include/CableLoadConstraint.h
+	<list>
+	<string>
+	"CableLoadCase.h"
+
+1424275691 /home/brett/github/transmission-line//include/CableLoadCase.h
+	<list>
+	<string>
+	"SupportLibrary.h"
+
+1424647032 source:/home/brett/github/transmission-line/src/CableLoadCase.cc
+	"include/CableLoadCase.h"
+
+1424647054 source:/home/brett/github/transmission-line/src/WeatherLoadCase.cc
+	"include/WeatherLoadCase.h"
+	<cmath>
+	"include/SupportLibrary.h"
+
+1424275691 /home/brett/github/transmission-line//include/WeatherLoadCase.h
+	<list>
+	<string>
+
+1424647180 source:/home/brett/github/transmission-line/src/CableUnitLoadCalculator.cc
+
