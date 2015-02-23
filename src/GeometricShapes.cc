@@ -16,7 +16,7 @@ Cylinder::Cylinder()
 Cylinder::~Cylinder()
 {}
 
-double Cylinder::AreaCrossSection()
+double Cylinder::AreaCrossSection() const
 {
   return (kPi / 4) * pow(diameter_, 2);
 }
@@ -49,17 +49,17 @@ bool Cylinder::Validate(bool is_included_warnings,
   return is_valid;
 }
 
-double Cylinder::Volume()
+double Cylinder::Volume() const
 {
   return AreaCrossSection() * length_;
 }
 
-double Cylinder::diameter()
+double Cylinder::diameter() const
 {
   return diameter_;
 }
 
-double Cylinder::length()
+double Cylinder::length() const
 {
   return length_;
 }
