@@ -1,0 +1,11 @@
+# Compiled source #
+###################
+*.o
+*.so
+*.a
+
+# Code::Blocks temp files #
+###########################
+*.depend
+*.layout
+
