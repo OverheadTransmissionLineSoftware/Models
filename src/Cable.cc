@@ -3,8 +3,7 @@
 
 #include "include/Cable.h"
 
-CableComponent::CableComponent()
-{
+CableComponent::CableComponent() {
   coefficient_expansion_linear_thermal = -999999;
   coefficients_polynomial_creep = std::vector<double>(5, 0);
   coefficients_polynomial_loadstrain = std::vector<double>(5, 0);
@@ -14,12 +13,10 @@ CableComponent::CableComponent()
   modulus_tension_elastic_area = -999999;
 }
 
-CableComponent::~CableComponent()
-{}
+CableComponent::~CableComponent() {}
 
 bool CableComponent::Validate(bool is_included_warnings,
-                              std::list<std::string>* messages_error) const
-{
+                              std::list<std::string>* messages_error) const {
   bool is_valid = true;
 
   // validate coefficient-expansion-thermal-linear
@@ -88,8 +85,7 @@ bool CableComponent::Validate(bool is_included_warnings,
   return is_valid;
 }
 
-Cable::Cable()
-{
+Cable::Cable() {
   area_electrical = -999999;
   area_physical = -999999;
   diameter = -999999;
@@ -100,12 +96,10 @@ Cable::Cable()
   weight_unit = -999999;
 }
 
-Cable::~Cable()
-{}
+Cable::~Cable() {}
 
 bool Cable::Validate(bool is_included_warnings,
-                     std::list<std::string>* messages_error) const
-{
+                     std::list<std::string>* messages_error) const {
   bool is_valid = true;
 
   // validate area-electrical
