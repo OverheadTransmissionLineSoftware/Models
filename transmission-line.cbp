@@ -55,6 +55,15 @@
 			<envvars />
 			<code_completion />
 			<debugger />
+			<DoxyBlocks>
+				<comment_style block="2" line="2" />
+				<doxyfile_project output_directory="docs" />
+				<doxyfile_build />
+				<doxyfile_warnings warn_if_undocumented="1" />
+				<doxyfile_output />
+				<doxyfile_dot />
+				<general />
+			</DoxyBlocks>
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
