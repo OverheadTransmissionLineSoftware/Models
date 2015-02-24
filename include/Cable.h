@@ -8,43 +8,32 @@
 #include <string>
 #include <vector>
 
-/**
- * @par CABLE POLYNOMIAL TYPE
- *
- * This enum contains types of cable polynomials.
- */
+/// \par OVERVIEW
+///
+/// This enum contains types of cable polynomials.
 enum class CablePolynomialType {
   CREEP,
   LOADSTRAIN
 };
 
-/**
- * @par COMPONENT CABLE OVERVIEW
- *
- * This class contains information for a transmission cable component.
- * (ex: shell, core)
- *
- */
+/// \par OVERVIEW
+///
+/// This class contains information for a transmission cable component.
+/// (ex: shell, core)
 struct CableComponent {
-public:
-  /**
-   * @brief Default constructor.
-   */
+ public:
+  /// \brief Default constructor.
   CableComponent();
 
-  /**
-   * @brief Destructor.
-   */
+  /// \brief Destructor.
   ~CableComponent();
 
-  /**
-   * @brief Validates class data.
-   * @param is_included_warnings A flag that tightens the acceptable value
-   *        range.
-   * @param messages_error A list of detailed error messages. If this is
-   *        provided, any validation errors will be appended to the list.
-   * @return A boolean value indicating status of class data.
-   */
+  /// \brief Validates class data.
+  /// \param is_included_warnings A flag that tightens the acceptable value
+  ///        range.
+  /// \param messages_error A list of detailed error messages. If this is
+  ///        provided, any validation errors will be appended to the list.
+  /// \return A boolean value indicating status of class data.
   bool Validate(bool is_included_warnings = true,
                 std::list<std::string>* messages_error = nullptr) const;
 
@@ -58,34 +47,25 @@ public:
   double                  modulus_tension_elastic_area;
 };
 
-/**
- * @par CABLE OVERVIEW
- *
- * This class contains information for a transmission cable.
- *
- * This class can store information for up to two separate cable components,
- * noted as core and shell.
- */
+/// \par OVERVIEW
+///
+/// This is a container for a transmission cable.
+/// This struct can store information for up to two separate cable components,
+/// noted as core and shell.
 struct Cable {
-public:
-  /**
-   * @brief Default constructor.
-   */
+ public:
+  /// \brief Default constructor.
   Cable();
 
-  /**
-   * @brief Destructor.
-   */
+  /// \brief Destructor.
   ~Cable();
 
-  /**
-   * @brief Validates class data.
-   * @param is_included_warnings A flag that tightens the acceptable value
-   *        range.
-   * @param messages_error A list of detailed error messages. If this is
-   *        provided, any validation errors will be appended to the list.
-   * @return A boolean value indicating status of class data.
-   */
+  /// \brief Validates class data.
+  /// \param is_included_warnings A flag that tightens the acceptable value
+  ///        range.
+  /// \param messages_error A list of detailed error messages. If this is
+  ///        provided, any validation errors will be appended to the list.
+  /// \return A boolean value indicating status of class data.
   bool Validate(bool is_included_warnings = true,
                 std::list<std::string>* messages_error = nullptr) const;
 

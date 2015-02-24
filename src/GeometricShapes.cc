@@ -7,23 +7,19 @@
 
 #include "include/SupportLibrary.h"
 
-Cylinder::Cylinder()
-{
+Cylinder::Cylinder() {
   diameter_ = -999999;
   length_ = -999999;
 }
 
-Cylinder::~Cylinder()
-{}
+Cylinder::~Cylinder() {}
 
-double Cylinder::AreaCrossSection() const
-{
+double Cylinder::AreaCrossSection() const {
   return (kPi / 4) * pow(diameter_, 2);
 }
 
 bool Cylinder::Validate(bool is_included_warnings,
-                        std::list<std::string>* messages_error) const
-{
+                        std::list<std::string>* messages_error) const {
   bool is_valid = true;
 
   // validate diameter
@@ -49,27 +45,22 @@ bool Cylinder::Validate(bool is_included_warnings,
   return is_valid;
 }
 
-double Cylinder::Volume() const
-{
+double Cylinder::Volume() const {
   return AreaCrossSection() * length_;
 }
 
-double Cylinder::diameter() const
-{
+double Cylinder::diameter() const {
   return diameter_;
 }
 
-double Cylinder::length() const
-{
+double Cylinder::length() const {
   return length_;
 }
 
-void Cylinder::set_diameter(const double& diameter)
-{
+void Cylinder::set_diameter(const double& diameter) {
   diameter_ = diameter;
 }
 
-void Cylinder::set_length(const double& length)
-{
+void Cylinder::set_length(const double& length) {
   length_ = length;
 }
