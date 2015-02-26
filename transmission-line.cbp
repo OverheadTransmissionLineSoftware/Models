@@ -41,7 +41,7 @@
 		<Unit filename="include/CableUnitLoadCalculator.h" />
 		<Unit filename="include/Catenary.h" />
 		<Unit filename="include/GeometricShapes.h" />
-		<Unit filename="include/SupportLibrary.h" />
+		<Unit filename="include/SupportFile.h" />
 		<Unit filename="include/WeatherLoadCase.h" />
 		<Unit filename="src/Cable.cc" />
 		<Unit filename="src/CableLoadCase.cc" />
@@ -49,7 +49,7 @@
 		<Unit filename="src/CableUnitLoadCalculator.cc" />
 		<Unit filename="src/Catenary.cc" />
 		<Unit filename="src/GeometricShapes.cc" />
-		<Unit filename="src/SupportLibrary.cc" />
+		<Unit filename="src/SupportFile.cc" />
 		<Unit filename="src/WeatherLoadCase.cc" />
 		<Extensions>
 			<envvars />
