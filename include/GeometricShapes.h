@@ -21,9 +21,9 @@ class Shape {
   virtual double Volume() const = 0;
 };
 
-/// \par CYLINDER OVERVIEW
+/// \par OVERVIEW
 ///
-/// This class models a cylinder.
+/// This class models a cylinder, and provides some geometric calculations.
 /// \see Shape
 class Cylinder : public Shape {
  public:
@@ -67,8 +67,11 @@ class Cylinder : public Shape {
   /// \param length The length.
   void set_length(const double& length);
 
-private:
+ private:
+  /// \var diameter_ The diameter of the cylinder.
   double  diameter_;
+
+  /// \var length_ The length of the cylinder.
   double  length_;
 };
 
