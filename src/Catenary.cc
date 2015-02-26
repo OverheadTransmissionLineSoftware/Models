@@ -5,7 +5,7 @@
 
 #include <cmath>
 
-#include "include/SupportLibrary.h"
+#include "include/SupportFile.h"
 
 Catenary2D::Catenary2D() {
   tension_horizontal_ = -999999;
