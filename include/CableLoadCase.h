@@ -7,11 +7,11 @@
 #include <list>
 #include <string>
 
-#include "include/SupportLibrary.h"
+#include "include/SupportFile.h"
 
 /// \par OVERVIEW
 ///
-/// This struct contains information for a cable load case.
+/// This struct is a container for a cable load case.
 struct CableLoadCase {
  public:
   /// \brief Default constructor.
@@ -20,17 +20,20 @@ struct CableLoadCase {
   /// \brief Destructor.
   ~CableLoadCase();
 
-  /// \brief Validates class data.
+  /// \brief Validates member variables.
   /// \param is_included_warnings A flag that tightens the acceptable value
   ///        range.
   /// \param messages_error A list of detailed error messages. If this is
   ///        provided, any validation errors will be appended to the list.
-  /// \return A boolean value indicating status of class data.
+  /// \return A boolean value indicating status of member variables.
   bool Validate(bool is_included_warnings = true,
                 std::list<std::string>* messages_error = nullptr) const;
 
-  // member variables
+  /// \var load_unit The load per unit length on the cable. The x component is
+  ///      transverse, and the y component is vertical.
   Vector2D  load_unit;
+
+  /// \var temperature_cable The temperature of the cable.
   double    temperature_cable;
 };
 

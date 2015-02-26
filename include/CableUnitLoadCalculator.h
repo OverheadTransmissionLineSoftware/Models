@@ -7,7 +7,7 @@
 #include <list>
 #include <string>
 
-#include "include/SupportLibrary.h"
+#include "include/SupportFile.h"
 #include "include/WeatherLoadCase.h"
 
 
@@ -37,12 +37,12 @@ class CableUnitLoadCalculator {
   ///        vertical.
   Vector2D UnitCableLoad(const WeatherLoadCase& case_load_weather) const;
 
-  /// \brief Validates class data.
+  /// \brief Validates member variables.
   /// \param is_included_warnings A flag that tightens the acceptable value
-  ///       range.
+  ///        range.
   /// \param messages_error A list of detailed error messages. If this is
   ///        provided, any validation errors will be appended to the list.
-  /// \return A boolean value indicating status of class data.
+  /// \return A boolean value indicating status of member variables.
   bool Validate(bool is_included_warnings = true,
                 std::list<std::string>* messages_error = nullptr) const;
 
@@ -63,8 +63,10 @@ class CableUnitLoadCalculator {
   double weight_unit_cable() const;
 
  private:
-  // member variables
+  /// \var diameter_cable_ The diameter of the bare cable.
   double diameter_cable_;
+
+  /// \var weight_unit_cable_ The weight per unit length of the bare cable.
   double weight_unit_cable_;
 };
 

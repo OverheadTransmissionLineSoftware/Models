@@ -9,7 +9,7 @@
 
 /// \par OVERVIEW
 ///
-/// This class is a container for weather load cases.
+/// This struct is a container for a weather load case.
 struct WeatherLoadCase {
  public:
   /// \brief Default constructor.
@@ -18,21 +18,30 @@ struct WeatherLoadCase {
   /// \brief Destructor.
   ~WeatherLoadCase();
 
-  /// \brief Validates class data.
+  /// \brief Validates member variables.
   /// \param is_included_warnings A flag that tightens the acceptable value
   ///        range.
   /// \param messages_error A list of detailed error messages. If this is
   ///        provided, any validation errors will be appended to the list.
-  /// \return A boolean value indicating status of class data.
+  /// \return A boolean value indicating status of member variables.
   bool Validate(bool is_included_warnings = true,
                 std::list<std::string>* messages_error = nullptr) const;
 
-  // member variables
-  double      density_ice;
+  /// \var density_ice The density of the accumulated ice.
+  double density_ice;
+
+  /// \var description A description of the weather load case, typically done
+  ///      as: (thickness_ice-pressure_wind-temperature_cable)
   std::string description;
-  double      pressure_wind;
-  double      temperature_cable;
-  double      thickness_ice;
+
+  /// \var pressure_wind The pressure of the wind.
+  double pressure_wind;
+
+  /// \var temperature_cable The temperature of the cable.
+  double temperature_cable;
+
+  /// \var thickness_ice The thickness of the accumulated ice.
+  double thickness_ice;
 };
 
 #endif // TRANSMISSIONLINE_WEATHERLOADCASE_H_
