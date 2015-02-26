@@ -69,10 +69,10 @@ class Cylinder : public Shape {
 
  private:
   /// \var diameter_ The diameter of the cylinder.
-  double  diameter_;
+  double diameter_;
 
   /// \var length_ The length of the cylinder.
-  double  length_;
+  double length_;
 };
 
 #endif // TRANSMISSIONLINE_GEOMETRICSHAPES_H_
