@@ -9,7 +9,7 @@
 
 #include "include/CableLoadCase.h"
 
-/// \par CONSTRAINT LIMIT TYPE OVERVIEW
+/// \par OVERVIEW
 ///
 /// This enum contains types of cable load constraints.
 enum class ConstraintLimitType {
@@ -18,7 +18,7 @@ enum class ConstraintLimitType {
   SUPPORT
 };
 
-/// \par CONDITION TYPE OVERVIEW
+/// \par OVERVIEW
 ///
 /// This enum contains types of cable conditions.
 enum class ConditionType {
@@ -27,9 +27,9 @@ enum class ConditionType {
   LOAD
 };
 
-/// \par CABLE LOAD CONSTRAINT OVERVIEW
+/// \par OVERVIEW
 ///
-/// This struct contains information for a cable load constraint.
+/// This struct is a container for a cable load constraint.
 struct CableLoadConstraint {
  public:
   /// \brief Default constructor.
@@ -38,19 +38,27 @@ struct CableLoadConstraint {
   /// \brief Destructor.
   ~CableLoadConstraint();
 
-  /// \brief Validates class data.
+  /// \brief Validates member variables.
   /// \param is_included_warnings A flag that tightens the acceptable value
   ///        range.
   /// \param messages_error A list of detailed error messages. If this is
   ///        provided, any validation errors will be appended to the list.
-  /// \return A boolean value indicating status of class data.
+  /// \return A boolean value indicating status of member variables.
   bool Validate(bool is_included_warnings = true,
                 std::list<std::string>* messages_error = nullptr) const;
 
-  // member variables
-  CableLoadCase       case_load;
-  ConditionType       condition;
-  double              limit;
+  /// \var case_load The load case.
+  CableLoadCase case_load;
+
+  /// \var condition The state of the cable, which can determine whether the
+  ///      cable is modeled as stretched, or unstretched.
+  ConditionType condition;
+
+  /// \var limit The limit that the cable cannot exceed.
+  double limit;
+
+  /// \var type_limit The type of constraint, which determines where and/or how
+  ///      the constraint is defined.
   ConstraintLimitType type_limit;
 };
 

@@ -7,20 +7,20 @@
 #include <list>
 #include <string>
 
-#include "include/SupportLibrary.h"
+#include "include/SupportFile.h"
 
 /// \par OVERVIEW
 ///
 /// This class models a 2D catenary.
 ///
-/// The shape of the catenary curve is defined by the horizontal tension and unit
-/// weight, while the endpoit spacing defines the portion of the curve that is
-/// used.
+/// The shape of the catenary curve is defined by the horizontal tension and
+/// unit weight, while the endpoint spacing defines the portion of the curve
+/// that is used.
 ///
 /// \par COORDINATE SYSTEM
 ///
-/// The coordinate system origin (0,0) is the catenary lowpoint, unless shifted.
-/// A shifted system uses the left endpoint as the origin.
+/// The coordinate system origin (0,0) is the catenary lowpoint, unless
+/// shifted. A shifted system uses the left endpoint as the origin.
 ///  x = horizontal
 ///  y = vertical
 ///
@@ -180,9 +180,9 @@ class Catenary2D {
   /// \param direction_origin_to_position The direction from the origin to the
   ///        position.
   /// \return The x coordinate for the specified position.
-  double CoordinateX(const double& length_origin_to_position,
-                     const AxisDirectionType& direction_origin_to_position)
-  const;
+  double CoordinateX(
+      const double& length_origin_to_position,
+      const AxisDirectionType& direction_origin_to_position) const;
 
   /// \brief Gets the y coordinate of the catenary. This function removes the
   ///        H/w constant ordinate shift.
@@ -191,9 +191,9 @@ class Catenary2D {
   /// \param direction_origin_to_position The direction from the origin to the
   ///        position.
   /// \return The y coordinate for the specified position.
-  double CoordinateY(const double& length_origin_to_position,
-                     const AxisDirectionType& direction_origin_to_position)
-  const;
+  double CoordinateY(
+      const double& length_origin_to_position,
+      const AxisDirectionType& direction_origin_to_position) const;
 
   /// \brief Gets the length from the origin for the specified position.
   /// \param coordinate The coordinate for the specified position.
@@ -221,12 +221,28 @@ class Catenary2D {
   /// \return A boolean indicating the success status of the update.
   bool UpdateEndPoints() const;
 
-  // member variables
-  mutable bool    is_updated_points_end_;
+  /// \var is_updated_points_end_ An indicator that tells if the end point
+  ///      coordinates are updated.
+  mutable bool is_updated_points_end_;
+
+  /// \var point_end_left_ The coordinate point for the left end of the
+  ///      catenary.
   mutable Point2D point_end_left_;
+
+  /// \var point_end_right_ The coordinate point for the right end of the
+  ///      catenary.
   mutable Point2D point_end_right_;
+
+  /// \var spacing_endpoints_ The vector spacing between end points of the
+  ///      catenary. The vector starts at the left point and ends at the right
+  ///      point.
   Vector2D        spacing_endpoints_;
+
+  /// \var tension_horizontal_ The horizontal component of tension for the
+  ///      catenary.
   double          tension_horizontal_;
+
+  /// \var weight_unit_ The vertical weight per unit length of the catenary.
   double          weight_unit_;
 };
 
@@ -235,10 +251,10 @@ class Catenary2D {
 ///
 /// This class models a catenary in 3D.
 ///
-/// This class is a wrapper for the 2D catenary, making its function applicable
-/// for modeling transmission cables by adjusting 2D catenary endpoint spacing
-/// for inclined spans with transverse loading.
-
+/// This class is a wrapper for the 2D catenary, making its functions
+/// applicable for modeling transmission cables by adjusting 2D catenary
+/// endpoint spacing for inclined spans with transverse loading.
+///
 /// \par COORDINATE SYSTEM
 ///
 /// x = horizontal
@@ -416,10 +432,23 @@ class Catenary3D {
   /// \return A boolean indicating the success status of the update.
   bool UpdateCatenary2D() const;
 
-  // member variables
+  /// \var catenary_2d_ A 2D catenary, with only vertical and horizontal
+  ///      axes.
   mutable Catenary2D  catenary_2d_;
+
+  /// \var is_updated_catenary_2d_ An indicator that tells if the 2D catenary
+  ///      is updated.
   mutable bool        is_updated_catenary_2d_;
+
+  /// \var spacing_endpoints_ The vector spacing between end points. The vector
+  ///      is defined in 3D to align with the coordinate system, but only 2D
+  ///      spacing (y axis, z axis) are modeled. The vector starts at the left
+  ///      point and ends at the right point.
   Vector3D            spacing_endpoints_;
+
+  /// \var weight_unit_ The vector loading per unit length. The vector is
+  ///      defined in 3D to align with the coordinate system, but only 2D
+  ///      loading (x axis, z axis) are modeled.
   Vector3D            weight_unit_;
 };
 
