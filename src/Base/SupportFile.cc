@@ -1,11 +1,10 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
+#include "include/Base/SupportFile.h"
 
 #include <cmath>
 #include <string>
-
-#include "include/Base/SupportFile.h"
 
 double Round(const double& number, const int& precision) {
   return round(number * pow(10, precision)) / pow(10, precision);
