@@ -3,17 +3,14 @@
 
 #include "include/CableLoadCase.h"
 
-CableLoadCase::CableLoadCase()
-{
+CableLoadCase::CableLoadCase() {
   temperature_cable = -999999;
 }
 
-CableLoadCase::~CableLoadCase()
-{}
+CableLoadCase::~CableLoadCase() {}
 
-bool CableLoadCase::Validate (bool is_included_warnings,
-                              std::list<std::string>* messages_error) const
-{
+bool CableLoadCase::Validate(const bool& is_included_warnings,
+                              std::list<std::string>* messages_error) const {
   bool is_valid = true;
 
   // validate load-unit transverse

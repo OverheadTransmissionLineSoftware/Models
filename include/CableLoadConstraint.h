@@ -9,62 +9,61 @@
 
 #include "include/CableLoadCase.h"
 
-/**
- * @par CONSTRAINT LIMIT TYPE OVERVIEW
- *
- * This enum contains types of cable load constraints.
- */
+/// \par OVERVIEW
+///
+/// This enum contains types of cable load constraints.
 enum class ConstraintLimitType {
-  HORIZONTAL,
-  HW,
-  SUPPORT
+  kHorizontalTension,
+  kCatenaryConstant,
+  kSupportTension
 };
 
-/**
- * @par CONDITION TYPE OVERVIEW
- *
- * This enum contains types of cable conditions.
- */
+/// \par OVERVIEW
+///
+/// This enum contains types of cable conditions.
 enum class ConditionType {
-  CREEP,
-  INITIAL,
-  LOAD
+  kCreep,
+  kInitial,
+  kLoad
 };
 
-/**
- * @par CABLE LOAD CONSTRAINT OVERVIEW
- *
- * This struct contains information for a cable load constraint.
- */
+/// \par OVERVIEW
+///
+/// This struct is a container for a cable load constraint.
 struct CableLoadConstraint {
-public:
-  /**
-   * @brief Default constructor.
-   */
+ public:
+  /// \brief Default constructor.
   CableLoadConstraint();
 
-  /**
-   * @brief Destructor.
-   */
+  /// \brief Destructor.
   ~CableLoadConstraint();
 
-  /**
-   * @brief Validates class data.
-   * @param is_included_warnings A flag that tightens the acceptable value
-   *        range.
-   * @param messages_error A list of detailed error messages. If this is
-   *        provided, any validation errors will be appended to the list.
-   * @return A boolean value indicating status of class data.
-   */
-  bool Validate(bool is_included_warnings = true,
+  /// \brief Validates member variables.
+  /// \param[in] is_included_warnings
+  ///   A flag that tightens the acceptable value range.
+  /// \param[in,out] messages_error
+  ///   A list of detailed error messages. If this is provided, any validation
+  ///   errors will be appended to the list.
+  /// \return A boolean value indicating status of member variables.
+  bool Validate(const bool& is_included_warnings = true,
                 std::list<std::string>* messages_error = nullptr) const;
 
-  // member variables
-  CableLoadCase       case_load;
-  ConditionType       condition;
-  double              limit;
-  ConstraintLimitType type_limit;
+  /// \var case_load
+  ///   The load case.
+  CableLoadCase case_load;
 
+  /// \var condition
+  ///   The state of the cable, which can determine whether the cable is
+  ///   modeled as unstretched, or stretched.
+  ConditionType condition;
+
+  /// \var limit
+  ///   The limit that the cable cannot exceed.
+  double limit;
+
+  /// \var type_limit
+  ///   The type of constraint, which determines how the constraint is defined.
+  ConstraintLimitType type_limit;
 };
 
 #endif // TRANSMISSIONLINE_CABLELOADCONSTRAINT_H_

@@ -8,3 +8,12 @@
 ###########################
 *.depend
 *.layout
+
+# doxygen generated files #
+###########################
+*.css
+*.html
+*.js
+*.log
+*.png
+*.tex
