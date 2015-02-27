@@ -1,20 +1,24 @@
 TLS-Libary
 ========================
 
+OVERVIEW
 This repository contains multiple libraries that model a transmission line, as
-well as provide engineering calculations. Each library will typically have its
-own subfolder to distinguish it from others.
+well as provide engineering calculations. Each library has its own subfolder to
+distinguish it from others.
 
 GET INVOLVED!
 This is an open source effort to create transmission line design software. This
 software is released in the public domain (see UNLICENSE file), so we can
 contribute to this collectively without worrying about intellectual property.
-
 Existing software distributors are encouraged to contribute as well. With a 
-consistent base functionality, software distributors can focus more on user 
-interface improvements, which makes everyone happier as a whole.
+consistent base modeling/calculation functionality, software distributors can
+focus more on interface improvements, which makes users happier.
+
+NATIVE C++ CODE
+The code in this repository is not platform specific, as it will only contain
+native C++ code. These libraries should be able to be built on any platform.
 
 CODING STYLE
-This project follows the Google style guidelines for C++ projects. See below
-link.
+This project follows the Google style guidelines for C++ projects.
 https://google-styleguide.googlecode.com/svn/trunk/cppguide.html
+
