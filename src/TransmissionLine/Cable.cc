@@ -1,7 +1,7 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "include/Cable.h"
+#include "include/TransmissionLine/Cable.h"
 
 CableComponent::CableComponent() {
   coefficient_expansion_linear_thermal = -999999;
