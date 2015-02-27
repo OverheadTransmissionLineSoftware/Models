@@ -10,7 +10,7 @@
 /// \par OVERVIEW
 ///
 /// This class models a generic shape. It is a purely virtual class, and must
-///  be inherited by a unique shape.
+/// be inherited by a unique shape.
 class Shape {
  public:
   Shape() {};
