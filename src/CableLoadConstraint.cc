@@ -3,17 +3,16 @@
 
 #include "include/CableLoadConstraint.h"
 
-CableLoadConstraint::CableLoadConstraint()
-{
+CableLoadConstraint::CableLoadConstraint() {
   limit = -999999;
 }
 
-CableLoadConstraint::~CableLoadConstraint()
-{}
+CableLoadConstraint::~CableLoadConstraint() {}
 
-bool CableLoadConstraint::Validate(bool is_included_warnings,
-                                   std::list<std::string>* messages_error) const
-{
+bool CableLoadConstraint::Validate(
+    const bool& is_included_warnings,
+    std::list<std::string>* messages_error) const {
+  
   bool is_valid = true;
 
   // validate case-load
@@ -23,8 +22,8 @@ bool CableLoadConstraint::Validate(bool is_included_warnings,
 
   // validate limit
   if (limit < 0
-    || ((limit < 100) && (is_included_warnings == true))
-    || ((100000 < limit) && (is_included_warnings == true))) {
+      || ((limit < 100) && (is_included_warnings == true))
+      || ((100000 < limit) && (is_included_warnings == true))) {
 
     is_valid = false;
     if (messages_error != nullptr) {

@@ -7,39 +7,37 @@
 #include <list>
 #include <string>
 
-#include "include/SupportLibrary.h"
+#include "include/SupportFile.h"
 
-/**
- * @par CABLE LOAD CASE OVERVIEW
- *
- * This struct contains information for a cable load case.
- */
+/// \par OVERVIEW
+///
+/// This struct is a container for a cable load case.
 struct CableLoadCase {
-public:
-  /**
-   * @brief Default constructor.
-   */
+ public:
+  /// \brief Default constructor.
   CableLoadCase();
 
-  /**
-   * @brief Destructor.
-   */
+  /// \brief Destructor.
   ~CableLoadCase();
 
-  /**
-   * @brief Validates class data.
-   * @param is_included_warnings A flag that tightens the acceptable value
-   *        range.
-   * @param messages_error A list of detailed error messages. If this is
-   *        provided, any validation errors will be appended to the list.
-   * @return A boolean value indicating status of class data.
-   */
-  bool Validate(bool is_included_warnings = true,
+  /// \brief Validates member variables.
+  /// \param[in] is_included_warnings
+  ///   A flag that tightens the acceptable value range.
+  /// \param[in,out] messages_error
+  ///   A list of detailed error messages. If this is provided, any validation
+  ///   errors will be appended to the list.
+  /// \return A boolean value indicating status of member variables.
+  bool Validate(const bool& is_included_warnings = true,
                 std::list<std::string>* messages_error = nullptr) const;
 
-  // member variables
-  Vector2D  load_unit;
-  double    temperature_cable;
+  /// \var load_unit
+  ///   The load per unit length on the cable. The x component is transverse,
+  ///   and the y component is vertical.
+  Vector2D load_unit;
+
+  /// \var temperature_cable
+  ///   The temperature of the cable.
+  double temperature_cable;
 };
 
 #endif  // TRANSMISSIONLINE_CABLELOADCASE_H_
