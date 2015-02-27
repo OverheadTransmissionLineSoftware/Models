@@ -129,22 +129,22 @@ double Vector3D::Angle(const Plane2dType& plane,
   Vector2D vector_2d;
 
   // set vector components based on selected plane
-  if (plane == Plane2dType::XY) {
+  if (plane == Plane2dType::kXy) {
     vector_2d.set_x(x_);
     vector_2d.set_y(y_);
-  } else if (plane == Plane2dType::XZ) {
+  } else if (plane == Plane2dType::kXz) {
     vector_2d.set_x(x_);
     vector_2d.set_y(z_);
-  } else if (plane == Plane2dType::YX) {
+  } else if (plane == Plane2dType::kYx) {
     vector_2d.set_x(y_);
     vector_2d.set_y(x_);
-  } else if (plane == Plane2dType::YZ) {
+  } else if (plane == Plane2dType::kYz) {
     vector_2d.set_x(y_);
     vector_2d.set_y(z_);
-  } else if (plane == Plane2dType::ZX) {
+  } else if (plane == Plane2dType::kZx) {
     vector_2d.set_x(z_);
     vector_2d.set_y(x_);
-  } else if (plane == Plane2dType::ZY) {
+  } else if (plane == Plane2dType::kZy) {
     vector_2d.set_x(z_);
     vector_2d.set_y(y_);
   }
@@ -171,22 +171,22 @@ void Vector3D::Rotate(const Plane2dType& plane, const double& angle_rotation) {
   Vector2D vector_2d;
 
   // set vector components based on selected plane
-  if (plane == Plane2dType::XY) {
+  if (plane == Plane2dType::kXy) {
     vector_2d.set_x(x_);
     vector_2d.set_y(y_);
-  } else if (plane == Plane2dType::XZ) {
+  } else if (plane == Plane2dType::kXz) {
     vector_2d.set_x(x_);
     vector_2d.set_y(z_);
-  } else if (plane == Plane2dType::YX) {
+  } else if (plane == Plane2dType::kYx) {
     vector_2d.set_x(y_);
     vector_2d.set_y(x_);
-  } else if (plane == Plane2dType::YZ) {
+  } else if (plane == Plane2dType::kYz) {
     vector_2d.set_x(y_);
     vector_2d.set_y(z_);
-  } else if (plane == Plane2dType::ZX) {
+  } else if (plane == Plane2dType::kZx) {
     vector_2d.set_x(z_);
     vector_2d.set_y(x_);
-  } else if (plane == Plane2dType::ZY) {
+  } else if (plane == Plane2dType::kZy) {
     vector_2d.set_x(z_);
     vector_2d.set_y(y_);
   }
@@ -195,22 +195,22 @@ void Vector3D::Rotate(const Plane2dType& plane, const double& angle_rotation) {
   vector_2d.Rotate(angle_rotation);
 
   // assign rotated 2D vector components to new planar components
-  if (plane == Plane2dType::XY) {
+  if (plane == Plane2dType::kXy) {
     x_ = vector_2d.x();
     y_ = vector_2d.y();
-  } else if (plane == Plane2dType::XZ) {
+  } else if (plane == Plane2dType::kXz) {
     x_ = vector_2d.x();
     z_ = vector_2d.y();
-  } else if (plane == Plane2dType::YX) {
+  } else if (plane == Plane2dType::kYx) {
     y_ = vector_2d.x();
     x_ = vector_2d.y();
-  } else if (plane == Plane2dType::YZ) {
+  } else if (plane == Plane2dType::kYz) {
     y_ = vector_2d.x();
     z_ = vector_2d.y();
-  } else if (plane == Plane2dType::ZX) {
+  } else if (plane == Plane2dType::kZx) {
     z_ = vector_2d.x();
     x_ = vector_2d.y();
-  } else if (plane == Plane2dType::ZY) {
+  } else if (plane == Plane2dType::kZy) {
     z_ = vector_2d.x();
     y_ = vector_2d.y();
   }

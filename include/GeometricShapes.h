@@ -9,15 +9,17 @@
 
 /// \par OVERVIEW
 ///
-/// This class models a generic shape. It is a purely virtual class, and must be
-/// inherited by a unique shape.
-///
+/// This class models a generic shape. It is a purely virtual class, and must
+///  be inherited by a unique shape.
 class Shape {
  public:
   Shape() {};
   ~Shape() {};
 
+  /// \brief The area of the shape cross section.
   virtual double AreaCrossSection() const = 0;
+
+  /// \brief The volume of the shape.
   virtual double Volume() const = 0;
 };
 
@@ -38,12 +40,13 @@ class Cylinder : public Shape {
   double AreaCrossSection() const;
 
   /// \brief Validates member variables.
-  /// \param is_included_warnings A flag that tightens the acceptable value
-  ///        range.
-  /// \param messages_error A list of detailed error messages. If this is
-  ///        provided, any validation errors will be appended to the list.
+  /// \param[in] is_included_warnings
+  ///   A flag that tightens the acceptable value range.
+  /// \param[in,out] messages_error
+  ///   A list of detailed error messages. If this is provided, any validation
+  ///   errors will be appended to the list.
   /// \return A boolean value indicating status of member variables.
-  bool Validate(bool is_included_warnings = true,
+  bool Validate(const bool& is_included_warnings = true,
                 std::list<std::string>* messages_error = nullptr) const;
 
   /// \brief Gets the volume.
@@ -60,18 +63,22 @@ class Cylinder : public Shape {
 
   ///
   /// \brief Sets the diameter.
-  /// \param diameter The diameter.
+  /// \param[in] diameter
+  ///   The diameter.
   void set_diameter(const double& diameter);
 
   /// \brief Sets the length.
-  /// \param length The length.
+  /// \param[in] length
+  ///   The length.
   void set_length(const double& length);
 
  private:
-  /// \var diameter_ The diameter of the cylinder.
+  /// \var diameter_
+  ///   The diameter of the cylinder.
   double diameter_;
 
-  /// \var length_ The length of the cylinder.
+  /// \var length_
+  ///   The length of the cylinder.
   double length_;
 };
 

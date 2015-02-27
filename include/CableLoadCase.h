@@ -21,20 +21,23 @@ struct CableLoadCase {
   ~CableLoadCase();
 
   /// \brief Validates member variables.
-  /// \param is_included_warnings A flag that tightens the acceptable value
-  ///        range.
-  /// \param messages_error A list of detailed error messages. If this is
-  ///        provided, any validation errors will be appended to the list.
+  /// \param[in] is_included_warnings
+  ///   A flag that tightens the acceptable value range.
+  /// \param[in,out] messages_error
+  ///   A list of detailed error messages. If this is provided, any validation
+  ///   errors will be appended to the list.
   /// \return A boolean value indicating status of member variables.
-  bool Validate(bool is_included_warnings = true,
+  bool Validate(const bool& is_included_warnings = true,
                 std::list<std::string>* messages_error = nullptr) const;
 
-  /// \var load_unit The load per unit length on the cable. The x component is
-  ///      transverse, and the y component is vertical.
-  Vector2D  load_unit;
+  /// \var load_unit
+  ///   The load per unit length on the cable. The x component is transverse,
+  ///   and the y component is vertical.
+  Vector2D load_unit;
 
-  /// \var temperature_cable The temperature of the cable.
-  double    temperature_cable;
+  /// \var temperature_cable
+  ///   The temperature of the cable.
+  double temperature_cable;
 };
 
 #endif  // TRANSMISSIONLINE_CABLELOADCASE_H_
