@@ -9,7 +9,7 @@
 # Project related configuration options
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
-PROJECT_NAME           = transmission-line
+PROJECT_NAME           = TLS-Library
 PROJECT_NUMBER         = 
 PROJECT_BRIEF          =
 PROJECT_LOGO           =
@@ -96,21 +96,21 @@ WARN_LOGFILE            = "./doxygen.log"
 # configuration options related to the input files
 #---------------------------------------------------------------------------
 INPUT                  = \
-	"../include/Cable.h" \
-	"../include/CableLoadCase.h" \
-	"../include/CableLoadConstraint.h" \
-	"../include/CableUnitLoadCalculator.h" \
-	"../include/Catenary.h" \
-	"../include/GeometricShapes.h" \
-	"../include/SupportFile.h" \
-	"../include/WeatherLoadCase.h" \
-	"../src/Cable.cc" \
-	"../src/CableLoadCase.cc" \
-	"../src/CableLoadConstraint.cc" \
-	"../src/CableUnitLoadCalculator.cc" \
-	"../src/Catenary.cc" \
-	"../src/GeometricShapes.cc" \
-	"../src/SupportFile.cc" \
+	"../include/Base/GeometricShapes.h" \
+	"../include/Base/SupportFile.h" \
+	"../src/Base/GeometricShapes.cc" \
+	"../src/Base/SupportFile.cc" \
+	"../include/TransmissionLine/Cable.h" \
+	"../include/TransmissionLine/CableLoadCase.h" \
+	"../include/TransmissionLine/CableLoadConstraint.h" \
+	"../include/TransmissionLine/CableUnitLoadCalculator.h" \
+	"../include/TransmissionLine/Catenary.h" \
+	"../include/TransmissionLine/WeatherLoadCase.h" \
+	"../src/TransmissionLine/Cable.cc" \
+	"../src/TransmissionLine/CableLoadCase.cc" \
+	"../src/TransmissionLine/CableLoadConstraint.cc" \
+	"../src/TransmissionLine/CableUnitLoadCalculator.cc" \
+	"../src/TransmissionLine/Catenary.cc" \
 	"../src/WeatherLoadCase.cc"
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          =
