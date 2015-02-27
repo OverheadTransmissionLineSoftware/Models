@@ -7,7 +7,7 @@
 #include <list>
 #include <string>
 
-#include "include/SupportFile.h"
+#include "include/Base/SupportFile.h"
 
 /// \par OVERVIEW
 ///
@@ -191,15 +191,15 @@ class Catenary2D {
       const double& length_origin_to_position,
       const AxisDirectionType& direction_origin_to_position) const;
 
+  /// \brief Determines if class is updated.
+  /// \return A boolean indicating if class is updated.
+  bool IsUpdated() const;
+
   /// \brief Gets the length from the origin for the specified position.
   /// \param[in] coordinate
   ///   The coordinate for the specified position.
   /// \return The curve length from the catenary origin to the coordinate.
   double LengthFromOrigin(const Point2D& coordinate) const;
-
-  /// \brief Determines if class is updated.
-  /// \return A boolean indicating if class is updated.
-  bool IsUpdated() const;
 
   /// \brief Gets the fraction fo the length that relates to a specific
   ///   position on the catenary. This is referenced from the left end point.
