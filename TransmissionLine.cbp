@@ -24,6 +24,7 @@
 				<Option output="build/TransmissionLine/bin/release/TransmissionLine" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
 				<Option object_output="build/TransmissionLine/obj/release/" />
+				<Option external_deps="build/Base/bin/release/libBase.a;" />
 				<Option type="2" />
 				<Option compiler="gcc" />
 				<Compiler>
