@@ -1,12 +1,9 @@
-transmission-line
+TLS-Libary
 ========================
 
-This repository is a library that models a transmission line and its components. 
-
-This includes:
-  - structures
-  - cables
-  - hardware assemblies
+This repository contains multiple libraries that model a transmission line, as
+well as provide engineering calculations. Each library will typically have its
+own subfolder to distinguish it from others.
 
 GET INVOLVED!
 This is an open source effort to create transmission line design software. This
