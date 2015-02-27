@@ -48,7 +48,7 @@ bool CableUnitLoadCalculator::Validate(
 /// The transverse load on the cable is solved using the following formula:
 /// \f[ T = AP \f]
 Vector2D CableUnitLoadCalculator::UnitCableLoad(
-  const WeatherLoadCase& case_load_weather) const {
+    const WeatherLoadCase& case_load_weather) const {
 
   Cylinder cylinder_bare;
   cylinder_bare.set_diameter(diameter_cable_ / 12);
