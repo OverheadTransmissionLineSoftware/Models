@@ -14,7 +14,7 @@ CableUnitLoadCalculator::CableUnitLoadCalculator() {
 CableUnitLoadCalculator::~CableUnitLoadCalculator() {}
 
 bool CableUnitLoadCalculator::Validate(
-    bool is_included_warnings,
+    const bool& is_included_warnings,
     std::list<std::string>* messages_error) const {
 
   bool is_valid = true;

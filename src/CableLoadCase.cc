@@ -9,7 +9,7 @@ CableLoadCase::CableLoadCase() {
 
 CableLoadCase::~CableLoadCase() {}
 
-bool CableLoadCase::Validate (bool is_included_warnings,
+bool CableLoadCase::Validate(const bool& is_included_warnings,
                               std::list<std::string>* messages_error) const {
   bool is_valid = true;
 

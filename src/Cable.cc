@@ -15,7 +15,7 @@ CableComponent::CableComponent() {
 
 CableComponent::~CableComponent() {}
 
-bool CableComponent::Validate(bool is_included_warnings,
+bool CableComponent::Validate(const bool& is_included_warnings,
                               std::list<std::string>* messages_error) const {
   bool is_valid = true;
 
@@ -98,7 +98,7 @@ Cable::Cable() {
 
 Cable::~Cable() {}
 
-bool Cable::Validate(bool is_included_warnings,
+bool Cable::Validate(const bool& is_included_warnings,
                      std::list<std::string>* messages_error) const {
   bool is_valid = true;
 
@@ -161,8 +161,8 @@ bool Cable::Validate(bool is_included_warnings,
   // nothing to validate
 
   // validate type-polynomial-active
-  if (type_polynomial_active != CablePolynomialType::CREEP
-      || type_polynomial_active != CablePolynomialType::LOADSTRAIN) {
+  if (type_polynomial_active != CablePolynomialType::kCreep
+      || type_polynomial_active != CablePolynomialType::kLoadStrain) {
 
     is_valid = false;
     if (messages_error != nullptr) {

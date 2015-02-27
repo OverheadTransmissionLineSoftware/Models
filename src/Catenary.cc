@@ -60,7 +60,7 @@ Point2D Catenary2D::Coordinate(const double& position_fraction,
   if (point_end_left_.x < 0 && point_end_right_.x < 0) {
     length_origin_to_position = length_origin_to_left -
                                 length_left_to_position;
-    direction_origin_to_position = AxisDirectionType::POSITIVE;
+    direction_origin_to_position = AxisDirectionType::kPositive;
   }
   // one endpoint left from origin, one endpoint right from origin
   else if (point_end_left_.x < 0 && 0 < point_end_right_.x) {
@@ -69,25 +69,25 @@ Point2D Catenary2D::Coordinate(const double& position_fraction,
     if (length_left_to_position < length_origin_to_left) {
       length_origin_to_position = length_origin_to_left -
                                   length_left_to_position;
-      direction_origin_to_position = AxisDirectionType::NEGATIVE;
+      direction_origin_to_position = AxisDirectionType::kNegative;
     }
     // at origin
     else if (length_left_to_position == length_origin_to_left) {
       length_origin_to_position = 0;
-      direction_origin_to_position = AxisDirectionType::POSITIVE;
+      direction_origin_to_position = AxisDirectionType::kPositive;
     }
     // right from origin
     else if (length_origin_to_left < length_left_to_position) {
       length_origin_to_position = length_left_to_position -
                                   length_origin_to_left;
-      direction_origin_to_position = AxisDirectionType::POSITIVE;
+      direction_origin_to_position = AxisDirectionType::kPositive;
     }
   }
   // both endpoints are AOL of origin
   else if (0 < point_end_left_.x && 0 < point_end_right_.x) {
     length_origin_to_position = length_origin_to_left +
                                 length_left_to_position;
-    direction_origin_to_position = AxisDirectionType::POSITIVE;
+    direction_origin_to_position = AxisDirectionType::kPositive;
   }
 
   // solve for catenary coordinate
@@ -240,7 +240,7 @@ double Catenary2D::TangentAngle(const double& position_fraction,
   double tangent_angle = atan(slope) * (kRadiansToDegrees);
 
   // adjust if direction is negative
-  if (direction == AxisDirectionType::NEGATIVE) {
+  if (direction == AxisDirectionType::kNegative) {
     tangent_angle = tangent_angle * -1;
   }
 
@@ -265,10 +265,10 @@ Vector2D Catenary2D::TangentVector(const double& position_fraction,
   const double angle_tangent = TangentAngle(position_fraction, direction);
 
   // resolve to a unit vector
-  if (direction == AxisDirectionType::NEGATIVE) {
+  if (direction == AxisDirectionType::kNegative) {
     tangent_vector.set_x( -(1 * cos(angle_tangent * kRadiansToDegrees)) );
     tangent_vector.set_y( sin(angle_tangent * kRadiansToDegrees) );
-  } else if (direction == AxisDirectionType::POSITIVE) {
+  } else if (direction == AxisDirectionType::kPositive) {
     tangent_vector.set_x( cos(angle_tangent * kRadiansToDegrees) );
     tangent_vector.set_y( sin(angle_tangent * kRadiansToDegrees) );
   }
@@ -376,7 +376,7 @@ double Catenary2D::TensionMax() const {
   }
 }
 
-bool Catenary2D::Validate(bool is_included_warnings,
+bool Catenary2D::Validate(const bool& is_included_warnings,
                           std::list<std::string>* messages_error) const {
   bool is_valid = true;
 
@@ -470,11 +470,11 @@ double Catenary2D::CoordinateX(
   double coordinate_x = -999999;
 
   // BOL from origin - negative x coordinate
-  if (direction_origin_to_position == AxisDirectionType::NEGATIVE) {
+  if (direction_origin_to_position == AxisDirectionType::kNegative) {
     coordinate_x = -(h/w) * (asinh(l / (h/w)));
   }
   // AOL from origin - positive x coordinate
-  else if (direction_origin_to_position == AxisDirectionType::POSITIVE) {
+  else if (direction_origin_to_position == AxisDirectionType::kPositive) {
     coordinate_x = (h/w) * (asinh(l / (h/w)));
   }
 
@@ -541,12 +541,12 @@ bool Catenary2D::UpdateEndPoints() const {
   // solve for left endpoint coordinate
   point_end_left_.x = (h/w) * (asinh(b * z) / (a * sinh(z)) - z);
   point_end_left_.y = CoordinateY(LengthFromOrigin(point_end_left_),
-                                  AxisDirectionType::NEGATIVE);
+                                  AxisDirectionType::kNegative);
 
   // solve for right endpoint coordinate
   point_end_right_.x = (h/w) * (asinh(b * z) / (a * sinh(z)) + z);
   point_end_right_.y = CoordinateY(LengthFromOrigin(point_end_right_),
-                                   AxisDirectionType::POSITIVE);
+                                   AxisDirectionType::kPositive);
 
   return true;
 }
@@ -594,8 +594,8 @@ Point3D Catenary3D::Coordinate(const double& position_fraction,
   vector_chord_to_curve.set_x(0);
   vector_chord_to_curve.set_y(0);
   vector_chord_to_curve.set_z(coordinate_2d_curve.y - coordinate_2d_chord.y);
-  vector_chord_to_curve.Rotate(Plane2dType::ZY,
-                               weight_unit_.Angle(Plane2dType::ZY));
+  vector_chord_to_curve.Rotate(Plane2dType::kZy,
+                               weight_unit_.Angle(Plane2dType::kZy));
 
 
   // use 2D chord coordinate and chord-to-curve vector to solve for 3D curve
@@ -718,7 +718,7 @@ double Catenary3D::TangentAngleTransverse(
   tangent_vector.set_z( abs(tangent_vector.z()) );
 
   // return transverse angle
-  return tangent_vector.Angle(Plane2dType::ZY, true);
+  return tangent_vector.Angle(Plane2dType::kZy, true);
 }
 
 double Catenary3D::TangentAngleVertical(
@@ -738,7 +738,7 @@ double Catenary3D::TangentAngleVertical(
   tangent_vector.set_x( abs(tangent_vector.x()) );
 
   // return vertical angle
-  return tangent_vector.Angle(Plane2dType::XZ, true);
+  return tangent_vector.Angle(Plane2dType::kXz, true);
 }
 
 Vector3D Catenary3D::TangentVector(const double& position_fraction,
@@ -767,9 +767,9 @@ Vector3D Catenary3D::TangentVector(const double& position_fraction,
 
     Vector2D spacing_endpoints_2d = catenary_2d_.spacing_endpoints();
     double angle_endpoints_2d = spacing_endpoints_2d.Angle(true);
-    double angle_endpoints_3d = spacing_endpoints_.Angle(Plane2dType::XZ, true);
+    double angle_endpoints_3d = spacing_endpoints_.Angle(Plane2dType::kXz, true);
 
-    tangent_vector.Rotate(Plane2dType::XZ,
+    tangent_vector.Rotate(Plane2dType::kXz,
                           angle_endpoints_3d - angle_endpoints_2d);
   }
 
@@ -777,11 +777,11 @@ Vector3D Catenary3D::TangentVector(const double& position_fraction,
   if (weight_unit_.y() != 0) {
 
     if (weight_unit_.y() < 0) {
-      tangent_vector.Rotate(Plane2dType::YZ,
+      tangent_vector.Rotate(Plane2dType::kYz,
                             (atan(weight_unit_.y()/weight_unit_.z())
                              * kRadiansToDegrees));
     } else if (0 < weight_unit_.y()) {
-      tangent_vector.Rotate(Plane2dType::YZ,
+      tangent_vector.Rotate(Plane2dType::kYz,
                             -(atan(weight_unit_.y()/weight_unit_.z())
                               * kRadiansToDegrees));
     }
@@ -845,7 +845,7 @@ double Catenary3D::TensionMax() const {
   return catenary_2d_.TensionMax();
 }
 
-bool Catenary3D::Validate(bool is_included_warnings,
+bool Catenary3D::Validate(const bool& is_included_warnings,
                           std::list<std::string>* messages_error) const {
   bool is_valid = true;
 

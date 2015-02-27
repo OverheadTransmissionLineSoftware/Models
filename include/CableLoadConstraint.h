@@ -13,18 +13,18 @@
 ///
 /// This enum contains types of cable load constraints.
 enum class ConstraintLimitType {
-  HORIZONTAL,
-  HW,
-  SUPPORT
+  kHorizontalTension,
+  kCatenaryConstant,
+  kSupportTension
 };
 
 /// \par OVERVIEW
 ///
 /// This enum contains types of cable conditions.
 enum class ConditionType {
-  CREEP,
-  INITIAL,
-  LOAD
+  kCreep,
+  kInitial,
+  kLoad
 };
 
 /// \par OVERVIEW
@@ -39,26 +39,30 @@ struct CableLoadConstraint {
   ~CableLoadConstraint();
 
   /// \brief Validates member variables.
-  /// \param is_included_warnings A flag that tightens the acceptable value
-  ///        range.
-  /// \param messages_error A list of detailed error messages. If this is
-  ///        provided, any validation errors will be appended to the list.
+  /// \param[in] is_included_warnings
+  ///   A flag that tightens the acceptable value range.
+  /// \param[in,out] messages_error
+  ///   A list of detailed error messages. If this is provided, any validation
+  ///   errors will be appended to the list.
   /// \return A boolean value indicating status of member variables.
-  bool Validate(bool is_included_warnings = true,
+  bool Validate(const bool& is_included_warnings = true,
                 std::list<std::string>* messages_error = nullptr) const;
 
-  /// \var case_load The load case.
+  /// \var case_load
+  ///   The load case.
   CableLoadCase case_load;
 
-  /// \var condition The state of the cable, which can determine whether the
-  ///      cable is modeled as stretched, or unstretched.
+  /// \var condition
+  ///   The state of the cable, which can determine whether the cable is
+  ///   modeled as unstretched, or stretched.
   ConditionType condition;
 
-  /// \var limit The limit that the cable cannot exceed.
+  /// \var limit
+  ///   The limit that the cable cannot exceed.
   double limit;
 
-  /// \var type_limit The type of constraint, which determines where and/or how
-  ///      the constraint is defined.
+  /// \var type_limit
+  ///   The type of constraint, which determines how the constraint is defined.
   ConstraintLimitType type_limit;
 };
 
