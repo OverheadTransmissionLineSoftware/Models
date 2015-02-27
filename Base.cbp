@@ -40,5 +40,9 @@
 		<Unit filename="src/Base/GeometricShapes.cc" />
 		<Unit filename="src/Base/Polynomial.cc" />
 		<Unit filename="src/Base/SupportFile.cc" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
