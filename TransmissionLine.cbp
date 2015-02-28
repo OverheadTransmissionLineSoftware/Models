@@ -39,7 +39,11 @@
 		<Compiler>
 			<Add option="-std=c++11" />
 			<Add option="-Wall" />
+			<Add directory="./" />
 		</Compiler>
+		<Linker>
+			<Add directory="./" />
+		</Linker>
 		<Unit filename="include/TransmissionLine/Cable.h" />
 		<Unit filename="include/TransmissionLine/CableLoadCase.h" />
 		<Unit filename="include/TransmissionLine/CableLoadConstraint.h" />

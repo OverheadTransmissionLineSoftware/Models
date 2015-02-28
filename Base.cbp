@@ -33,7 +33,11 @@
 		<Compiler>
 			<Add option="-std=c++11" />
 			<Add option="-Wall" />
+			<Add directory="./" />
 		</Compiler>
+		<Linker>
+			<Add directory="./" />
+		</Linker>
 		<Unit filename="include/Base/GeometricShapes.h" />
 		<Unit filename="include/Base/Polynomial.h" />
 		<Unit filename="include/Base/SupportFile.h" />
