@@ -445,7 +445,7 @@ void Catenary2D::set_weight_unit(const double& weight_unit) {
 }
 
 Vector2D Catenary2D::spacing_endpoints() const {
-  return spacing_endpoints();
+  return spacing_endpoints_;
 }
 
 double Catenary2D::tension_horizontal() const {
