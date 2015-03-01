@@ -10,6 +10,29 @@ double Round(const double& number, const int& precision) {
   return round(number * pow(10, precision)) / pow(10, precision);
 }
 
+Point2D::Point2D() {
+  x = -999999;
+  y = -999999;
+}
+
+Point2D::Point2D(const double& x_value, const double& y_value) {
+  x = x_value;
+  y = y_value;
+}
+
+Point3D::Point3D() {
+  x = -999999;
+  y = -999999;
+  z = -999999;
+}
+
+Point3D::Point3D(const double& x_value, const double& y_value,
+                 const double& z_value) {
+  x = x_value;
+  y = y_value;
+  z = z_value;
+}
+
 Vector2D::Vector2D() {
   x_ = -999999;
   y_ = -999999;
