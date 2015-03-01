@@ -1,11 +1,11 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "include/Catenary.h"
+#include "include/TransmissionLine/Catenary.h"
 
 #include <cmath>
 
-#include "include/SupportFile.h"
+#include "include/Base/SupportFile.h"
 
 Catenary2D::Catenary2D() {
   tension_horizontal_ = -999999;
@@ -445,7 +445,7 @@ void Catenary2D::set_weight_unit(const double& weight_unit) {
 }
 
 Vector2D Catenary2D::spacing_endpoints() const {
-  return spacing_endpoints();
+  return spacing_endpoints_;
 }
 
 double Catenary2D::tension_horizontal() const {
@@ -511,6 +511,51 @@ double Catenary2D::LengthFromOrigin(const Point2D& coordinate) const {
   const double w = weight_unit_;
 
   return std::abs((h/w) * sinh(x / (h/w)));
+}
+
+double Catenary2D::PositionFraction(const double& tangent_angle) const {
+
+  double position_fraction_lower = 0;
+  double position_fraction_upper = 1;
+  double position_fraction_target = -999999;
+  double tangent_angle_position = -999999;
+  int iter = 0;
+  const int kIterMax = 100;
+
+  while ((0.001 < abs(tangent_angle - tangent_angle_position)
+      || (0.0001 < position_fraction_upper - position_fraction_lower))
+      && (iter < kIterMax)) {
+
+    // update position along curve
+    position_fraction_target = (position_fraction_upper +
+                                position_fraction_lower) / 2;
+
+    // get a tangent angle at the position along curve
+    tangent_angle_position = TangentAngle(position_fraction_target,
+                                          AxisDirectionType::kPositive);
+
+    // compare against attachment spacing, update limits
+    if (tangent_angle_position == tangent_angle) {
+      break;
+    } else if (tangent_angle_position < tangent_angle) {
+      position_fraction_lower = position_fraction_target;
+    } else if (tangent_angle < tangent_angle_position) {
+      position_fraction_upper = position_fraction_target;
+    }
+
+    // check iterator, increment or exit
+    if (iter < kIterMax) {
+      iter++;
+    } else {
+      break;
+    }
+  }
+
+  if (iter < kIterMax) {
+    return position_fraction_target;
+  } else {
+    return -999999;
+  }
 }
 
 bool Catenary2D::Update() const {

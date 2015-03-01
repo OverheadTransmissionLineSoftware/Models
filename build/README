@@ -1,0 +1,12 @@
+BUILDING
+Building the libraries is only supported through Code::Blocks IDE project files.
+Code::Blocks is supported on all major platforms.
+
+COMPILER
+The GNU compiler (g++) is the only supported compiler for the libraries. The GNU
+compiler is supported on all major platforms, and has up-to-date C++ language
+support.
+
+DEPENDENCIES
+Some libraries do have dependencies, which are noted in the Code::Blocks project
+files. Make sure you build the dependencies first!

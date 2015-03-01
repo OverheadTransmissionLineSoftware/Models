@@ -7,8 +7,8 @@
 #include <list>
 #include <string>
 
-#include "include/SupportFile.h"
-#include "include/WeatherLoadCase.h"
+#include "include/Base/SupportFile.h"
+#include "include/TransmissionLine/WeatherLoadCase.h"
 
 /// \par OVERVIEW
 ///
