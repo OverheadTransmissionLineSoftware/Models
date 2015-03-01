@@ -1,8 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef TRANSMISSIONLINE_SUPPORTFILE_H_
-#define TRANSMISSIONLINE_SUPPORTFILE_H_
+#ifndef BASE_SUPPORTFILE_H_
+#define BASE_SUPPORTFILE_H_
 
 const double kPi = 3.14159265358979;
 const double kRadiansToDegrees = (180 / kPi);
@@ -229,4 +229,4 @@ class Vector3D {
   double z_;
 };
 
-#endif // TRANSMISSIONLINE_SUPPORTFILE_H_
+#endif // BASE_SUPPORTFILE_H_

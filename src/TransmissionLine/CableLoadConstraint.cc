@@ -1,7 +1,7 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "include/CableLoadConstraint.h"
+#include "include/TransmissionLine/CableLoadConstraint.h"
 
 CableLoadConstraint::CableLoadConstraint() {
   limit = -999999;
@@ -12,7 +12,7 @@ CableLoadConstraint::~CableLoadConstraint() {}
 bool CableLoadConstraint::Validate(
     const bool& is_included_warnings,
     std::list<std::string>* messages_error) const {
-  
+
   bool is_valid = true;
 
   // validate case-load

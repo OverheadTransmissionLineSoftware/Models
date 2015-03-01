@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Base" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="build/Base/bin/debug/Base" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="build/Base/obj/debug/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="build/Base/bin/release/Base" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="build/Base/obj/release/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-std=c++11" />
+			<Add option="-Wall" />
+			<Add directory="./" />
+		</Compiler>
+		<Linker>
+			<Add directory="./" />
+		</Linker>
+		<Unit filename="include/Base/GeometricShapes.h" />
+		<Unit filename="include/Base/Polynomial.h" />
+		<Unit filename="include/Base/SupportFile.h" />
+		<Unit filename="src/Base/GeometricShapes.cc" />
+		<Unit filename="src/Base/Polynomial.cc" />
+		<Unit filename="src/Base/SupportFile.cc" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
