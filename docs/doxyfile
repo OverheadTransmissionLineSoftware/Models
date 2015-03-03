@@ -743,16 +743,22 @@ WARN_LOGFILE           = "./doxygen.log"
 # spaces.
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = "../include/Base/GeometricShapes.h" \
-                         "../include/Base/SupportFile.h" \
+INPUT                  = "../include/Base/convert_units.h" \
+                         "../include/Base/geometric_shapes.h" \
+                         "../include/Base/point.h" \
+                         "../include/Base/polynomial.h" \
+                         "../include/Base/vector.h" \
                          "../include/TransmissionLine/Cable.h" \
                          "../include/TransmissionLine/CableLoadCase.h" \
                          "../include/TransmissionLine/CableLoadConstraint.h" \
                          "../include/TransmissionLine/CableUnitLoadCalculator.h" \
                          "../include/TransmissionLine/Catenary.h" \
                          "../include/TransmissionLine/WeatherLoadCase.h" \
-                         "../src/Base/GeometricShapes.cc" \
-                         "../src/Base/SupportFile.cc" \
+                         "../src/Base/convert_units.cc" \
+                         "../src/Base/geometric_shapes.cc" \
+                         "../src/Base/point.cc" \
+                         "../src/Base/polynomial.cc" \
+                         "../src/Base/vector.cc" \
                          "../src/TransmissionLine/Cable.cc" \
                          "../src/TransmissionLine/CableLoadCase.cc" \
                          "../src/TransmissionLine/CableLoadConstraint.cc" \

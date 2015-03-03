@@ -1,11 +1,11 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "include/Base/GeometricShapes.h"
+#include "include/Base/geometric_shapes.h"
 
 #include <cmath>
 
-#include "include/Base/SupportFile.h"
+#include "include/Base/convert_units.h"
 
 Cylinder::Cylinder() {
   diameter_ = -999999;
@@ -15,7 +15,7 @@ Cylinder::Cylinder() {
 Cylinder::~Cylinder() {}
 
 double Cylinder::AreaCrossSection() const {
-  return (kPi / 4) * pow(diameter_, 2);
+  return (convertunits::kPi / 4) * pow(diameter_, 2);
 }
 
 bool Cylinder::Validate(const bool& is_included_warnings,

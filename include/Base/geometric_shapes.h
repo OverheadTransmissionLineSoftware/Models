@@ -74,11 +74,11 @@ class Cylinder : public Shape {
 
  private:
   /// \var diameter_
-  ///   The diameter of the cylinder.
+  ///   The diameter.
   double diameter_;
 
   /// \var length_
-  ///   The length of the cylinder.
+  ///   The length.
   double length_;
 };
 

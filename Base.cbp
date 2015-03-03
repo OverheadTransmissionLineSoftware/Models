@@ -38,12 +38,16 @@
 		<Linker>
 			<Add directory="./" />
 		</Linker>
-		<Unit filename="include/Base/GeometricShapes.h" />
-		<Unit filename="include/Base/Polynomial.h" />
-		<Unit filename="include/Base/SupportFile.h" />
-		<Unit filename="src/Base/GeometricShapes.cc" />
-		<Unit filename="src/Base/Polynomial.cc" />
-		<Unit filename="src/Base/SupportFile.cc" />
+		<Unit filename="include/Base/convert_units.h" />
+		<Unit filename="include/Base/geometric_shapes.h" />
+		<Unit filename="include/Base/point.h" />
+		<Unit filename="include/Base/polynomial.h" />
+		<Unit filename="include/Base/vector.h" />
+		<Unit filename="src/Base/convert_units.cc" />
+		<Unit filename="src/Base/geometric_shapes.cc" />
+		<Unit filename="src/Base/point.cc" />
+		<Unit filename="src/Base/polynomial.cc" />
+		<Unit filename="src/Base/vector.cc" />
 		<Extensions>
 			<code_completion />
 			<debugger />
