@@ -3,8 +3,8 @@
 
 #include <cmath>
 
-#include "include/Base/geometric_shapes.h"
-#include "include/TransmissionLine/cable_unit_load_calculator.h"
+#include "include/base/geometric_shapes.h"
+#include "include/transmissionline/cable_unit_load_calculator.h"
 
 CableUnitLoadCalculator::CableUnitLoadCalculator() {
   diameter_cable_ = -999999;
