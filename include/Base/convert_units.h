@@ -14,6 +14,12 @@ const double kDegreesToRadians = (kPi / 180);
 
 namespace supportfunctions {
 
+/// \brief Rounds the number to the specified precision.
+/// \param[in] number
+///   The number to be rounded.
+/// \param[in] precision
+///   The number of decimal places to round to.
+/// \return The rounded number.
 double Round(const double& number, const int& precision);
 
 } // namespace supportfunctions
