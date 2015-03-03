@@ -30,7 +30,7 @@ class Polynomial {
   ~Polynomial();
 
   /// \brief Gets the slope.
-  /// \param x
+  /// \param[in] x
   ///   The x value for the point of slope.
   /// \return The slope.
   double Slope(const double& x) const;
@@ -40,19 +40,19 @@ class Polynomial {
   int OrderMax() const;
 
   /// \brief Gets the x value.
-  /// \param y
+  /// \param[in] y
   ///   The y value.
-  /// \param decimal_precision_y
+  /// \param[in] decimal_precision_y
   ///   An integer that controls the precision, or decimal place, the solution
   ///   must equal the target y value.
-  /// \param x_guess
+  /// \param[in] x_guess
   ///   An x value that is the starting guess for the iterative solution.
   /// \return The x value.
   double x(const double& y, const int& decimal_precision_y,
            const double& x_guess) const;
 
   /// \brief Gets the y value.
-  /// \param x
+  /// \param[in] x
   ///   The x value.
   /// \return The y value.
   double y(const double& x) const;
@@ -66,7 +66,7 @@ class Polynomial {
   Polynomial derivative() const;
 
   /// \brief Sets the polynomial coefficients.
-  /// \param coefficients
+  /// \param[in] coefficients
   ///   A vector of polynomial coefficients. The vector index correlates to the
   ///   polynomial order.
   void set_coefficients(std::vector<double> coefficients);
