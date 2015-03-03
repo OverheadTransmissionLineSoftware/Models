@@ -7,7 +7,8 @@
 #include <list>
 #include <string>
 
-#include "include/Base/SupportFile.h"
+#include "include/Base/point.h"
+#include "include/Base/vector.h"
 
 /// \par OVERVIEW
 ///
@@ -43,7 +44,7 @@ class Catenary2D {
   ///   A flag that shifts the coordinate system origin to the left end point.
   /// \return A 2D coordinate point containing the x and y position of the
   ///   catenary curve.
-  Point2D Coordinate(const double& position_fraction,
+  Point2d Coordinate(const double& position_fraction,
                      const bool& is_shifted_origin = false) const;
 
   /// \brief Gets a coordinate point at a location on the straight line
@@ -55,7 +56,7 @@ class Catenary2D {
   ///   A flag that shifts the coordinate system origin to the left end point.
   /// \return A 2D coordinate point containing the x and y position of the
   ///   straight line connecting the end points.
-  Point2D CoordinateChord(const double& position_fraction,
+  Point2d CoordinateChord(const double& position_fraction,
                           const bool& is_shifted_origin = false) const;
 
   /// \brief Gets the curve length.
@@ -99,7 +100,7 @@ class Catenary2D {
   /// \param[in] direction
   ///   The axis direction of the tangent line.
   /// \return A tangent unit vector.
-  Vector2D TangentVector(const double& position_fraction,
+  Vector2d TangentVector(const double& position_fraction,
                          const AxisDirectionType& direction) const;
 
   /// \brief Gets the tension.
@@ -116,7 +117,7 @@ class Catenary2D {
   /// \param[in] direction
   ///   The axis direction of the tangent line.
   /// \return A tension vector.
-  Vector2D Tension(const double& position_fraction,
+  Vector2d Tension(const double& position_fraction,
                    const AxisDirectionType& direction) const;
 
   /// \brief Gets the average catenary tension.
@@ -144,7 +145,7 @@ class Catenary2D {
   /// \brief Sets the endpoint spacing.
   /// \param[in] spacing_endpoints
   ///   The vector spacing.
-  void set_spacing_endpoints(const Vector2D& spacing_endpoints);
+  void set_spacing_endpoints(const Vector2d& spacing_endpoints);
 
   /// \brief Sets the horizontal tension.
   /// \param[in] tension_horizontal
@@ -158,7 +159,7 @@ class Catenary2D {
 
   /// \brief Gets the endpoint spacing vector.
   /// \return A copy of the endpoint spacing vector.
-  Vector2D spacing_endpoints() const;
+  Vector2d spacing_endpoints() const;
 
   /// \brief Gets the horizontal tension.
   /// \return A copy of the horizontal tension.
@@ -199,7 +200,7 @@ class Catenary2D {
   /// \param[in] coordinate
   ///   The coordinate for the specified position.
   /// \return The curve length from the catenary origin to the coordinate.
-  double LengthFromOrigin(const Point2D& coordinate) const;
+  double LengthFromOrigin(const Point2d& coordinate) const;
 
   /// \brief Gets the fraction fo the length that relates to a specific
   ///   position on the catenary. This is referenced from the left end point.
@@ -224,16 +225,16 @@ class Catenary2D {
 
   /// \var point_end_left_
   ///   The coordinate point for the left end of the catenary.
-  mutable Point2D point_end_left_;
+  mutable Point2d point_end_left_;
 
   /// \var point_end_right_
   ///   The coordinate point for the right end of the catenary.
-  mutable Point2D point_end_right_;
+  mutable Point2d point_end_right_;
 
   /// \var spacing_endpoints_
   ///   The vector spacing between end points of the catenary. The vector
   ///   starts at the left point and ends at the right point.
-  Vector2D spacing_endpoints_;
+  Vector2d spacing_endpoints_;
 
   /// \var tension_horizontal_
   ///   The horizontal component of tension for the catenary. This is constant
@@ -281,7 +282,7 @@ class Catenary3D {
   ///   A flag that shifts the coordinate system origin to the left end point.
   /// \return A 3D coordinate point containing the x, y, and z position of the
   ///   catenary curve.
-  Point3D Coordinate(const double& position_fraction,
+  Point3d Coordinate(const double& position_fraction,
                      const bool& is_shifted_origin = false) const;
 
   /// \brief Gets a coordinate point at a location on the straight line
@@ -293,7 +294,7 @@ class Catenary3D {
   ///   A flag that shifts the coordinate system origin to the left end point.
   /// \return A 3D coordinate point containing the x, y, and z position of the
   ///   straight line connecting the end points.
-  Point3D CoordinateChord(const double& position_fraction,
+  Point3d CoordinateChord(const double& position_fraction,
                           const bool& is_shifted_origin = false) const;
 
   /// \brief Gets the curve length.
@@ -352,7 +353,7 @@ class Catenary3D {
   /// \param[in] direction
   ///   The axis direction of the tangent line.
   /// \return A tangent unit vector.
-  Vector3D TangentVector(const double& position_fraction,
+  Vector3d TangentVector(const double& position_fraction,
                          const AxisDirectionType& direction) const;
 
   /// \brief Gets the tension.
@@ -369,7 +370,7 @@ class Catenary3D {
   /// \param[in] direction
   ///   The axis direction of the tangent line.
   /// \return A tension vector.
-  Vector3D Tension(const double& position_fraction,
+  Vector3d Tension(const double& position_fraction,
                    const AxisDirectionType& direction) const;
 
   /// \brief Gets the average catenary tension.
@@ -397,7 +398,7 @@ class Catenary3D {
   /// \brief Sets the endpoint spacing.
   /// \param[in] spacing_endpoints
   ///   The vector spacing.
-  void set_spacing_endpoints(const Vector3D& spacing_endpoints);
+  void set_spacing_endpoints(const Vector3d& spacing_endpoints);
 
   /// \brief Sets the horizontal tension.
   /// \param[in] tension_horizontal
@@ -407,11 +408,11 @@ class Catenary3D {
   /// \brief Sets the unit weight.
   /// \param[in] weight_unit
   ///   The unit weight.
-  void set_weight_unit(const Vector3D& weight_unit);
+  void set_weight_unit(const Vector3d& weight_unit);
 
   /// \brief Gets the endpoint spacing vector.
   /// \return A copy of the endpoint spacing vector.
-  Vector3D spacing_endpoints() const;
+  Vector3d spacing_endpoints() const;
 
   /// \brief Gets the horizontal tension.
   /// \return A copy of the horizontal tension.
@@ -419,7 +420,7 @@ class Catenary3D {
 
   /// \brief Gets the unit weight.
   /// \return A copy of the unit weight.
-  Vector3D weight_unit() const;
+  Vector3d weight_unit() const;
 
  private:
   /// \brief Determines if class is updated.
@@ -448,13 +449,13 @@ class Catenary3D {
   ///   align with the coordinate system, but only 2D spacing (y axis, z axis)
   ///   are modeled. The vector starts at the left point and ends at the right
   ///   point.
-  Vector3D spacing_endpoints_;
+  Vector3d spacing_endpoints_;
 
   /// \var weight_unit_
   ///   The vector loading per unit length. The vector is defined in 3D to
   ///   align with the coordinate system, but only 2D loading (x axis, z axis)
   ///   are modeled.
-  Vector3D weight_unit_;
+  Vector3d weight_unit_;
 };
 
 #endif // TRANSMISSIONLINE_CATENARY_H_

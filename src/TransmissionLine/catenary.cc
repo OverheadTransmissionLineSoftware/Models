@@ -1,11 +1,11 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "include/TransmissionLine/Catenary.h"
+#include "include/TransmissionLine/catenary.h"
 
 #include <cmath>
 
-#include "include/Base/SupportFile.h"
+#include "include/Base/convert_units.h"
 
 Catenary2D::Catenary2D() {
   tension_horizontal_ = -999999;
@@ -33,9 +33,9 @@ double Catenary2D::Constant() const {
 
 /// Solves for length and direction from origin, and then converts to
 /// coordinates.
-Point2D Catenary2D::Coordinate(const double& position_fraction,
+Point2d Catenary2D::Coordinate(const double& position_fraction,
                                const bool& is_shifted_origin) const {
-  Point2D coordinate;
+  Point2d coordinate;
 
   if (IsUpdated() == false) {
     if (Update() == false) {
@@ -99,9 +99,9 @@ Point2D Catenary2D::Coordinate(const double& position_fraction,
   return coordinate;
 }
 
-Point2D Catenary2D::CoordinateChord(const double& position_fraction,
+Point2d Catenary2D::CoordinateChord(const double& position_fraction,
                                     const bool& is_shifted_origin) const {
-  Point2D coordinate_chord;
+  Point2d coordinate_chord;
 
   if (IsUpdated() == false) {
     if (Update() == false) {
@@ -110,7 +110,7 @@ Point2D Catenary2D::CoordinateChord(const double& position_fraction,
   }
 
   // get a catenary coordinate
-  Point2D coordinate_catenary = Coordinate(position_fraction,
+  Point2d coordinate_catenary = Coordinate(position_fraction,
                                 is_shifted_origin);
 
   // calculate a chord coordinate
@@ -213,10 +213,10 @@ double Catenary2D::Sag() const {
   const double position_fraction_sagpoint = PositionFractionSagPoint();
 
   // get catenary coordinate at sag position
-  const Point2D coordinate_catenary = Coordinate(position_fraction_sagpoint);
+  const Point2d coordinate_catenary = Coordinate(position_fraction_sagpoint);
 
   // get a chord coordinate at sag position
-  const Point2D coordinate_chord = CoordinateChord(position_fraction_sagpoint);
+  const Point2d coordinate_chord = CoordinateChord(position_fraction_sagpoint);
 
   // get height difference between chord and catenary
   return coordinate_chord.y - coordinate_catenary.y;
@@ -231,13 +231,13 @@ double Catenary2D::TangentAngle(const double& position_fraction,
   }
 
   // get coordinate at position
-  const Point2D coordinate = Coordinate(position_fraction);
+  const Point2d coordinate = Coordinate(position_fraction);
 
   // calculate slope at position
   const double slope = sinh(coordinate.x / (tension_horizontal_/weight_unit_));
 
   // convert to degrees
-  double tangent_angle = atan(slope) * (kRadiansToDegrees);
+  double tangent_angle = atan(slope) * (convertunits::kRadiansToDegrees);
 
   // adjust if direction is negative
   if (direction == AxisDirectionType::kNegative) {
@@ -251,9 +251,9 @@ double Catenary2D::TangentAngle(const double& position_fraction,
 /// based on the direction the vector is pointing.
 /// Slope equation is:
 /// \f[ Slope = sinh \left( \frac{x}{\frac{H}{w}} \right) \f]
-Vector2D Catenary2D::TangentVector(const double& position_fraction,
+Vector2d Catenary2D::TangentVector(const double& position_fraction,
                                    const AxisDirectionType& direction) const {
-  Vector2D tangent_vector;
+  Vector2d tangent_vector;
 
   if (IsUpdated() == false) {
     if (Update() == false) {
@@ -266,11 +266,15 @@ Vector2D Catenary2D::TangentVector(const double& position_fraction,
 
   // resolve to a unit vector
   if (direction == AxisDirectionType::kNegative) {
-    tangent_vector.set_x( -(1 * cos(angle_tangent * kRadiansToDegrees)) );
-    tangent_vector.set_y( sin(angle_tangent * kRadiansToDegrees) );
+    tangent_vector.set_x( -(1 * cos(angle_tangent
+                         * convertunits::kRadiansToDegrees)) );
+    tangent_vector.set_y( sin(angle_tangent
+                         * convertunits::kRadiansToDegrees) );
   } else if (direction == AxisDirectionType::kPositive) {
-    tangent_vector.set_x( cos(angle_tangent * kRadiansToDegrees) );
-    tangent_vector.set_y( sin(angle_tangent * kRadiansToDegrees) );
+    tangent_vector.set_x( cos(angle_tangent
+                         * convertunits::kRadiansToDegrees) );
+    tangent_vector.set_y( sin(angle_tangent
+                         * convertunits::kRadiansToDegrees) );
   }
 
   return tangent_vector;
@@ -285,7 +289,7 @@ double Catenary2D::Tension(const double& position_fraction) const {
   }
 
   // get coordinate
-  Point2D coordinate = Coordinate(position_fraction);
+  Point2d coordinate = Coordinate(position_fraction);
 
   return tension_horizontal_
          * cosh( coordinate.x / (tension_horizontal_/weight_unit_));
@@ -295,9 +299,9 @@ double Catenary2D::Tension(const double& position_fraction) const {
 /// The tension magnitude equation is:
 /// \f[ Tension = H cosh \left( \frac{x}{\frac{H}{w}} \right) \f]
 /// @see Catenary2D::TangentVector
-Vector2D Catenary2D::Tension(const double& position_fraction,
+Vector2d Catenary2D::Tension(const double& position_fraction,
                              const AxisDirectionType& direction) const {
-  Vector2D vector_tangent;
+  Vector2d vector_tangent;
 
   if (IsUpdated() == false) {
     if (Update() == false) {
@@ -423,7 +427,7 @@ bool Catenary2D::Validate(const bool& is_included_warnings,
   return is_valid;
 }
 
-void Catenary2D::set_spacing_endpoints(const Vector2D& spacing_endpoints) {
+void Catenary2D::set_spacing_endpoints(const Vector2d& spacing_endpoints) {
 
   spacing_endpoints_ = spacing_endpoints;
 
@@ -444,7 +448,7 @@ void Catenary2D::set_weight_unit(const double& weight_unit) {
   is_updated_points_end_ = false;
 }
 
-Vector2D Catenary2D::spacing_endpoints() const {
+Vector2d Catenary2D::spacing_endpoints() const {
   return spacing_endpoints_;
 }
 
@@ -504,7 +508,7 @@ bool Catenary2D::IsUpdated() const {
 }
 
 /// \f[ CurveLength = \left| \frac{H}{w} sinh^{-1} \left(\frac{x}{\frac{H}{w}}\right) \right| \f]
-double Catenary2D::LengthFromOrigin(const Point2D& coordinate) const {
+double Catenary2D::LengthFromOrigin(const Point2d& coordinate) const {
 
   const double x = coordinate.x;
   const double h = tension_horizontal_;
@@ -615,9 +619,9 @@ double Catenary3D::Constant() const {
   return catenary_2d_.Constant();
 }
 
-Point3D Catenary3D::Coordinate(const double& position_fraction,
+Point3d Catenary3D::Coordinate(const double& position_fraction,
                                const bool& is_shifted_origin) const {
-  Point3D coordinate_catenary;
+  Point3d coordinate_catenary;
 
   if (IsUpdated() == false) {
     if (Update() == false) {
@@ -626,16 +630,16 @@ Point3D Catenary3D::Coordinate(const double& position_fraction,
   }
 
   // get a 2D chord coordinate
-  Point2D coordinate_2d_chord = catenary_2d_.CoordinateChord(position_fraction,
+  Point2d coordinate_2d_chord = catenary_2d_.CoordinateChord(position_fraction,
                                 is_shifted_origin);
 
   // get a 2D curve coordinate
-  Point2D coordinate_2d_curve = catenary_2d_.Coordinate(position_fraction,
+  Point2d coordinate_2d_curve = catenary_2d_.Coordinate(position_fraction,
                                 is_shifted_origin);
 
   // create a vector between chord coordinate and curve coordinate
   // rotate vector transversely according to unit loading
-  Vector3D vector_chord_to_curve;
+  Vector3d vector_chord_to_curve;
   vector_chord_to_curve.set_x(0);
   vector_chord_to_curve.set_y(0);
   vector_chord_to_curve.set_z(coordinate_2d_curve.y - coordinate_2d_chord.y);
@@ -652,9 +656,9 @@ Point3D Catenary3D::Coordinate(const double& position_fraction,
   return coordinate_catenary;
 }
 
-Point3D Catenary3D::CoordinateChord(const double& position_fraction,
+Point3d Catenary3D::CoordinateChord(const double& position_fraction,
                                     const bool& is_shifted_origin) const {
-  Point3D coordinate_chord;
+  Point3d coordinate_chord;
 
   if (IsUpdated() == false) {
     if (Update() == false) {
@@ -663,7 +667,7 @@ Point3D Catenary3D::CoordinateChord(const double& position_fraction,
   }
 
   // get a 2d chord coordinate from 2D catenary
-  Point2D coordinate_2d_chord = catenary_2d_.CoordinateChord(position_fraction,
+  Point2d coordinate_2d_chord = catenary_2d_.CoordinateChord(position_fraction,
                                 is_shifted_origin);
 
   // convert to 3D coordinate system
@@ -741,7 +745,8 @@ double Catenary3D::SwingAngle() const {
     }
   }
 
-  angle_swing = atan(weight_unit_.y() / weight_unit_.z()) * kRadiansToDegrees;
+  angle_swing = atan(weight_unit_.y() / weight_unit_.z())
+                * convertunits::kRadiansToDegrees;
   return angle_swing;
 }
 
@@ -756,7 +761,7 @@ double Catenary3D::TangentAngleTransverse(
   }
 
   // get the 3D tangent vector
-  Vector3D tangent_vector = TangentVector(position_fraction, direction);
+  Vector3d tangent_vector = TangentVector(position_fraction, direction);
 
   // adjust components to use only positive values in unit circle
   tangent_vector.set_y( abs(tangent_vector.y()) );
@@ -777,7 +782,7 @@ double Catenary3D::TangentAngleVertical(
   }
 
   // get the 3D tangent vector
-  Vector3D tangent_vector = TangentVector(position_fraction, direction);
+  Vector3d tangent_vector = TangentVector(position_fraction, direction);
 
   // adjust x component to use only positive values in unit circle
   tangent_vector.set_x( abs(tangent_vector.x()) );
@@ -786,9 +791,9 @@ double Catenary3D::TangentAngleVertical(
   return tangent_vector.Angle(Plane2dType::kXz, true);
 }
 
-Vector3D Catenary3D::TangentVector(const double& position_fraction,
+Vector3d Catenary3D::TangentVector(const double& position_fraction,
                                    const AxisDirectionType& direction) const {
-  Vector3D tangent_vector;
+  Vector3d tangent_vector;
 
   if (IsUpdated() == false) {
     if (Update() == false) {
@@ -797,7 +802,7 @@ Vector3D Catenary3D::TangentVector(const double& position_fraction,
   }
 
   // get 2D tangent vector
-  Vector2D tangent_vector_2d = catenary_2d_.TangentVector(position_fraction,
+  Vector2d tangent_vector_2d = catenary_2d_.TangentVector(position_fraction,
                                direction);
 
   // set initial 3D vector values
@@ -810,7 +815,7 @@ Vector3D Catenary3D::TangentVector(const double& position_fraction,
   // transverse load is present
   if (spacing_endpoints_.z() != 0 && weight_unit_.y() != 0) {
 
-    Vector2D spacing_endpoints_2d = catenary_2d_.spacing_endpoints();
+    Vector2d spacing_endpoints_2d = catenary_2d_.spacing_endpoints();
     double angle_endpoints_2d = spacing_endpoints_2d.Angle(true);
     double angle_endpoints_3d = spacing_endpoints_.Angle(Plane2dType::kXz, true);
 
@@ -824,11 +829,11 @@ Vector3D Catenary3D::TangentVector(const double& position_fraction,
     if (weight_unit_.y() < 0) {
       tangent_vector.Rotate(Plane2dType::kYz,
                             (atan(weight_unit_.y()/weight_unit_.z())
-                             * kRadiansToDegrees));
+                             * convertunits::kRadiansToDegrees));
     } else if (0 < weight_unit_.y()) {
       tangent_vector.Rotate(Plane2dType::kYz,
                             -(atan(weight_unit_.y()/weight_unit_.z())
-                              * kRadiansToDegrees));
+                              * convertunits::kRadiansToDegrees));
     }
   }
 
@@ -846,9 +851,9 @@ double Catenary3D::Tension(const double& position_fraction) const {
   return catenary_2d_.Tension(position_fraction);
 }
 
-Vector3D Catenary3D::Tension(const double& position_fraction,
+Vector3d Catenary3D::Tension(const double& position_fraction,
                              const AxisDirectionType& direction) const {
-  Vector3D tension_vector;
+  Vector3d tension_vector;
 
   if (IsUpdated() == false) {
     if (Update() == false) {
@@ -860,7 +865,7 @@ Vector3D Catenary3D::Tension(const double& position_fraction,
   const double tension = catenary_2d_.Tension(position_fraction);
 
   // get tangent vector
-  Vector3D tangent_vector = TangentVector(position_fraction, direction);
+  Vector3d tangent_vector = TangentVector(position_fraction, direction);
 
   // scale vector
   tangent_vector.Scale(tension);
@@ -958,7 +963,7 @@ bool Catenary3D::Validate(const bool& is_included_warnings,
   return is_valid;
 }
 
-void Catenary3D::set_spacing_endpoints(const Vector3D& spacing_endpoints) {
+void Catenary3D::set_spacing_endpoints(const Vector3d& spacing_endpoints) {
 
   spacing_endpoints_ = spacing_endpoints;
 
@@ -969,14 +974,14 @@ void Catenary3D::set_tension_horizontal(const double& tension_horizontal) {
   catenary_2d_.set_tension_horizontal(tension_horizontal);
 }
 
-void Catenary3D::set_weight_unit(const Vector3D& weight_unit) {
+void Catenary3D::set_weight_unit(const Vector3d& weight_unit) {
 
   weight_unit_ = weight_unit;
 
   is_updated_catenary_2d_ = false;
 }
 
-Vector3D Catenary3D::spacing_endpoints() const {
+Vector3d Catenary3D::spacing_endpoints() const {
   return spacing_endpoints_;
 }
 
@@ -984,7 +989,7 @@ double Catenary3D::tension_horizontal() const {
   return catenary_2d_.tension_horizontal();
 }
 
-Vector3D Catenary3D::weight_unit() const {
+Vector3d Catenary3D::weight_unit() const {
   return weight_unit_;
 }
 
@@ -1019,7 +1024,7 @@ bool Catenary3D::UpdateCatenary2D() const {
   const double w = weight_unit_.Magnitude();
 
   // 2D catenary endpoint spacing
-  Vector2D spacing_endpoints_2d;
+  Vector2d spacing_endpoints_2d;
   spacing_endpoints_2d.set_y(b * (v/w));
   spacing_endpoints_2d.set_x(sqrt( pow(c,2)-pow(spacing_endpoints_2d.y(), 2)));
 
