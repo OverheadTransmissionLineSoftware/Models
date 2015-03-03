@@ -1,11 +1,11 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "include/Base/vector.h"
+#include "include/base/vector.h"
 
 #include <cmath>
 
-#include "include/Base/convert_units.h"
+#include "include/base/convert_units.h"
 
 Vector2d::Vector2d() {
   x_ = -999999;
@@ -22,7 +22,8 @@ Vector2d::~Vector2d() {}
 /// Determines which quadrant (I,II, III, IV) the vector is in, and uses the
 /// arc tangent function to calculate the angle.
 double Vector2d::Angle(const bool& is_enabled_negative_angles) const {
-  double angle;
+
+  double angle = -999999;
 
   // use standard trigonometry to solve for angle of vector
   if (x_ == 0 && 0 < y_) {

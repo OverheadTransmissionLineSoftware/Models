@@ -1,7 +1,7 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "include/TransmissionLine/weather_load_case.h"
+#include "include/transmissionline/weather_load_case.h"
 
 #include <cmath>
 

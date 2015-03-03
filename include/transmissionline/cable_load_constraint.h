@@ -7,7 +7,7 @@
 #include <list>
 #include <string>
 
-#include "include/TransmissionLine/cable_load_case.h"
+#include "include/transmissionline/cable_load_case.h"
 
 /// \par OVERVIEW
 ///
