@@ -1,58 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef BASE_SUPPORTFILE_H_
-#define BASE_SUPPORTFILE_H_
-
-const double kPi = 3.14159265358979;
-const double kRadiansToDegrees = (180 / kPi);
-const double kDegreesToRadians = (kPi / 180);
-
-double Round(const double& number, const int& precision);
-
-/// \par OVERVIEW
-///
-/// This is a 2D point, with members being of type 'double'.
-struct Point2D {
- public:
-  /// \brief Default constructor.
-  Point2D();
-
-  /// \brief Alternate constructor.
-  Point2D(const double& x_value, const double& y_value);
-
-  /// \var x
-  ///   The x value of the point.
-  double x;
-
-  /// \var y
-  ///   The y value of the point.
-  double y;
-};
-
-/// \par OVERVIEW
-///
-/// This is a 3D point, with members being of type 'double'.
-struct Point3D {
- public:
-  /// \brief Default constructor.
-  Point3D();
-
-  /// \brief Alternate constructor.
-  Point3D(const double& x_value, const double& y_value, const double& z_value);
-
-  /// \var x
-  ///   The x value of the point.
-  double x;
-
-  /// \var y
-  ///   The y value of the point.
-  double y;
-
-  /// \var z
-  ///   The z value of the point.
-  double z;
-};
+#ifndef BASE_VECTOR_H_
+#define BASE_VECTOR_H_
 
 /// \par OVERVIEW
 ///
@@ -82,20 +32,20 @@ enum class AxisDirectionType {
 /// and angle) are member functions.
 ///
 /// The vector can be manipulated by rotating and scaling.
-class Vector2D {
+class Vector2d {
  public:
   /// \brief Default constructor.
-  Vector2D();
+  Vector2d();
 
   /// \brief Alternate constructor.
   /// \param[in] x
-  ///   The x component of the vector.
+  ///   The x component.
   /// \param[in] y
-  ///   The y component of the vector.
-  Vector2D(const double& x, const double& y);
+  ///   The y component.
+  Vector2d(const double& x, const double& y);
 
   /// \brief Destructor.
-  ~Vector2D();
+  ~Vector2d();
 
   /// \brief Gets the angle from the positive x axis, in degrees.
   /// \param[in] is_enabled_negative_angles
@@ -109,7 +59,7 @@ class Vector2D {
   /// \return Magnitude of the vector.
   double Magnitude() const;
 
-  /// \brief Rotates the vector, in degrees.
+  /// \brief Rotates the vector.
   /// \param[in] angle_rotation
   ///   The angle to rotate the vector, in degrees. Positive values rotate
   ///   counter-clockwise, while negative values rotate clockwise.
@@ -120,31 +70,31 @@ class Vector2D {
   ///   The scaling factor for adjusting the magnitude.
   void Scale(const double& factor_scale);
 
-  /// \brief Sets the x component of the vector.
+  /// \brief Sets the x component.
   /// \param[in] x
-  ///   The x component of the vector.
+  ///   The x component.
   void set_x(const double& x);
 
-  /// \brief Sets the y component of the vector.
+  /// \brief Sets the y component.
   /// \param[in] y
-  ///   The y component of the vector.
+  ///   The y component.
   void set_y(const double& y);
 
-  /// \brief Gets the x component of the vector.
-  /// \return The x component of the vector.
+  /// \brief Gets the x component.
+  /// \return The x component.
   double x() const;
 
-  /// \brief Gets the y component of the vector.
-  /// \return The y component of the vector.
+  /// \brief Gets the y component.
+  /// \return The y component.
   double y() const;
 
  private:
   /// \var x_
-  ///   The x component of the vector.
+  ///   The x Cartesian component.
   double x_;
 
   /// \var y_
-  ///   The y component of the vector.
+  ///   The y Cartesian component.
   double y_;
 };
 
@@ -156,22 +106,22 @@ class Vector2D {
 /// and angle) are member functions.
 ///
 /// The vector can be manipulated by rotating and scaling.
-class Vector3D {
+class Vector3d {
  public:
   /// \brief Default constructor.
-  Vector3D();
+  Vector3d();
 
   /// \brief Alternate constructor.
   /// \param[in] x
-  ///   The x component of the vector.
+  ///   The x component.
   /// \param[in] y
-  ///   The y component of the vector.
+  ///   The y component.
   /// \param[in] z
-  ///   The z component of the vector.
-  Vector3D(const double& x, const double& y, const double& z);
+  ///   The z component.
+  Vector3d(const double& x, const double& y, const double& z);
 
   /// \brief Destructor.
-  ~Vector3D();
+  ~Vector3d();
 
   /// \brief Gets the angle in a specific plane, in degrees.
   /// \param[in] plane
@@ -185,10 +135,10 @@ class Vector3D {
                const bool& is_enabled_negative_angle = false) const;
 
   /// \brief Gets the magnitude.
-  /// \return Vector length.
+  /// \return The magnitude, or vector sum of all components.
   double Magnitude() const;
 
-  /// \brief Rotate the vector in a specific plane, in degrees.
+  /// \brief Rotates the vector in a specific plane.
   /// \param[in] plane
   ///   The 2D plane which is referenced. The first axis is the horizontal
   ///   axis.
@@ -202,45 +152,45 @@ class Vector3D {
   ///   The scaling factor for adjusting the magnitude.
   void Scale(const double& factor_scale);
 
-  /// \brief Sets the x component of the vector.
+  /// \brief Sets the x component.
   /// \param[in] x
-  ///   The x component of the vector.
+  ///   The x component.
   void set_x(const double& x);
 
-  /// \brief Sets the y component of the vector.
+  /// \brief Sets the y component.
   /// \param[in] y
-  ///   The y component of the vector.
+  ///   The y component.
   void set_y(const double& y);
 
-  /// \brief Sets the z component of the vector.
+  /// \brief Sets the z component.
   /// \param[in] z
-  ///   The z component of the vector.
+  ///   The z component.
   void set_z(const double& z);
 
-  /// \brief Gets the x component of the vector.
-  /// \return The x component of the vector.
+  /// \brief Gets the x component.
+  /// \return The x component.
   double x() const;
 
-  /// \brief Gets the y component of the vector.
-  /// \return The y component of the vector.
+  /// \brief Gets the y component.
+  /// \return The y component.
   double y() const;
 
-  /// \brief Gets the z component of the vector.
-  /// \return The z component of the vector.
+  /// \brief Gets the z component.
+  /// \return The z component.
   double z() const;
 
  private:
   /// \var x_
-  ///   The x component of the vector.
+  ///   The x Cartesian component.
   double x_;
 
   /// \var y_
-  ///   The y component of the vector.
+  ///   The y Cartesian component.
   double y_;
 
   /// \var z_
-  ///   The z component of the vector.
+  ///   The z Cartesian component.
   double z_;
 };
 
-#endif // BASE_SUPPORTFILE_H_
+#endif // BASE_VECTOR_H_

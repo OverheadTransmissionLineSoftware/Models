@@ -22,14 +22,17 @@ class Polynomial {
   Polynomial();
 
   /// \brief Alternate constructor.
+  /// \param[in] coefficients
+  ///   A list of coefficients.
   Polynomial(const std::vector<double> coefficients);
 
   /// \brief Destructor.
   ~Polynomial();
 
-  /// \brief Gets the slope of the polynomial.
+  /// \brief Gets the slope.
   /// \param x
   ///   The x value for the point of slope.
+  /// \return The slope.
   double Slope(const double& x) const;
 
   /// \brief Gets the maximum polynomial order.
@@ -38,17 +41,20 @@ class Polynomial {
 
   /// \brief Gets the x value.
   /// \param y
-  ///   The y value for the polynomial.
+  ///   The y value.
   /// \param decimal_precision_y
   ///   An integer that controls the precision, or decimal place, the solution
   ///   must equal the target y value.
   /// \param x_guess
   ///   An x value that is the starting guess for the iterative solution.
+  /// \return The x value.
   double x(const double& y, const int& decimal_precision_y,
            const double& x_guess) const;
 
   /// \brief Gets the y value.
-  /// \param x_value The x value at which the y value will be calculated.
+  /// \param x
+  ///   The x value.
+  /// \return The y value.
   double y(const double& x) const;
 
   /// \brief Gets the polynomial coefficients.
