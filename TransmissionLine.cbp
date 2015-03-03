@@ -44,18 +44,18 @@
 		<Linker>
 			<Add directory="./" />
 		</Linker>
-		<Unit filename="include/TransmissionLine/Cable.h" />
-		<Unit filename="include/TransmissionLine/CableLoadCase.h" />
-		<Unit filename="include/TransmissionLine/CableLoadConstraint.h" />
-		<Unit filename="include/TransmissionLine/CableUnitLoadCalculator.h" />
-		<Unit filename="include/TransmissionLine/Catenary.h" />
-		<Unit filename="include/TransmissionLine/WeatherLoadCase.h" />
-		<Unit filename="src/TransmissionLine/Cable.cc" />
-		<Unit filename="src/TransmissionLine/CableLoadCase.cc" />
-		<Unit filename="src/TransmissionLine/CableLoadConstraint.cc" />
-		<Unit filename="src/TransmissionLine/CableUnitLoadCalculator.cc" />
-		<Unit filename="src/TransmissionLine/Catenary.cc" />
-		<Unit filename="src/TransmissionLine/WeatherLoadCase.cc" />
+		<Unit filename="include/TransmissionLine/cable.h" />
+		<Unit filename="include/TransmissionLine/cable_load_case.h" />
+		<Unit filename="include/TransmissionLine/cable_load_constraint.h" />
+		<Unit filename="include/TransmissionLine/cable_unit_load_calculator.h" />
+		<Unit filename="include/TransmissionLine/catenary.h" />
+		<Unit filename="include/TransmissionLine/weather_load_case.h" />
+		<Unit filename="src/TransmissionLine/cable.cc" />
+		<Unit filename="src/TransmissionLine/cable_load_case.cc" />
+		<Unit filename="src/TransmissionLine/cable_load_constraint.cc" />
+		<Unit filename="src/TransmissionLine/cable_unit_load_calculator.cc" />
+		<Unit filename="src/TransmissionLine/catenary.cc" />
+		<Unit filename="src/TransmissionLine/weather_load_case.cc" />
 		<Extensions>
 			<code_completion />
 			<debugger />
