@@ -11,7 +11,7 @@
 
 /// \par OVERVIEW
 ///
-/// This enum contains types of cable load constraints.
+/// This enum contains types of constraint limits.
 enum class ConstraintLimitType {
   kHorizontalTension,
   kCatenaryConstant,
