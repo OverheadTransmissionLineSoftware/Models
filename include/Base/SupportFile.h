@@ -14,6 +14,13 @@ double Round(const double& number, const int& precision);
 ///
 /// This is a 2D point, with members being of type 'double'.
 struct Point2D {
+ public:
+  /// \brief Default constructor.
+  Point2D();
+
+  /// \brief Alternate constructor.
+  Point2D(const double& x_value, const double& y_value);
+
   /// \var x
   ///   The x value of the point.
   double x;
@@ -27,6 +34,13 @@ struct Point2D {
 ///
 /// This is a 3D point, with members being of type 'double'.
 struct Point3D {
+ public:
+  /// \brief Default constructor.
+  Point3D();
+
+  /// \brief Alternate constructor.
+  Point3D(const double& x_value, const double& y_value, const double& z_value);
+
   /// \var x
   ///   The x value of the point.
   double x;
