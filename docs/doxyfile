@@ -748,23 +748,23 @@ INPUT                  = "../include/Base/convert_units.h" \
                          "../include/Base/point.h" \
                          "../include/Base/polynomial.h" \
                          "../include/Base/vector.h" \
-                         "../include/TransmissionLine/Cable.h" \
-                         "../include/TransmissionLine/CableLoadCase.h" \
-                         "../include/TransmissionLine/CableLoadConstraint.h" \
-                         "../include/TransmissionLine/CableUnitLoadCalculator.h" \
-                         "../include/TransmissionLine/Catenary.h" \
-                         "../include/TransmissionLine/WeatherLoadCase.h" \
+                         "../include/TransmissionLine/cable.h" \
+                         "../include/TransmissionLine/cable_load_case.h" \
+                         "../include/TransmissionLine/cable_load_constraint.h" \
+                         "../include/TransmissionLine/cable_unit_load_calculator.h" \
+                         "../include/TransmissionLine/catenary.h" \
+                         "../include/TransmissionLine/weather_load_case.h" \
                          "../src/Base/convert_units.cc" \
                          "../src/Base/geometric_shapes.cc" \
                          "../src/Base/point.cc" \
                          "../src/Base/polynomial.cc" \
                          "../src/Base/vector.cc" \
-                         "../src/TransmissionLine/Cable.cc" \
-                         "../src/TransmissionLine/CableLoadCase.cc" \
-                         "../src/TransmissionLine/CableLoadConstraint.cc" \
-                         "../src/TransmissionLine/CableUnitLoadCalculator.cc" \
-                         "../src/TransmissionLine/Catenary.cc" \
-                         "../src/TransmissionLine/WeatherLoadCase.cc"
+                         "../src/TransmissionLine/cable.cc" \
+                         "../src/TransmissionLine/cable_load_case.cc" \
+                         "../src/TransmissionLine/cable_load_constraint.cc" \
+                         "../src/TransmissionLine/cable_unit_load_calculator.cc" \
+                         "../src/TransmissionLine/catenary.cc" \
+                         "../src/TransmissionLine/weather_load_case.cc"
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses

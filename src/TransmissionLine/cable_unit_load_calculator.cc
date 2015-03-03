@@ -3,8 +3,8 @@
 
 #include <cmath>
 
-#include "include/Base/GeometricShapes.h"
-#include "include/TransmissionLine/CableUnitLoadCalculator.h"
+#include "include/Base/geometric_shapes.h"
+#include "include/TransmissionLine/cable_unit_load_calculator.h"
 
 CableUnitLoadCalculator::CableUnitLoadCalculator() {
   diameter_cable_ = -999999;
@@ -47,7 +47,7 @@ bool CableUnitLoadCalculator::Validate(
 ///
 /// The transverse load on the cable is solved using the following formula:
 /// \f[ T = AP \f]
-Vector2D CableUnitLoadCalculator::UnitCableLoad(
+Vector2d CableUnitLoadCalculator::UnitCableLoad(
     const WeatherLoadCase& case_load_weather) const {
 
   Cylinder cylinder_bare;
@@ -64,7 +64,7 @@ Vector2D CableUnitLoadCalculator::UnitCableLoad(
   const double weight_ice = volume_ice * density_ice;
 
   // transverse unit weight
-  Vector2D load_unit_cable;
+  Vector2d load_unit_cable;
   load_unit_cable.set_x(cylinder_iced.diameter() * cylinder_iced.length()
                         * case_load_weather.pressure_wind);
 

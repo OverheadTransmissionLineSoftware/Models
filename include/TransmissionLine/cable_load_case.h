@@ -7,7 +7,7 @@
 #include <list>
 #include <string>
 
-#include "include/Base/SupportFile.h"
+#include "include/Base/vector.h"
 
 /// \par OVERVIEW
 ///
@@ -33,7 +33,7 @@ struct CableLoadCase {
   /// \var load_unit
   ///   The load per unit length on the cable. The x component is transverse,
   ///   and the y component is vertical.
-  Vector2D load_unit;
+  Vector2d load_unit;
 
   /// \var temperature_cable
   ///   The temperature of the cable.

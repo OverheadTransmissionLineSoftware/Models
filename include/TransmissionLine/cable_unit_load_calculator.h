@@ -7,8 +7,8 @@
 #include <list>
 #include <string>
 
-#include "include/Base/SupportFile.h"
-#include "include/TransmissionLine/WeatherLoadCase.h"
+#include "include/Base/vector.h"
+#include "include/TransmissionLine/weather_load_case.h"
 
 /// \par OVERVIEW
 ///
@@ -35,7 +35,7 @@ class CableUnitLoadCalculator {
   ///   The weather load case.
   /// \return The vector load per unit length of cable. X is transverse, Y is
   ///   vertical.
-  Vector2D UnitCableLoad(const WeatherLoadCase& case_load_weather) const;
+  Vector2d UnitCableLoad(const WeatherLoadCase& case_load_weather) const;
 
   /// \brief Validates member variables.
   /// \param[in] is_included_warnings
