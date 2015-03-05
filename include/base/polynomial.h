@@ -1,8 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef BASE_POLYNOMIAL_H_
-#define BASE_POLYNOMIAL_H_
+#ifndef TLSLIBRARIES_BASE_POLYNOMIAL_H_
+#define TLSLIBRARIES_BASE_POLYNOMIAL_H_
 
 #include <list>
 #include <string>
@@ -99,4 +99,4 @@ class Polynomial {
   mutable bool is_updated_derivate_;
 };
 
-#endif // BASE_POLYNOMIAL_H_
+#endif // TLSLIBRARIES_BASE_POLYNOMIAL_H_

@@ -1,8 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef BASE_CONVERT_UNITS_H_
-#define BASE_CONVERT_UNITS_H_
+#ifndef TLSLIBRARIES_BASE_CONVERTUNITS_H_
+#define TLSLIBRARIES_BASE_CONVERTUNITS_H_
 
 namespace convertunits {
 
@@ -24,4 +24,4 @@ double Round(const double& number, const int& precision);
 
 } // namespace supportfunctions
 
-#endif // BASE_CONVERT_UNITS_H_
+#endif // TLSLIBRARIES_BASE_CONVERTUNITS_H_
