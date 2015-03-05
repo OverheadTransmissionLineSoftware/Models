@@ -7,33 +7,30 @@
 
 #include "base/convert_units.h"
 
-Catenary2D::Catenary2D() {
+Catenary2d::Catenary2d() {
   tension_horizontal_ = -999999;
   weight_unit_ = -999999;
 
   is_updated_points_end_ = true;
 }
 
-Catenary2D::~Catenary2D() {
+Catenary2d::~Catenary2d() {
 }
 
 /// \f[ \frac{H}{w} = \frac{HorizontalTension}{UnitWeight} \f]
-double Catenary2D::Constant() const {
-
-  double constant = -999999;
-
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return constant;
-    }
-  }
+double Catenary2d::Constant() const {
 
   return tension_horizontal_ / weight_unit_;
 }
 
+double Catenary2d::ConstantMinimum(const double& spacing_endpoints) {
+
+  return spacing_endpoints / 2;
+}
+
 /// Solves for length and direction from origin, and then converts to
 /// coordinates.
-Point2d Catenary2D::Coordinate(const double& position_fraction,
+Point2d Catenary2d::Coordinate(const double& position_fraction,
                                const bool& is_shifted_origin) const {
   Point2d coordinate;
 
@@ -99,7 +96,7 @@ Point2d Catenary2D::Coordinate(const double& position_fraction,
   return coordinate;
 }
 
-Point2d Catenary2D::CoordinateChord(const double& position_fraction,
+Point2d Catenary2d::CoordinateChord(const double& position_fraction,
                                     const bool& is_shifted_origin) const {
   Point2d coordinate_chord;
 
@@ -133,8 +130,8 @@ Point2d Catenary2D::CoordinateChord(const double& position_fraction,
 /// origin to the left endpoint and the length from the origin to the right
 /// endpoint are summed. If the origin is beyond an endpoint, the length to the
 /// closest endpoint is treated as negative.
-/// @see Catenary2D::LengthFromOrigin
-double Catenary2D::Length() const {
+/// @see Catenary2d::LengthFromOrigin
+double Catenary2d::Length() const {
 
   double length = -999999;
 
@@ -164,7 +161,7 @@ double Catenary2D::Length() const {
   return length;
 }
 
-double Catenary2D::LengthSlack() const {
+double Catenary2d::LengthSlack() const {
 
   if (IsUpdated() == false) {
     if (Update() == false) {
@@ -175,7 +172,7 @@ double Catenary2D::LengthSlack() const {
   return Length() - spacing_endpoints().Magnitude();
 }
 
-double Catenary2D::PositionFractionOrigin() const {
+double Catenary2d::PositionFractionOrigin() const {
 
   if (IsUpdated() == false) {
     if (Update() == false) {
@@ -187,7 +184,7 @@ double Catenary2D::PositionFractionOrigin() const {
   return PositionFraction(0);
 }
 
-double Catenary2D::PositionFractionSagPoint() const {
+double Catenary2d::PositionFractionSagPoint() const {
 
   if (IsUpdated() == false) {
     if (Update() == false) {
@@ -201,7 +198,7 @@ double Catenary2D::PositionFractionSagPoint() const {
   return PositionFraction(tangent_angle);
 }
 
-double Catenary2D::Sag() const {
+double Catenary2d::Sag() const {
 
   if (IsUpdated() == false) {
     if (Update() == false) {
@@ -222,7 +219,7 @@ double Catenary2D::Sag() const {
   return coordinate_chord.y - coordinate_catenary.y;
 }
 
-double Catenary2D::TangentAngle(const double& position_fraction,
+double Catenary2d::TangentAngle(const double& position_fraction,
                                 const AxisDirectionType& direction) const {
   if (IsUpdated() == false) {
     if (Update() == false) {
@@ -251,7 +248,7 @@ double Catenary2D::TangentAngle(const double& position_fraction,
 /// based on the direction the vector is pointing.
 /// Slope equation is:
 /// \f[ Slope = sinh \left( \frac{x}{\frac{H}{w}} \right) \f]
-Vector2d Catenary2D::TangentVector(const double& position_fraction,
+Vector2d Catenary2d::TangentVector(const double& position_fraction,
                                    const AxisDirectionType& direction) const {
   Vector2d tangent_vector;
 
@@ -280,7 +277,7 @@ Vector2d Catenary2D::TangentVector(const double& position_fraction,
   return tangent_vector;
 }
 
-double Catenary2D::Tension(const double& position_fraction) const {
+double Catenary2d::Tension(const double& position_fraction) const {
 
   if (IsUpdated() == false) {
     if (Update() == false) {
@@ -298,8 +295,8 @@ double Catenary2D::Tension(const double& position_fraction) const {
 /// A tangent unit vector is calculated and then multiplied by the tension magnitude.
 /// The tension magnitude equation is:
 /// \f[ Tension = H cosh \left( \frac{x}{\frac{H}{w}} \right) \f]
-/// @see Catenary2D::TangentVector
-Vector2d Catenary2D::Tension(const double& position_fraction,
+/// @see Catenary2d::TangentVector
+Vector2d Catenary2d::Tension(const double& position_fraction,
                              const AxisDirectionType& direction) const {
   Vector2d vector_tangent;
 
@@ -317,7 +314,7 @@ Vector2d Catenary2D::Tension(const double& position_fraction,
   return vector_tangent;
 }
 
-double Catenary2D::TensionAverage(const int& num_points) const {
+double Catenary2d::TensionAverage(const int& num_points) const {
 
   double tension_average = -999999;
 
@@ -362,7 +359,7 @@ double Catenary2D::TensionAverage(const int& num_points) const {
   return tension_average;
 }
 
-double Catenary2D::TensionMax() const {
+double Catenary2d::TensionMax() const {
 
   double tension_max = -999999;
 
@@ -380,7 +377,7 @@ double Catenary2D::TensionMax() const {
   }
 }
 
-bool Catenary2D::Validate(const bool& is_included_warnings,
+bool Catenary2d::Validate(const bool& is_included_warnings,
                           std::list<std::string>* messages_error) const {
   bool is_valid = true;
 
@@ -427,43 +424,43 @@ bool Catenary2D::Validate(const bool& is_included_warnings,
   return is_valid;
 }
 
-void Catenary2D::set_spacing_endpoints(const Vector2d& spacing_endpoints) {
+void Catenary2d::set_spacing_endpoints(const Vector2d& spacing_endpoints) {
 
   spacing_endpoints_ = spacing_endpoints;
 
   is_updated_points_end_ = false;
 }
 
-void Catenary2D::set_tension_horizontal(const double& tension_horizontal) {
+void Catenary2d::set_tension_horizontal(const double& tension_horizontal) {
 
   tension_horizontal_ = tension_horizontal;
 
   is_updated_points_end_ = false;
 }
 
-void Catenary2D::set_weight_unit(const double& weight_unit) {
+void Catenary2d::set_weight_unit(const double& weight_unit) {
 
   weight_unit_ = weight_unit;
 
   is_updated_points_end_ = false;
 }
 
-Vector2d Catenary2D::spacing_endpoints() const {
+Vector2d Catenary2d::spacing_endpoints() const {
   return spacing_endpoints_;
 }
 
-double Catenary2D::tension_horizontal() const {
+double Catenary2d::tension_horizontal() const {
   return tension_horizontal_;
 }
 
-double Catenary2D::weight_unit() const {
+double Catenary2d::weight_unit() const {
   return weight_unit_;
 }
 
 /// The function is a derivation of the equation for curve length.
-/// @see Catenary2D::CurveLengthFromOrigin
+/// @see Catenary2d::CurveLengthFromOrigin
 /// \f[ x = \frac{H}{w} sinh^{-1} \left(\frac{L}{\frac{H}{w}}\right) \f]
-double Catenary2D::CoordinateX(
+double Catenary2d::CoordinateX(
     const double& length_origin_to_position,
     const AxisDirectionType& direction_origin_to_position) const {
 
@@ -486,7 +483,7 @@ double Catenary2D::CoordinateX(
 }
 
 /// \f[ y = \frac{H}{w} \cosh \left(\frac{x}{\frac{H}{w}-1}\right) \f]
-double Catenary2D::CoordinateY(
+double Catenary2d::CoordinateY(
     const double& length_origin_to_position,
     const AxisDirectionType& direction_origin_to_position) const {
 
@@ -498,7 +495,7 @@ double Catenary2D::CoordinateY(
   return (h/w) * (cosh(x / (h/w)) - 1);
 }
 
-bool Catenary2D::IsUpdated() const {
+bool Catenary2d::IsUpdated() const {
 
   if (is_updated_points_end_ == true) {
     return true;
@@ -508,7 +505,7 @@ bool Catenary2D::IsUpdated() const {
 }
 
 /// \f[ CurveLength = \left| \frac{H}{w} sinh^{-1} \left(\frac{x}{\frac{H}{w}}\right) \right| \f]
-double Catenary2D::LengthFromOrigin(const Point2d& coordinate) const {
+double Catenary2d::LengthFromOrigin(const Point2d& coordinate) const {
 
   const double x = coordinate.x;
   const double h = tension_horizontal_;
@@ -517,7 +514,7 @@ double Catenary2D::LengthFromOrigin(const Point2d& coordinate) const {
   return std::abs((h/w) * sinh(x / (h/w)));
 }
 
-double Catenary2D::PositionFraction(const double& tangent_angle) const {
+double Catenary2d::PositionFraction(const double& tangent_angle) const {
 
   double position_fraction_lower = 0;
   double position_fraction_upper = 1;
@@ -562,7 +559,7 @@ double Catenary2D::PositionFraction(const double& tangent_angle) const {
   }
 }
 
-bool Catenary2D::Update() const {
+bool Catenary2d::Update() const {
 
   if (is_updated_points_end_ == false) {
 
@@ -579,7 +576,7 @@ bool Catenary2D::Update() const {
 /// Hyperbolic identity equations are used to solve for the endpoint coordinates:
 /// \f[ xBOL = \frac{A}{2} - \frac{H}{w} sinh^{-1} \left( \frac{\frac{B}{2}}{ \frac{H}{w} sinh \left( \frac{\frac{A}{2}}{\frac{H}{w}} \right)} \right) \f]
 /// \f[ xAOL = \frac{A}{2} + \frac{H}{w} sinh^{-1} \left( \frac{\frac{B}{2}}{ \frac{H}{w} sinh \left( \frac{\frac{A}{2}}{\frac{H}{w}} \right)} \right) \f]
-bool Catenary2D::UpdateEndPoints() const {
+bool Catenary2d::UpdateEndPoints() const {
 
   const double h = tension_horizontal_;
   const double w = weight_unit_;
@@ -600,13 +597,36 @@ bool Catenary2D::UpdateEndPoints() const {
   return true;
 }
 
-Catenary3D::Catenary3D() {
+bool Catenary2d::ValidateCurveAndSpacing(
+    const bool& is_included_warnings,
+    std::list<std::string>* messages_error) const {
+
+  bool validate = true;
+
+  const double constant_minimum =
+      ConstantMinimum(spacing_endpoints_.Magnitude());
+
+  const double constant = Constant();
+
+  if (constant < constant_minimum) {
+
+    validate = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back("CATENARY 2D - Invalid H/w and endpoint spacing"
+                                "combination");
+    }
+  }
+
+  return validate;
+}
+
+Catenary3d::Catenary3d() {
   is_updated_catenary_2d_ = false;
 }
 
-Catenary3D::~Catenary3D() {}
+Catenary3d::~Catenary3d() {}
 
-double Catenary3D::Constant() const {
+double Catenary3d::Constant() const {
 
   double constant = -999999;
 
@@ -619,7 +639,12 @@ double Catenary3D::Constant() const {
   return catenary_2d_.Constant();
 }
 
-Point3d Catenary3D::Coordinate(const double& position_fraction,
+double Catenary3d::ConstantMinimum(const double& spacing_endpoints) {
+
+  return Catenary2d::ConstantMinimum(spacing_endpoints);
+}
+
+Point3d Catenary3d::Coordinate(const double& position_fraction,
                                const bool& is_shifted_origin) const {
   Point3d coordinate_catenary;
 
@@ -656,7 +681,7 @@ Point3d Catenary3D::Coordinate(const double& position_fraction,
   return coordinate_catenary;
 }
 
-Point3d Catenary3D::CoordinateChord(const double& position_fraction,
+Point3d Catenary3d::CoordinateChord(const double& position_fraction,
                                     const bool& is_shifted_origin) const {
   Point3d coordinate_chord;
 
@@ -678,7 +703,7 @@ Point3d Catenary3D::CoordinateChord(const double& position_fraction,
   return coordinate_chord;
 }
 
-double Catenary3D::Length() const {
+double Catenary3d::Length() const {
 
   double length = -999999;
 
@@ -691,7 +716,7 @@ double Catenary3D::Length() const {
   return catenary_2d_.Length();
 }
 
-double Catenary3D::LengthSlack() const {
+double Catenary3d::LengthSlack() const {
 
   if (IsUpdated() == false) {
     if (Update() == false) {
@@ -702,7 +727,7 @@ double Catenary3D::LengthSlack() const {
   return catenary_2d_.LengthSlack();
 }
 
-double Catenary3D::PositionFractionOrigin() const {
+double Catenary3d::PositionFractionOrigin() const {
 
   if (IsUpdated() == false) {
     if (Update() == false) {
@@ -713,7 +738,7 @@ double Catenary3D::PositionFractionOrigin() const {
   return catenary_2d_.PositionFractionOrigin();
 }
 
-double Catenary3D::PositionFractionSagPoint() const {
+double Catenary3d::PositionFractionSagPoint() const {
 
   if (IsUpdated() == false) {
     if (Update() == false) {
@@ -724,7 +749,7 @@ double Catenary3D::PositionFractionSagPoint() const {
   return catenary_2d_.PositionFractionSagPoint();
 }
 
-double Catenary3D::Sag() const {
+double Catenary3d::Sag() const {
 
   if (IsUpdated() == false) {
     if (Update() == false) {
@@ -735,7 +760,7 @@ double Catenary3D::Sag() const {
   return catenary_2d_.Sag();
 }
 
-double Catenary3D::SwingAngle() const {
+double Catenary3d::SwingAngle() const {
 
   double angle_swing = -999999;
 
@@ -750,7 +775,7 @@ double Catenary3D::SwingAngle() const {
   return angle_swing;
 }
 
-double Catenary3D::TangentAngleTransverse(
+double Catenary3d::TangentAngleTransverse(
     const double& position_fraction,
     const AxisDirectionType& direction) const {
 
@@ -771,7 +796,7 @@ double Catenary3D::TangentAngleTransverse(
   return tangent_vector.Angle(Plane2dType::kZy, true);
 }
 
-double Catenary3D::TangentAngleVertical(
+double Catenary3d::TangentAngleVertical(
     const double& position_fraction,
     const AxisDirectionType& direction) const {
 
@@ -791,7 +816,7 @@ double Catenary3D::TangentAngleVertical(
   return tangent_vector.Angle(Plane2dType::kXz, true);
 }
 
-Vector3d Catenary3D::TangentVector(const double& position_fraction,
+Vector3d Catenary3d::TangentVector(const double& position_fraction,
                                    const AxisDirectionType& direction) const {
   Vector3d tangent_vector;
 
@@ -840,7 +865,7 @@ Vector3d Catenary3D::TangentVector(const double& position_fraction,
   return tangent_vector;
 }
 
-double Catenary3D::Tension(const double& position_fraction) const {
+double Catenary3d::Tension(const double& position_fraction) const {
 
   if (IsUpdated() == false) {
     if (Update() == false) {
@@ -851,7 +876,7 @@ double Catenary3D::Tension(const double& position_fraction) const {
   return catenary_2d_.Tension(position_fraction);
 }
 
-Vector3d Catenary3D::Tension(const double& position_fraction,
+Vector3d Catenary3d::Tension(const double& position_fraction,
                              const AxisDirectionType& direction) const {
   Vector3d tension_vector;
 
@@ -873,7 +898,7 @@ Vector3d Catenary3D::Tension(const double& position_fraction,
   return tangent_vector;
 }
 
-double Catenary3D::TensionAverage(const int& num_points) const {
+double Catenary3d::TensionAverage(const int& num_points) const {
 
   if (IsUpdated() == false) {
     if (Update() == false) {
@@ -884,7 +909,7 @@ double Catenary3D::TensionAverage(const int& num_points) const {
   return catenary_2d_.TensionAverage(num_points);
 }
 
-double Catenary3D::TensionMax() const {
+double Catenary3d::TensionMax() const {
 
   if (IsUpdated() == false) {
     if (Update() == false) {
@@ -895,7 +920,7 @@ double Catenary3D::TensionMax() const {
   return catenary_2d_.TensionMax();
 }
 
-bool Catenary3D::Validate(const bool& is_included_warnings,
+bool Catenary3d::Validate(const bool& is_included_warnings,
                           std::list<std::string>* messages_error) const {
   bool is_valid = true;
 
@@ -963,37 +988,37 @@ bool Catenary3D::Validate(const bool& is_included_warnings,
   return is_valid;
 }
 
-void Catenary3D::set_spacing_endpoints(const Vector3d& spacing_endpoints) {
+void Catenary3d::set_spacing_endpoints(const Vector3d& spacing_endpoints) {
 
   spacing_endpoints_ = spacing_endpoints;
 
   is_updated_catenary_2d_ = false;
 }
 
-void Catenary3D::set_tension_horizontal(const double& tension_horizontal) {
+void Catenary3d::set_tension_horizontal(const double& tension_horizontal) {
   catenary_2d_.set_tension_horizontal(tension_horizontal);
 }
 
-void Catenary3D::set_weight_unit(const Vector3d& weight_unit) {
+void Catenary3d::set_weight_unit(const Vector3d& weight_unit) {
 
   weight_unit_ = weight_unit;
 
   is_updated_catenary_2d_ = false;
 }
 
-Vector3d Catenary3D::spacing_endpoints() const {
+Vector3d Catenary3d::spacing_endpoints() const {
   return spacing_endpoints_;
 }
 
-double Catenary3D::tension_horizontal() const {
+double Catenary3d::tension_horizontal() const {
   return catenary_2d_.tension_horizontal();
 }
 
-Vector3d Catenary3D::weight_unit() const {
+Vector3d Catenary3d::weight_unit() const {
   return weight_unit_;
 }
 
-bool Catenary3D::IsUpdated() const {
+bool Catenary3d::IsUpdated() const {
 
   if (is_updated_catenary_2d_ == true) {
     return true;
@@ -1002,11 +1027,11 @@ bool Catenary3D::IsUpdated() const {
   }
 }
 
-bool Catenary3D::Update() const {
+bool Catenary3d::Update() const {
 
   if (is_updated_catenary_2d_ == false) {
 
-    is_updated_catenary_2d_ = UpdateCatenary2D();
+    is_updated_catenary_2d_ = UpdateCatenary2d();
     if (is_updated_catenary_2d_ == false) {
       return false;
     }
@@ -1016,7 +1041,7 @@ bool Catenary3D::Update() const {
   return true;
 }
 
-bool Catenary3D::UpdateCatenary2D() const {
+bool Catenary3d::UpdateCatenary2d() const {
 
   const double b = spacing_endpoints_.z();
   const double c = spacing_endpoints_.Magnitude();
