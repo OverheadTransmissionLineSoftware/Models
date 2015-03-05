@@ -1,8 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef BASE_POINT_H_
-#define BASE_POINT_H_
+#ifndef TLSLIBRARIES_BASE_POINT_H_
+#define TLSLIBRARIES_BASE_POINT_H_
 
 /// \par OVERVIEW
 ///
@@ -58,4 +58,4 @@ struct Point3d {
   double z;
 };
 
-#endif // BASE_POINT_H_
+#endif // TLSLIBRARIES_BASE_POINT_H_

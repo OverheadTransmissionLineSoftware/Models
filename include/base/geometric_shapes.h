@@ -1,8 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef BASE_GEOMETRICSHAPES_H_
-#define BASE_GEOMETRICSHAPES_H_
+#ifndef TLSLIBRARIES_BASE_GEOMETRICSHAPES_H_
+#define TLSLIBRARIES_BASE_GEOMETRICSHAPES_H_
 
 #include <list>
 #include <string>
@@ -82,4 +82,4 @@ class Cylinder : public Shape {
   double length_;
 };
 
-#endif // BASE_GEOMETRICSHAPES_H_
+#endif // TLSLIBRARIES_BASE_GEOMETRICSHAPES_H_
