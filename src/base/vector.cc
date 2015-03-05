@@ -1,73 +1,48 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "include/Base/SupportFile.h"
+#include "base/vector.h"
 
 #include <cmath>
-#include <string>
 
-double Round(const double& number, const int& precision) {
-  return round(number * pow(10, precision)) / pow(10, precision);
-}
+#include "base/convert_units.h"
 
-Point2D::Point2D() {
-  x = -999999;
-  y = -999999;
-}
-
-Point2D::Point2D(const double& x_value, const double& y_value) {
-  x = x_value;
-  y = y_value;
-}
-
-Point3D::Point3D() {
-  x = -999999;
-  y = -999999;
-  z = -999999;
-}
-
-Point3D::Point3D(const double& x_value, const double& y_value,
-                 const double& z_value) {
-  x = x_value;
-  y = y_value;
-  z = z_value;
-}
-
-Vector2D::Vector2D() {
+Vector2d::Vector2d() {
   x_ = -999999;
   y_ = -999999;
 }
 
-Vector2D::Vector2D(const double& x, const double& y) {
+Vector2d::Vector2d(const double& x, const double& y) {
   x_ = x;
   y_ = y;
 }
 
-Vector2D::~Vector2D() {}
+Vector2d::~Vector2d() {}
 
-/// Determine which quadrant (I, II, III, IV) the vector is in, and use the arc
-/// tangent function to calculate the angle.
-double Vector2D::Angle(const bool& is_enabled_negative_angles) const {
-  double angle;
+/// Determines which quadrant (I,II, III, IV) the vector is in, and uses the
+/// arc tangent function to calculate the angle.
+double Vector2d::Angle(const bool& is_enabled_negative_angles) const {
+
+  double angle = -999999;
 
   // use standard trigonometry to solve for angle of vector
   if (x_ == 0 && 0 < y_) {
-    angle = (kPi / 2) * kRadiansToDegrees;
+    angle = (convertunits::kPi / 2) * convertunits::kRadiansToDegrees;
   } else if (x_ == 0 && y_ < 0) {
-    angle = 3 * (kPi / 2) * kRadiansToDegrees;
+    angle = 3 * (convertunits::kPi / 2) * convertunits::kRadiansToDegrees;
   } else {
     // select quadrant
     if (0 < y_) {
       if (0 < x_) {        // quadrant I
-        angle = atan(y_ / x_) * kRadiansToDegrees;
+        angle = atan(y_ / x_) * convertunits::kRadiansToDegrees;
       } else if (x_ < 0) { // quadrant II
-        angle = 180 + atan(y_ / x_) * kRadiansToDegrees;
+        angle = 180 + atan(y_ / x_) * convertunits::kRadiansToDegrees;
       }
     } else if (y_ <= 0) {
       if (x_ < 0) {        // quadrant III
-        angle = 180 + atan(y_ / x_) * kRadiansToDegrees;
+        angle = 180 + atan(y_ / x_) * convertunits::kRadiansToDegrees;
       } else if (0 < x_) { // quadrant IV
-        angle = 360 + atan(y_ / x_) * kRadiansToDegrees;
+        angle = 360 + atan(y_ / x_) * convertunits::kRadiansToDegrees;
       }
     }
   }
@@ -80,15 +55,14 @@ double Vector2D::Angle(const bool& is_enabled_negative_angles) const {
   return angle;
 }
 
-/// The square root of the sum of the squares.
-double Vector2D::Magnitude() const {
+double Vector2d::Magnitude() const {
   return sqrt( pow(x_, 2) + pow(y_, 2) );
 }
 
-/// The vector is converted into the radial coordinate system (magnitude and
-/// angle), rotated, and then vector components are converted back into
-/// Cartesian components.
-void Vector2D::Rotate(const double& angle_rotation) {
+/// Converts the vector into the radial coordinate system (magnitude and angle)
+/// applies the angle rotation, and then converts back into cartesian
+/// components.
+void Vector2d::Rotate(const double& angle_rotation) {
   // check if rotation angle is zero and exit if so
   if (std::abs(angle_rotation) < 0.00005)
     return;
@@ -101,54 +75,53 @@ void Vector2D::Rotate(const double& angle_rotation) {
   const double angle_new = angle + angle_rotation;
 
   // resolve back to new x and y cartesian components
-  x_ = magnitude * cos(angle_new * kDegreesToRadians);
-  y_ = magnitude * sin(angle_new * kDegreesToRadians);
+  x_ = magnitude * cos(angle_new * convertunits::kDegreesToRadians);
+  y_ = magnitude * sin(angle_new * convertunits::kDegreesToRadians);
 }
 
-/// The vector components are multiplied by the scale factor.
-void Vector2D::Scale(const double& factor_scale) {
+void Vector2d::Scale(const double& factor_scale) {
   x_ = x_ * factor_scale;
   y_ = y_ * factor_scale;
 }
 
-void Vector2D::set_x(const double& x) {
+void Vector2d::set_x(const double& x) {
   x_ = x;
 }
 
-void Vector2D::set_y(const double& y) {
+void Vector2d::set_y(const double& y) {
   y_ = y;
 }
 
-double Vector2D::x() const {
+double Vector2d::x() const {
   return x_;
 }
 
-double Vector2D::y() const {
+double Vector2d::y() const {
   return y_;
 }
 
-Vector3D::Vector3D() {
+Vector3d::Vector3d() {
   x_ = -999999;
   y_ = -999999;
   z_ = -999999;
 }
 
-Vector3D::Vector3D(const double& x, const double& y, const double& z) {
+Vector3d::Vector3d(const double& x, const double& y, const double& z) {
   x_ = x;
   y_ = y;
   z_ = z;
 }
 
-Vector3D::~Vector3D() {}
+Vector3d::~Vector3d() {}
 
 /// The planar vector components are assigned to a 2D vector. The angle is
-/// calculated using the Vector2D::Angle function.
-/// \see Vector2D
-double Vector3D::Angle(const Plane2dType& plane,
+/// calculated using the Vector2d::Angle function.
+/// \see Vector2d
+double Vector3d::Angle(const Plane2dType& plane,
                        const bool& is_enabled_negative_angles) const {
 
   // create a 2D vector of planar components
-  Vector2D vector_2d;
+  Vector2d vector_2d;
 
   // set vector components based on selected plane
   if (plane == Plane2dType::kXy) {
@@ -174,15 +147,14 @@ double Vector3D::Angle(const Plane2dType& plane,
   return vector_2d.Angle(is_enabled_negative_angles);
 }
 
-/// The square root of the sum of the squares.
-double Vector3D::Magnitude() const {
+double Vector3d::Magnitude() const {
   return sqrt( pow(x_, 2) + pow(y_, 2) + pow(z_, 2) );
 }
 
 /// The planar vector components are assigned to a 2D vector. The rotation is
-/// done using the Vector2D::Rotate function.
-/// \see Vector2D
-void Vector3D::Rotate(const Plane2dType& plane, const double& angle_rotation) {
+/// done using the Vector2d::Rotate function.
+/// \see Vector2d
+void Vector3d::Rotate(const Plane2dType& plane, const double& angle_rotation) {
 
   // check if rotation angle is zero
   if (std::abs(angle_rotation) < 0.00005) {
@@ -190,7 +162,7 @@ void Vector3D::Rotate(const Plane2dType& plane, const double& angle_rotation) {
   }
 
   // create a 2D vector of the planar components
-  Vector2D vector_2d;
+  Vector2d vector_2d;
 
   // set vector components based on selected plane
   if (plane == Plane2dType::kXy) {
@@ -239,32 +211,32 @@ void Vector3D::Rotate(const Plane2dType& plane, const double& angle_rotation) {
 }
 
 /// The vector components are multiplied by the scale factor.
-void Vector3D::Scale(const double& factor_scale) {
+void Vector3d::Scale(const double& factor_scale) {
   x_ = x_ * factor_scale;
   y_ = y_ * factor_scale;
   z_ = z_ * factor_scale;
 }
 
-void Vector3D::set_x(const double& x) {
+void Vector3d::set_x(const double& x) {
   x_ = x;
 }
 
-void Vector3D::set_y(const double& y) {
+void Vector3d::set_y(const double& y) {
   y_ = y;
 }
 
-void Vector3D::set_z(const double& z) {
+void Vector3d::set_z(const double& z) {
   z_ = z;
 }
 
-double Vector3D::x() const {
+double Vector3d::x() const {
   return x_;
 }
 
-double Vector3D::y() const {
+double Vector3d::y() const {
   return y_;
 }
 
-double Vector3D::z() const {
+double Vector3d::z() const {
   return z_;
 }

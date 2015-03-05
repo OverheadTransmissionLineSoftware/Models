@@ -1,11 +1,11 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "include/Base/Polynomial.h"
+#include "base/polynomial.h"
 
 #include <cmath>
 
-#include "include/Base/SupportFile.h"
+#include "base/point.h"
 
 Polynomial::Polynomial() {
   derivative_ = nullptr;
@@ -44,10 +44,10 @@ double Polynomial::x(const double& y, const int& decimal_precision_y,
   polynomial_shifted.set_coefficients(coefficients_shifted);
 
   // function point
-  Point2D point_function = Point2D(x_guess, -999999);
+  Point2d point_function = Point2d(x_guess, -999999);
 
   // derivative point
-  Point2D point_derivative = Point2D(x_guess, -999999);
+  Point2d point_derivative = Point2d(x_guess, -999999);
 
   // iterate until the value is within tolerance
   int iter = 0;

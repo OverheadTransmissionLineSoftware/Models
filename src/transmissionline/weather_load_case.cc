@@ -1,11 +1,9 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "include/TransmissionLine/WeatherLoadCase.h"
+#include "transmissionline/weather_load_case.h"
 
 #include <cmath>
-
-#include "include/Base/SupportFile.h"
 
 WeatherLoadCase::WeatherLoadCase() {
   density_ice = -999999;

@@ -1,8 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef BASE_POLYNOMIAL_H_
-#define BASE_POLYNOMIAL_H_
+#ifndef TLSLIBRARIES_BASE_POLYNOMIAL_H_
+#define TLSLIBRARIES_BASE_POLYNOMIAL_H_
 
 #include <list>
 #include <string>
@@ -22,14 +22,17 @@ class Polynomial {
   Polynomial();
 
   /// \brief Alternate constructor.
+  /// \param[in] coefficients
+  ///   A list of coefficients.
   Polynomial(const std::vector<double> coefficients);
 
   /// \brief Destructor.
   ~Polynomial();
 
-  /// \brief Gets the slope of the polynomial.
-  /// \param x
+  /// \brief Gets the slope.
+  /// \param[in] x
   ///   The x value for the point of slope.
+  /// \return The slope.
   double Slope(const double& x) const;
 
   /// \brief Gets the maximum polynomial order.
@@ -37,18 +40,21 @@ class Polynomial {
   int OrderMax() const;
 
   /// \brief Gets the x value.
-  /// \param y
-  ///   The y value for the polynomial.
-  /// \param decimal_precision_y
+  /// \param[in] y
+  ///   The y value.
+  /// \param[in] decimal_precision_y
   ///   An integer that controls the precision, or decimal place, the solution
   ///   must equal the target y value.
-  /// \param x_guess
+  /// \param[in] x_guess
   ///   An x value that is the starting guess for the iterative solution.
+  /// \return The x value.
   double x(const double& y, const int& decimal_precision_y,
            const double& x_guess) const;
 
   /// \brief Gets the y value.
-  /// \param x_value The x value at which the y value will be calculated.
+  /// \param[in] x
+  ///   The x value.
+  /// \return The y value.
   double y(const double& x) const;
 
   /// \brief Gets the polynomial coefficients.
@@ -60,7 +66,7 @@ class Polynomial {
   Polynomial derivative() const;
 
   /// \brief Sets the polynomial coefficients.
-  /// \param coefficients
+  /// \param[in] coefficients
   ///   A vector of polynomial coefficients. The vector index correlates to the
   ///   polynomial order.
   void set_coefficients(std::vector<double> coefficients);
@@ -93,4 +99,4 @@ class Polynomial {
   mutable bool is_updated_derivate_;
 };
 
-#endif // BASE_POLYNOMIAL_H_
+#endif // TLSLIBRARIES_BASE_POLYNOMIAL_H_

@@ -743,22 +743,28 @@ WARN_LOGFILE           = "./doxygen.log"
 # spaces.
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = "../include/Base/GeometricShapes.h" \
-                         "../include/Base/SupportFile.h" \
-                         "../include/TransmissionLine/Cable.h" \
-                         "../include/TransmissionLine/CableLoadCase.h" \
-                         "../include/TransmissionLine/CableLoadConstraint.h" \
-                         "../include/TransmissionLine/CableUnitLoadCalculator.h" \
-                         "../include/TransmissionLine/Catenary.h" \
-                         "../include/TransmissionLine/WeatherLoadCase.h" \
-                         "../src/Base/GeometricShapes.cc" \
-                         "../src/Base/SupportFile.cc" \
-                         "../src/TransmissionLine/Cable.cc" \
-                         "../src/TransmissionLine/CableLoadCase.cc" \
-                         "../src/TransmissionLine/CableLoadConstraint.cc" \
-                         "../src/TransmissionLine/CableUnitLoadCalculator.cc" \
-                         "../src/TransmissionLine/Catenary.cc" \
-                         "../src/TransmissionLine/WeatherLoadCase.cc"
+INPUT                  = "../include/base/convert_units.h" \
+                         "../include/base/geometric_shapes.h" \
+                         "../include/base/point.h" \
+                         "../include/base/polynomial.h" \
+                         "../include/base/vector.h" \
+                         "../include/transmissionline/cable.h" \
+                         "../include/transmissionline/cable_load_case.h" \
+                         "../include/transmissionline/cable_load_constraint.h" \
+                         "../include/transmissionline/cable_unit_load_calculator.h" \
+                         "../include/transmissionline/catenary.h" \
+                         "../include/transmissionline/weather_load_case.h" \
+                         "../src/base/convert_units.cc" \
+                         "../src/base/geometric_shapes.cc" \
+                         "../src/base/point.cc" \
+                         "../src/base/polynomial.cc" \
+                         "../src/base/vector.cc" \
+                         "../src/transmissionline/cable.cc" \
+                         "../src/transmissionline/cable_load_case.cc" \
+                         "../src/transmissionline/cable_load_constraint.cc" \
+                         "../src/transmissionline/cable_unit_load_calculator.cc" \
+                         "../src/transmissionline/catenary.cc" \
+                         "../src/transmissionline/weather_load_case.cc"
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
