@@ -7,8 +7,8 @@
 #include <list>
 #include <string>
 
-#include "include/base/vector.h"
-#include "include/transmissionline/weather_load_case.h"
+#include "base/vector.h"
+#include "transmissionline/weather_load_case.h"
 
 /// \par OVERVIEW
 ///
