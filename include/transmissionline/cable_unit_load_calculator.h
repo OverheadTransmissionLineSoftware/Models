@@ -31,7 +31,7 @@ class CableUnitLoadCalculator {
   ~CableUnitLoadCalculator();
 
   /// \brief Gets the load per unit length of cable.
-  /// \param case_load_weather
+  /// \param[in] case_load_weather
   ///   The weather load case.
   /// \return The vector load per unit length of cable. X is transverse, Y is
   ///   vertical.
