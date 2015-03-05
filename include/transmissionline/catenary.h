@@ -38,7 +38,7 @@ class Catenary2D {
 
   /// \brief Gets a coordinate point at a location on the curve.
   /// \param[in] position_fraction
-  ///   A decimal ranging from 0 and 1  that describes position on the curve by
+  ///   A decimal ranging from 0 and 1 that describes position on the curve by
   ///   the fraction of curve length from the left end point.
   /// \param[in] is_shifted_origin
   ///   A flag that shifts the coordinate system origin to the left end point.
@@ -50,7 +50,7 @@ class Catenary2D {
   /// \brief Gets a coordinate point at a location on the straight line
   ///   connecting the end points.
   /// \param[in] position_fraction
-  ///   A decimal ranging from 0 and 1  that describes position on the curve by
+  ///   A decimal ranging from 0 and 1 that describes position on the curve by
   ///   the fraction of curve length from the left end point.
   /// \param[in] is_shifted_origin
   ///   A flag that shifts the coordinate system origin to the left end point.
@@ -63,10 +63,18 @@ class Catenary2D {
   /// \return The curve length between endpoints.
   double Length() const;
 
-  /// \brief Gets the length of catenary slack.
+  /// \brief Gets the length of slack.
   /// \return The difference in length between the curve length and straight
   ///   line length.
   double LengthSlack() const;
+
+  /// \brief Gets the fraction fo the length that relates to a specific
+  ///   position on the catenary. This is referenced from the left end point.
+  /// \param[in] tangent_angle
+  ///   The tangent angle of a specific position on the catenary.
+  /// \return The fraction of the length for the catenary position, from the
+  ///   left end point.
+  double PositionFraction(const double& tangent_angle) const;
 
   /// \brief Gets the position fraction of the origin.
   /// \return The position fraction of the origin, or the lowpoint.
@@ -85,7 +93,7 @@ class Catenary2D {
   /// \brief Gets a tangent angle from the horizontal axis to the curve tangent
   ///   line.
   /// \param[in] position_fraction
-  ///   A decimal ranging from 0 and 1  that describes position on the curve by
+  ///   A decimal ranging from 0 and 1 that describes position on the curve by
   ///   the fraction of curve length from the left end point.
   /// \param[in] direction
   ///   The axis direction of the tangent line.
@@ -95,7 +103,7 @@ class Catenary2D {
 
   /// \brief Gets a tangent unit vector.
   /// \param[in] position_fraction
-  ///   A decimal ranging from 0 and 1  that describes position on the curve by
+  ///   A decimal ranging from 0 and 1 that describes position on the curve by
   ///   the fraction of curve length from the left end point.
   /// \param[in] direction
   ///   The axis direction of the tangent line.
@@ -105,14 +113,14 @@ class Catenary2D {
 
   /// \brief Gets the tension.
   /// \param[in] position_fraction
-  ///   A decimal ranging from 0 and 1  that describes position on the curve by
+  ///   A decimal ranging from 0 and 1 that describes position on the curve by
   ///   the fraction of curve length from the left end point.
   /// \return The tension at the location on the catenary.
   double Tension(const double& position_fraction) const;
 
   /// \brief Gets the tension.
   /// \param[in] position_fraction
-  ///   A decimal ranging from 0 and 1  that describes position on the curve by
+  ///   A decimal ranging from 0 and 1 that describes position on the curve by
   ///   the fraction of curve length from the left end point.
   /// \param[in] direction
   ///   The axis direction of the tangent line.
@@ -144,7 +152,7 @@ class Catenary2D {
 
   /// \brief Sets the endpoint spacing.
   /// \param[in] spacing_endpoints
-  ///   The vector spacing.
+  ///   The vector spacing between endpoints.
   void set_spacing_endpoints(const Vector2d& spacing_endpoints);
 
   /// \brief Sets the horizontal tension.
@@ -166,7 +174,7 @@ class Catenary2D {
   double tension_horizontal() const;
 
   /// \brief Gets the unit weight.
-  /// \return The copy of the unit weight.
+  /// \return A copy of the unit weight.
   double weight_unit() const;
 
  private:
@@ -201,14 +209,6 @@ class Catenary2D {
   ///   The coordinate for the specified position.
   /// \return The curve length from the catenary origin to the coordinate.
   double LengthFromOrigin(const Point2d& coordinate) const;
-
-  /// \brief Gets the fraction fo the length that relates to a specific
-  ///   position on the catenary. This is referenced from the left end point.
-  /// \param[in] tangent_angle
-  ///   The tangent angle of a speicifc position on the catenary.
-  /// \return The fraction of the length for the catenary position, from the
-  ///   left end point.
-  double PositionFraction(const double& tangent_angle) const;
 
   /// \brief Updates cached member variables and modifies control variables if
   ///   update is required.
@@ -264,10 +264,10 @@ class Catenary2D {
 ///  z = vertical
 class Catenary3D {
  public:
-  /// @brief Constructor.
+  /// \brief Constructor.
   Catenary3D();
 
-  /// @brief Destructor.
+  /// \brief Destructor.
   ~Catenary3D();
 
   /// \brief Gets the constant (H/w), which determines the shape of the curve.
@@ -276,7 +276,7 @@ class Catenary3D {
 
   /// \brief Gets a coordinate point at a location on the curve.
   /// \param[in] position_fraction
-  ///   A decimal ranging from 0 and 1  that describes position on the curve by
+  ///   A decimal ranging from 0 and 1 that describes position on the curve by
   ///   the fraction of curve length from the left end point.
   /// \param[in] is_shifted_origin
   ///   A flag that shifts the coordinate system origin to the left end point.
@@ -288,7 +288,7 @@ class Catenary3D {
   /// \brief Gets a coordinate point at a location on the straight line
   ///   connecting the end points.
   /// \param[in] position_fraction
-  ///   A decimal ranging from 0 and 1  that describes position on the curve by
+  ///   A decimal ranging from 0 and 1 that describes position on the curve by
   ///   the fraction of curve length from the left end point.
   /// \param[in] is_shifted_origin
   ///   A flag that shifts the coordinate system origin to the left end point.
@@ -301,7 +301,7 @@ class Catenary3D {
   /// \return The curve length between endpoints.
   double Length() const;
 
-  /// \brief Gets the length of catenary slack.
+  /// \brief Gets the length of slack.
   /// \return The difference in length between the curve length and straight-line
   ///    length.
   double LengthSlack() const;
@@ -327,7 +327,7 @@ class Catenary3D {
   /// \brief Gets a tangent angle from the vertical axis to the curve tangent
   ///   line.
   /// \param[in] position_fraction
-  ///   A decimal ranging from 0 and 1  that describes position on the curve by
+  ///   A decimal ranging from 0 and 1 that describes position on the curve by
   ///   the fraction of curve length from the left end point.
   /// \param[in] direction
   ///   The axis direction of the tangent line.
@@ -338,7 +338,7 @@ class Catenary3D {
   /// \brief Gets a tangent angle from the horizontal axis to the curve tangent
   ///   line.
   /// \param[in] position_fraction
-  ///   A decimal ranging from 0 and 1  that describes position on the curve by
+  ///   A decimal ranging from 0 and 1 that describes position on the curve by
   ///   the fraction of curve length from the left end point.
   /// \param[in] direction
   ///   The axis direction of the tangent line.
@@ -348,7 +348,7 @@ class Catenary3D {
 
   /// \brief Gets a tangent unit vector.
   /// \param[in] position_fraction
-  ///   A decimal ranging from 0 and 1  that describes position on the curve by
+  ///   A decimal ranging from 0 and 1 that describes position on the curve by
   ///   the fraction of curve length from the left end point.
   /// \param[in] direction
   ///   The axis direction of the tangent line.
@@ -358,14 +358,14 @@ class Catenary3D {
 
   /// \brief Gets the tension.
   /// \param[in] position_fraction
-  ///   A decimal ranging from 0 and 1  that describes position on the curve by
+  ///   A decimal ranging from 0 and 1 that describes position on the curve by
   ///   the fraction of curve length from the left end point.
   /// \return The tension at the location on the catenary.
   double Tension(const double& position_fraction) const;
 
   /// \brief Gets the tension.
   /// \param[in] position_fraction
-  ///   A decimal ranging from 0 and 1  that describes position on the curve by
+  ///   A decimal ranging from 0 and 1 that describes position on the curve by
   ///   the fraction of curve length from the left end point.
   /// \param[in] direction
   ///   The axis direction of the tangent line.
