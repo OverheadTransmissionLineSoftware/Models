@@ -1,7 +1,7 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "include/transmissionline/cable_load_constraint.h"
+#include "transmissionline/cable_load_constraint.h"
 
 CableLoadConstraint::CableLoadConstraint() {
   limit = -999999;

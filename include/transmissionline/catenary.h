@@ -7,8 +7,8 @@
 #include <list>
 #include <string>
 
-#include "include/base/point.h"
-#include "include/base/vector.h"
+#include "base/point.h"
+#include "base/vector.h"
 
 /// \par OVERVIEW
 ///

@@ -1,11 +1,11 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "include/transmissionline/catenary.h"
+#include "transmissionline/catenary.h"
 
 #include <cmath>
 
-#include "include/base/convert_units.h"
+#include "base/convert_units.h"
 
 Catenary2D::Catenary2D() {
   tension_horizontal_ = -999999;

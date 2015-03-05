@@ -7,7 +7,7 @@
 #include <list>
 #include <string>
 
-#include "include/base/vector.h"
+#include "base/vector.h"
 
 /// \par OVERVIEW
 ///

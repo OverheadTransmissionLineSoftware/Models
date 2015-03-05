@@ -1,11 +1,11 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "include/base/vector.h"
+#include "base/vector.h"
 
 #include <cmath>
 
-#include "include/base/convert_units.h"
+#include "base/convert_units.h"
 
 Vector2d::Vector2d() {
   x_ = -999999;

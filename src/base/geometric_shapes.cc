@@ -1,11 +1,11 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "include/base/geometric_shapes.h"
+#include "base/geometric_shapes.h"
 
 #include <cmath>
 
-#include "include/base/convert_units.h"
+#include "base/convert_units.h"
 
 Cylinder::Cylinder() {
   diameter_ = -999999;
