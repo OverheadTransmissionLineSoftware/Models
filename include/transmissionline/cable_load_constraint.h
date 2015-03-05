@@ -1,17 +1,17 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef TRANSMISSIONLINE_CABLELOADCONSTRAINT_H_
-#define TRANSMISSIONLINE_CABLELOADCONSTRAINT_H_
+#ifndef TLSLIBRARIES_TRANSMISSIONLINE_CABLELOADCONSTRAINT_H_
+#define TLSLIBRARIES_TRANSMISSIONLINE_CABLELOADCONSTRAINT_H_
 
 #include <list>
 #include <string>
 
-#include "include/TransmissionLine/CableLoadCase.h"
+#include "transmissionline/cable_load_case.h"
 
 /// \par OVERVIEW
 ///
-/// This enum contains types of cable load constraints.
+/// This enum contains types of constraint limits.
 enum class ConstraintLimitType {
   kHorizontalTension,
   kCatenaryConstant,
@@ -66,4 +66,4 @@ struct CableLoadConstraint {
   ConstraintLimitType type_limit;
 };
 
-#endif // TRANSMISSIONLINE_CABLELOADCONSTRAINT_H_
+#endif // TLSLIBRARIES_TRANSMISSIONLINE_CABLELOADCONSTRAINT_H_

@@ -1,14 +1,14 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef TRANSMISSIONLINE_CABLEUNITLOADCALCULATOR_H_
-#define TRANSMISSIONLINE_CABLEUNITLOADCALCULATOR_H_
+#ifndef TLSLIBRARIES_TRANSMISSIONLINE_CABLEUNITLOADCALCULATOR_H_
+#define TLSLIBRARIES_TRANSMISSIONLINE_CABLEUNITLOADCALCULATOR_H_
 
 #include <list>
 #include <string>
 
-#include "include/Base/SupportFile.h"
-#include "include/TransmissionLine/WeatherLoadCase.h"
+#include "base/vector.h"
+#include "transmissionline/weather_load_case.h"
 
 /// \par OVERVIEW
 ///
@@ -31,11 +31,11 @@ class CableUnitLoadCalculator {
   ~CableUnitLoadCalculator();
 
   /// \brief Gets the load per unit length of cable.
-  /// \param case_load_weather
+  /// \param[in] case_load_weather
   ///   The weather load case.
   /// \return The vector load per unit length of cable. X is transverse, Y is
   ///   vertical.
-  Vector2D UnitCableLoad(const WeatherLoadCase& case_load_weather) const;
+  Vector2d UnitCableLoad(const WeatherLoadCase& case_load_weather) const;
 
   /// \brief Validates member variables.
   /// \param[in] is_included_warnings
@@ -75,4 +75,4 @@ class CableUnitLoadCalculator {
   double weight_unit_cable_;
 };
 
-#endif // TRANSMISSIONLINE_CABLEUNITLOADCALCULATOR_H_
+#endif // TLSLIBRARIES_TRANSMISSIONLINE_CABLEUNITLOADCALCULATOR_H_
