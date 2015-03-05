@@ -24,17 +24,24 @@
 /// shifted. A shifted system uses the left endpoint as the origin.
 ///  x = horizontal
 ///  y = vertical
-class Catenary2D {
+class Catenary2d {
  public:
   /// \brief Default constructor.
-  Catenary2D();
+  Catenary2d();
 
   /// \brief Destructor.
-  ~Catenary2D();
+  ~Catenary2d();
 
   /// \brief Gets the constant (H/w), which determines the shape of the curve.
   /// \return The constant of the curve.
   double Constant() const;
+
+  /// \brief Gets the minimum allowable constant for the provided endpoint
+  ///        spacing.
+  /// \param[in] spacing_endpoints
+  ///   The vector magnitude of the endpoint spacing.
+  /// \return The minimum allowable constant.
+  static double ConstantMinimum(const double& spacing_endpoints);
 
   /// \brief Gets a coordinate point at a location on the curve.
   /// \param[in] position_fraction
@@ -219,6 +226,18 @@ class Catenary2D {
   /// \return A boolean indicating the success status of the update.
   bool UpdateEndPoints() const;
 
+  /// \brief Validates whether the H/w is appropriate for the endpoint spacing.
+  /// \param[in] is_included_warnings
+  ///   A flag that tightens the acceptable value range.
+  /// \param[in,out] messages_error
+  ///   A list of detailed error messages. If this is provided, any validation
+  ///   errors will be appended to the list.
+  /// \return A boolean indicating whether H/w and endpoint spacing combination
+  ///         is valid.
+  bool ValidateCurveAndSpacing(
+      const bool& is_included_warnings = true,
+      std::list<std::string>* messages_error = nullptr) const;
+
   /// \var is_updated_points_end_
   ///   An indicator that tells if the end point coordinates are updated.
   mutable bool is_updated_points_end_;
@@ -262,17 +281,24 @@ class Catenary2D {
 ///  x = horizontal
 ///  y = transverse
 ///  z = vertical
-class Catenary3D {
+class Catenary3d {
  public:
   /// \brief Constructor.
-  Catenary3D();
+  Catenary3d();
 
   /// \brief Destructor.
-  ~Catenary3D();
+  ~Catenary3d();
 
   /// \brief Gets the constant (H/w), which determines the shape of the curve.
   /// \return The constant of the curve.
   double Constant() const;
+
+  /// \brief Gets the minimum allowable constant for the provided endpoint
+  ///        spacing.
+  /// \param[in] spacing_endpoints
+  ///   The vector magnitude of the endpoint spacing.
+  /// \return The minimum allowable constant.
+  static double ConstantMinimum(const double& spacing_endpoints);
 
   /// \brief Gets a coordinate point at a location on the curve.
   /// \param[in] position_fraction
@@ -434,11 +460,11 @@ class Catenary3D {
 
   /// \brief Updates the 2D catenary.
   /// \return A boolean indicating the success status of the update.
-  bool UpdateCatenary2D() const;
+  bool UpdateCatenary2d() const;
 
   /// \var catenary_2d_
   ///   A 2D catenary, with only vertical and horizontal axes.
-  mutable Catenary2D  catenary_2d_;
+  mutable Catenary2d  catenary_2d_;
 
   /// \var is_updated_catenary_2d_
   ///   An indicator that tells if the 2D catenary is updated.
