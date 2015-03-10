@@ -5,12 +5,19 @@
 toolsets = gnu vs2013;
 
 // gnu compiler options
-if ($(toolset) == gnu)
+if ($toolset == gnu)
   cxx-compiler-options = "-std=c++11";
 
 // base library
 library tls_base {
   includedirs = ../../include;
+  headers {
+    ../../include/base/convert_units.h
+    ../../include/base/geometric_shapes.h
+    ../../include/base/point.h
+    ../../include/base/polynomial.h
+    ../../include/base/vector.h
+  }
   sources {
     ../../src/base/convert_units.cc
     ../../src/base/geometric_shapes.cc
@@ -25,6 +32,14 @@ library tls_base {
 library tls_transmissionline {
   deps = tls_base;
   includedirs = ../../include;
+  headers {
+    ../../include/transmissionline/cable.h
+    ../../include/transmissionline/cable_load_case.h
+    ../../include/transmissionline/cable_load_constraint.h
+    ../../include/transmissionline/cable_unit_load_calculator.h
+    ../../include/transmissionline/catenary.h
+    ../../include/transmissionline/weather_load_case.h
+  }
   sources {
     ../../src/transmissionline/cable.cc
     ../../src/transmissionline/cable_load_case.cc

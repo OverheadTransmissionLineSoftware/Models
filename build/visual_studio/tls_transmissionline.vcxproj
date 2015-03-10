@@ -91,6 +91,14 @@
     <ClCompile Include="..\..\src\transmissionline\weather_load_case.cc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\include\transmissionline\cable.h" />
+    <ClInclude Include="..\..\include\transmissionline\cable_load_case.h" />
+    <ClInclude Include="..\..\include\transmissionline\cable_load_constraint.h" />
+    <ClInclude Include="..\..\include\transmissionline\cable_unit_load_calculator.h" />
+    <ClInclude Include="..\..\include\transmissionline\catenary.h" />
+    <ClInclude Include="..\..\include\transmissionline\weather_load_case.h" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="tls_base.vcxproj">
       <Project>{94a27ff5-c4ff-53b5-9e5f-4197fc3b293c}</Project>
     </ProjectReference>
