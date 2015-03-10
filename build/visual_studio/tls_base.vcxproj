@@ -89,6 +89,13 @@
     <ClCompile Include="..\..\src\base\polynomial.cc" />
     <ClCompile Include="..\..\src\base\vector.cc" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\base\convert_units.h" />
+    <ClInclude Include="..\..\include\base\geometric_shapes.h" />
+    <ClInclude Include="..\..\include\base\point.h" />
+    <ClInclude Include="..\..\include\base\polynomial.h" />
+    <ClInclude Include="..\..\include\base\vector.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
 </Project>
