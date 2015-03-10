@@ -17,19 +17,22 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\base\convert_units.cc">
+    <ClCompile Include="src\transmissionline\cable.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\base\geometric_shapes.cc">
+    <ClCompile Include="src\transmissionline\cable_load_case.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\base\point.cc">
+    <ClCompile Include="src\transmissionline\cable_load_constraint.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\base\polynomial.cc">
+    <ClCompile Include="src\transmissionline\cable_unit_load_calculator.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\base\vector.cc">
+    <ClCompile Include="src\transmissionline\catenary.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\transmissionline\weather_load_case.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
