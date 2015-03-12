@@ -1,8 +1,11 @@
 # Compiled source #
 ###################
 *.o
+*.d
 *.so
 *.a
+*.lib
+*.dll
 
 # Code::Blocks temp files #
 ###########################
