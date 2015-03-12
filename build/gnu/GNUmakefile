@@ -43,9 +43,9 @@ CXX := c++
 # The directory for the build files, may be overridden on make command line.
 builddir = .
 
-all: $(builddir)/bin/libtls_base.a $(builddir)/bin/libtls_transmissionline.a
+all: $(builddir)/libtls_base.a $(builddir)/libtls_transmissionline.a
 
-$(builddir)/bin/libtls_base.a: $(builddir)/tls_base_convert_units.o $(builddir)/tls_base_geometric_shapes.o $(builddir)/tls_base_point.o $(builddir)/tls_base_polynomial.o $(builddir)/tls_base_vector.o
+$(builddir)/libtls_base.a: $(builddir)/tls_base_convert_units.o $(builddir)/tls_base_geometric_shapes.o $(builddir)/tls_base_point.o $(builddir)/tls_base_polynomial.o $(builddir)/tls_base_vector.o
 	$(AR) rcu $@ $(builddir)/tls_base_convert_units.o $(builddir)/tls_base_geometric_shapes.o $(builddir)/tls_base_point.o $(builddir)/tls_base_polynomial.o $(builddir)/tls_base_vector.o
 	$(RANLIB) $@
 
@@ -64,7 +64,7 @@ $(builddir)/tls_base_polynomial.o: ../../src/base/polynomial.cc
 $(builddir)/tls_base_vector.o: ../../src/base/vector.cc
 	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I../../include -std=c++11 ../../src/base/vector.cc
 
-$(builddir)/bin/libtls_transmissionline.a: $(builddir)/tls_transmissionline_cable.o $(builddir)/tls_transmissionline_cable_load_case.o $(builddir)/tls_transmissionline_cable_load_constraint.o $(builddir)/tls_transmissionline_cable_unit_load_calculator.o $(builddir)/tls_transmissionline_catenary.o $(builddir)/tls_transmissionline_weather_load_case.o $(builddir)/bin/libtls_base.a
+$(builddir)/libtls_transmissionline.a: $(builddir)/tls_transmissionline_cable.o $(builddir)/tls_transmissionline_cable_load_case.o $(builddir)/tls_transmissionline_cable_load_constraint.o $(builddir)/tls_transmissionline_cable_unit_load_calculator.o $(builddir)/tls_transmissionline_catenary.o $(builddir)/tls_transmissionline_weather_load_case.o $(builddir)/libtls_base.a
 	$(AR) rcu $@ $(builddir)/tls_transmissionline_cable.o $(builddir)/tls_transmissionline_cable_load_case.o $(builddir)/tls_transmissionline_cable_load_constraint.o $(builddir)/tls_transmissionline_cable_unit_load_calculator.o $(builddir)/tls_transmissionline_catenary.o $(builddir)/tls_transmissionline_weather_load_case.o
 	$(RANLIB) $@
 
@@ -89,8 +89,8 @@ $(builddir)/tls_transmissionline_weather_load_case.o: ../../src/transmissionline
 clean:
 	rm -f *.o
 	rm -f *.d
-	rm -f $(builddir)/bin/libtls_base.a
-	rm -f $(builddir)/bin/libtls_transmissionline.a
+	rm -f $(builddir)/libtls_base.a
+	rm -f $(builddir)/libtls_transmissionline.a
 
 .PHONY: all clean
 
