@@ -25,7 +25,6 @@ library tls_base {
     ../../src/base/polynomial.cc
     ../../src/base/vector.cc
   }
-  outputdir = @builddir/bin;
 }
 
 // transmissionline library
@@ -48,5 +47,4 @@ library tls_transmissionline {
     ../../src/transmissionline/catenary.cc
     ../../src/transmissionline/weather_load_case.cc
   }
-  outputdir = @builddir/bin;
 }
