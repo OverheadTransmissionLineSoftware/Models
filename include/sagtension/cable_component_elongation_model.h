@@ -98,7 +98,7 @@ class CableComponentElongationModel {
   /// \param[in] strain
   ///   The strain value (x-axis)
   /// \return The slope of a tangent line.
-  double SlopeTangent(const double& strain, const bool& is_stretched) const;
+  double Slope(const double& strain, const bool& is_stretched) const;
 
   /// \brief Gets the strain.
   /// \param[in] load
@@ -208,6 +208,24 @@ class CableComponentElongationModel {
   ///   The strain value (x-axis)
   /// \return The load of the componet when unstretched.
   double LoadUnstretched(const double& strain) const;
+
+  /// \brief Gets the slope when the component is stretched.
+  /// \param[in] strain
+  ///   The strain value (x-axis)
+  /// \param[in] is_stretched
+  ///   A boolean indicating whether the cable condition is unstretched, or
+  ///   stretched.
+  /// \return The slope at the strain point.
+  double SlopeStretched(const double& strain, const bool& is_stretched) const;
+
+  /// \brief Gets the slope when the component is unstretched.
+  /// \param[in] strain
+  ///   The strain value (x-axis)
+  /// \param[in] is_stretched
+  ///   A boolean indicating whether the cable condition is unstretched, or
+  ///   stretched.
+  /// \return The slope at the strain point.
+  double SlopeUnstretched(const double& strain, const bool& is_stretched) const;
 
   /// \brief Gets the strain due to compression.
   /// \param[in] load

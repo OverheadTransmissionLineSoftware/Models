@@ -97,10 +97,22 @@ std::vector<Point2d> CableComponentElongationModel::PointsDiscreteRegions(
   return points;
 }
 
-double CableComponentElongationModel::SlopeTangent(
+double CableComponentElongationModel::Slope(
     const double& strain,
     const bool& is_stretched) const {
 
+  // update class, if necessary
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return -999999;
+    }
+  }
+
+  if (is_stretched == false) {
+   return SlopeUnstretched(strain, is_stretched);
+  } else if (is_stretched == true) {
+    return SlopeStretched(strain, is_stretched);
+  }
 }
 
 double CableComponentElongationModel::Strain(const double& load,
@@ -312,6 +324,62 @@ double CableComponentElongationModel::LoadUnstretched(
       // line are equal
       return point_limit_polynomial_.y + ((strain - point_limit_polynomial_.x)
               * component_cable_.modulus_tension_elastic_area);
+    }
+  }
+}
+
+double CableComponentElongationModel::SlopeStretched(
+    const double& strain,
+    const bool& is_stretched) const {
+
+  // strain is less than unloaded stretched strain
+  if (strain < point_unloaded_stretched_.x) {
+
+    return component_cable_.modulus_compression_elastic_area;
+
+  } else if (strain < point_unloaded_stretched_.x) {
+
+    if (strain < point_stretch_.x) {
+
+      return component_cable_.modulus_tension_elastic_area;
+
+    } else {
+
+      // cable is effectively ustretched at this strain
+      return SlopeUnstretched(strain, is_stretched);
+    }
+  }
+}
+
+double CableComponentElongationModel::SlopeUnstretched(
+    const double& strain,
+    const bool& is_stretched) const {
+
+  // strain is less than unloaded unstretched strain
+  if (strain < point_unloaded_unstretched_.x) {
+
+    // slope is equal to component compression modulus
+    return component_cable_.modulus_compression_elastic_area;
+
+  // strain is greather than unloaded unstretched strain
+  } else if (point_unloaded_unstretched_.x < strain) {
+
+    // strain is less than polynomial limit
+    if (strain <= point_limit_polynomial_.x) {
+
+      // adjust the strain (x-value) to align with the unshifted polynomial
+      // convert units to percent strain
+      double percent_strain_polynomial =
+          ConvertToPercentStrainPolynomial(strain);
+
+      // get the slope tangent from the polynomial
+      // multiply to convert to load/strain slope
+      return polynomial_.Slope(percent_strain_polynomial) * 100;
+
+    } else if (point_limit_polynomial_.x < strain) {
+
+      // slope is equal to tension elastic modulus
+      return component_cable_.modulus_tension_elastic_area;
     }
   }
 }
