@@ -4,6 +4,9 @@
 #ifndef TLSLIBRARIES_SAGTENSION_CABLECOMPONENTELONGATIONMODEL_H_
 #define TLSLIBRARIES_SAGTENSION_CABLECOMPONENTELONGATIONMODEL_H_
 
+#include <list>
+#include <string>
+
 #include "base/point.h"
 #include "base/polynomial.h"
 #include "transmissionline/cable.h"
