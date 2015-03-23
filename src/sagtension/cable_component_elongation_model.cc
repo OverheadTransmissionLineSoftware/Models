@@ -3,6 +3,8 @@
 
 #include "sagtension/cable_component_elongation_model.h"
 
+#include "base/convert_units.h"
+
 CableComponentElongationModel::CableComponentElongationModel() {
 
   load_stretch_ = -999999;
@@ -31,11 +33,14 @@ double CableComponentElongationModel::Load(const double& strain,
   }
 
   // select function based on cable stretched condition
+  double load = -999999;
   if (is_stretched == false) {
-    return LoadUnstretched(strain);
+    load = LoadUnstretched(strain);
   } else if (is_stretched == true) {
-    return LoadStretched(strain);
+    load = LoadStretched(strain);
   }
+
+  return load;
 }
 
 Point2d CableComponentElongationModel::PointLimitPolynomial() const {
@@ -72,11 +77,14 @@ Point2d CableComponentElongationModel::PointUnloaded(
     }
   }
 
+  Point2d point_unloaded = Point2d(-999999, -999999);
   if (is_stretched == false) {
-    return point_unloaded_unstretched_;
+    point_unloaded = point_unloaded_unstretched_;
   } else if (is_stretched == true) {
-    return point_unloaded_stretched_;
+    point_unloaded = point_unloaded_stretched_;
   }
+
+  return point_unloaded;
 }
 
 std::vector<Point2d> CableComponentElongationModel::PointsDiscreteRegions(
@@ -108,11 +116,14 @@ double CableComponentElongationModel::Slope(
     }
   }
 
+  double slope = -999999;
   if (is_stretched == false) {
-   return SlopeUnstretched(strain, is_stretched);
+    slope = SlopeUnstretched(strain, is_stretched);
   } else if (is_stretched == true) {
-    return SlopeStretched(strain, is_stretched);
+    slope = SlopeStretched(strain, is_stretched);
   }
+
+  return slope;
 }
 
 double CableComponentElongationModel::Strain(const double& load,
@@ -125,18 +136,103 @@ double CableComponentElongationModel::Strain(const double& load,
     }
   }
 
-  // select function based on cable stretched condition
+  double strain = -999999;
   if (is_stretched == false) {
-    return StrainUnstretched(load);
+    strain = StrainUnstretched(load);
   } else if (is_stretched == true) {
-    return StrainStretched(load);
+    strain = StrainStretched(load);
   }
+
+  return strain;
 }
 
 bool CableComponentElongationModel::Validate(
     const bool& is_included_warnings,
     std::list<std::string>* messages_error) const {
 
+  bool is_valid = true;
+
+  // validate component-cable
+  if (component_cable_.Validate(is_included_warnings,
+                                messages_error) == false) {
+    is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back("CABLE COMPONENT ELONGATION MODEL - Invalid "
+                                "cable component");
+    }
+  }
+
+  // validate load-stretch
+  if (load_stretch_ < 0) {
+
+    is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back("CABLE COMPONENT ELONGATION MODEL - Invalid "
+                                "stretch load");
+    }
+  }
+
+  // validate polynomial
+  if (polynomial_.coefficients().size() != 5) {
+
+    is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back("CABLE COMPONENT ELONGATION MODEL - Invalid "
+                                "number of polynomial coefficients");
+    }
+  }
+
+  // validate temperature
+  if ((temperature_ < 0)
+    || ((500 < temperature_) && (is_included_warnings == true))) {
+
+    is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back("CABLE COMPONENT ELONGATION MODEL - Invalid "
+                                "temperature");
+    }
+  }
+
+  // validate temperature - reference
+  if ((temperature_reference_ < 0)
+     || ((100 < temperature_reference_) && (is_included_warnings == true))) {
+
+    is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back("CABLE COMPONENT ELONGATION MODEL - Invalid "
+                                "reference temperature");
+    }
+  }
+
+  // if all class inputs are validated, continue validation checks
+  if (is_valid == true) {
+
+    // validate if class updates
+    if (Update() == false) {
+
+      is_valid = false;
+      if (messages_error != nullptr) {
+          messages_error->push_back("CABLE COMPONENT ELONGATION MODEL - Error "
+                                    "updating class");
+      }
+
+      return is_valid;
+    }
+
+    // validate polynomial origin
+    if (ValidatePolynomialOrigin(is_included_warnings,
+                                messages_error) == false) {
+      is_valid = false;
+    }
+
+    // validate polynomial shape
+    if (ValidatePolynomialShape(is_included_warnings,
+                                messages_error) == false) {
+      is_valid = false;
+    }
+  }
+
+  return is_valid;
 }
 
 CableComponent CableComponentElongationModel::component_cable() const {
@@ -288,6 +384,9 @@ double CableComponentElongationModel::LoadStretched(
 
     // cable is effectively unstretched at this strain
     return LoadUnstretched(strain);
+
+  } else {
+    return -999999;
   }
 }
 
@@ -324,7 +423,12 @@ double CableComponentElongationModel::LoadUnstretched(
       // line are equal
       return point_limit_polynomial_.y + ((strain - point_limit_polynomial_.x)
               * component_cable_.modulus_tension_elastic_area);
+
+    } else {
+      return -999999;
     }
+  } else {
+    return -999999;
   }
 }
 
@@ -348,6 +452,8 @@ double CableComponentElongationModel::SlopeStretched(
       // cable is effectively ustretched at this strain
       return SlopeUnstretched(strain, is_stretched);
     }
+  } else {
+    return -999999;
   }
 }
 
@@ -380,7 +486,11 @@ double CableComponentElongationModel::SlopeUnstretched(
 
       // slope is equal to tension elastic modulus
       return component_cable_.modulus_tension_elastic_area;
+    } else {
+      return -999999;
     }
+  } else {
+    return -999999;
   }
 }
 
@@ -439,6 +549,9 @@ double CableComponentElongationModel::StrainStretched(
 
     // cable is effectively unstretched at this load
     return StrainUnstretched(load);
+
+  } else {
+    return -999999;
   }
 }
 
@@ -475,7 +588,12 @@ double CableComponentElongationModel::StrainUnstretched(
       // line are equal
       return point_limit_polynomial_.x + (load - point_limit_polynomial_.y)
               / component_cable_.modulus_tension_elastic_area;
+
+    } else {
+      return -999999;
     }
+  } else {
+    return -999999;
   }
 }
 
@@ -608,14 +726,109 @@ bool CableComponentElongationModel::UpdateStrainThermal() const {
   return true;
 }
 
+/// \todo
+/// This function needs to be updated so it does not reference any mutators.
+/// The way it is written right now messes up the const-ness during validation.
 bool CableComponentElongationModel::ValidatePolynomialOrigin(
     const bool& is_included_warnings,
     std::list<std::string>* messages_error) const {
 
+  // initialize
+  bool is_valid = true;
+//
+//  // exit if warnings are not included
+//  if (is_included_warnings == false) {
+//    return is_valid;
+//  }
+//
+//  // cache current temperature
+//  const double temperature_component = temperature_;
+//
+//  // set component temperature to reference temperature and update
+//  set_temperature(temperature_reference_);
+//  if (Update() == false) {
+//    is_valid = false;
+//    set_temperature(temperature_component);
+//    return is_valid;
+//  }
+//
+//  // validate polynomial origin
+//  double strain_polynomial_unloaded = point_unloaded_unstretched_.x;
+//
+//  if ((strain_polynomial_unloaded < -0.001)
+//      || ((strain_polynomial_unloaded < -0.0001)
+//      && (is_included_warnings == true))
+//      || (0.001 < strain_polynomial_unloaded)
+//      || ((0.0001 < strain_polynomial_unloaded)
+//      && (is_included_warnings == true))) {
+//
+//    is_valid = false;
+//    if (messages_error != nullptr) {
+//      messages_error->push_back("CABLE COMPONENT ELONGATION MODEL - Polynomial "
+//                                "origin has a significant non-zero strain "
+//                                "value which equals "
+//                                supportfunctions::Round(
+//                                    strain_polynomial_unloaded, 4));
+//    }
+//  }
+//
+//  // reset component temperature
+//  set_temperature(temperature_);
+
+  return is_valid;
 }
 
 bool CableComponentElongationModel::ValidatePolynomialShape(
     const bool& is_included_warnings,
     std::list<std::string>* messages_error) const {
 
+  // initialize
+  bool is_valid = true;
+
+  // exit if warnings are not included
+  if (is_included_warnings == false) {
+    return is_valid;
+  }
+
+  // initialize iteration and calculation variables
+  const double strain_polynomial_min = point_unloaded_unstretched_.x;
+  const double strain_polynomial_max = point_limit_polynomial_.x;
+
+  // search polynomial for validation errors
+  for (int iter = 0; iter <-50; iter++) {
+
+    // calculate an evenly spaced strain values from minimum to maximum values
+    const double strain = strain_polynomial_min + ((iter / 50)
+                          * (strain_polynomial_max - strain_polynomial_min));
+
+    // calculate slope at strain point
+    const double slope = Slope(strain, false);
+
+    // check if polynomial slope is negative
+    if (slope < 0) {
+
+      is_valid = false;
+      if (messages_error != nullptr) {
+        messages_error->push_back(
+            "CABLE COMPONENT ELONGATION MODEL - Slope of polynomial tangent is "
+            "negative at strain = ");
+            // std::to_string(supportfunctions::Round(strain, 4)));
+      }
+    }
+
+    // check if polynomial slope exceeds elastic area modulus
+    if ((component_cable_.modulus_tension_elastic_area < slope)
+        && (is_included_warnings == true)) {
+
+      is_valid = false;
+      if (messages_error != nullptr) {
+        messages_error->push_back(
+            "CABLE COMPONENT ELONGATION MODEL - Slope of polynomial tangent is "
+            " greater than the tension elastic area modulus at strain = ");
+            // std::to_string(supportfunctions::Round(strain, 4)));
+      }
+    }
+  }
+
+  return is_valid;
 }
