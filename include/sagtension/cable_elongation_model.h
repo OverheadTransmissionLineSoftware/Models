@@ -8,7 +8,9 @@
 #include <string>
 #include <vector>
 
+#include "base/point.h"
 #include "sagtension/cable_component_elongation_model.h"
+#include "transmissionline/cable.h"
 
 /// \par OVERVIEW
 ///
