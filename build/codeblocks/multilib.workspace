@@ -9,10 +9,5 @@
 		<Project filename="transmissionline.cbp">
 			<Depends filename="base.cbp" />
 		</Project>
-		<Project filename="../../../console/console.cbp">
-			<Depends filename="base.cbp" />
-			<Depends filename="sagtension.cbp" />
-			<Depends filename="transmissionline.cbp" />
-		</Project>
 	</Workspace>
 </CodeBlocks_workspace_file>
