@@ -357,7 +357,7 @@ double CableComponentElongationModel::LoadPolynomial(
   double percent_strain_polynomial = ConvertToPercentStrainPolynomial(strain);
 
   // get load from the polynomial
-  return polynomial_.y(percent_strain_polynomial);
+  return polynomial_.Y(percent_strain_polynomial);
 }
 
 /// This function determines which region the strain value is in, and then
@@ -516,7 +516,7 @@ double CableComponentElongationModel::StrainPolynomial(
 
   // get raw strain from creep polynomial
   // calculate strain percent from polynomial
-  const double percent_strain_polynomial = polynomial_.x(
+  const double percent_strain_polynomial = polynomial_.X(
       load,  // target value
       2,     // precision
       0.1);  // initial guess
