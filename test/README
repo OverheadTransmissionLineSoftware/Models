@@ -1,0 +1,5 @@
+This library will eventually incorporate a test suite.
+
+In the meantime, there is one file that will act as the build target that links
+against the libraries. This file will make linking part of the build process
+testing.
