@@ -29,15 +29,15 @@ class Polynomial {
   /// \brief Destructor.
   ~Polynomial();
 
+  /// \brief Gets the maximum polynomial order.
+  /// \return The maximum polynomial order.
+  int OrderMax() const;
+
   /// \brief Gets the slope.
   /// \param[in] x
   ///   The x value for the point of slope.
   /// \return The slope.
   double Slope(const double& x) const;
-
-  /// \brief Gets the maximum polynomial order.
-  /// \return The maximum polynomial order.
-  int OrderMax() const;
 
   /// \brief Gets the x value.
   /// \param[in] y
@@ -48,14 +48,14 @@ class Polynomial {
   /// \param[in] x_guess
   ///   An x value that is the starting guess for the iterative solution.
   /// \return The x value.
-  double x(const double& y, const int& decimal_precision_y,
+  double X(const double& y, const int& decimal_precision_y,
            const double& x_guess) const;
 
   /// \brief Gets the y value.
   /// \param[in] x
   ///   The x value.
   /// \return The y value.
-  double y(const double& x) const;
+  double Y(const double& x) const;
 
   /// \brief Gets the polynomial coefficients.
   /// \return The polynomial coefficients.
