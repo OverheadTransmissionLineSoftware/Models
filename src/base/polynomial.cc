@@ -18,13 +18,24 @@ Polynomial::Polynomial(const std::vector<double> coefficients) {
 
 Polynomial::~Polynomial() {}
 
+double Polynomial::Slope(const double& x) const {
+
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return -999999;
+    }
+  }
+
+  return derivative_->Y(x);
+}
+
 int Polynomial::OrderMax() const {
   return coefficients_.size();
 }
 
 /// This method is iterative, and uses the Newton numerical method for solving
 /// for x.
-double Polynomial::x(const double& y, const int& decimal_precision_y,
+double Polynomial::X(const double& y, const int& decimal_precision_y,
                      const double& x_guess) const {
 
   // update class, if necessary
@@ -54,8 +65,8 @@ double Polynomial::x(const double& y, const int& decimal_precision_y,
   while (precision_y < abs(point_function.y) && (iter < 100)) {
 
     // calculate y value for shifted polynomial and derivative
-    point_function.y = polynomial_shifted.y(point_function.x);
-    point_derivative.y = derivative_->y(point_derivative.x);
+    point_function.y = polynomial_shifted.Y(point_function.x);
+    point_derivative.y = derivative_->Y(point_derivative.x);
 
     // calculate a new x value for shifted polynomial and derivative
     if (point_derivative.y != 0) {
@@ -69,7 +80,7 @@ double Polynomial::x(const double& y, const int& decimal_precision_y,
   return point_function.x;
 }
 
-double Polynomial::y(const double& x) const {
+double Polynomial::Y(const double& x) const {
 
   double y = 0;
 
