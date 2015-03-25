@@ -177,7 +177,7 @@ class CableStrainer {
   /// \return The temperature that the cable was stretched at.
   double temperature_stretch() const;
 
- private:
+ protected:
   /// \brief Gets the length after the cable has been strained.
   /// \param[in] length_before_strain
   ///   The length of the cable before straining.
@@ -197,21 +197,21 @@ class CableStrainer {
 
   /// \var length_start_
   ///   The length of the cable in the start state.
-  double length_start_;
+  mutable double length_start_;
 
   /// \var load_finish_
   ///  The load of the cable in the finish state.
-  double load_finish_;
+  mutable double load_finish_;
 
   /// \var load_start_
   ///   The load of the cable in the start state.
-  double load_start_;
+  mutable double load_start_;
 
   /// \var model_elongation_finish_
   ///   The elongation model for the cable in the finish state.
   CableElongationModel model_elongation_finish_;
 
-  /// \var model_elongation_start
+  /// \var model_elongation_start_
   ///   The elongation model for the cable in the start state.
   CableElongationModel model_elongation_start_;
 };
