@@ -48,3 +48,24 @@ library tls_transmissionline {
     ../../src/transmissionline/weather_load_case.cc
   }
 }
+
+// sagtension library
+library tls_sagtension {
+  deps = tls_base;
+  deps = tls_transmissionline;
+  includedirs = ../../include;
+  headers {
+    ../../include/sagtension/cable_component_elongation_model.h
+    ../../include/sagtension/cable_elongation_model.h
+    ../../include/sagtension/cable_strainer.h
+    ../../include/sagtension/catenary_cable_loader.h
+    ../../include/sagtension/catenary_cable_unloader.h
+  }
+  sources {
+    ../../src/sagtension/cable_component_elongation_model.cc
+    ../../src/sagtension/cable_elongation_model.cc
+    ../../src/sagtension/cable_strainer.cc
+    ../../src/sagtension/catenary_cable_loader.cc
+    ../../src/sagtension/catenary_cable_unloader.cc
+  }
+}
