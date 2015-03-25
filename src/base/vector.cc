@@ -32,13 +32,13 @@ double Vector2d::Angle(const bool& is_enabled_negative_angles) const {
     angle = 3 * (convertunits::kPi / 2) * convertunits::kRadiansToDegrees;
   } else {
     // select quadrant
-    if (0 < y_) {
+    if (0 <= y_) {
       if (0 < x_) {        // quadrant I
         angle = atan(y_ / x_) * convertunits::kRadiansToDegrees;
       } else if (x_ < 0) { // quadrant II
         angle = 180 + atan(y_ / x_) * convertunits::kRadiansToDegrees;
       }
-    } else if (y_ <= 0) {
+    } else if (y_ < 0) {
       if (x_ < 0) {        // quadrant III
         angle = 180 + atan(y_ / x_) * convertunits::kRadiansToDegrees;
       } else if (0 < x_) { // quadrant IV
