@@ -17,8 +17,6 @@ platforms:
   - Linux
   - Windows
   - Mac OS
-Some projects do have library dependencies, which are noted in the Code::Blocks
-project files. Make sure you build the dependencies first!
 For more information, see:
 codeblocks.org
 
