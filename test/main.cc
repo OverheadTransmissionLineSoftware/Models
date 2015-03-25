@@ -1,6 +1,6 @@
 
 #include "base/point.h"
-#include "sagtension/cable_loader.h"
+#include "sagtension/catenary_cable_loader.h"
 #include "transmissionline/catenary.h"
 
 // When static libraries are built (TLS-Libraries) they are not linked.
