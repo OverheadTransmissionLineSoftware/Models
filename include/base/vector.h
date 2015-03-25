@@ -53,6 +53,7 @@ class Vector2d {
   ///   positive angle is between 180-360 degrees (quadrants III and IV).
   /// \return The angle between the positive horizontal axis and the vector, in
   ///   degrees, defined using a counter-clockwise orientation.
+  /// The angle will always be less than 360 degrees.
   double Angle(const bool& is_enabled_negative_angles = false) const;
 
   /// \brief Gets the magnitude.
