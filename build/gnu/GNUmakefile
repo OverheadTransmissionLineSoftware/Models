@@ -43,7 +43,7 @@ CXX := c++
 # The directory for the build files, may be overridden on make command line.
 builddir = .
 
-all: $(builddir)/libtls_base.a $(builddir)/libtls_transmissionline.a
+all: $(builddir)/libtls_base.a $(builddir)/libtls_transmissionline.a $(builddir)/libtls_sagtension.a
 
 $(builddir)/libtls_base.a: $(builddir)/tls_base_convert_units.o $(builddir)/tls_base_geometric_shapes.o $(builddir)/tls_base_point.o $(builddir)/tls_base_polynomial.o $(builddir)/tls_base_vector.o
 	$(AR) rcu $@ $(builddir)/tls_base_convert_units.o $(builddir)/tls_base_geometric_shapes.o $(builddir)/tls_base_point.o $(builddir)/tls_base_polynomial.o $(builddir)/tls_base_vector.o
@@ -86,11 +86,31 @@ $(builddir)/tls_transmissionline_catenary.o: ../../src/transmissionline/catenary
 $(builddir)/tls_transmissionline_weather_load_case.o: ../../src/transmissionline/weather_load_case.cc
 	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I../../include -std=c++11 ../../src/transmissionline/weather_load_case.cc
 
+$(builddir)/libtls_sagtension.a: $(builddir)/tls_sagtension_cable_component_elongation_model.o $(builddir)/tls_sagtension_cable_elongation_model.o $(builddir)/tls_sagtension_cable_strainer.o $(builddir)/tls_sagtension_catenary_cable_loader.o $(builddir)/tls_sagtension_catenary_cable_unloader.o $(builddir)/libtls_transmissionline.a
+	$(AR) rcu $@ $(builddir)/tls_sagtension_cable_component_elongation_model.o $(builddir)/tls_sagtension_cable_elongation_model.o $(builddir)/tls_sagtension_cable_strainer.o $(builddir)/tls_sagtension_catenary_cable_loader.o $(builddir)/tls_sagtension_catenary_cable_unloader.o
+	$(RANLIB) $@
+
+$(builddir)/tls_sagtension_cable_component_elongation_model.o: ../../src/sagtension/cable_component_elongation_model.cc
+	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I../../include -std=c++11 ../../src/sagtension/cable_component_elongation_model.cc
+
+$(builddir)/tls_sagtension_cable_elongation_model.o: ../../src/sagtension/cable_elongation_model.cc
+	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I../../include -std=c++11 ../../src/sagtension/cable_elongation_model.cc
+
+$(builddir)/tls_sagtension_cable_strainer.o: ../../src/sagtension/cable_strainer.cc
+	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I../../include -std=c++11 ../../src/sagtension/cable_strainer.cc
+
+$(builddir)/tls_sagtension_catenary_cable_loader.o: ../../src/sagtension/catenary_cable_loader.cc
+	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I../../include -std=c++11 ../../src/sagtension/catenary_cable_loader.cc
+
+$(builddir)/tls_sagtension_catenary_cable_unloader.o: ../../src/sagtension/catenary_cable_unloader.cc
+	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I../../include -std=c++11 ../../src/sagtension/catenary_cable_unloader.cc
+
 clean:
 	rm -f *.o
 	rm -f *.d
 	rm -f $(builddir)/libtls_base.a
 	rm -f $(builddir)/libtls_transmissionline.a
+	rm -f $(builddir)/libtls_sagtension.a
 
 .PHONY: all clean
 
