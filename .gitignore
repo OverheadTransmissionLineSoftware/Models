@@ -22,3 +22,9 @@
 *.log
 *.png
 *.tex
+
+#TLS-Libraries generated executables #
+######################################
+*.exe
+test/debug/bin/test
+test/release/bin/test

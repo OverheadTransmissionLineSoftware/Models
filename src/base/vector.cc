@@ -25,24 +25,49 @@ double Vector2d::Angle(const bool& is_enabled_negative_angles) const {
 
   double angle = -999999;
 
-  // use standard trigonometry to solve for angle of vector
-  if (x_ == 0 && 0 < y_) {
-    angle = (convertunits::kPi / 2) * convertunits::kRadiansToDegrees;
-  } else if (x_ == 0 && y_ < 0) {
-    angle = 3 * (convertunits::kPi / 2) * convertunits::kRadiansToDegrees;
-  } else {
-    // select quadrant
-    if (0 <= y_) {
-      if (0 < x_) {        // quadrant I
-        angle = atan(y_ / x_) * convertunits::kRadiansToDegrees;
-      } else if (x_ < 0) { // quadrant II
-        angle = 180 + atan(y_ / x_) * convertunits::kRadiansToDegrees;
+  // use trigonometry to solve for angle of vector
+  if (x_ == 0 || y_ == 0) {
+
+    // The vector lies on an axis, so this returns an angle constant.
+    // Ex: For values on the positive horizontal axis (0 degrees), this helps
+    // return 0 instead of 359.99999....
+    if (x_ == 0) {
+
+      if (0 < y_) {
+        angle = (convertunits::kPi / 2) * convertunits::kRadiansToDegrees;
+      } else if (y_ < 0) {
+        angle = 3 * (convertunits::kPi / 2) * convertunits::kRadiansToDegrees;
+      } else {
+        return angle; // both x_ and y_ are zero, return invalid answer
       }
-    } else if (y_ < 0) {
-      if (x_ < 0) {        // quadrant III
-        angle = 180 + atan(y_ / x_) * convertunits::kRadiansToDegrees;
-      } else if (0 < x_) { // quadrant IV
-        angle = 360 + atan(y_ / x_) * convertunits::kRadiansToDegrees;
+    } else {  // y_ == 0
+
+      if (0 < x_) {
+        angle = 0;
+      } else if (x_ < 0) {
+        angle = 2* (convertunits::kPi / 2) * convertunits::kRadiansToDegrees;
+      } else {
+        return angle; // both x_ and y_ are zero, return invalid answer
+      }
+    }
+
+  } else {
+
+    // select the quadrant and calculate using arc tangent function
+    if (0 <= y_) {
+
+      if (0 <= x_) {  // quadrant I
+        angle = atan(y_ / x_) * convertunits::kRadiansToDegrees;
+      } else { // quadrant II
+        angle = 180 - (std::abs(atan(y_ / x_)) * convertunits::kRadiansToDegrees);
+      }
+
+    } else {
+
+      if (x_ <= 0) {  // quadrant III
+        angle = 180 + (std::abs(atan(y_ / x_)) * convertunits::kRadiansToDegrees);
+      } else {  // quadrant IV
+        angle = 360 - (std::abs(atan(y_ / x_)) * convertunits::kRadiansToDegrees);
       }
     }
   }
@@ -63,7 +88,8 @@ double Vector2d::Magnitude() const {
 /// applies the angle rotation, and then converts back into cartesian
 /// components.
 void Vector2d::Rotate(const double& angle_rotation) {
-  // check if rotation angle is zero and exit if so
+
+  // check if rotation angle is zero (or near zero) and exit if so
   if (std::abs(angle_rotation) < 0.00005)
     return;
 
