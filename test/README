@@ -1,0 +1,6 @@
+TLS-Libraries uses the Google Test framework for unit testing.
+For more information, see:
+https://code.google.com/p/googletest/
+
+Building is currently only supported with a Code::Blocks project file, but
+additional platforms will be added soon (with Bakefile).
