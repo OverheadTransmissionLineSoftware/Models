@@ -3,6 +3,7 @@
 
 #include "gtest/gtest.h"
 
+// This function calls the tests set up in the subfolders (for each library).
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
