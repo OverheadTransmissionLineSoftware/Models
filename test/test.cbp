@@ -22,7 +22,7 @@
 				</Linker>
 			</Target>
 			<Target title="release">
-				<Option output="release/bin/console" prefix_auto="1" extension_auto="1" />
+				<Option output="release/bin/test" prefix_auto="1" extension_auto="1" />
 				<Option object_output="release/obj/" />
 				<Option external_deps="../build/codeblocks/release/bin/libtls_base.a;../build/codeblocks/release/bin/libtls_transmissionline.a;" />
 				<Option type="1" />
