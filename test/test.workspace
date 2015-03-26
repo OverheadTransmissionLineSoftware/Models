@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="TLS-Libraries Test">
+		<Project filename="../build/codeblocks/base.cbp" />
+		<Project filename="../build/codeblocks/sagtension.cbp">
+			<Depends filename="../build/codeblocks/base.cbp" />
+			<Depends filename="../build/codeblocks/transmissionline.cbp" />
+		</Project>
+		<Project filename="../build/codeblocks/transmissionline.cbp">
+			<Depends filename="../build/codeblocks/base.cbp" />
+		</Project>
+		<Project filename="test.cbp">
+			<Depends filename="../build/codeblocks/base.cbp" />
+			<Depends filename="../build/codeblocks/sagtension.cbp" />
+			<Depends filename="../build/codeblocks/transmissionline.cbp" />
+		</Project>
+	</Workspace>
+</CodeBlocks_workspace_file>
