@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="TLS-Libraries">
+		<Project filename="tls_base.cbp" />
+		<Project filename="tls_transmissionline.cbp">
+			<Depends filename="tls_base.cbp" />
+		</Project>
+	</Workspace>
+</CodeBlocks_workspace_file>
