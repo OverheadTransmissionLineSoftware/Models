@@ -5,13 +5,12 @@
 
 CatenaryCableLoader::CatenaryCableLoader() {
   is_updated_catenary_ = false;
-  load_start_ = 0;
 }
 
 CatenaryCableLoader::~CatenaryCableLoader() {
 }
 
-double CatenaryCableLoader::LengthFinish() const {
+double CatenaryCableLoader::LengthLoaded() const {
 
   // update class, if necessary
   if (IsUpdated() == false) {
@@ -20,10 +19,10 @@ double CatenaryCableLoader::LengthFinish() const {
     }
   }
 
-  return CableStrainer::LengthFinish();
+  return strainer_cable_.LengthFinish();
 }
 
-double CatenaryCableLoader::LoadFinishCore() const {
+double CatenaryCableLoader::LoadAverage() const {
 
   // update class, if necessary
   if (IsUpdated() == false) {
@@ -32,10 +31,10 @@ double CatenaryCableLoader::LoadFinishCore() const {
     }
   }
 
-  return CableStrainer::LoadFinishCore();
+  return strainer_cable_.load_finish();
 }
 
-double CatenaryCableLoader::LoadFinishShell() const {
+double CatenaryCableLoader::LoadAverageCore() const {
 
   // update class, if necessary
   if (IsUpdated() == false) {
@@ -44,10 +43,10 @@ double CatenaryCableLoader::LoadFinishShell() const {
     }
   }
 
-  return CableStrainer::LoadFinishShell();
+  return strainer_cable_.LoadFinishCore();
 }
 
-double CatenaryCableLoader::LoadStartCore() const {
+double CatenaryCableLoader::LoadAverageShell() const {
 
   // update class, if necessary
   if (IsUpdated() == false) {
@@ -56,19 +55,7 @@ double CatenaryCableLoader::LoadStartCore() const {
     }
   }
 
-  return CableStrainer::LoadStartCore();
-}
-
-double CatenaryCableLoader::LoadStartShell() const {
-
-  // update class, if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
-  }
-
-  return CableStrainer::LoadStartShell();
+  return strainer_cable_.LoadFinishShell();
 }
 
 double CatenaryCableLoader::StrainTransitionLoad() const {
@@ -80,7 +67,7 @@ double CatenaryCableLoader::StrainTransitionLoad() const {
     }
   }
 
-  return CableStrainer::StrainTransitionLoad();
+  return strainer_cable_.StrainTransitionLoad();
 }
 
 double CatenaryCableLoader::StrainTransitionThermal() const {
@@ -92,13 +79,102 @@ double CatenaryCableLoader::StrainTransitionThermal() const {
     }
   }
 
-  return CableStrainer::StrainTransitionThermal();
+  return strainer_cable_.StrainTransitionThermal();
+}
+
+double CatenaryCableLoader::TensionHorizontalCatenary() const {
+
+  // update class, if necessary
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return -999999;
+    }
+  }
+
+
+}
+
+double CatenaryCableLoader::TensionHorizontalCatenaryCore() const {
+
+  // update class, if necessary
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return -999999;
+    }
+  }
+
+
+}
+
+double CatenaryCableLoader::TensionHorizontalCatenaryShell() const {
+
+  // update class, if necessary
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return -999999;
+    }
+  }
+
+
+}
+
+double CatenaryCableLoader::length_unloaded() const {
+  return strainer_cable_.length_start();
+}
+
+double CatenaryCableLoader::load_stretch() const {
+  return strainer_cable_.load_stretch();
+}
+
+void CatenaryCableLoader::set_cable(const Cable& cable) {
+
+  strainer_cable_.set_cable(cable);
+
+  is_updated_catenary_ = false;
+}
+
+void CatenaryCableLoader::set_length_unloaded(const double& length_unloaded) {
+
+  strainer_cable_.set_length_start(length_unloaded);
+
+  is_updated_catenary_ = false;
+}
+
+void CatenaryCableLoader::set_load_stretch(const double& load_stretch) {
+
+  strainer_cable_.set_load_stretch(load_stretch);
+
+  is_updated_catenary_ = false;
 }
 
 void CatenaryCableLoader::set_spacing_endpoints_catenary(
     const Vector3d& spacing_endpoints) {
 
   catenary_.set_spacing_endpoints(spacing_endpoints);
+
+  is_updated_catenary_ = false;
+}
+
+void CatenaryCableLoader::set_state_loaded(
+    const CableStrainerState& state_loaded) {
+
+  strainer_cable_.set_state_finish(state_loaded);
+
+  is_updated_catenary_ = false;
+}
+
+void CatenaryCableLoader::set_state_unloaded(
+    const CableStrainerState& state_unloaded) {
+
+  strainer_cable_.set_state_start(state_unloaded);
+
+  is_updated_catenary_  = false;
+}
+
+void CatenaryCableLoader::set_temperature_stretch(
+    const double& temperature_stretch) {
+
+  strainer_cable_.set_temperature_stretch(temperature_stretch);
 
   is_updated_catenary_ = false;
 }
@@ -113,6 +189,18 @@ void CatenaryCableLoader::set_weight_unit_catenary(
 
 Vector3d CatenaryCableLoader::spacing_endpoints_catenary() const {
   return catenary_.spacing_endpoints();
+}
+
+CableStrainerState CatenaryCableLoader::state_loaded() const {
+  return strainer_cable_.state_finish();
+}
+
+CableStrainerState CatenaryCableLoader::state_unloaded() const {
+  return strainer_cable_.state_start();
+}
+
+double CatenaryCableLoader::temperature_stretch() const {
+  return strainer_cable_.temperature_stretch();
 }
 
 Vector3d CatenaryCableLoader::weight_unit_catenary() const {
@@ -133,13 +221,13 @@ double CatenaryCableLoader::LengthDifference(
 
   // update the catenary and cable strainer load
   catenary_.set_tension_horizontal(tension_horizontal);
-  load_finish_ = catenary_.TensionAverage();
+  strainer_cable_.set_load_finish(catenary_.TensionAverage());
 
   // catenary length
   const double length_catenary = catenary_.Length();
 
   // cable length
-  const double length_cable = CableStrainer::LengthFinish();
+  const double length_cable = strainer_cable_.LengthFinish();
 
   return length_catenary - length_cable;
 }

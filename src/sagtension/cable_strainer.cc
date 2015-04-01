@@ -178,14 +178,6 @@ Cable CableStrainer::cable() const {
   return model_elongation_start_.cable();
 }
 
-bool CableStrainer::is_stretched_finish() const {
-  return is_stretched_finish_;
-}
-
-bool CableStrainer::is_stretched_start() const {
-  return is_stretched_start_;
-}
-
 double CableStrainer::length_start() const {
   return length_start_;
 }
@@ -208,14 +200,6 @@ void CableStrainer::set_cable(const Cable& cable) {
   model_elongation_finish_.set_cable(cable);
 }
 
-void CableStrainer::set_is_stretched_finish(const bool& is_stretched_finish) {
-  is_stretched_finish_ = is_stretched_finish;
-}
-
-void CableStrainer::set_is_stretched_start(const bool& is_stretched_start) {
-  is_stretched_start_ = is_stretched_start;
-}
-
 void CableStrainer::set_length_start(const double& length_start) {
   length_start_ = length_start;
 }
@@ -233,12 +217,16 @@ void CableStrainer::set_load_stretch(const double& load_stretch) {
   model_elongation_finish_.set_load_stretch(load_stretch);
 }
 
-void CableStrainer::set_temperature_finish(const double& temperature_finish) {
-  model_elongation_finish_.set_temperature(temperature_finish);
+void CableStrainer::set_state_finish(const CableStrainerState& state_finish) {
+
+  is_stretched_finish_ = state_finish.is_stretched;
+  model_elongation_finish_.set_temperature(state_finish.temperature);
 }
 
-void CableStrainer::set_temperature_start(const double& temperature_start) {
-  model_elongation_start_.set_temperature(temperature_start);
+void CableStrainer::set_state_start(const CableStrainerState& state_start) {
+
+  is_stretched_start_ = state_start.is_stretched;
+  model_elongation_start_.set_temperature(state_start.temperature);
 }
 
 void CableStrainer::set_temperature_stretch(const double& temperature_stretch) {
@@ -246,12 +234,20 @@ void CableStrainer::set_temperature_stretch(const double& temperature_stretch) {
   model_elongation_finish_.set_temperature_stretch(temperature_stretch);
 }
 
-double CableStrainer::temperature_finish() const {
-  return model_elongation_finish_.temperature();
+CableStrainerState CableStrainer::state_finish() const {
+
+  CableStrainerState state_finish;
+  state_finish.is_stretched = is_stretched_finish_;
+  state_finish.temperature = model_elongation_finish_.temperature();
+  return state_finish;
 }
 
-double CableStrainer::temperature_start() const {
-  return model_elongation_start_.temperature();
+CableStrainerState CableStrainer::state_start() const {
+
+  CableStrainerState state_start;
+  state_start.is_stretched = is_stretched_start_;
+  state_start.temperature = model_elongation_start_.temperature();
+  return state_start;
 }
 
 double CableStrainer::temperature_stretch() const {
