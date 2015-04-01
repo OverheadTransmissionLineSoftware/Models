@@ -39,12 +39,24 @@
 /// This class models the cable as being of uniform temperature. The core and
 /// shell component temperatures are equal.
 ///
-/// \par MULTI-COMPONENT MODELS (COMPRESSION)
+/// \par COMPRESSION
 ///
 /// This class models a cable where the core and shell components are always at
 /// a similar strain. At temperatures other than the component reference
 /// temperature and when the coefficient of thermal expansion is different for
 /// core and shell components, this may cause compression for a component.
+///
+/// \par DISCRETE REGIONS
+///
+/// The cable elongation model may have abrupt changes in elongation behavior.
+/// This may be caused by the interaction two different components, if each has
+/// significantly different thermal elongation and load-based elongation
+/// behavior. This may also be caused by the elongation behavior as the
+/// component transitions from stretched to non-stretched, or as the component
+/// polynomial becomes invalid. It is necessary to capture the locations where
+/// elongation may become abrupt, and doing this allows more easily allows the
+/// strain function to determine which region a given load value is in. This
+/// makes the numerical solution converge more quickly and consistently.
 class CableElongationModel {
  public:
   /// \brief Default constructor.
@@ -58,6 +70,7 @@ class CableElongationModel {
   ///   The strain value (x-axis)
   /// \param[in] is_stretched
   ///   An indicator that tells if the cable is stretched.
+  /// \return The load of the core component.
   double GetLoadCore(const double& strain, const bool& is_stretched) const;
 
   /// \brief Gets the load of the shell component.
@@ -65,6 +78,7 @@ class CableElongationModel {
   ///   The strain value (x-axis)
   /// \param[in] is_stretched
   ///   An indicator that tells if the cable is stretched.
+  /// \return The load of the shell component.
   double GetLoadShell(const double& strain, const bool& is_stretched) const;
 
   /// \brief Gets the load of the entire cable.
@@ -72,6 +86,7 @@ class CableElongationModel {
   ///   The strain value (x-axis)
   /// \param[in] is_stretched
   ///   An indicator that tells if the cable is stretched.
+  /// \return The load of the entire cable.
   double GetLoadTotal(const double& strain, const bool& is_stretched) const;
 
   /// \brief Gets the strain of the core component.
@@ -79,6 +94,7 @@ class CableElongationModel {
   ///   The load value (y-axis)
   /// \param[in] is_stretched
   ///   An indicator that tells if the cable is stretched.
+  /// \return The strain of the core component.
   double GetStrainCore(const double& load, const bool& is_stretched) const;
 
   /// \brief Gets the strain of the shell component.
@@ -86,6 +102,7 @@ class CableElongationModel {
   ///   The load value (y-axis)
   /// \param[in] is_stretched
   ///   An indicator that tells if the cable is stretched.
+  /// \return The strain of the shell component.
   double GetStrainShell(const double& load, const bool& is_stretched) const;
 
   /// \brief Gets the strain of the entire cable.
@@ -93,6 +110,7 @@ class CableElongationModel {
   ///   The load value (y-axis)
   /// \param[in] is_stretched
   ///   An indicator that tells if the cable is stretched.
+  /// \return The strain of the entire cable.
   double GetStrainTotal(const double& load, const bool& is_stretched) const;
 
   /// \brief Validates member variables.
@@ -176,10 +194,12 @@ class CableElongationModel {
   /// If the component is inactive, the returned load is zero.
   double LoadTotal(const double& strain, const bool& is_stretched) const;
 
-  /// \brief Gets the points for the component elongation model discrete
-  ///   regions.
+  /// \brief Gets the points for the discrete regions from the component
+  ///   elongation models.
   /// \param[in] is_stretched
   ///   An indicator that tells if the cable is stretched.
+  /// \return The points for the discrete regions from the component elongation
+  ///   models.
   std::vector<Point2d> PointsDiscreteRegions(const bool& is_stretched) const;
 
   /// \brief Gets the strain of the core component.
@@ -254,10 +274,12 @@ class CableElongationModel {
   bool UpdateComponentsProperties() const;
 
   /// \brief Updates the temperature for the component models.
+  /// \param[in] temperature
+  ///   The temperature to update the component models to.
   /// \return A boolean indicating the success status of the update.
   bool UpdateComponentsTemperature(const double& temperature) const;
 
-  /// \brief Updates the cached points for the boundary regions in the
+  /// \brief Updates the cached points for the discrete regions in the
   ///    component models.
   /// \return A boolean indicating the success status of the update.
   bool UpdatePointsDiscreteRegions() const;
@@ -290,34 +312,34 @@ class CableElongationModel {
   ///  The cable which will be modeled.
   Cable cable_;
 
-  /// \var component_core
+  /// \var component_core_
   ///   The elongation model for the core cable component.
   mutable CableComponentElongationModel component_core_;
 
-  /// \var component_shell
+  /// \var component_shell_
   ///   The elongation model for the shell cable component.
   mutable CableComponentElongationModel component_shell_;
 
-  /// \var is_enabled_core
+  /// \var is_enabled_core_
   ///   An indicator that tells if the core elongation model is enabled.
   mutable bool is_enabled_core_;
 
-  /// \var is_enabled_shell
+  /// \var is_enabled_shell_
   ///   An indicator that tells if the shell elongation model is enabled.
   mutable bool is_enabled_shell_;
 
-  /// \TODO This variable needs renamed.
-  /// \var is_updated_components_properties
+  /// \todo This variable needs renamed.
+  /// \var is_updated_components_properties_
   ///   An indicator that tells if the properties for the component elongation
   ///   models have been updated.
   mutable bool is_updated_components_properties_;
 
-  /// \var is_updated_components_load_stretch
+  /// \var is_updated_components_load_stretch_
   ///   An indicator that tells if the stretch load for the component
   ///   elongation models has been updated.
   mutable bool is_updated_components_load_stretch_;
 
-  /// \var is_updated_components_temperature
+  /// \var is_updated_components_temperature_
   ///   An indicator that tells if the temperature for the component elongation
   ///   models has been updated.
   mutable bool is_updated_components_temperature_;
@@ -326,14 +348,14 @@ class CableElongationModel {
   ///   The load that the entire cable has been stretched to.
   double load_stretch_;
 
-  /// \todo modify this variable comment
   /// \var points_discrete_regions_stretched_
   ///   The cached points from the component elongation models that show where
-  ///   load-strain behavior may change for an unstretched cable.
+  ///   elongation behavior may be abrupt for a stretched cable.
   mutable std::vector<Point2d> points_discrete_regions_stretched_;
 
   /// \var points_discrete_regions_unstretched_
-  ///
+  ///   The cached points from the component elongation models that show where
+  ///   elongation behavior may be abrupt for an unstretched cable.
   mutable std::vector<Point2d> points_discrete_regions_unstretched_;
 
   /// \var temperature_

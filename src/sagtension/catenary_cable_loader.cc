@@ -219,35 +219,13 @@ bool CatenaryCableLoader::IsUpdated() const {
 double CatenaryCableLoader::LengthDifference(
     const double& tension_horizontal) const {
 
-  // update the catenary and cable strainer load
-  catenary_.set_tension_horizontal(tension_horizontal);
-  strainer_cable_.set_load_finish(catenary_.TensionAverage());
-
-  // catenary length
   const double length_catenary = catenary_.Length();
-
-  // cable length
   const double length_cable = strainer_cable_.LengthFinish();
 
   return length_catenary - length_cable;
 }
 
-bool CatenaryCableLoader::Update() const {
-
-  // update catenary
-  if (is_updated_catenary_ == false) {
-
-    is_updated_catenary_ = UpdateTensionHorizontal();
-    if (is_updated_catenary_ == false) {
-      return false;
-    }
-  }
-
-  // if it reaches this point, update was successful
-  return true;
-}
-
-bool CatenaryCableLoader::UpdateTensionHorizontal() const {
+bool CatenaryCableLoader::SolveCatenaryCableTensions() const {
 
   // x = horizontal tension
   // y = length difference  i.e.(catenary length - cable length)
@@ -337,4 +315,29 @@ bool CatenaryCableLoader::UpdateTensionHorizontal() const {
   } else {
     return false;
   }
+}
+
+bool CatenaryCableLoader::Update() const {
+
+  // update catenary
+  if (is_updated_catenary_ == false) {
+
+    is_updated_catenary_ = SolveCatenaryCableTensions();
+    if (is_updated_catenary_ == false) {
+      return false;
+    }
+  }
+
+  // if it reaches this point, update was successful
+  return true;
+}
+
+bool CatenaryCableLoader::UpdateCatenaryCableTensions(
+    const double& tension_horizontal) const {
+
+  // update the catenary and cable strainer load
+  catenary_.set_tension_horizontal(tension_horizontal);
+  strainer_cable_.set_load_finish(catenary_.TensionAverage());
+
+  return true;
 }
