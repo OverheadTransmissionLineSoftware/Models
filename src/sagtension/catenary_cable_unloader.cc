@@ -5,13 +5,12 @@
 
 CatenaryCableUnloader::CatenaryCableUnloader() {
   is_updated_load_ = false;
-  load_finish_ = 0;
 }
 
 CatenaryCableUnloader::~CatenaryCableUnloader() {
 }
 
-double CatenaryCableUnloader::LengthFinish() const {
+double CatenaryCableUnloader::LengthLoaded() const {
 
   // update class, if necessary
   if (IsUpdated() == false) {
@@ -20,10 +19,10 @@ double CatenaryCableUnloader::LengthFinish() const {
     }
   }
 
-  return CableStrainer::LengthFinish();
+  return strainer_cable_.length_start();
 }
 
-double CatenaryCableUnloader::LoadFinishCore() const {
+double CatenaryCableUnloader::LengthUnloaded() const {
 
   // update class, if necessary
   if (IsUpdated() == false) {
@@ -32,43 +31,7 @@ double CatenaryCableUnloader::LoadFinishCore() const {
     }
   }
 
-  return CableStrainer::LoadFinishCore();
-}
-
-double CatenaryCableUnloader::LoadFinishShell() const {
-
-  // update class, if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
-  }
-
-  return CableStrainer::LoadFinishShell();
-}
-
-double CatenaryCableUnloader::LoadStartCore() const {
-
-  // update class, if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
-  }
-
-  return CableStrainer::LoadStartCore();
-}
-
-double CatenaryCableUnloader::LoadStartShell() const {
-
-  // update class, if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
-  }
-
-  return CableStrainer::LoadStartShell();
+  return strainer_cable_.LengthFinish();
 }
 
 double CatenaryCableUnloader::StrainTransitionLoad() const {
@@ -80,7 +43,7 @@ double CatenaryCableUnloader::StrainTransitionLoad() const {
     }
   }
 
-  return CableStrainer::StrainTransitionLoad();
+  return strainer_cable_.StrainTransitionLoad();
 }
 
 double CatenaryCableUnloader::StrainTransitionThermal() const {
@@ -92,13 +55,55 @@ double CatenaryCableUnloader::StrainTransitionThermal() const {
     }
   }
 
-  return CableStrainer::StrainTransitionThermal();
+  return strainer_cable_.StrainTransitionThermal();
+}
+
+double CatenaryCableUnloader::load_stretch() const {
+  return strainer_cable_.load_stretch();
+}
+
+void CatenaryCableUnloader::set_cable(const Cable& cable) {
+
+  strainer_cable_.set_cable(cable);
+
+  is_updated_load_ = false;
+}
+
+void CatenaryCableUnloader::set_load_stretch(const double& load_stretch) {
+
+  strainer_cable_.set_load_stretch(load_stretch);
+
+  is_updated_load_ = false;
 }
 
 void CatenaryCableUnloader::set_spacing_endpoints_catenary(
     const Vector3d& spacing_endpoints) {
 
   catenary_.set_spacing_endpoints(spacing_endpoints);
+
+  is_updated_load_ = false;
+}
+
+void CatenaryCableUnloader::set_state_loaded(
+    const CableStrainerState& state_loaded) {
+
+  strainer_cable_.set_state_start(state_loaded);
+
+  is_updated_load_ = false;
+}
+
+void CatenaryCableUnloader::set_state_unloaded(
+    const CableStrainerState& state_unloaded) {
+
+  strainer_cable_.set_state_finish(state_unloaded);
+
+  is_updated_load_  = false;
+}
+
+void CatenaryCableUnloader::set_temperature_stretch(
+    const double& temperature_stretch) {
+
+  strainer_cable_.set_temperature_stretch(temperature_stretch);
 
   is_updated_load_ = false;
 }
@@ -121,6 +126,18 @@ void CatenaryCableUnloader::set_weight_unit_catenary(
 
 Vector3d CatenaryCableUnloader::spacing_endpoints_catenary() const {
   return catenary_.spacing_endpoints();
+}
+
+CableStrainerState CatenaryCableUnloader::state_loaded() const {
+  return strainer_cable_.state_start();
+}
+
+CableStrainerState CatenaryCableUnloader::state_unloaded() const {
+  return strainer_cable_.state_finish();
+}
+
+double CatenaryCableUnloader::temperature_stretch() const {
+  return strainer_cable_.temperature_stretch();
 }
 
 double CatenaryCableUnloader::tension_horizontal() const {
@@ -158,8 +175,8 @@ bool CatenaryCableUnloader::Update() const {
 bool CatenaryCableUnloader::UpdateLoadEffective() const {
 
   // update unload cable parameters
-  length_start_ = catenary_.Length();
-  load_start_ = catenary_.TensionAverage();
+  strainer_cable_.set_load_start(catenary_.Length());
+  strainer_cable_.set_load_start(catenary_.TensionAverage());
 
   return true;
 }

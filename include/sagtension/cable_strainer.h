@@ -12,6 +12,13 @@
 
 /// \par OVERVIEW
 ///
+struct CableStrainerState {
+  bool is_stretched;
+  double temperature;
+};
+
+/// \par OVERVIEW
+///
 /// This class strains the cable from a starting state to a finish state.
 ///
 /// \par START AND FINISH STATE
@@ -89,15 +96,15 @@ class CableStrainer {
   /// \return A copy of the cable.
   Cable cable() const;
 
-  /// \brief Gets whether the cable is stretched at the finish state.
-  /// \return An indicator that tells if the cable is stretched at the finish
-  ///   state.
-  bool is_stretched_finish() const;
-
-  /// \brief Gets whether the cable is stretched at the start state.
-  /// \return An indicator that tells if the cable is stretched at the start
-  ///   state.
-  bool is_stretched_start() const;
+//  /// \brief Gets whether the cable is stretched at the finish state.
+//  /// \return An indicator that tells if the cable is stretched at the finish
+//  ///   state.
+//  bool is_stretched_finish() const;
+//
+//  /// \brief Gets whether the cable is stretched at the start state.
+//  /// \return An indicator that tells if the cable is stretched at the start
+//  ///   state.
+//  bool is_stretched_start() const;
 
   /// \brief Gets the length of the cable at the start state.
   /// \return The length of cable at the start state.
@@ -120,16 +127,6 @@ class CableStrainer {
   ///   The cable.
   void set_cable(const Cable& cable);
 
-  /// \brief Sets the whether the cable is stretched at the finish state.
-  /// \param[in] is_stretched_finish
-  ///   An indicator that tells if the cable is stretched at the finish state.
-  void set_is_stretched_finish(const bool& is_stretched_finish);
-
-  /// \brief Sets the whether the cable is stretched at the start state.
-  /// \param[in] is_stretched_start
-  ///   An indicator that tells if the cable is stretched at the start state.
-  void set_is_stretched_start(const bool& is_stretched_start);
-
   /// \brief Sets the length of the cable at the start state.
   /// \param[in] length_start
   ///   The length of the cable at the start state.
@@ -150,34 +147,34 @@ class CableStrainer {
   ///   The load that the cable was stretched to.
   void set_load_stretch(const double& load_stretch);
 
-  /// \brief Sets the temperature of the cable at the finish state.
-  /// \param[in] temperature_finish
-  ///   The temperature of the cable at the finish state.
-  void set_temperature_finish(const double& temperature_finish);
+  /// \brief Sets the state parameters at the finish.
+  /// \param[in] state_finish
+  ///   The state parameters at the start.
+  void set_state_finish(const CableStrainerState& state_finish);
 
-  /// \brief Sets the temperature of the cable at the start state.
-  /// \param[in] temperature_start
-  ///   The temperature of the cable at the start state.
-  void set_temperature_start(const double& temperature_start);
+  /// \brief Sets the state parameters at the start.
+  /// \param[in] state_start
+  ///   The state parameters at the start.
+  void set_state_start(const CableStrainerState& state_finish);
 
   /// \brief Sets the temperature that the cable was stretched at.
   /// \param[in] temperature_stretch
   ///   The temperature that the cable was stretched at.
   void set_temperature_stretch(const double& temperature_stretch);
 
-  /// \brief Gets them temperature of the cable at the finish state.
-  /// \return The temperature of the cable at the finish state.
-  double temperature_finish() const;
+  /// \brief Gets the finish state parameters.
+  /// \return The finish state parameters.
+  CableStrainerState state_finish() const;
 
-  /// \brief Gets them temperature of the cable at the start state.
-  /// \return The temperature of the cable at the start state.
-  double temperature_start() const;
+  /// \brief Gets the state parameters at the start.
+  /// \return The state parameters at the start.
+  CableStrainerState state_start() const;
 
   /// \brief Getst the temperature that the cable was stretched at.
   /// \return The temperature that the cable was stretched at.
   double temperature_stretch() const;
 
- protected:
+ private:
   /// \brief Gets the length after the cable has been strained.
   /// \param[in] length_before_strain
   ///   The length of the cable before straining.

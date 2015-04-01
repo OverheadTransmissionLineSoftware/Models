@@ -25,49 +25,69 @@
 ///
 /// The cable segment is unloaded according to the specified parameters, and is
 /// no longer modeled as a catenary.
-class CatenaryCableUnloader : public CableStrainer {
+class CatenaryCableUnloader {
  public:
+  /// \brief Default constructor.
   CatenaryCableUnloader();
+
+  /// \brief Destructor.
   ~CatenaryCableUnloader();
 
-  /// \brief Gets the length of the cable in the finish state.
-  /// \return The length in the finish state.
-  double LengthFinish() const;
+  /// \brief Gets the length of the cable when loaded.
+  /// \return The length when loaded.
+  double LengthLoaded() const;
 
-  /// \brief Gets the load of the core component at the finish state.
-  /// \return The load of the core component at the finish state.
-  double LoadFinishCore() const;
+  /// \brief Gets the length of the cable when unloaded.
+  /// \return The length when unloaded.
+  double LengthUnloaded() const;
 
-  /// \brief Gets the load of the shell component at the finish state.
-  /// \return The load of the shell component at the finish state.
-  double LoadFinishShell() const;
-
-  /// \brief Gets the load of the core component at the start state.
-  /// \return The load of the core component at the start state.
-  double LoadStartCore() const;
-
-  /// \brief Gets the load of the shell component at the start state.
-  /// \return The load of the shell component at the start state.
-  double LoadStartShell() const;
-
-  /// \brief Gets the strain transition, or strain difference, between start
-  ///   and finish states.
-  /// \return The strain transition from start to finish state.
+  /// \brief Gets the strain transition, or strain difference, between loaded
+  ///   and unloaded states.
+  /// \return The strain transition from loaded to unloaded state.
   /// This value may be positive or negative, indicating whether the cable is
   /// shrinking (negative) or elongating (positive).
   double StrainTransitionLoad() const;
 
   /// \brief Gets the thermal based strain transition, or strain difference,
-  ///   between start and finish states.
-  /// \return The thermal based strain transition.
+  ///   between loaded and unloaded states.
+  /// \return The thermal based strain transition from loaded to unloaded state.
   /// This value may be positive or negative, indicating whether the cable is
   /// shrinking (negative) or elongating (positive).
   double StrainTransitionThermal() const;
+
+  /// \brief Gets the load that the cable is stretched to.
+  /// \return The load that the cable was stretched to.
+  double load_stretch() const;
+
+  /// \brief Sets the cable.
+  /// \param[in] cable
+  ///   The cable.
+  void set_cable(const Cable& cable);
+
+  /// \brief Sets the load that the cable is stretched to.
+  /// \param[in] load_stretch
+  ///   The load that the cable was stretched to.
+  void set_load_stretch(const double& load_stretch);
 
   /// \brief Sets the endpoint spacing of the catenary.
   /// \param[in] spacing_endpoints
   ///   The vector spacing between endpoints of the catenary.
   void set_spacing_endpoints_catenary(const Vector3d& spacing_endpoints);
+
+  /// \brief Sets the state parameters at the loaded state.
+  /// \param[in] state_loaded
+  ///   The state parameters at the loaded start.
+  void set_state_loaded(const CableStrainerState& state_loaded);
+
+  /// \brief Sets the state parameters at the unloaded state.
+  /// \param[in] state_unloaded
+  ///   The state parameters at the unloaded state.
+  void set_state_unloaded( const CableStrainerState& state_unloaded);
+
+  /// \brief Sets the temperature that the cable was stretched at.
+  /// \param[in] temperature_stretch
+  ///   The temperature that the cable was stretched at.
+  void set_temperature_stretch(const double& temperature_stretch);
 
   /// \brief Sets the horizontal tension of the catenary.
   /// \param[in] tension_horizontal
@@ -83,6 +103,18 @@ class CatenaryCableUnloader : public CableStrainer {
   /// \return A copy of the endpoint spacing vector of the catenary.
   Vector3d spacing_endpoints_catenary() const;
 
+  /// \brief Gets the state parameters at the loaded state.
+  /// \return The state parameters at the loaded state.
+  CableStrainerState state_loaded() const;
+
+  /// \brief Gets the state parameters at the unloaded state.
+  /// \return The state parameters at the unloaded state.
+  CableStrainerState state_unloaded() const;
+
+  /// \brief Getst the temperature that the cable was stretched at.
+  /// \return The temperature that the cable was stretched at.
+  double temperature_stretch() const;
+
   /// \brief Gets the horizontal tension of the catenary.
   /// \return The horizontal tension of the catenary.
   double tension_horizontal() const;
@@ -95,18 +127,6 @@ class CatenaryCableUnloader : public CableStrainer {
   /// \brief Determines if class is updated.
   /// \return A boolean indicating if class is updated.
   bool IsUpdated() const;
-
-  // Modify CableStrainer function access.
-  using CableStrainer::load_finish;
-
-  // Modify CableStrainer function access.
-  using CableStrainer::load_start;
-
-  // Modify CableStrainer function access.
-  using CableStrainer::set_load_finish;
-
-  // Modify CableStrainer function access.
-  using CableStrainer::set_load_start;
 
   /// \brief Updates cached member variables and modifies control variables if
   ///   update is required.
@@ -126,6 +146,9 @@ class CatenaryCableUnloader : public CableStrainer {
   /// \var is_updated_load_
   ///   An indicator that tells if the effective load of the cable is updated.
   mutable bool is_updated_load_;
+
+  /// \var
+  mutable CableStrainer strainer_cable_;
 };
 
 #endif // TLSLIBRARIES_SAGTENSION_CATENARYCABLEUNLOADER_H_
