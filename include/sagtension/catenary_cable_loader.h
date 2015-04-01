@@ -155,33 +155,44 @@ class CatenaryCableLoader {
   /// \return A boolean indicating if class is updated.
   bool IsUpdated() const;
 
-  /// \todo This function needs renamed or better documented. It also updates
-  ///   the load of the strainer class.
   /// \brief Gets the difference in length between the catenary curve and the
   /// loaded cable.
+  /// \param[in] tension_horizontal
+  ///   The horizontal tension for the catenary.
   /// \return The difference in length between the catenary curve and the loaded
   ///   cable.
+  /// Length difference = catenary length - cable length
   double LengthDifference(const double& tension_horizontal) const;
+
+  /// \brief Solves the catenary horizontal tension and the load of the cable
+  ///   strainer.
+  /// \return The success status of solution.
+  bool SolveCatenaryCableTensions() const;
 
   /// \brief Updates cached member variables and modifies control variables if
   ///   update is required.
   /// \return A boolean indicating if class updates completed successfully.
   bool Update() const;
 
-  /// \brief Updates the catenary horizontal tension.
+  /// \brief Updates the catenary horizontal tension and load of the cable
+  ///   strainer.
+  /// \param[in] tension_horizontal
+  ///   The horizontal tension for the catenary.
   /// \return The success status of the update.
-  bool UpdateTensionHorizontal() const;
+  bool UpdateCatenaryCableTensions(const double& tension_horizontal) const;
 
   /// \var catenary_
   ///   The shape that models the cable loading.
   mutable Catenary3d catenary_;
 
-  /// \var is_updated_catenary
+  /// \var is_updated_catenary_
   ///   An indicator that tells if the catenary, specifically the horizontal
   ///   tension has been updated.
   mutable bool is_updated_catenary_;
 
-  /// \var
+  /// \var strainer_cable_
+  ///   The strainer that uses cable elongation models to strain the cable from
+  ///   an unloaded to a loaded state.
   mutable CableStrainer strainer_cable_;
 };
 

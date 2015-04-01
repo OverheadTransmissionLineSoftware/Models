@@ -12,8 +12,17 @@
 
 /// \par OVERVIEW
 ///
+/// This struct contains the base information for the state of the cable. When
+/// paired with a load value, the cable strain can be determined from the cable
+/// elongation model.
 struct CableStrainerState {
+
+  /// \var is_stretched
+  ///   And indicator that tells if the cable is stretched.
   bool is_stretched;
+
+  /// \var temperature
+  ///   The temperature of the cable.
   double temperature;
 };
 
@@ -155,7 +164,7 @@ class CableStrainer {
   /// \brief Sets the state parameters at the start.
   /// \param[in] state_start
   ///   The state parameters at the start.
-  void set_state_start(const CableStrainerState& state_finish);
+  void set_state_start(const CableStrainerState& state_start);
 
   /// \brief Sets the temperature that the cable was stretched at.
   /// \param[in] temperature_stretch
@@ -188,7 +197,7 @@ class CableStrainer {
   ///   And indicator that tells if the cable is stretched in the finish state.
   bool is_stretched_finish_;
 
-  /// \var is_stretched_finish_
+  /// \var is_stretched_start_
   ///   And indicator that tells if the cable is stretched in the start state.
   bool is_stretched_start_;
 

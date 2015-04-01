@@ -147,7 +147,9 @@ class CatenaryCableUnloader {
   ///   An indicator that tells if the effective load of the cable is updated.
   mutable bool is_updated_load_;
 
-  /// \var
+  /// \var strainer_cable_
+  ///   The strainer that uses cable elongation models to strain the cable from
+  ///   a loaded to an unloaded state.
   mutable CableStrainer strainer_cable_;
 };
 

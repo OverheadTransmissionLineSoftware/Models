@@ -20,8 +20,8 @@
 /// The polynomial can model the non-linear elongation of the component, and is
 /// based on empirical test data. The polynomial coefficients must be provided
 /// using the following units:
-///   X axis - percent strain   ex: (in/in)% or (mm/mm)%
-///   Y axis - load             ex: (lbs) or (N)
+///   - X axis = percent strain
+///   - Y axis = load
 ///
 /// \par POLYNOMIAL LIMIT
 ///
@@ -65,7 +65,7 @@ class CableComponentElongationModel {
   /// \param[in] is_stretched
   ///   A boolean indicating whether the cable condition is unstretched, or
   ///   stretched.
-  /// \return A load value corresponding to the strain and stretch condition.
+  /// \return A load value.
   double Load(const double& strain, const bool& is_stretched) const;
 
   /// \brief Gets the polynomial limit point.
@@ -100,6 +100,9 @@ class CableComponentElongationModel {
   /// \brief Gets the slope of a tangent line.
   /// \param[in] strain
   ///   The strain value (x-axis)
+  /// \param[in] is_stretched
+  ///   A boolean indicating whether the cable condition is unstretched, or
+  ///   stretched.
   /// \return The slope of a tangent line.
   double Slope(const double& strain, const bool& is_stretched) const;
 
@@ -109,6 +112,7 @@ class CableComponentElongationModel {
   /// \param[in] is_stretched
   ///   A boolean indicating whether the cable condition is unstretched, or
   ///   stretched.
+  /// \return A strain value..
   double Strain(const double& load, const bool& is_stretched) const;
 
   /// \brief Validates member variables.
@@ -172,6 +176,7 @@ class CableComponentElongationModel {
   ///   unshifted polynomial at reference temperature.
   /// \param[in] strain
   ///   The strain value (x-axis)
+  /// \return A percent strain value for use with the polynomial.
   double ConvertToPercentStrainPolynomial(const double& strain) const;
 
   /// \brief Converts to a strain value.
@@ -325,7 +330,7 @@ class CableComponentElongationModel {
   ///   An indicator that tells if the stretch point has been updated.
   mutable bool is_updated_point_stretch_;
 
-  /// \var is_updated_polynomial
+  /// \var is_updated_polynomial_
   ///   An indicator that tells if the polynomial has been updated.
   mutable bool is_updated_polynomial_;
 
