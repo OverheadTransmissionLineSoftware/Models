@@ -29,6 +29,10 @@ class Polynomial {
   /// \brief Destructor.
   ~Polynomial();
 
+  /// \brief Gets the derivative of the polynomial.
+  /// \return A polynomial with derivative coefficients.
+  Polynomial Derivative() const;
+
   /// \brief Gets the maximum polynomial order.
   /// \return The maximum polynomial order.
   int OrderMax() const;
@@ -61,10 +65,6 @@ class Polynomial {
   /// \return The polynomial coefficients.
   std::vector<double> coefficients() const;
 
-  /// \brief Gets the derivative of the polynomial.
-  /// \return A polynomial with derivative coefficients.
-  Polynomial derivative() const;
-
   /// \brief Sets the polynomial coefficients.
   /// \param[in] coefficients
   ///   A vector of polynomial coefficients. The vector index correlates to the
@@ -94,9 +94,9 @@ class Polynomial {
   ///   values that correspond to the slop of the polynomial.
   mutable Polynomial* derivative_;
 
-  /// \var is_updated_derivate_
+  /// \var is_updated_derivative_
   ///   An indicator that tells if the derivative is updated.
-  mutable bool is_updated_derivate_;
+  mutable bool is_updated_derivative_;
 };
 
 #endif // TLSLIBRARIES_BASE_POLYNOMIAL_H_

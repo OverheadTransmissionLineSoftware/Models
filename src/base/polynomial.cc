@@ -9,7 +9,7 @@
 
 Polynomial::Polynomial() {
   derivative_ = nullptr;
-  is_updated_derivate_ = false;
+  is_updated_derivative_ = false;
 }
 
 Polynomial::Polynomial(const std::vector<double> coefficients) {
@@ -18,8 +18,28 @@ Polynomial::Polynomial(const std::vector<double> coefficients) {
 
 Polynomial::~Polynomial() {}
 
+Polynomial Polynomial::Derivative() const {
+
+  Polynomial derivative;
+
+  // update class, if necessary
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return derivative;
+    }
+  }
+
+  derivative = *derivative_;
+  return derivative;
+}
+
+int Polynomial::OrderMax() const {
+  return coefficients_.size() - 1;
+}
+
 double Polynomial::Slope(const double& x) const {
 
+  // update class, if necessary
   if (IsUpdated() == false) {
     if (Update() == false) {
       return -999999;
@@ -27,10 +47,6 @@ double Polynomial::Slope(const double& x) const {
   }
 
   return derivative_->Y(x);
-}
-
-int Polynomial::OrderMax() const {
-  return coefficients_.size();
 }
 
 /// This method is iterative, and uses the Newton numerical method for solving
@@ -98,18 +114,13 @@ std::vector<double> Polynomial::coefficients() const {
   return coefficients_;
 }
 
-// TODO this function needs to return a copy of the derivative
-Polynomial Polynomial::derivative() const {
-  return *derivative_;
-}
-
 void Polynomial::set_coefficients(std::vector<double> coefficients) {
   coefficients_ = coefficients;
 }
 
 bool Polynomial::IsUpdated() const {
 
-  if (is_updated_derivate_ == true) {
+  if (is_updated_derivative_ == true) {
     return true;
   } else {
     return false;
@@ -119,10 +130,10 @@ bool Polynomial::IsUpdated() const {
 bool Polynomial::Update() const {
 
   // update derivative
-  if (is_updated_derivate_ == false) {
+  if (is_updated_derivative_ == false) {
 
-    is_updated_derivate_ = UpdateDerivative();
-    if (is_updated_derivate_ == false) {
+    is_updated_derivative_ = UpdateDerivative();
+    if (is_updated_derivative_ == false) {
       return false;
     }
   }
@@ -145,7 +156,9 @@ bool Polynomial::UpdateDerivative() const {
     }
   }
 
-  // assign to derivative
+  // delete old derivative polynomial and create new one
+  delete derivative_;
+  derivative_ = new Polynomial();
   derivative_->set_coefficients(coefficients_derivative);
 
   return true;
