@@ -7,8 +7,6 @@
 
 #include "gtest/gtest.h"
 
-// This file tests the Base library, specifically the vector.cc file.
-
 TEST(Vector2d, Angle) {
 
   Vector2d v(0,0);
