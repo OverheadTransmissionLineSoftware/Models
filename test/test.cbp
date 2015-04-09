@@ -48,7 +48,10 @@
 			<Add option="-pthread" />
 			<Add library="../../../gtest/make/gtest_main.a" />
 		</Linker>
+		<Unit filename="base/geometric_shapes_test.cc" />
+		<Unit filename="base/polynomial_test.cc" />
 		<Unit filename="base/vector_test.cc" />
+		<Unit filename="main.cc" />
 		<Extensions>
 			<code_completion />
 			<debugger />
