@@ -17,23 +17,25 @@
 ///
 /// \par POLYNOMIAL
 ///
+/// The polynomial is the foundation for the cable component elongation model.
+/// It is often manipulated by either shifting or extrapolating as a means to
+/// describe the cable elongation under various thermal and stretch parameters.
+///
 /// The polynomial can model the non-linear elongation of the component, and is
 /// based on empirical test data. The polynomial coefficients must be provided
 /// using the following units:
 ///   - X axis = percent strain
 ///   - Y axis = load
 ///
-/// \par POLYNOMIAL LIMIT
-///
-/// Polynomial functions can become erratic at ranges beyond the curve-fitted
-/// region. Beyond this point, all elongation is assumed elastic, and the
-/// component elongates according to the tension elastic area modulus.
+/// The polynomial can become erratic at ranges beyond the curve-fitted region.
+/// To account for this, the cable component must have a polynomial limit that
+/// restricts the polynomial use only to the valid region of the polynomial.
 ///
 /// \par THERMAL STRAIN SHIFTING
 ///
 /// Thermal strain is modeled for the component by shifting along the strain
-/// axis. The temperature difference from reference temperature and the thermal
-/// expansion coefficient determine the thermal strain shift.
+/// (x) axis. The temperature difference from reference temperature and the
+/// thermal expansion coefficient determine the thermal strain shift.
 /// The polynomial coefficients are not adjusted for thermal strain shifts.
 /// Instead, strain values are converted to percent strain values at the
 /// polynomial reference temperature.
@@ -47,10 +49,28 @@
 ///  - for loads above the stretch load, the cable is effectively unstretched
 ///    and the polynomial is referenced
 ///
-/// \par COMPRESSION
+/// \par REGIONS
 ///
-/// Compression is modeled as elastic, and is defined by the compression
-/// elastic area modulus.
+/// The elongation of the cable component can be described by the polynomial,
+/// or by means of extrapolating from the polynomial. This can cause irregular
+/// (non-smooth) elongation behavior. To account for this, the elongation
+/// model is broken into discrete regions, which capture the specific
+/// elongation characteristics of the component at various loads/strains. The
+/// specific regions are as follows, but not always in this order:
+///   - Compressed: The load/strain of the component is less than the unloaded
+///     point. In this region, the component elongates from the unloaded point
+///     according to the component compression modulus.
+///   - Stretched: The load/strain of the component is between the unloaded
+///     point and the polynomial start point. In this region, the component
+///     elongates from the unloaded point to the stretch point according the
+///     component tension modulus.
+///   - Polynomial: The load/strain of the component is between the polynomial
+///     start and end points. The polynomial start point is the point the
+///     component was stretched to, and the end point is the limit where the
+///     polynomial is no longer valid at describing the component elongation.
+///   - Extrapolated: The load/strain of the component is beyond the polynomial
+///     end point. All elongation is assumed elastic, and the component
+///     elongates according to the tension elastic area modulus.
 class CableComponentElongationModel {
  public:
   /// \brief Default constructor.
@@ -62,58 +82,44 @@ class CableComponentElongationModel {
   /// \brief Gets the load.
   /// \param[in] strain
   ///   The strain value (x-axis)
-  /// \param[in] is_stretched
-  ///   A boolean indicating whether the cable condition is unstretched, or
-  ///   stretched.
   /// \return A load value.
-  double Load(const double& strain, const bool& is_stretched) const;
+  double Load(const double& strain) const;
 
-  /// \brief Gets the polynomial limit point.
-  /// \return The point where the polynomial has reached its limit and is no
-  ///   longer valid.
-  Point2d PointLimitPolynomial() const;
+  /// \brief Gets the polynomial end point.
+  /// \return The polynomial end point.
+  Point2d PointPolynomialEnd() const;
 
-  /// \brief Gets the stretch point.
-  /// \return The point where the cable component has been stretched to.
-  Point2d PointStretch() const;
+  /// \brief Gets the polynomial start point.
+  /// \return The polynomial start point.
+  Point2d PointPolynomialStart() const;
 
   /// \brief Gets the unloaded point.
-  /// \param[in] is_stretched
-  ///   A boolean indicating whether the cable condition is unstretched, or
-  ///   stretched.
-  /// \return The point where the cable component is unloaded.
-  Point2d PointUnloaded(const bool& is_stretched) const;
+  /// \return The unloaded point.
+  Point2d PointUnloaded() const;
 
-  /// \brief Gets the points at the load-strain model boundary regions.
-  /// \param[in] is_stretched
-  ///   A boolean indicating whether the cable condition is unstretched, or
-  ///   stretched.
-  /// \return A collection of points at the boundary regions of the load-strain
-  ///   model.
-  /// The region boundaries are at the following locations, but not necessarily
-  /// in this order:
+  /// \brief Gets the points for the region boundaries.
+  /// \return A vector of points at the region boundaries.
+  /// The region boundaries are at the following locations:
   ///  - unloaded
-  ///  - stretched
-  ///  - limit
-  std::vector<Point2d> PointsDiscreteRegions(const bool& is_stretched) const;
+  ///  - polynomial start
+  ///  - polynomial end
+  std::vector<Point2d> PointsRegions() const;
 
   /// \brief Gets the slope of a tangent line.
   /// \param[in] strain
   ///   The strain value (x-axis)
-  /// \param[in] is_stretched
-  ///   A boolean indicating whether the cable condition is unstretched, or
-  ///   stretched.
   /// \return The slope of a tangent line.
-  double Slope(const double& strain, const bool& is_stretched) const;
+  double Slope(const double& strain) const;
 
   /// \brief Gets the strain.
   /// \param[in] load
   ///   The load value (y-axis).
-  /// \param[in] is_stretched
-  ///   A boolean indicating whether the cable condition is unstretched, or
-  ///   stretched.
   /// \return A strain value..
-  double Strain(const double& load, const bool& is_stretched) const;
+  double Strain(const double& load) const;
+
+  /// \brief Gets the thermal strain.
+  /// \return The thermal strain.
+  double StrainThermal() const;
 
   /// \brief Validates member variables.
   /// \param[in] is_included_warnings
@@ -193,96 +199,91 @@ class CableComponentElongationModel {
   /// \brief Gets the load due to compression.
   /// \param[in] strain
   ///   The strain value (x-axis)
-  /// \param[in] is_stretched
-  ///   A boolean indicating whether the cable condition is unstretched, or
-  ///   stretched.
-  /// \return The load due to compression.
-  double LoadCompression(const double& strain, const bool& is_stretched) const;
+  /// \return The load in the compressed region.
+  double LoadCompressed(const double& strain) const;
 
-  /// \brief Gets the load from the polynomial.
+  /// \brief Gets the load in the extrapolated region.
   /// \param[in] strain
   ///   The strain value (x-axis)
-  /// \return The load from the polynomial.
+  /// \return The load in the extrapolated region.
+  double LoadExtrapolated(const double& strain) const;
+
+  /// \brief Gets the load in the polynomial region.
+  /// \param[in] strain
+  ///   The strain value (x-axis)
+  /// \return The load in the polynomial region.
   double LoadPolynomial(const double& strain) const;
 
-  /// \brief Gets the load when the component is stretched.
+  /// \brief Gets the load in the stretched region.
   /// \param[in] strain
   ///   The strain value (x-axis)
-  /// \return The load of the componet when stretched.
+  /// \return The load in the stretched region.
   double LoadStretched(const double& strain) const;
 
-  /// \brief Gets the load when the component is unstretched.
+  /// \brief Gets the slope in the compressed region.
   /// \param[in] strain
   ///   The strain value (x-axis)
-  /// \return The load of the componet when unstretched.
-  double LoadUnstretched(const double& strain) const;
+  /// \return The slope in the compressed region.
+  double SlopeCompressed(const double& strain) const;
 
-  /// \brief Gets the slope when the component is stretched.
+  /// \brief Gets the slope in the extrapolated region.
   /// \param[in] strain
   ///   The strain value (x-axis)
-  /// \param[in] is_stretched
-  ///   A boolean indicating whether the cable condition is unstretched, or
-  ///   stretched.
-  /// \return The slope at the strain point.
-  double SlopeStretched(const double& strain, const bool& is_stretched) const;
+  /// \return The slope in the extrapolated region.
+  double SlopeExtrapolated(const double& strain) const;
 
-  /// \brief Gets the slope when the component is unstretched.
+  /// \brief Gets the slope in the extrapolated region.
   /// \param[in] strain
   ///   The strain value (x-axis)
-  /// \param[in] is_stretched
-  ///   A boolean indicating whether the cable condition is unstretched, or
-  ///   stretched.
-  /// \return The slope at the strain point.
-  double SlopeUnstretched(const double& strain, const bool& is_stretched) const;
+  /// \return The slope in the extrapolated region.
+  double SlopePolynomial(const double& strain) const;
 
-  /// \brief Gets the strain due to compression.
+  /// \brief Gets the slope in the stretched region.
+  /// \param[in] strain
+  ///   The strain value (x-axis)
+  /// \return The slope in the stretched region.
+  double SlopeStretched(const double& strain) const;
+
+  /// \brief Gets the strain in the compressed region.
   /// \param[in] load
   ///   The load value (y-axis)
-  /// \param[in] is_stretched
-  ///   A boolean indicating whether the cable condition is unstretched, or
-  ///   stretched.
-  /// \return The strain due to compression.
-  double StrainCompression(const double& load,
-                           const double& is_stretched) const;
+  /// \return The strain in the compression region.
+  double StrainCompressed(const double& load) const;
 
-  /// \brief Gets the strain from the polynomial.
+  /// \brief Gets the strain in the extrapolated region.
   /// \param[in] load
   ///   The load value (y-axis)
-  /// \return The strain from the polynomial.
+  /// \return The strain in the extrapolated region.
+  double StrainExtrapolated(const double& load) const;
+
+  /// \brief Gets the strain in the polynomial region.
+  /// \param[in] load
+  ///   The load value (y-axis)
+  /// \return The strain in the polynomial region.
   double StrainPolynomial(const double& load) const;
 
-  /// \brief Gets the strain when the component is stretched.
+  /// \brief Gets the strain in the stretched region.
   /// \param[in] load
   ///   The load value (y-axis)
-  /// \return The strain of the componet when stretched.
+  /// \return The strain in the stretched region.
   double StrainStretched(const double& load) const;
-
-  /// \brief Gets the strain when the component is unstretched.
-  /// \param[in] load
-  ///   The load value (y-axis)
-  /// \return The strain of the componet when unstretched.
-  double StrainUnstretched(const double& load) const;
 
   /// \brief Updates cached member variables and modifies control variables if
   ///   update is required.
   /// \return A boolean indicating if class updates completed successfully.
   bool Update() const;
 
-  /// \brief Updates the polynomial limit point.
+  /// \brief Updates the polynomial end point.
   /// \return A boolean indicating the success status of the update.
-  bool UpdatePointLimitPolynomial() const;
+  bool UpdatePointPolynomialEnd() const;
 
-  /// \brief Updates the stretch point.
+  /// \brief Updates the polynomial start point.
   /// \return A boolean indicating the success status of the update.
-  bool UpdatePointStretch() const;
+  bool UpdatePointPolynomialStart() const;
 
-  /// \brief Updates the unloaded point when the component is stretched.
+  /// \brief Updates the unloaded point.
   /// \return A boolean indicating the success status of the update.
-  bool UpdatePointUnloadedStretched() const;
-
-  /// \brief Updates the unloaded point when the component is unstretched.
-  /// \return A boolean indicating the success status of the update.
-  bool UpdatePointUnloadedUnstretched() const;
+  bool UpdatePointUnloaded() const;
 
   /// \brief Updates the polynomial.
   /// \return A boolean indicating the success status of the update.
@@ -290,7 +291,11 @@ class CableComponentElongationModel {
 
   /// \brief Updates the thermal strain.
   /// \return A boolean indicating the success status of the update.
-  bool UpdateStrainThermal() const;
+  bool UpdateStrainThermal(const double& temperature) const;
+
+  /// \brief Updates the thermal shift and cached points for the regions.
+  /// \return The success status of the update.
+  bool UpdateRegions(const double& temperature) const;
 
   /// \brief Validates member variables by checking polynomial origin.
   /// \param[in] is_included_warnings
@@ -322,37 +327,27 @@ class CableComponentElongationModel {
   ///   The load the component has been stretched to.
   double load_stretch_;
 
-  /// \var is_updated_point_limit_polynomial_
-  ///   An indicator that tells if the limit point has been updated.
-  mutable bool is_updated_point_limit_polynomial_;
-
-  /// \var is_updated_point_stretch_
-  ///   An indicator that tells if the stretch point has been updated.
-  mutable bool is_updated_point_stretch_;
-
   /// \var is_updated_polynomial_
   ///   An indicator that tells if the polynomial has been updated.
   mutable bool is_updated_polynomial_;
 
-  /// \var is_updated_strain_thermal_
-  ///   An indicator that tells if the thermal strain has been updated.
-  mutable bool is_updated_strain_thermal_;
+  /// \var is_updated_regions_
+  ///   An indicator that tells if the points of the various region boundaries
+  ///   have been updated.
+  mutable bool is_updated_regions_;
 
-  /// \var point_limit_polynomial_
+  /// \var point_polynomial_end_
   ///   The point beyond which the polynomial is no longer valid.
-  mutable Point2d point_limit_polynomial_;
+  mutable Point2d point_polynomial_end_;
 
-  /// \var point_stretch_
-  ///   The point where the cable component has been stretched to.
-  mutable Point2d point_stretch_;
+  /// \var point_polynomial_start_
+  ///   The point at which the polynomial is valid. This is the same as the
+  ///   point the the cable component has been stretched to.
+  mutable Point2d point_polynomial_start_;
 
-  /// \var point_unloaded_stretched_
-  ///   The point where the cable is unloaded when stretched.
-  mutable Point2d point_unloaded_stretched_;
-
-  /// \var point_unloaded_unstretched_
-  ///   The point where the cable is unloaded when unstretched.
-  mutable Point2d point_unloaded_unstretched_;
+  /// \var point_unloaded_
+  ///   The point where the cable is unloaded.
+  mutable Point2d point_unloaded_;
 
   /// \var polynomial_
   ///   The polynomial that describes the cable component elongation.
@@ -374,7 +369,7 @@ class CableComponentElongationModel {
 
   /// \var type_polynomial_active_
   ///   The type of polynomial to model. The cable component can have multiple
-  ///   polynomials to describe its elongation under.
+  ///   polynomials to describe its elongation.
   CablePolynomialType type_polynomial_active_;
 };
 
