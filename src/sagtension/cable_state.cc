@@ -36,7 +36,7 @@ bool CableState::Validate(const bool& is_included_warnings,
     }
   }
 
-  // validate temperature - stretch
+  // validates temperature - stretch
   if (temperature_stretch < -50) {
 
     is_valid = false;
