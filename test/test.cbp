@@ -54,6 +54,8 @@
 		<Unit filename="base/polynomial_test.cc" />
 		<Unit filename="base/vector_test.cc" />
 		<Unit filename="main.cc" />
+		<Unit filename="sagtension/cable_component_elongation_model_test.cc" />
+		<Unit filename="sagtension/cable_elongation_model_test.cc" />
 		<Extensions>
 			<code_completion />
 			<debugger />
