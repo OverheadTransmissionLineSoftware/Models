@@ -448,7 +448,7 @@ class Catenary3d {
   /// \return A copy of the unit weight.
   Vector3d weight_unit() const;
 
- private:
+ protected:
   /// \brief Determines if class is updated.
   /// \return A boolean indicating if class is updated.
   bool IsUpdated() const;

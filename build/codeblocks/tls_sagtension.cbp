@@ -50,12 +50,14 @@
 		<Unit filename="../../include/sagtension/cable_elongation_model.h" />
 		<Unit filename="../../include/sagtension/cable_state.h" />
 		<Unit filename="../../include/sagtension/cable_strainer.h" />
+		<Unit filename="../../include/sagtension/catenary_cable.h" />
 		<Unit filename="../../include/sagtension/catenary_cable_loader.h" />
 		<Unit filename="../../include/sagtension/catenary_cable_unloader.h" />
 		<Unit filename="../../src/sagtension/cable_component_elongation_model.cc" />
 		<Unit filename="../../src/sagtension/cable_elongation_model.cc" />
 		<Unit filename="../../src/sagtension/cable_state.cc" />
 		<Unit filename="../../src/sagtension/cable_strainer.cc" />
+		<Unit filename="../../src/sagtension/catenary_cable.cc" />
 		<Unit filename="../../src/sagtension/catenary_cable_loader.cc" />
 		<Unit filename="../../src/sagtension/catenary_cable_unloader.cc" />
 		<Extensions>
