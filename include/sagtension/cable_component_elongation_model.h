@@ -93,10 +93,6 @@ class CableComponentElongationModel {
   /// \return The polynomial start point.
   Point2d PointPolynomialStart() const;
 
-  /// \brief Gets the unloaded point.
-  /// \return The unloaded point.
-  Point2d PointUnloaded() const;
-
   /// \brief Gets the points for the region boundaries.
   /// \return A vector of points at the region boundaries.
   /// The region boundaries are at the following locations:
@@ -104,6 +100,10 @@ class CableComponentElongationModel {
   ///  - polynomial start
   ///  - polynomial end
   std::vector<Point2d> PointsRegions() const;
+
+  /// \brief Gets the unloaded point.
+  /// \return The unloaded point.
+  Point2d PointUnloaded() const;
 
   /// \brief Gets the slope of a tangent line.
   /// \param[in] strain
