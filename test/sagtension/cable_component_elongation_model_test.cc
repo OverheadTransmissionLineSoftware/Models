@@ -6,6 +6,7 @@
 #include <cmath>
 #include <vector>
 
+#include "base/convert_units.h"
 #include "gtest/gtest.h"
 
 class CableComponentElongationModelTest : public ::testing::Test {
@@ -15,14 +16,14 @@ class CableComponentElongationModelTest : public ::testing::Test {
     // builds dependency object - component
     const double area_physical = 0.7264;
 
-    std::vector<double> coefficients_creep(5, 0);
+    std::vector<double> coefficients_creep;
     coefficients_creep.push_back(-544.8 * area_physical);
     coefficients_creep.push_back(21426.8 * area_physical);
     coefficients_creep.push_back(-18842.2 * area_physical);
     coefficients_creep.push_back(5495 * area_physical);
     coefficients_creep.push_back(0 * area_physical);
 
-    std::vector<double> coefficients_loadstrain(5, 0);
+    std::vector<double> coefficients_loadstrain;
     coefficients_loadstrain.push_back(-1213 * area_physical);
     coefficients_loadstrain.push_back(44308.1 * area_physical);
     coefficients_loadstrain.push_back(-14004.4 * area_physical);
@@ -51,6 +52,95 @@ class CableComponentElongationModelTest : public ::testing::Test {
 
 TEST_F(CableComponentElongationModelTest, Load) {
 
-  EXPECT_EQ(-211.1, std::round(c_.Load(-0.001)));
+  // compressed region
+  EXPECT_EQ(-211.1, supportfunctions::Round(c_.Load(-0.001), 1));
 
+  // stretched region
+  EXPECT_EQ(289.3, supportfunctions::Round(c_.Load(0.001), 1));
+  EXPECT_EQ(4938.2, supportfunctions::Round(c_.Load(0.002), 1));
+
+  // polynomial region
+  EXPECT_EQ(7301.6, supportfunctions::Round(c_.Load(0.003), 1));
+  EXPECT_EQ(9187, supportfunctions::Round(c_.Load(0.004), 1));
+  EXPECT_EQ(10645.4, supportfunctions::Round(c_.Load(0.005), 1));
+
+  // extrapolated region
+  EXPECT_EQ(18756.6, supportfunctions::Round(c_.Load(0.010), 1));
+}
+
+TEST_F(CableComponentElongationModelTest, PointPolynomialEnd) {
+
+  Point2d p = c_.PointPolynomialEnd();
+  EXPECT_EQ(0.0091, supportfunctions::Round(p.x, 4));
+  EXPECT_EQ(14711.1, supportfunctions::Round(p.y, 1));
+}
+
+TEST_F(CableComponentElongationModelTest, PointPolynomialStart) {
+
+  Point2d p = c_.PointPolynomialStart();
+  EXPECT_EQ(0.0020, supportfunctions::Round(p.x, 4));
+  EXPECT_EQ(5000, supportfunctions::Round(p.y, 1));
+}
+
+TEST_F(CableComponentElongationModelTest, PointUnloaded) {
+
+  Point2d p = c_.PointUnloaded();
+  EXPECT_EQ(0.000938, supportfunctions::Round(p.x, 6));
+  EXPECT_EQ(0, supportfunctions::Round(p.y, 1));
+}
+
+TEST_F(CableComponentElongationModelTest, Slope) {
+
+  // compressed region
+  EXPECT_EQ(108960, supportfunctions::Round(c_.Slope(-0.001), 0));
+
+  // stretched region
+  EXPECT_EQ(4648960, supportfunctions::Round(c_.Slope(0.001), 0));
+  EXPECT_EQ(4648960, supportfunctions::Round(c_.Slope(0.002), 0));
+
+  // polynomial region
+  EXPECT_EQ(2111035, supportfunctions::Round(c_.Slope(0.003), 0));
+  EXPECT_EQ(1663528, supportfunctions::Round(c_.Slope(0.004), 0));
+  EXPECT_EQ(1265984, supportfunctions::Round(c_.Slope(0.005), 0));
+
+  // extrapolated region
+  EXPECT_EQ(4648960, supportfunctions::Round(c_.Slope(0.010), 0));
+}
+
+TEST_F(CableComponentElongationModelTest, Strain) {
+
+  // compressed region
+  EXPECT_EQ(-0.001, supportfunctions::Round(c_.Strain(-211.1), 3));
+
+  // stretched region
+  EXPECT_EQ(0.001, supportfunctions::Round(c_.Strain(289.3), 3));
+  EXPECT_EQ(0.002, supportfunctions::Round(c_.Strain(4938.2), 3));
+
+  // polynomial region
+  EXPECT_EQ(0.003, supportfunctions::Round(c_.Strain(7301.6), 3));
+  EXPECT_EQ(0.004, supportfunctions::Round(c_.Strain(9187.0), 3));
+  EXPECT_EQ(0.005, supportfunctions::Round(c_.Strain(10645.4), 3));
+
+  // extrapolated region
+  EXPECT_EQ(0.010, supportfunctions::Round(c_.Strain(18756.6), 3));
+}
+
+TEST_F(CableComponentElongationModelTest, StrainThermal) {
+
+  // at reference temperature
+  EXPECT_EQ(0, supportfunctions::Round(c_.StrainThermal(), 7));
+
+  // above reference temperature
+  c_.set_temperature(212);
+  EXPECT_EQ(0.0018176, supportfunctions::Round(c_.StrainThermal(), 7));
+
+  // below reference temperature
+  c_.set_temperature(0);
+  EXPECT_EQ(-0.000896, supportfunctions::Round(c_.StrainThermal(), 7));
+}
+
+TEST_F(CableComponentElongationModelTest, Validate) {
+
+  // when checking for warnings, it does not pass the polynomial slope validation
+  EXPECT_EQ(true, c_.Validate(false, nullptr));
 }
