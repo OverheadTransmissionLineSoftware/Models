@@ -35,7 +35,7 @@ class CatenaryCable : public Catenary3d {
 
   /// \brief Gets the cable.
   /// \return The cable.
-  Cable cable();
+  Cable cable() const;
 
   /// \brief Sets the cable.
   /// \param[in] cable

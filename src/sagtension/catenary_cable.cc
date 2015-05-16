@@ -39,6 +39,22 @@ bool CatenaryCable::Validate(const bool& is_included_warnings,
   return is_valid;
 }
 
+Cable CatenaryCable::cable() const {
+  return cable_;
+}
+
+void CatenaryCable::set_cable(const Cable& cable) {
+  cable_ = cable;
+}
+
+void CatenaryCable::set_state(const CableState& state) {
+  state_ = state;
+}
+
+CableState CatenaryCable::state() const {
+  return state_;
+}
+
 bool CatenaryCable::ValidateCatenaryCableWeight(
     const bool& is_included_warnings,
     std::list<std::string>* messages_error) const {
@@ -54,4 +70,5 @@ bool CatenaryCable::ValidateCatenaryCableWeight(
                                 "than cable unit weight");
     }
   }
+  return is_valid;
 }
