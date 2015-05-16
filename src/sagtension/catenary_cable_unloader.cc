@@ -4,153 +4,62 @@
 #include "sagtension/catenary_cable_unloader.h"
 
 CatenaryCableUnloader::CatenaryCableUnloader() {
-  is_updated_load_ = false;
+  is_updated_strainer_ = false;
+
+  strainer_.set_load_finish(0);
 }
 
 CatenaryCableUnloader::~CatenaryCableUnloader() {
 }
 
-double CatenaryCableUnloader::LengthLoaded() const {
-
-  // update class, if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
-  }
-
-  return strainer_cable_.length_start();
-}
-
 double CatenaryCableUnloader::LengthUnloaded() const {
 
-  // update class, if necessary
+  // updates class if necessary
   if (IsUpdated() == false) {
     if (Update() == false) {
       return -999999;
     }
   }
 
-  return strainer_cable_.LengthFinish();
+  return strainer_.LengthFinish();
 }
 
-double CatenaryCableUnloader::StrainTransitionLoad() const {
+bool CatenaryCableUnloader::Validate(
+    const bool& is_included_warnings,
+    std::list<std::string>* messages_error) const {
 
-  // update class, if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
-  }
+  bool is_valid = true;
 
-  return strainer_cable_.StrainTransitionLoad();
+  /// \todo implement this
+
+  return is_valid;
 }
 
-double CatenaryCableUnloader::StrainTransitionThermal() const {
-
-  // update class, if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
-  }
-
-  return strainer_cable_.StrainTransitionThermal();
+CatenaryCable CatenaryCableUnloader::catenary_cable() const {
+  return catenary_cable_;
 }
 
-double CatenaryCableUnloader::load_stretch() const {
-  return strainer_cable_.load_stretch();
-}
+void CatenaryCableUnloader::set_catenary_cable(
+    const CatenaryCable& catenary_cable) {
 
-void CatenaryCableUnloader::set_cable(const Cable& cable) {
+  catenary_cable_ = catenary_cable;
 
-  strainer_cable_.set_cable(cable);
-
-  is_updated_load_ = false;
-}
-
-void CatenaryCableUnloader::set_load_stretch(const double& load_stretch) {
-
-  strainer_cable_.set_load_stretch(load_stretch);
-
-  is_updated_load_ = false;
-}
-
-void CatenaryCableUnloader::set_spacing_endpoints_catenary(
-    const Vector3d& spacing_endpoints) {
-
-  catenary_.set_spacing_endpoints(spacing_endpoints);
-
-  is_updated_load_ = false;
-}
-
-void CatenaryCableUnloader::set_state_loaded(
-    const CableStrainerState& state_loaded) {
-
-  strainer_cable_.set_state_start(state_loaded);
-
-  is_updated_load_ = false;
+  is_updated_strainer_ = false;
 }
 
 void CatenaryCableUnloader::set_state_unloaded(
-    const CableStrainerState& state_unloaded) {
+    const CableState& state_unloaded) {
 
-  strainer_cable_.set_state_finish(state_unloaded);
-
-  is_updated_load_  = false;
+  strainer_.set_state_finish(state_unloaded);
 }
 
-void CatenaryCableUnloader::set_temperature_stretch(
-    const double& temperature_stretch) {
-
-  strainer_cable_.set_temperature_stretch(temperature_stretch);
-
-  is_updated_load_ = false;
-}
-
-void CatenaryCableUnloader::set_tension_horizontal_catenary(
-    const double& tension_horizontal) {
-
-  catenary_.set_tension_horizontal(tension_horizontal);
-
-  is_updated_load_ = false;
-}
-
-void CatenaryCableUnloader::set_weight_unit_catenary(
-    const Vector3d& weight_unit) {
-
-  catenary_.set_weight_unit(weight_unit);
-
-  is_updated_load_ = false;
-}
-
-Vector3d CatenaryCableUnloader::spacing_endpoints_catenary() const {
-  return catenary_.spacing_endpoints();
-}
-
-CableStrainerState CatenaryCableUnloader::state_loaded() const {
-  return strainer_cable_.state_start();
-}
-
-CableStrainerState CatenaryCableUnloader::state_unloaded() const {
-  return strainer_cable_.state_finish();
-}
-
-double CatenaryCableUnloader::temperature_stretch() const {
-  return strainer_cable_.temperature_stretch();
-}
-
-double CatenaryCableUnloader::tension_horizontal() const {
-  return catenary_.tension_horizontal();
-}
-
-Vector3d CatenaryCableUnloader::weight_unit_catenary() const {
-  return catenary_.weight_unit();
+CableState CatenaryCableUnloader::state_unloaded() const {
+  return strainer_.state_finish();
 }
 
 bool CatenaryCableUnloader::IsUpdated() const {
 
-  if (is_updated_load_ == true) {
+  if (is_updated_strainer_ == true) {
     return true;
   } else {
     return false;
@@ -159,11 +68,11 @@ bool CatenaryCableUnloader::IsUpdated() const {
 
 bool CatenaryCableUnloader::Update() const {
 
-  // update catenary
-  if (is_updated_load_ == false) {
+  // updates strainer
+  if (is_updated_strainer_ == false) {
 
-    is_updated_load_ = UpdateLoadEffective();
-    if (is_updated_load_ == false) {
+    is_updated_strainer_ = UpdateStrainer();
+    if (is_updated_strainer_ == false) {
       return false;
     }
   }
@@ -172,11 +81,12 @@ bool CatenaryCableUnloader::Update() const {
   return true;
 }
 
-bool CatenaryCableUnloader::UpdateLoadEffective() const {
+bool CatenaryCableUnloader::UpdateStrainer() const {
 
-  // update unload cable parameters
-  strainer_cable_.set_load_start(catenary_.Length());
-  strainer_cable_.set_load_start(catenary_.TensionAverage());
+  strainer_.set_cable(catenary_cable_.cable());
+  strainer_.set_load_start(catenary_cable_.Length());
+  strainer_.set_load_start(catenary_cable_.TensionAverage());
+  strainer_.set_state_start(catenary_cable_.state());
 
   return true;
 }
