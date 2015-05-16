@@ -77,18 +77,6 @@ Point2d CableComponentElongationModel::PointPolynomialStart() const {
   return point_polynomial_start_;
 }
 
-Point2d CableComponentElongationModel::PointUnloaded() const {
-
-  // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return Point2d();
-    }
-  }
-
-  return point_unloaded_;
-}
-
 std::vector<Point2d> CableComponentElongationModel::PointsRegions() const {
 
   // updates class if necessary
@@ -104,6 +92,18 @@ std::vector<Point2d> CableComponentElongationModel::PointsRegions() const {
   points.push_back(PointPolynomialEnd());
 
   return points;
+}
+
+Point2d CableComponentElongationModel::PointUnloaded() const {
+
+  // updates class if necessary
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return Point2d();
+    }
+  }
+
+  return point_unloaded_;
 }
 
 double CableComponentElongationModel::Slope(const double& strain) const {
