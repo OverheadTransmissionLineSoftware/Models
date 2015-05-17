@@ -3,6 +3,17 @@
 
 #include "sagtension/cable_elongation_model.h"
 
+#include <algorithm>
+
+/// This is used for sorting a vector of Point2d objects. For this class, it is
+/// used for sorting the region points from the component elongation models.
+struct Point2dSortXInreasing
+{
+  bool operator() (const Point2d& p1, const Point2d& p2) const {
+    return p1.x < p2.x;
+  }
+};
+
 CableElongationModel::CableElongationModel() {
 
   is_enabled_core_ = false;
@@ -336,7 +347,6 @@ double CableElongationModel::StrainCombined(
 
       point_right.x = point_current.x;
       point_right.y = point_current.y;
-
     }
 
     iter++;
@@ -560,33 +570,38 @@ bool CableElongationModel::UpdatePointsRegions() const {
   // initializes container
   points_regions_.clear();
 
-  // gets region boundary points for core
+  // gets region boundary points for core and adds to container
   if (is_enabled_core_ == true) {
 
     std::vector<Point2d> points_core = component_core_.PointsRegions();
-    for (unsigned int index = 1; index <= 3; index++) {
-      points_regions_.push_back(points_core.at(index));
+    for (auto iter = points_core.begin(); iter != points_core.end(); iter++) {
+      Point2d point = *iter;
+      points_regions_.push_back(point);
     }
   }
 
-  // gets region boundary points for shell
+  // gets region boundary points for shell and adds to vector
   if (is_enabled_shell_ == true) {
 
     std::vector<Point2d> points_shell = component_shell_.PointsRegions();
-    for (unsigned int index = 1; index <= 3; index++) {
-      points_regions_.push_back(points_shell.at(index));
+    for (auto iter = points_shell.begin(); iter != points_shell.end();
+        iter++) {
+      Point2d point = *iter;
+      points_regions_.push_back(point);
     }
   }
 
-  /// \todo implement sorting algorithm for the points
-  ///   this will be needed before class is functional
+  // sorts the vector according to the x value of the point
+  std::sort(points_regions_.begin(), points_regions_.end(),
+            Point2dSortXInreasing());
 
+  /// \todo can't figure out why iterators won't allow direct access to vector...
+  /// using index access and copying point in and out
   // re-calculates loads using total load function
-  for (unsigned int index = 1; index <= 6; index++) {
-
-    /// \todo this should use iterators and local objects to modify vector
-    ///    contents
-    points_regions_.at(index).y = LoadCombined(points_regions_.at(index).x);
+  for (unsigned int index = 0; index < points_regions_.size(); index++) {
+    Point2d point = points_regions_.at(index);
+    point.y = LoadCombined(point.x);
+    points_regions_.at(index) = point;
   }
 
   return true;
