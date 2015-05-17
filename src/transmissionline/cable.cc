@@ -162,7 +162,7 @@ bool Cable::Validate(const bool& is_included_warnings,
 
   // validate type-polynomial-active
   if (type_polynomial_active != CablePolynomialType::kCreep
-      || type_polynomial_active != CablePolynomialType::kLoadStrain) {
+      && type_polynomial_active != CablePolynomialType::kLoadStrain) {
 
     is_valid = false;
     if (messages_error != nullptr) {
