@@ -290,10 +290,14 @@ class CableComponentElongationModel {
   bool UpdatePolynomial() const;
 
   /// \brief Updates the thermal strain.
+  /// \param[in] temperature
+  ///   The temperature of the cable component.
   /// \return A boolean indicating the success status of the update.
   bool UpdateStrainThermal(const double& temperature) const;
 
   /// \brief Updates the thermal shift and cached points for the regions.
+  /// \param[in] temperature
+  ///   The temperature of the cable component.
   /// \return The success status of the update.
   bool UpdateRegions(const double& temperature) const;
 
