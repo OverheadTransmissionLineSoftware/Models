@@ -64,11 +64,11 @@ class CatenaryCable : public Catenary3d {
       const bool& is_included_warnings,
       std::list<std::string>* messages_error) const;
 
-  /// \var cable
+  /// \var cable_
   ///   The cable.
   Cable cable_;
 
-  /// \var state
+  /// \var state_
   ///   The cable state.
   CableState state_;
 };
