@@ -744,8 +744,10 @@ WARN_LOGFILE           = "./doxygen.log"
 # Note: If this tag is empty the current directory is searched.
 
 INPUT                  = ../include/base \
-			 ../include/transmissionline \                         
+                         ../include/sagtension \
+			 ../include/transmissionline \
 			 ../src/base \
+                         ../src/sagtension \
 			 ../src/transmissionline
 
 # This tag can be used to specify the character encoding of the source files
