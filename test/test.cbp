@@ -52,6 +52,11 @@
 		<Unit filename="base/polynomial_test.cc" />
 		<Unit filename="base/vector_test.cc" />
 		<Unit filename="main.cc" />
+		<Unit filename="transmissionline/cable_load_case_test.cc" />
+		<Unit filename="transmissionline/cable_load_constraint_test.cc" />
+		<Unit filename="transmissionline/cable_test.cc" />
+		<Unit filename="transmissionline/cable_unit_load_calculator_test.cc" />
+		<Unit filename="transmissionline/catenary_test.cc" />
 		<Extensions>
 			<code_completion />
 			<debugger />
