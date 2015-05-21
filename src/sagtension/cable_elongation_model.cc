@@ -9,6 +9,14 @@
 /// used for sorting the region points from the component elongation models.
 struct Point2dSortXInreasing
 {
+  /// \brief This comparison operator determines if the first point x value is
+  ///   less than the x value of the second point.
+  /// \param[in] p1
+  ///   The first point.
+  /// \param[in] p2
+  ///   The second point.
+  /// \return A boolean indicating if the first point x value is less than
+  ///    the second point x value.
   bool operator() (const Point2d& p1, const Point2d& p2) const {
     return p1.x < p2.x;
   }
