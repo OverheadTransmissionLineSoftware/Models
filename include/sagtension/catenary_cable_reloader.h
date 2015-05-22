@@ -15,28 +15,24 @@
 
 /// \par OVERVIEW
 ///
-/// This class models a cable segment in an unloaded state and strains it to a
-/// loaded state in the shape of a catenary.
+/// This class reloads a catenary cable to a specified state and unit weight.
 ///
-/// \par UNLOADED STATE
+/// \par UNLOADING
 ///
-/// The unloaded cable segment defined according to the specified parameters,
-/// and is not modeled as a catenary.
+/// The catenary cable is unloaded to a fixed temperature. The unloaded
+/// unstretched length is cached and used for reloading the catenary cable.
 ///
-/// \par LOADED STATE (CATENARY)
+/// \par LOADING
 ///
-/// The catenary models the cable in the loaded state.
+/// Using the unloaded unstretched length, the horizontal tension of the
+/// reloaded catenary cable is numerically solved. The horizontal tension
+/// solution will have a catenary length and cable length (as predicted by the
+/// cable strainer) that match.
 ///
 /// The catenary tension varies along the curve. To interact with the cable
 /// load-strain model, the catenary tension is converted to a constant
 /// effective tension which produces the same elongation as the catenary
 /// loading.
-///
-/// \par CABLE LOAD NUMERICAL SOLUTION
-///
-/// The cable load is not directly specified, and is solved for numerically.
-/// Any modifications to the catenary or unloaded cable parameters will change
-/// the cable load solution.
 class CatenaryCableReloader {
  public:
   /// \brief Default constructor.

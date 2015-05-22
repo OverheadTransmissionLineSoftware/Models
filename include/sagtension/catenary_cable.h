@@ -13,8 +13,9 @@
 
 /// \par OVERVIEW
 ///
-/// This class inherits all catenary functionality and adds information
-/// required for cable sag-tension.
+/// This class combines the catenary functionality with the properties of a
+/// cable. It represents a sag-tension solution, and is often referenced and/or
+/// modified with the supporting sag-tension classes.
 class CatenaryCable : public Catenary3d {
  public:
   /// \brief Default constructor.
