@@ -585,12 +585,12 @@ bool Catenary2d::UpdateEndPoints() const {
   const double z = (a/2) / (h/w);
 
   // solve for left endpoint coordinate
-  point_end_left_.x = (h/w) * (asinh(b * z) / (a * sinh(z)) - z);
+  point_end_left_.x = (h/w) * (asinh((b * z) / (a * sinh(z))) - z);
   point_end_left_.y = CoordinateY(LengthFromOrigin(point_end_left_),
                                   AxisDirectionType::kNegative);
 
   // solve for right endpoint coordinate
-  point_end_right_.x = (h/w) * (asinh(b * z) / (a * sinh(z)) + z);
+  point_end_right_.x = (h/w) * (asinh((b * z) / (a * sinh(z))) + z);
   point_end_right_.y = CoordinateY(LengthFromOrigin(point_end_right_),
                                    AxisDirectionType::kPositive);
 
