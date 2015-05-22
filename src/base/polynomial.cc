@@ -16,7 +16,9 @@ Polynomial::Polynomial(const std::vector<double> coefficients) {
   coefficients_ = coefficients;
 }
 
-Polynomial::~Polynomial() {}
+Polynomial::~Polynomial() {
+  delete derivative_;
+}
 
 Polynomial Polynomial::Derivative() const {
 
