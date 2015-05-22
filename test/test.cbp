@@ -56,6 +56,8 @@
 		<Unit filename="main.cc" />
 		<Unit filename="sagtension/cable_component_elongation_model_test.cc" />
 		<Unit filename="sagtension/cable_elongation_model_test.cc" />
+		<Unit filename="sagtension/cable_state_test.cc" />
+		<Unit filename="sagtension/cable_strainer_test.cc" />
 		<Extensions>
 			<code_completion />
 			<debugger />
