@@ -57,7 +57,7 @@ class CableStrainerTest : public ::testing::Test {
     shell.coefficients_polynomial_loadstrain = coefficients_loadstrain;
     shell.load_limit_polynomial_creep = 7535 * kAreaPhysical;
     shell.load_limit_polynomial_loadstrain = 20252 * kAreaPhysical;
-    shell.modulus_compression_elastic_area = 1500 * kAreaPhysical * 100;
+    shell.modulus_compression_elastic_area = 0 * kAreaPhysical * 100;
     shell.modulus_tension_elastic_area = 64000 * kAreaPhysical * 100;
 
     Cable cable;
@@ -99,6 +99,7 @@ TEST_F(CableStrainerTest, LengthFinish) {
 
   // calculates the loaded length
   const double length = c_.LengthFinish();
+  EXPECT_EQ(1204.898, supportfunctions::Round(length, 3));
 
   // switches unloaded and loaded states
   const CableState state1 = c_.state_start();
