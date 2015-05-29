@@ -130,7 +130,7 @@ class CatenaryCableReloader {
   /// \param[in] tension_horizontal
   ///   The horizontal tension for the catenary.
   /// \return The success status of the update.
-  bool UpdatedReloadedCatnearyCableAndStrainer(
+  bool UpdatedReloadedCatenaryCableAndStrainer(
       const double& tension_horizontal) const;
 
   /// \var catenary_cable_

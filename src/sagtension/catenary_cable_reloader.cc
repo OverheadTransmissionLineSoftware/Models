@@ -137,6 +137,8 @@ bool CatenaryCableReloader::IsUpdated() const {
 double CatenaryCableReloader::LengthDifference(
     const double& tension_horizontal) const {
 
+  UpdatedReloadedCatenaryCableAndStrainer(tension_horizontal);
+
   const double length_catenary = catenary_cable_reloaded_.Length();
   const double length_cable = strainer_.LengthFinish();
 
@@ -150,6 +152,9 @@ bool CatenaryCableReloader::SolveReloadedCatenaryCableTension() const {
 
   // x = horizontal tension
   // y = length difference  i.e.(catenary length - cable length)
+
+  InitializeReloadedCatenaryCable();
+  InitializeStrainer();
 
   // uses an iterative routine to determine solution
   // solution reached when y = 0
@@ -279,7 +284,7 @@ bool CatenaryCableReloader::UpdateLengthUnloadedUnstretched() const {
   }
 }
 
-bool CatenaryCableReloader::UpdatedReloadedCatnearyCableAndStrainer(
+bool CatenaryCableReloader::UpdatedReloadedCatenaryCableAndStrainer(
     const double& tension_horizontal) const {
 
   // updates the reloaded catenary-cable and strainer
