@@ -53,11 +53,11 @@
 		<Unit filename="base/geometric_shapes_test.cc" />
 		<Unit filename="base/polynomial_test.cc" />
 		<Unit filename="base/vector_test.cc" />
-		<Unit filename="main.cc" />
 		<Unit filename="sagtension/cable_component_elongation_model_test.cc" />
 		<Unit filename="sagtension/cable_elongation_model_test.cc" />
 		<Unit filename="sagtension/cable_state_test.cc" />
 		<Unit filename="sagtension/cable_strainer_test.cc" />
+		<Unit filename="test.cc" />
 		<Unit filename="transmissionline/cable_load_case_test.cc" />
 		<Unit filename="transmissionline/cable_load_constraint_test.cc" />
 		<Unit filename="transmissionline/cable_test.cc" />
