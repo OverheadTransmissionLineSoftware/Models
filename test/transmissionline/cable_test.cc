@@ -97,7 +97,7 @@ class CableTest : public ::testing::Test {
     shell.coefficients_polynomial_creep = coefficients_creep;
     shell.coefficients_polynomial_loadstrain = coefficients_loadstrain;
     shell.load_limit_polynomial_creep = 7535 * kAreaPhysical;
-    shell.load_limit_polynomial_loadstrain = 16816 * kAreaPhysical;
+    shell.load_limit_polynomial_loadstrain = 20252 * kAreaPhysical;
     shell.modulus_compression_elastic_area = 0 * kAreaPhysical * 100;
     shell.modulus_tension_elastic_area = 64000 * kAreaPhysical * 100;
 
