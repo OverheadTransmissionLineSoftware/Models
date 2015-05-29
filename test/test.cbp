@@ -57,6 +57,7 @@
 		<Unit filename="sagtension/cable_elongation_model_test.cc" />
 		<Unit filename="sagtension/cable_state_test.cc" />
 		<Unit filename="sagtension/cable_strainer_test.cc" />
+		<Unit filename="sagtension/catenary_cable_unloader_test.cc" />
 		<Unit filename="test.cc" />
 		<Unit filename="transmissionline/cable_load_case_test.cc" />
 		<Unit filename="transmissionline/cable_load_constraint_test.cc" />
