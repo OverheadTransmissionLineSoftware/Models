@@ -54,6 +54,16 @@ TEST_F(Catenary2dTest, Tension) {
   EXPECT_EQ(1000.00, supportfunctions::Round(c_.Tension(0.5), 2));
 }
 
+TEST_F(Catenary2dTest, TensionAverage) {
+
+  // approximation method
+  EXPECT_EQ(1010.54, supportfunctions::Round(c_.TensionAverage(0), 2));
+
+  // numerical method
+  EXPECT_EQ(1010.74, supportfunctions::Round(c_.TensionAverage(100), 2));
+  EXPECT_EQ(1010.56, supportfunctions::Round(c_.TensionAverage(1000), 2));
+}
+
 TEST_F(Catenary2dTest, TensionMax) {
 
   // flat - lowpoint within span
