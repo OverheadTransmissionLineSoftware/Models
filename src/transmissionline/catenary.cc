@@ -976,7 +976,7 @@ bool Catenary3d::Validate(const bool& is_included_warnings,
 
 
   // validate weight-unit-vertical
-  if (0 < weight_unit_.z()
+  if (weight_unit_.z() <= 0
       || (25 < weight_unit_.z() && is_included_warnings == true)) {
 
     is_valid = false;
