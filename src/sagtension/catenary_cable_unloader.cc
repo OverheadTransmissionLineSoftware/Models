@@ -84,7 +84,7 @@ bool CatenaryCableUnloader::Update() const {
 bool CatenaryCableUnloader::UpdateStrainer() const {
 
   strainer_.set_cable(catenary_cable_.cable());
-  strainer_.set_load_start(catenary_cable_.Length());
+  strainer_.set_length_start(catenary_cable_.Length());
   strainer_.set_load_start(catenary_cable_.TensionAverage());
   strainer_.set_state_start(catenary_cable_.state());
 
