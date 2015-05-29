@@ -157,5 +157,5 @@ TEST_F(CableComponentElongationModelTest, StrainThermal) {
 TEST_F(CableComponentElongationModelTest, Validate) {
 
   // when checking for warnings, it does not pass the polynomial slope validation
-  EXPECT_EQ(true, c_.Validate(false, nullptr));
+  EXPECT_TRUE(c_.Validate(false, nullptr));
 }
