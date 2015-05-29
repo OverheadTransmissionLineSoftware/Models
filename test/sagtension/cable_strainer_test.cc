@@ -117,5 +117,5 @@ TEST_F(CableStrainerTest, LengthFinish) {
 
 TEST_F(CableStrainerTest, Validate) {
 
-  EXPECT_EQ(true, c_.Validate(false, nullptr));
+  EXPECT_TRUE(c_.Validate(false, nullptr));
 }

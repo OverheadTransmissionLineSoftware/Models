@@ -133,5 +133,5 @@ TEST_F(CableElongationModelTest, Strain) {
 
 TEST_F(CableElongationModelTest, Validate) {
 
-  EXPECT_EQ(true, c_.Validate(false, nullptr));
+  EXPECT_TRUE(c_.Validate(false, nullptr));
 }
