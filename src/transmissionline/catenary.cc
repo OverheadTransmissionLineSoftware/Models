@@ -345,15 +345,16 @@ double Catenary2d::TensionAverage(const int& num_points) const {
 
     // claculate average tension using evenly spaced points
     double sum = 0;
+    const double kNumPoints = num_points;  // convert int to double
 
-    for (int iter = 0; iter <= num_points; iter++) {
+    for (int iter = 0; iter <= kNumPoints; iter++) {
 
-      const double position_fraction = iter / num_points;
+      const double position_fraction = iter / kNumPoints;
       const double tension_magnitude = Tension(position_fraction);
       sum = sum + tension_magnitude;
     }
 
-    tension_average = sum / num_points;
+    tension_average = sum / (kNumPoints + 1);
   }
 
   return tension_average;
@@ -976,7 +977,7 @@ bool Catenary3d::Validate(const bool& is_included_warnings,
 
 
   // validate weight-unit-vertical
-  if (0 < weight_unit_.z()
+  if (weight_unit_.z() <= 0
       || (25 < weight_unit_.z() && is_included_warnings == true)) {
 
     is_valid = false;
