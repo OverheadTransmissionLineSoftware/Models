@@ -15,12 +15,12 @@ bool CableLoadConstraint::Validate(
 
   bool is_valid = true;
 
-  // validate case-load
+  // validates case-load
   if (case_load.Validate(is_included_warnings, messages_error) == false) {
     is_valid = false;
   }
 
-  // validate limit
+  // validates limit
   if (limit < 0
       || ((limit < 100) && (is_included_warnings == true))
       || ((100000 < limit) && (is_included_warnings == true))) {

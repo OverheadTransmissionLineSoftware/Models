@@ -19,7 +19,7 @@ bool CableComponent::Validate(const bool& is_included_warnings,
                               std::list<std::string>* messages_error) const {
   bool is_valid = true;
 
-  // validate coefficient-expansion-thermal-linear
+  // validates coefficient-expansion-thermal-linear
   if (coefficient_expansion_linear_thermal <= -0.005
       || 0.005 < coefficient_expansion_linear_thermal) {
 
@@ -30,18 +30,18 @@ bool CableComponent::Validate(const bool& is_included_warnings,
     }
   }
 
-  // validate coefficients-polynomial-creep
+  // validates coefficients-polynomial-creep
   if (coefficients_polynomial_creep.size() != 5) {
     messages_error->push_back("CABLE COMPONENT - Invalid creep coefficients");
   }
 
-  // validate coefficients-polynomial-loadstrain
+  // validates coefficients-polynomial-loadstrain
   if (coefficients_polynomial_loadstrain.size() != 5) {
     messages_error->push_back("CABLE COMPONENT - Invalid load-strain "
                               "coefficients");
   }
 
-  // validate load-limit-polynomial-creep
+  // validates load-limit-polynomial-creep
   if (load_limit_polynomial_creep < 0) {
 
     is_valid = false;
@@ -51,7 +51,7 @@ bool CableComponent::Validate(const bool& is_included_warnings,
     }
   }
 
-  // validate load-limit-polynomial-loadstrain
+  // validates load-limit-polynomial-loadstrain
   if (load_limit_polynomial_loadstrain < 0) {
 
     is_valid = false;
@@ -61,7 +61,7 @@ bool CableComponent::Validate(const bool& is_included_warnings,
     }
   }
 
-  // validate modulus-compression-elastic-area
+  // validates modulus-compression-elastic-area
   if (modulus_compression_elastic_area < 0) {
 
     is_valid = false;
@@ -71,7 +71,7 @@ bool CableComponent::Validate(const bool& is_included_warnings,
     }
   }
 
-  // validate modulus-tension-elastic-area
+  // validates modulus-tension-elastic-area
   if (modulus_tension_elastic_area < 0) {
 
     is_valid = false;
@@ -81,7 +81,7 @@ bool CableComponent::Validate(const bool& is_included_warnings,
     }
   }
 
-  //return validation status
+  // returns validation status
   return is_valid;
 }
 
@@ -102,7 +102,7 @@ bool Cable::Validate(const bool& is_included_warnings,
                      std::list<std::string>* messages_error) const {
   bool is_valid = true;
 
-  // validate area-electrical
+  // validates area-electrical
   if (area_electrical < 0) {
 
     is_valid = false;
@@ -111,7 +111,7 @@ bool Cable::Validate(const bool& is_included_warnings,
     }
   }
 
-  // validate area-physical
+  // validates area-physical
   if (area_physical < 0) {
     is_valid = false;
     if (messages_error != nullptr) {
@@ -119,13 +119,13 @@ bool Cable::Validate(const bool& is_included_warnings,
     }
   }
 
-  // validate component-core
+  // validates component-core
   component_core.Validate(is_included_warnings, messages_error);
 
-  // validate component-shell
+  // validates component-shell
   component_shell.Validate(is_included_warnings, messages_error);
 
-  // validate diameter
+  // validates diameter
   if (diameter <= 0
       || (3 < diameter && is_included_warnings == true)) {
 
@@ -138,7 +138,7 @@ bool Cable::Validate(const bool& is_included_warnings,
   // validate name
   // nothing to validate
 
-  // validate strength-rated
+  // validates strength-rated
   if (strength_rated < 0) {
 
     is_valid = false;
@@ -147,7 +147,7 @@ bool Cable::Validate(const bool& is_included_warnings,
     }
   }
 
-  // validate temperature-component-properties
+  // validates temperature-component-properties
   if (temperature_properties_components < 0) {
 
     is_valid = false;
@@ -157,10 +157,10 @@ bool Cable::Validate(const bool& is_included_warnings,
     }
   }
 
-  // validate type-construction
+  // validates type-construction
   // nothing to validate
 
-  // validate type-polynomial-active
+  // validates type-polynomial-active
   if (type_polynomial_active != CablePolynomialType::kCreep
       && type_polynomial_active != CablePolynomialType::kLoadStrain) {
 
@@ -170,7 +170,7 @@ bool Cable::Validate(const bool& is_included_warnings,
     }
   }
 
-  // validate weight-unit
+  // validates weight-unit
   if (weight_unit <= 0
       || (10 < weight_unit && is_included_warnings == true)) {
 
@@ -180,6 +180,5 @@ bool Cable::Validate(const bool& is_included_warnings,
     }
   }
 
-  // return validation status
   return is_valid;
 }
