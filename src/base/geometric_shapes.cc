@@ -22,7 +22,7 @@ bool Cylinder::Validate(const bool& is_included_warnings,
                         std::list<std::string>* messages_error) const {
   bool is_valid = true;
 
-  // validate diameter
+  // validates diameter
   if (diameter_ <= 0
       || ((100 < diameter_) && (is_included_warnings == true))) {
 
@@ -32,7 +32,7 @@ bool Cylinder::Validate(const bool& is_included_warnings,
     }
   }
 
-  // validate length
+  // validates length
   if (length_ <= 0
       || ((120 < length_) && (is_included_warnings == true))) {
 

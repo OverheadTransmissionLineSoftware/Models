@@ -24,7 +24,7 @@ Polynomial Polynomial::Derivative() const {
 
   Polynomial derivative;
 
-  // update class, if necessary
+  // updates class if necessary
   if (IsUpdated() == false) {
     if (Update() == false) {
       return derivative;
@@ -41,7 +41,7 @@ int Polynomial::OrderMax() const {
 
 double Polynomial::Slope(const double& x) const {
 
-  // update class, if necessary
+  // updates class if necessary
   if (IsUpdated() == false) {
     if (Update() == false) {
       return -999999;
@@ -56,17 +56,17 @@ double Polynomial::Slope(const double& x) const {
 double Polynomial::X(const double& y, const int& decimal_precision_y,
                      const double& x_guess) const {
 
-  // update class, if necessary
+  // updates class if necessary
   if (IsUpdated() == false) {
     if (Update() == false) {
       return -999999;
     }
   }
 
-  // convert to decimal precision
+  // converts to decimal precision
   const double precision_y = 1 / pow(10, decimal_precision_y);
 
-  // get a shifted polynomial so that y value is on x-axis
+  // gets a shifted polynomial so that y value is on x-axis
   Polynomial polynomial_shifted;
   std::vector<double> coefficients_shifted = coefficients_;
   coefficients_shifted.at(0) = coefficients_shifted.at(0) - y;
@@ -78,15 +78,15 @@ double Polynomial::X(const double& y, const int& decimal_precision_y,
   // derivative point
   Point2d point_derivative = Point2d(x_guess, -999999);
 
-  // iterate until the value is within tolerance
+  // iterates until the value is within tolerance
   int iter = 0;
   while (precision_y < abs(point_function.y) && (iter < 100)) {
 
-    // calculate y value for shifted polynomial and derivative
+    // calculates y value for shifted polynomial and derivative
     point_function.y = polynomial_shifted.Y(point_function.x);
     point_derivative.y = derivative_->Y(point_derivative.x);
 
-    // calculate a new x value for shifted polynomial and derivative
+    // calculates a new x value for shifted polynomial and derivative
     if (point_derivative.y != 0) {
       point_function.x = point_function.x
                            - (point_function.y / point_derivative.y);
@@ -131,7 +131,7 @@ bool Polynomial::IsUpdated() const {
 
 bool Polynomial::Update() const {
 
-  // update derivative
+  // updates derivative
   if (is_updated_derivative_ == false) {
 
     is_updated_derivative_ = UpdateDerivative();
@@ -147,7 +147,7 @@ bool Polynomial::UpdateDerivative() const {
 
   const int order_max = OrderMax();
 
-  // calculate derivative coefficients
+  // calculates derivative coefficients
   std::vector<double> coefficients_derivative;
   for (int order = 0; order <= order_max; order++) {
 
@@ -158,7 +158,7 @@ bool Polynomial::UpdateDerivative() const {
     }
   }
 
-  // delete old derivative polynomial and create new one
+  // deletes old derivative polynomial and creates new one
   delete derivative_;
   derivative_ = new Polynomial();
   derivative_->set_coefficients(coefficients_derivative);
