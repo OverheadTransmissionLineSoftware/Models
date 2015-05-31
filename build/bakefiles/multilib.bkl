@@ -1,6 +1,3 @@
-//// change src directory to build subfolder
-//srcdir ../..;
-
 // target toolsets
 toolsets = gnu vs2013;
 
@@ -57,15 +54,19 @@ library tls_sagtension {
   headers {
     ../../include/sagtension/cable_component_elongation_model.h
     ../../include/sagtension/cable_elongation_model.h
+    ../../include/sagtension/cable_state.h
     ../../include/sagtension/cable_strainer.h
-    ../../include/sagtension/catenary_cable_loader.h
+    ../../include/sagtension/catenary_cable.h
+    ../../include/sagtension/catenary_cable_reloader.h
     ../../include/sagtension/catenary_cable_unloader.h
   }
   sources {
     ../../src/sagtension/cable_component_elongation_model.cc
     ../../src/sagtension/cable_elongation_model.cc
+    ../../src/sagtension/cable_state.cc
     ../../src/sagtension/cable_strainer.cc
-    ../../src/sagtension/catenary_cable_loader.cc
+    ../../src/sagtension/catenary_cable.cc
+    ../../src/sagtension/catenary_cable_reloader.cc
     ../../src/sagtension/catenary_cable_unloader.cc
   }
 }
