@@ -25,7 +25,7 @@ double Vector2d::Angle(const bool& is_enabled_negative_angles) const {
 
   double angle = -999999;
 
-  // use trigonometry to solve for angle of vector
+  // uses trigonometry to solve for angle of vector
   if (x_ == 0 || y_ == 0) {
 
     // The vector lies on an axis, so this returns an angle constant.
@@ -38,7 +38,7 @@ double Vector2d::Angle(const bool& is_enabled_negative_angles) const {
       } else if (y_ < 0) {
         angle = 3 * (convertunits::kPi / 2) * convertunits::kRadiansToDegrees;
       } else {
-        return angle; // both x_ and y_ are zero, return invalid answer
+        return angle; // both x_ and y_ are zero, returns invalid answer
       }
     } else {  // y_ == 0
 
@@ -47,18 +47,18 @@ double Vector2d::Angle(const bool& is_enabled_negative_angles) const {
       } else if (x_ < 0) {
         angle = 2* (convertunits::kPi / 2) * convertunits::kRadiansToDegrees;
       } else {
-        return angle; // both x_ and y_ are zero, return invalid answer
+        return angle; // both x_ and y_ are zero, returns invalid answer
       }
     }
 
   } else {
 
-    // select the quadrant and calculate using arc tangent function
+    // selects the quadrant and calculate using arc tangent function
     if (0 <= y_) {
 
       if (0 <= x_) {  // quadrant I
         angle = atan(y_ / x_) * convertunits::kRadiansToDegrees;
-      } else { // quadrant II
+      } else {  // quadrant II
         angle = 180 - (std::abs(atan(y_ / x_)) * convertunits::kRadiansToDegrees);
       }
 
@@ -72,7 +72,7 @@ double Vector2d::Angle(const bool& is_enabled_negative_angles) const {
     }
   }
 
-  // adjust angle if flag is true and angle is negative
+  // adjusts angle if flag is true and angle is negative
   if (180 < angle && is_enabled_negative_angles == true) {
     angle = angle -360;
   }
@@ -89,18 +89,18 @@ double Vector2d::Magnitude() const {
 /// components.
 void Vector2d::Rotate(const double& angle_rotation) {
 
-  // check if rotation angle is zero (or near zero) and exit if so
+  // checks if rotation angle is zero (or near zero) and exits if so
   if (std::abs(angle_rotation) < 0.00005)
     return;
 
-  // define in terms of radial coordinate system (magnitude and angle)
+  // defines in terms of radial coordinate system (magnitude and angle)
   const double magnitude = Magnitude();
   const double angle = Angle();
 
-  // calculate new angle (rotation included)
+  // calculates new angle (rotation included)
   const double angle_new = angle + angle_rotation;
 
-  // resolve back to new x and y cartesian components
+  // resolves back to new x and y cartesian components
   x_ = magnitude * cos(angle_new * convertunits::kDegreesToRadians);
   y_ = magnitude * sin(angle_new * convertunits::kDegreesToRadians);
 }
@@ -146,10 +146,10 @@ Vector3d::~Vector3d() {}
 double Vector3d::Angle(const Plane2dType& plane,
                        const bool& is_enabled_negative_angles) const {
 
-  // create a 2D vector of planar components
+  // creates a 2D vector of planar components
   Vector2d vector_2d;
 
-  // set vector components based on selected plane
+  // sets vector components based on selected plane
   if (plane == Plane2dType::kXy) {
     vector_2d.set_x(x_);
     vector_2d.set_y(y_);
@@ -182,15 +182,15 @@ double Vector3d::Magnitude() const {
 /// \see Vector2d
 void Vector3d::Rotate(const Plane2dType& plane, const double& angle_rotation) {
 
-  // check if rotation angle is zero
+  // checks if rotation angle is zero
   if (std::abs(angle_rotation) < 0.00005) {
     return;
   }
 
-  // create a 2D vector of the planar components
+  // creates a 2D vector of the planar components
   Vector2d vector_2d;
 
-  // set vector components based on selected plane
+  // sets vector components based on selected plane
   if (plane == Plane2dType::kXy) {
     vector_2d.set_x(x_);
     vector_2d.set_y(y_);
@@ -211,10 +211,10 @@ void Vector3d::Rotate(const Plane2dType& plane, const double& angle_rotation) {
     vector_2d.set_y(y_);
   }
 
-  // rotate the plane
+  // rotates the plane
   vector_2d.Rotate(angle_rotation);
 
-  // assign rotated 2D vector components to new planar components
+  // assigns rotated 2D vector components to new planar components
   if (plane == Plane2dType::kXy) {
     x_ = vector_2d.x();
     y_ = vector_2d.y();
