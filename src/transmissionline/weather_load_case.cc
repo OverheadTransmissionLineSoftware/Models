@@ -20,7 +20,7 @@ bool WeatherLoadCase::Validate(const bool& is_included_warnings,
                                std::list<std::string>* messages_error) const {
   bool is_valid = true;
 
-  // validate density-ice
+  // validates density-ice
   if (density_ice < 0
       || ((100 < density_ice) && (is_included_warnings == true))) {
 
@@ -30,7 +30,7 @@ bool WeatherLoadCase::Validate(const bool& is_included_warnings,
     }
   }
 
-  // validate pressure-wind
+  // validates pressure-wind
   if (pressure_wind < 0
       || ((25 < pressure_wind) && (is_included_warnings == true))) {
 
@@ -40,7 +40,7 @@ bool WeatherLoadCase::Validate(const bool& is_included_warnings,
     }
   }
 
-  // validate temperature-cable
+  // validates temperature-cable
   if (temperature_cable < -50
       || ((500 < temperature_cable) && (is_included_warnings == true))) {
 
@@ -51,7 +51,7 @@ bool WeatherLoadCase::Validate(const bool& is_included_warnings,
     }
   }
 
-  // validate thickness-ice
+  // validates thickness-ice
   if (thickness_ice < 0
       || ((4 <thickness_ice) && (is_included_warnings == true))) {
 

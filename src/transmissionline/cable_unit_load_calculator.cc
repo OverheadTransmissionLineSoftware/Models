@@ -19,7 +19,7 @@ bool CableUnitLoadCalculator::Validate(
 
   bool is_valid = true;
 
-  // validate diameter-cable
+  // validates diameter-cable
   if (diameter_cable_ <= 0) {
 
     is_valid = false;
@@ -29,7 +29,7 @@ bool CableUnitLoadCalculator::Validate(
     }
   }
 
-  // validate weight-unit-cable
+  // validates weight-unit-cable
   if (weight_unit_cable_ <= 0) {
 
     is_valid = false;
@@ -88,6 +88,5 @@ void CableUnitLoadCalculator::set_diameter_cable(const double& diameter_cable) {
 
 void CableUnitLoadCalculator::set_weight_unit_cable(
   const double& weight_unit_cable) {
-
   weight_unit_cable_ = weight_unit_cable;
 }
