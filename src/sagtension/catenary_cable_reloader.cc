@@ -64,7 +64,56 @@ bool CatenaryCableReloader::Validate(
 
   bool is_valid = true;
 
-  /// \todo implement this
+  // validates catenary cable
+  if (catenary_cable_.Validate(is_included_warnings,
+                               messages_error) == false) {
+    is_valid = false;
+  }
+
+  // validates reloaded state
+  if (state_reloaded_.Validate(is_included_warnings,
+                               messages_error) == false) {
+    is_valid = false;
+  }
+
+  // validates reloaded unit weight
+  if (weight_unit_reloaded_.x() != 0) {
+    is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back(
+          "CATENARY CABLE RELOADER - Invalid longtiudinal unit weight");
+    }
+  }
+
+  if (weight_unit_reloaded_.y() < 0) {
+    is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back(
+          "CATENARY CABLE RELOADER - Invalid transverse unit weight");
+    }
+  }
+
+  if (weight_unit_reloaded_.z() <= 0) {
+    is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back(
+          "CATENARY CABLE RELOADER - Invalid vertical unit weight");
+    }
+  }
+
+  // further validates if no errors are present
+  if (is_valid == true) {
+
+    // validates if class updates
+    if (Update() == false) {
+
+      is_valid = false;
+      if (messages_error != nullptr) {
+        messages_error->push_back(
+            "CATENARY CABLE RELOADER - Error updating class");
+      }
+    }
+  }
 
   return is_valid;
 }
