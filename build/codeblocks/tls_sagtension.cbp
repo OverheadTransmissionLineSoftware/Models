@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="tls_sagtension" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="debug">
+				<Option output="debug/bin/tls_sagtension" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="debug/obj/" />
+				<Option external_deps="debug/bin/libtls_transmissionline.a" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add library="debug/bin/libtls_base.a" />
+					<Add library="debug/bin/libtls_transmissionline.a" />
+				</Linker>
+			</Target>
+			<Target title="release">
+				<Option output="release/bin/tls_sagtension" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="release/obj/" />
+				<Option external_deps="release/bin/libtls_transmissionline.a" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="release/bin/libtls_base.a" />
+					<Add library="release/bin/libtls_transmissionline.a" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-std=c++11" />
+			<Add option="-Wall" />
+			<Add directory="../../include" />
+		</Compiler>
+		<Linker>
+			<Add directory="../../" />
+		</Linker>
+		<Unit filename="../../include/sagtension/cable_component_elongation_model.h" />
+		<Unit filename="../../include/sagtension/cable_elongation_model.h" />
+		<Unit filename="../../include/sagtension/cable_state.h" />
+		<Unit filename="../../include/sagtension/cable_strainer.h" />
+		<Unit filename="../../include/sagtension/catenary_cable.h" />
+		<Unit filename="../../include/sagtension/catenary_cable_reloader.h" />
+		<Unit filename="../../include/sagtension/catenary_cable_unloader.h" />
+		<Unit filename="../../src/sagtension/cable_component_elongation_model.cc" />
+		<Unit filename="../../src/sagtension/cable_elongation_model.cc" />
+		<Unit filename="../../src/sagtension/cable_state.cc" />
+		<Unit filename="../../src/sagtension/cable_strainer.cc" />
+		<Unit filename="../../src/sagtension/catenary_cable.cc" />
+		<Unit filename="../../src/sagtension/catenary_cable_reloader.cc" />
+		<Unit filename="../../src/sagtension/catenary_cable_unloader.cc" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

@@ -14,7 +14,9 @@
 
 # doxygen generated files #
 ###########################
+*.aux
 *.css
+*.dvi
 *.html
 *.js
 *.log
