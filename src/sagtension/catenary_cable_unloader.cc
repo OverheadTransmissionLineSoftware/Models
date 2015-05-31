@@ -30,7 +30,31 @@ bool CatenaryCableUnloader::Validate(
 
   bool is_valid = true;
 
-  /// \todo implement this
+  // validates catenary cable
+  if (catenary_cable_.Validate(is_included_warnings,
+                               messages_error) == false) {
+    is_valid = false;
+  }
+
+  // further validates if no errors are present
+  if (is_valid == true) {
+
+    // validates if class updates
+    if (Update() == false) {
+
+      is_valid = false;
+      if (messages_error != nullptr) {
+        messages_error->push_back(
+            "CATENARY CABLE UNLOADER - Error updating class");
+      }
+    }
+
+    // validates strainer
+    if (strainer_.Validate(is_included_warnings,
+                           messages_error) == false) {
+      is_valid = false;
+    }
+  }
 
   return is_valid;
 }
