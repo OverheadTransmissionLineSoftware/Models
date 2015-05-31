@@ -83,15 +83,19 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\sagtension\cable_component_elongation_model.cc" />
     <ClCompile Include="..\..\src\sagtension\cable_elongation_model.cc" />
+    <ClCompile Include="..\..\src\sagtension\cable_state.cc" />
     <ClCompile Include="..\..\src\sagtension\cable_strainer.cc" />
-    <ClCompile Include="..\..\src\sagtension\catenary_cable_loader.cc" />
+    <ClCompile Include="..\..\src\sagtension\catenary_cable.cc" />
+    <ClCompile Include="..\..\src\sagtension\catenary_cable_reloader.cc" />
     <ClCompile Include="..\..\src\sagtension\catenary_cable_unloader.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\sagtension\cable_component_elongation_model.h" />
     <ClInclude Include="..\..\include\sagtension\cable_elongation_model.h" />
+    <ClInclude Include="..\..\include\sagtension\cable_state.h" />
     <ClInclude Include="..\..\include\sagtension\cable_strainer.h" />
-    <ClInclude Include="..\..\include\sagtension\catenary_cable_loader.h" />
+    <ClInclude Include="..\..\include\sagtension\catenary_cable.h" />
+    <ClInclude Include="..\..\include\sagtension\catenary_cable_reloader.h" />
     <ClInclude Include="..\..\include\sagtension\catenary_cable_unloader.h" />
   </ItemGroup>
   <ItemGroup>
