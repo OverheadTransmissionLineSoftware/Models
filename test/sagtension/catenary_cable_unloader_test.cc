@@ -107,8 +107,7 @@ TEST_F(CatenaryCableUnloaderTest, LengthUnloaded) {
   CatenaryCable catenary_cable = c_.catenary_cable();
   CableState state = catenary_cable.state();
 
-  // unstretched caetnary cable state
-  double length_unloaded = c_.LengthUnloaded();
+  // unstretched catenary cable state
   EXPECT_EQ(1200.8179, supportfunctions::Round(c_.LengthUnloaded(), 4));
 
   // stretched catenary cable state
