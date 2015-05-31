@@ -157,7 +157,7 @@ bool CatenaryCableReloader::SolveReloadedCatenaryCableTension() const {
   InitializeStrainer();
 
   // uses an iterative routine to determine solution
-  // solution reached when y = 0
+  // solution is reached when y = 0
   const double target_solution = 0;
 
   // declares and initializes left point
@@ -176,7 +176,7 @@ bool CatenaryCableReloader::SolveReloadedCatenaryCableTension() const {
   // declares and initializes current point
   Point2d point_current;
 
-  // iteration
+  // iterates until target is reached
   int iter = 0;
   const int iter_max = 100;
   while (0.01 < abs(point_left.x - point_right.x) && (iter < iter_max)) {

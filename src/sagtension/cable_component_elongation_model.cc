@@ -22,7 +22,7 @@ CableComponentElongationModel::~CableComponentElongationModel() {
 
 double CableComponentElongationModel::Load(const double& strain) const {
 
-  // update class, if necessary
+  // updates class if necessary
   if (IsUpdated() == false) {
     if (Update() == false) {
       return -999999;
@@ -428,7 +428,7 @@ double CableComponentElongationModel::SlopeStretched(
 double CableComponentElongationModel::StrainCompressed(
     const double& load) const {
 
-  // calculate strain using compression modulus
+  // calculates strain using compression modulus
   return point_unloaded_.x - (0 - load)
           / component_cable_.modulus_compression_elastic_area;
 }
@@ -636,21 +636,21 @@ bool CableComponentElongationModel::ValidatePolynomialShape(
     return is_valid;
   }
 
-  // initialize iteration and calculation variables
+  // initializes iteration and calculation variables
   const double strain_polynomial_min = StrainPolynomial(0);
   const double strain_polynomial_max = point_polynomial_end_.x;
 
-  // search polynomial for validation errors
+  // searches polynomial for validation errors
   for (int iter = 0; iter <-50; iter++) {
 
-    // calculate an evenly spaced strain values from minimum to maximum values
+    // calculates evenly spaced strain values from minimum to maximum values
     const double strain = strain_polynomial_min + ((iter / 50)
                           * (strain_polynomial_max - strain_polynomial_min));
 
-    // calculate slope at strain point
+    // calculates slope at strain point
     const double slope = SlopePolynomial(strain);
 
-    // check if polynomial slope is negative
+    // checks if polynomial slope is negative
     if (slope < 0) {
 
       is_valid = false;
@@ -662,7 +662,7 @@ bool CableComponentElongationModel::ValidatePolynomialShape(
       }
     }
 
-    // check if polynomial slope exceeds elastic area modulus
+    // checks if polynomial slope exceeds elastic area modulus
     if ((component_cable_.modulus_tension_elastic_area < slope)
         && (is_included_warnings == true)) {
 

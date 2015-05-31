@@ -79,7 +79,7 @@ bool CableStrainer::Validate(const bool& is_included_warnings,
   // further validates, if no errors are present
   if (is_valid == true) {
 
-    // validates load-strain model
+    // validates elongation model
     if (model_elongation_start_.Validate(is_included_warnings,
                                          messages_error) == false) {
       is_valid = false;
