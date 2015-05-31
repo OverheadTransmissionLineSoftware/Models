@@ -265,7 +265,8 @@ double CableElongationModel::StrainCombined(
   // x = strain
   // y = load
 
-  // determine which region the target load is in, and set left and right points
+  // determines which region the target load is in, and sets left and right
+  // points
   Point2d point_left;
   Point2d point_right;
   for (unsigned int index = 0; index <= points_regions_.size(); index++) {
@@ -306,24 +307,24 @@ double CableElongationModel::StrainCombined(
     }
   }
 
-  // declare and initialize current point
+  // declares and initialize current point
   Point2d point_current;
 
-  // declare iteration variables
-  // iterate until current point load matches target load
+  // declares iteration variables
+  // iterates until current point load matches target load
   int iter = 1;
   double precision = 1 / (10 ^ precision_decimal_load);
   double slope_line =-999999;
 
   while ((precision < abs(point_current.y - load)) && (iter < 100)) {
 
-    // new strain value is calculated using tangent line between points,
-    // extrapolate using line
+    // calculates new strain value by using tangent line between points,
+    // extrapolates using line
     slope_line = (point_right.y - point_left.y)
                   / (point_right.x - point_left.x);
     point_current.x = point_left.x + ((load - point_left.y) / slope_line);
 
-    // current point load
+    // gets current point load
     point_current.y = LoadCombined(point_current.x);
 
     // current point is left of left/right points
@@ -360,7 +361,6 @@ double CableElongationModel::StrainCombined(
     iter++;
   }
 
-  //return value
   if (iter < 100) {
     return point_current.x;
   } else {
@@ -663,15 +663,15 @@ bool CableElongationModel::ValidateComponentsStrainLimit(
 
   }
 
-  // check shell, if enabled
+  // checks shell, if enabled
   if (is_enabled_shell_ == true) {
 
-    // get polynomial limit for shell
+    // gets polynomial limit for shell
     double strain_limit_polynomial_shell = StrainShell(
         component_shell_.component_cable().load_limit_polynomial_loadstrain);
 
-    // compare against max strain
-    // if component limit is less that rated strength strain, generate error
+    // compares against max strain
+    // if component limit is less that rated strength strain, generates error
     if (strain_limit_polynomial_shell < strain_max) {
 
       is_valid = false;
@@ -705,7 +705,7 @@ bool CableElongationModel::ValidateComponentsStrainUnloaded(
     return is_valid;
   }
 
-  // cache temperature and stretch for components, modifies temperature and
+  // caches temperature and stretch for components, modifies temperature and
   // stretch to reference values
   const double load_stretch_core = component_core_.load_stretch();
   const double load_stretch_shell = component_shell_.load_stretch();
