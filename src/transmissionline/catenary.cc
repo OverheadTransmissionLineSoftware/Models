@@ -969,7 +969,7 @@ bool Catenary3d::Validate(const bool& is_included_warnings,
   }
 
   // validates weight-unit-transverse
-  if (0 < weight_unit_.y()
+  if (weight_unit_.y() < 0
       || (15 < weight_unit_.y() && is_included_warnings == true)) {
 
     is_valid = false;
