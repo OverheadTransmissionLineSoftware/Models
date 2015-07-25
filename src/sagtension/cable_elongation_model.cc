@@ -435,10 +435,10 @@ bool CableElongationModel::UpdateComponentsEnabled() const {
 
   // gets active polynomial
   std::vector<double> coefficients_polynomial_core;
-  if (cable_.type_polynomial_active == CablePolynomialType::kCreep) {
+  if (cable_.type_polynomial_active == CableComponent::PolynomialType::kCreep) {
     coefficients_polynomial_core =
         cable_.component_core.coefficients_polynomial_creep;
-  } else if (cable_.type_polynomial_active == CablePolynomialType::kLoadStrain) {
+  } else if (cable_.type_polynomial_active == CableComponent::PolynomialType::kLoadStrain) {
     coefficients_polynomial_core =
         cable_.component_core.coefficients_polynomial_loadstrain;
   }
@@ -458,10 +458,10 @@ bool CableElongationModel::UpdateComponentsEnabled() const {
 
   // gets active polynomial
   std::vector<double> coefficients_polynomial_shell;
-  if (cable_.type_polynomial_active == CablePolynomialType::kCreep) {
+  if (cable_.type_polynomial_active == CableComponent::PolynomialType::kCreep) {
     coefficients_polynomial_shell =
         cable_.component_shell.coefficients_polynomial_creep;
-  } else if (cable_.type_polynomial_active == CablePolynomialType::kLoadStrain) {
+  } else if (cable_.type_polynomial_active == CableComponent::PolynomialType::kLoadStrain) {
     coefficients_polynomial_shell =
         cable_.component_shell.coefficients_polynomial_loadstrain;
   }
@@ -496,7 +496,7 @@ bool CableElongationModel::UpdateComponentsLoadStretch() const {
 
   // checks if stretch is not defined or not required
   if ((state_.load_stretch == 0)
-      || (cable_.type_polynomial_active == CablePolynomialType::kCreep)) {
+      || (cable_.type_polynomial_active == CableComponent::PolynomialType::kCreep)) {
     return true;
   }
 

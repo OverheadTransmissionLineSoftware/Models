@@ -10,18 +10,18 @@
 
 /// \par OVERVIEW
 ///
-/// This enum contains types of cable polynomials.
-enum class CablePolynomialType {
-  kCreep,
-  kLoadStrain
-};
-
-/// \par OVERVIEW
-///
 /// This struct is a container for a transmission cable component.
 ///  (ex: shell, core)
 struct CableComponent {
  public:
+  /// \par OVERVIEW
+  ///
+  /// This enum contains types of cable polynomials.
+  enum class PolynomialType {
+    kCreep,
+    kLoadStrain
+  };
+
   /// \brief Default constructor.
   CableComponent();
 
@@ -141,7 +141,7 @@ struct Cable {
   /// \var type_polynomial_active
   ///   A switch that activates a specific polynomial to describe the cable
   ///   elongation characteristics.
-  CablePolynomialType type_polynomial_active;
+  CableComponent::PolynomialType type_polynomial_active;
 
   /// \var weight_unit
   ///   The weight per unit length of the entire cable.

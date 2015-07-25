@@ -69,7 +69,7 @@ class CatenaryCableUnloaderTest : public ::testing::Test {
     cable.name = "ACSR Drake";
     cable.strength_rated = 31500;
     cable.temperature_properties_components = 70;
-    cable.type_polynomial_active = CablePolynomialType::kLoadStrain;
+    cable.type_polynomial_active = CableComponent::PolynomialType::kLoadStrain;
     cable.weight_unit = 1.094;
 
     Vector3d spacing_endpoints(1200, 0, 0);

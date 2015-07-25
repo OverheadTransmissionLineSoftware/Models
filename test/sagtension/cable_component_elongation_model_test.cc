@@ -41,7 +41,7 @@ class CableComponentElongationModelTest : public ::testing::Test {
     c_.set_load_stretch(5000);
     c_.set_temperature(70);
     c_.set_temperature_reference(70);
-    c_.set_type_polynomial_active(CablePolynomialType::kLoadStrain);
+    c_.set_type_polynomial_active(CableComponent::PolynomialType::kLoadStrain);
   }
 
   CableComponentElongationModel c_;

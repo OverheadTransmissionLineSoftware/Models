@@ -163,7 +163,7 @@ class CableComponentElongationModel {
   /// \param[in] type_polynomial_active
   ///   The type of active polynomial.
   void set_type_polynomial_active(
-      const CablePolynomialType& type_polynomial_active);
+      const CableComponent::PolynomialType& type_polynomial_active);
 
   /// \brief Gets the temperature.
   /// \return The temperature.
@@ -175,7 +175,7 @@ class CableComponentElongationModel {
 
   /// \brief Gets the type of active polynomial.
   /// \return The cable polynomial type.
-  CablePolynomialType type_polynomial_active() const;
+  CableComponent::PolynomialType type_polynomial_active() const;
 
  private:
   /// \brief Converts to a percent strain value for use with the thermally
@@ -374,7 +374,7 @@ class CableComponentElongationModel {
   /// \var type_polynomial_active_
   ///   The type of polynomial to model. The cable component can have multiple
   ///   polynomials to describe its elongation.
-  CablePolynomialType type_polynomial_active_;
+  CableComponent::PolynomialType type_polynomial_active_;
 };
 
 #endif // TLSLIBRARIES_SAGTENSION_CABLECOMPONENTELONGATIONMODEL_H_

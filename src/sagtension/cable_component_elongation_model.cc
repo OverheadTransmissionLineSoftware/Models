@@ -312,7 +312,7 @@ void CableComponentElongationModel::set_temperature_reference(
 }
 
 void CableComponentElongationModel::set_type_polynomial_active(
-    const CablePolynomialType& type_polynomial_active) {
+    const CableComponent::PolynomialType& type_polynomial_active) {
 
   type_polynomial_active_ = type_polynomial_active;
 
@@ -328,7 +328,7 @@ double CableComponentElongationModel::temperature_reference() const {
   return temperature_reference_;
 }
 
-CablePolynomialType CableComponentElongationModel::type_polynomial_active()
+CableComponent::PolynomialType CableComponentElongationModel::type_polynomial_active()
     const {
   return type_polynomial_active_;
 }
@@ -487,9 +487,9 @@ bool CableComponentElongationModel::Update() const {
 
 bool CableComponentElongationModel::UpdatePointPolynomialEnd() const {
 
-  if (type_polynomial_active_ == CablePolynomialType::kCreep) {
+  if (type_polynomial_active_ == CableComponent::PolynomialType::kCreep) {
     point_polynomial_end_.y = component_cable_.load_limit_polynomial_creep;
-  } else if (type_polynomial_active_ == CablePolynomialType::kLoadStrain) {
+  } else if (type_polynomial_active_ == CableComponent::PolynomialType::kLoadStrain) {
     point_polynomial_end_.y =
         component_cable_.load_limit_polynomial_loadstrain;
   }
@@ -517,10 +517,10 @@ bool CableComponentElongationModel::UpdatePointUnloaded() const {
 
 bool CableComponentElongationModel::UpdatePolynomial() const {
 
-  if (type_polynomial_active_ == CablePolynomialType::kCreep) {
+  if (type_polynomial_active_ == CableComponent::PolynomialType::kCreep) {
     polynomial_.set_coefficients(
         component_cable_.coefficients_polynomial_creep);
-  } else if (type_polynomial_active_ == CablePolynomialType::kLoadStrain) {
+  } else if (type_polynomial_active_ == CableComponent::PolynomialType::kLoadStrain) {
     polynomial_.set_coefficients(
         component_cable_.coefficients_polynomial_loadstrain);
   }
