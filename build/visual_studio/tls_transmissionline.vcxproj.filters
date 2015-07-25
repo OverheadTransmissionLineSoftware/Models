@@ -20,10 +20,7 @@
     <ClInclude Include="..\..\include\transmissionline\cable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\transmissionline\cable_load_case.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\transmissionline\cable_load_constraint.h">
+    <ClInclude Include="..\..\include\transmissionline\cable_constraint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\transmissionline\cable_unit_load_calculator.h">
@@ -40,10 +37,7 @@
     <ClCompile Include="..\..\src\transmissionline\cable.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\transmissionline\cable_load_case.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\transmissionline\cable_load_constraint.cc">
+    <ClCompile Include="..\..\src\transmissionline\cable_constraint.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\transmissionline\cable_unit_load_calculator.cc">

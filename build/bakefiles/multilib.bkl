@@ -9,17 +9,19 @@ if ($toolset == gnu)
 library tls_base {
   includedirs = ../../include;
   headers {
-    ../../include/base/convert_units.h
     ../../include/base/geometric_shapes.h
+    ../../include/base/helper.h
     ../../include/base/point.h
     ../../include/base/polynomial.h
+    ../../include/base/units.h
     ../../include/base/vector.h
   }
   sources {
-    ../../src/base/convert_units.cc
     ../../src/base/geometric_shapes.cc
+    ../../src/base/helper.cc
     ../../src/base/point.cc
     ../../src/base/polynomial.cc
+    ../../src/base/units.cc
     ../../src/base/vector.cc
   }
 }
@@ -30,16 +32,14 @@ library tls_transmissionline {
   includedirs = ../../include;
   headers {
     ../../include/transmissionline/cable.h
-    ../../include/transmissionline/cable_load_case.h
-    ../../include/transmissionline/cable_load_constraint.h
+    ../../include/transmissionline/cable_constraint.h
     ../../include/transmissionline/cable_unit_load_calculator.h
     ../../include/transmissionline/catenary.h
     ../../include/transmissionline/weather_load_case.h
   }
   sources {
     ../../src/transmissionline/cable.cc
-    ../../src/transmissionline/cable_load_case.cc
-    ../../src/transmissionline/cable_load_constraint.cc
+    ../../src/transmissionline/cable_constraint.cc
     ../../src/transmissionline/cable_unit_load_calculator.cc
     ../../src/transmissionline/catenary.cc
     ../../src/transmissionline/weather_load_case.cc

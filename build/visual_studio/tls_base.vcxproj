@@ -81,17 +81,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\base\convert_units.cc" />
     <ClCompile Include="..\..\src\base\geometric_shapes.cc" />
+    <ClCompile Include="..\..\src\base\helper.cc" />
     <ClCompile Include="..\..\src\base\point.cc" />
     <ClCompile Include="..\..\src\base\polynomial.cc" />
+    <ClCompile Include="..\..\src\base\units.cc" />
     <ClCompile Include="..\..\src\base\vector.cc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\base\convert_units.h" />
     <ClInclude Include="..\..\include\base\geometric_shapes.h" />
+    <ClInclude Include="..\..\include\base\helper.h" />
     <ClInclude Include="..\..\include\base\point.h" />
     <ClInclude Include="..\..\include\base\polynomial.h" />
+    <ClInclude Include="..\..\include\base\units.h" />
     <ClInclude Include="..\..\include\base\vector.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -45,15 +45,15 @@ builddir = .
 
 all: $(builddir)/libtls_base.a $(builddir)/libtls_transmissionline.a $(builddir)/libtls_sagtension.a
 
-$(builddir)/libtls_base.a: $(builddir)/tls_base_convert_units.o $(builddir)/tls_base_geometric_shapes.o $(builddir)/tls_base_point.o $(builddir)/tls_base_polynomial.o $(builddir)/tls_base_vector.o
-	$(AR) rcu $@ $(builddir)/tls_base_convert_units.o $(builddir)/tls_base_geometric_shapes.o $(builddir)/tls_base_point.o $(builddir)/tls_base_polynomial.o $(builddir)/tls_base_vector.o
+$(builddir)/libtls_base.a: $(builddir)/tls_base_geometric_shapes.o $(builddir)/tls_base_helper.o $(builddir)/tls_base_point.o $(builddir)/tls_base_polynomial.o $(builddir)/tls_base_units.o $(builddir)/tls_base_vector.o
+	$(AR) rcu $@ $(builddir)/tls_base_geometric_shapes.o $(builddir)/tls_base_helper.o $(builddir)/tls_base_point.o $(builddir)/tls_base_polynomial.o $(builddir)/tls_base_units.o $(builddir)/tls_base_vector.o
 	$(RANLIB) $@
-
-$(builddir)/tls_base_convert_units.o: ../../src/base/convert_units.cc
-	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I../../include -std=c++11 ../../src/base/convert_units.cc
 
 $(builddir)/tls_base_geometric_shapes.o: ../../src/base/geometric_shapes.cc
 	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I../../include -std=c++11 ../../src/base/geometric_shapes.cc
+
+$(builddir)/tls_base_helper.o: ../../src/base/helper.cc
+	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I../../include -std=c++11 ../../src/base/helper.cc
 
 $(builddir)/tls_base_point.o: ../../src/base/point.cc
 	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I../../include -std=c++11 ../../src/base/point.cc
@@ -61,21 +61,21 @@ $(builddir)/tls_base_point.o: ../../src/base/point.cc
 $(builddir)/tls_base_polynomial.o: ../../src/base/polynomial.cc
 	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I../../include -std=c++11 ../../src/base/polynomial.cc
 
+$(builddir)/tls_base_units.o: ../../src/base/units.cc
+	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I../../include -std=c++11 ../../src/base/units.cc
+
 $(builddir)/tls_base_vector.o: ../../src/base/vector.cc
 	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I../../include -std=c++11 ../../src/base/vector.cc
 
-$(builddir)/libtls_transmissionline.a: $(builddir)/tls_transmissionline_cable.o $(builddir)/tls_transmissionline_cable_load_case.o $(builddir)/tls_transmissionline_cable_load_constraint.o $(builddir)/tls_transmissionline_cable_unit_load_calculator.o $(builddir)/tls_transmissionline_catenary.o $(builddir)/tls_transmissionline_weather_load_case.o $(builddir)/libtls_base.a
-	$(AR) rcu $@ $(builddir)/tls_transmissionline_cable.o $(builddir)/tls_transmissionline_cable_load_case.o $(builddir)/tls_transmissionline_cable_load_constraint.o $(builddir)/tls_transmissionline_cable_unit_load_calculator.o $(builddir)/tls_transmissionline_catenary.o $(builddir)/tls_transmissionline_weather_load_case.o
+$(builddir)/libtls_transmissionline.a: $(builddir)/tls_transmissionline_cable.o $(builddir)/tls_transmissionline_cable_constraint.o $(builddir)/tls_transmissionline_cable_unit_load_calculator.o $(builddir)/tls_transmissionline_catenary.o $(builddir)/tls_transmissionline_weather_load_case.o $(builddir)/libtls_base.a
+	$(AR) rcu $@ $(builddir)/tls_transmissionline_cable.o $(builddir)/tls_transmissionline_cable_constraint.o $(builddir)/tls_transmissionline_cable_unit_load_calculator.o $(builddir)/tls_transmissionline_catenary.o $(builddir)/tls_transmissionline_weather_load_case.o
 	$(RANLIB) $@
 
 $(builddir)/tls_transmissionline_cable.o: ../../src/transmissionline/cable.cc
 	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I../../include -std=c++11 ../../src/transmissionline/cable.cc
 
-$(builddir)/tls_transmissionline_cable_load_case.o: ../../src/transmissionline/cable_load_case.cc
-	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I../../include -std=c++11 ../../src/transmissionline/cable_load_case.cc
-
-$(builddir)/tls_transmissionline_cable_load_constraint.o: ../../src/transmissionline/cable_load_constraint.cc
-	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I../../include -std=c++11 ../../src/transmissionline/cable_load_constraint.cc
+$(builddir)/tls_transmissionline_cable_constraint.o: ../../src/transmissionline/cable_constraint.cc
+	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I../../include -std=c++11 ../../src/transmissionline/cable_constraint.cc
 
 $(builddir)/tls_transmissionline_cable_unit_load_calculator.o: ../../src/transmissionline/cable_unit_load_calculator.cc
 	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I../../include -std=c++11 ../../src/transmissionline/cable_unit_load_calculator.cc
