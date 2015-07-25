@@ -45,6 +45,7 @@
 			<Add option="-Wall" />
 			<Add directory="../include" />
 			<Add directory="../../../gtest/include" />
+			<Add directory="../test" />
 		</Compiler>
 		<Linker>
 			<Add option="-pthread" />
@@ -55,6 +56,8 @@
 		<Unit filename="base/polynomial_test.cc" />
 		<Unit filename="base/units_test.cc" />
 		<Unit filename="base/vector_test.cc" />
+		<Unit filename="factory.cc" />
+		<Unit filename="factory.h" />
 		<Unit filename="sagtension/cable_component_elongation_model_test.cc" />
 		<Unit filename="sagtension/cable_elongation_model_test.cc" />
 		<Unit filename="sagtension/cable_state_test.cc" />

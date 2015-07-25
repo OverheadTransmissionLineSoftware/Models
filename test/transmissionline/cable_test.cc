@@ -3,8 +3,9 @@
 
 #include "transmissionline/cable.h"
 
-#include "../test/factory.h"
 #include "gtest/gtest.h"
+
+#include "factory.h"
 
 class CableComponentTest : public ::testing::Test {
  protected:

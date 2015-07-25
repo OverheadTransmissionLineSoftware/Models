@@ -5,6 +5,8 @@
 
 #include "gtest/gtest.h"
 
+#include "base/helper.h"
+
 class CableStateTest : public ::testing::Test {
  protected:
   CableStateTest() {
@@ -18,6 +20,5 @@ class CableStateTest : public ::testing::Test {
 };
 
 TEST_F(CableStateTest, Validate) {
-
   EXPECT_TRUE(c_.Validate(true, nullptr));
 }

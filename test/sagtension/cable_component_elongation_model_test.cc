@@ -3,41 +3,19 @@
 
 #include "sagtension/cable_component_elongation_model.h"
 
-#include "base/helper.h"
 #include "gtest/gtest.h"
+
+#include "base/helper.h"
+#include "factory.h"
 
 class CableComponentElongationModelTest : public ::testing::Test {
  protected:
   CableComponentElongationModelTest() {
 
-    // builds dependency object - component
-    const double kAreaPhysical = 0.7264;
-
-    std::vector<double> coefficients_creep;
-    coefficients_creep.push_back(-544.8 * kAreaPhysical);
-    coefficients_creep.push_back(21426.8 * kAreaPhysical);
-    coefficients_creep.push_back(-18842.2 * kAreaPhysical);
-    coefficients_creep.push_back(5495 * kAreaPhysical);
-    coefficients_creep.push_back(0 * kAreaPhysical);
-
-    std::vector<double> coefficients_loadstrain;
-    coefficients_loadstrain.push_back(-1213 * kAreaPhysical);
-    coefficients_loadstrain.push_back(44308.1 * kAreaPhysical);
-    coefficients_loadstrain.push_back(-14004.4 * kAreaPhysical);
-    coefficients_loadstrain.push_back(-37618 * kAreaPhysical);
-    coefficients_loadstrain.push_back(30676 * kAreaPhysical);
-
-    CableComponent shell;
-    shell.coefficient_expansion_linear_thermal = 0.0000128;
-    shell.coefficients_polynomial_creep = coefficients_creep;
-    shell.coefficients_polynomial_loadstrain = coefficients_loadstrain;
-    shell.load_limit_polynomial_creep = 7535 * kAreaPhysical;
-    shell.load_limit_polynomial_loadstrain = 20252 * kAreaPhysical;
-    shell.modulus_compression_elastic_area = 1500 * kAreaPhysical * 100;
-    shell.modulus_tension_elastic_area = 64000 * kAreaPhysical * 100;
+    CableComponent component = factory::BuildCableComponent();
 
     // builds fixture object
-    c_.set_component_cable(shell);
+    c_.set_component_cable(component);
     c_.set_load_stretch(5000);
     c_.set_temperature(70);
     c_.set_temperature_reference(70);
@@ -156,6 +134,7 @@ TEST_F(CableComponentElongationModelTest, StrainThermal) {
 
 TEST_F(CableComponentElongationModelTest, Validate) {
 
-  // when checking for warnings, it does not pass the polynomial slope validation
+  // when checking for warnings, it does not pass the polynomial slope
+  // validation
   EXPECT_TRUE(c_.Validate(false, nullptr));
 }
