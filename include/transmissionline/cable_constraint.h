@@ -48,8 +48,8 @@ struct CableConstraint {
   bool Validate(const bool& is_included_warnings = true,
                 std::list<std::string>* messages_error = nullptr) const;
 
-  /// \var case_load
-  ///   The load case.
+  /// \var case_weather
+  ///   The weather case.
   WeatherLoadCase case_weather;
 
   /// \var condition
