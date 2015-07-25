@@ -47,29 +47,28 @@ bool CableUnitLoadCalculator::Validate(
 ///
 /// The transverse load on the cable is solved using the following formula:
 /// \f[ T = AP \f]
-Vector2d CableUnitLoadCalculator::UnitCableLoad(
+Vector3d CableUnitLoadCalculator::UnitCableLoad(
     const WeatherLoadCase& case_load_weather) const {
 
   Cylinder cylinder_bare;
-  cylinder_bare.set_diameter(diameter_cable_ / 12);
+  cylinder_bare.set_diameter(diameter_cable_);
   cylinder_bare.set_length(1);
 
   Cylinder cylinder_iced;
-  cylinder_iced.set_diameter( (diameter_cable_
-                               + (2 * case_load_weather.thickness_ice)) /12 );
+  cylinder_iced.set_diameter(diameter_cable_
+                             + (2 * case_load_weather.thickness_ice));
   cylinder_iced.set_length(1);
 
   const double volume_ice = cylinder_iced.Volume() - cylinder_bare.Volume();
   const double density_ice = case_load_weather.density_ice;
   const double weight_ice = volume_ice * density_ice;
 
-  // transverse unit weight
-  Vector2d load_unit_cable;
-  load_unit_cable.set_x(cylinder_iced.diameter() * cylinder_iced.length()
+  // solves for unit load
+  Vector3d load_unit_cable;
+  load_unit_cable.set_x(0);
+  load_unit_cable.set_y(cylinder_iced.diameter() * cylinder_iced.length()
                         * case_load_weather.pressure_wind);
-
-  // vertical unit weight
-  load_unit_cable.set_y(weight_unit_cable_ + weight_ice);
+  load_unit_cable.set_z(weight_unit_cable_ + weight_ice);
 
   return load_unit_cable;
 }

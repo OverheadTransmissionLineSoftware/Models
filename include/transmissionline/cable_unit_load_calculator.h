@@ -33,9 +33,11 @@ class CableUnitLoadCalculator {
   /// \brief Gets the load per unit length of cable.
   /// \param[in] case_load_weather
   ///   The weather load case.
-  /// \return The vector load per unit length of cable. X is transverse, Y is
-  ///   vertical.
-  Vector2d UnitCableLoad(const WeatherLoadCase& case_load_weather) const;
+  /// \return The 3d vector load per unit length of cable. Loads are positive.
+  ///   - x component is longitudinal (always zero)
+  ///   - y component is transverse
+  ///   - z component is vertical
+  Vector3d UnitCableLoad(const WeatherLoadCase& case_load_weather) const;
 
   /// \brief Validates member variables.
   /// \param[in] is_included_warnings

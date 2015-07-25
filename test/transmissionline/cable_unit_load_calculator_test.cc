@@ -6,12 +6,14 @@
 #include "gtest/gtest.h"
 
 #include "base/helper.h"
+#include "base/units.h"
 
 class CableUnitLoadCalculatorTest : public ::testing::Test {
  protected:
   CableUnitLoadCalculatorTest() {
 
-    c_.set_diameter_cable(1.108);
+    c_.set_diameter_cable(
+      units::Convert(1.108, units::ConversionType::kInchesToFeet));
     c_.set_weight_unit_cable(1.094);
   }
 
@@ -20,7 +22,7 @@ class CableUnitLoadCalculatorTest : public ::testing::Test {
 
 TEST_F(CableUnitLoadCalculatorTest, UnitCableLoad) {
 
-  Vector2d load_unit;
+  Vector3d load_unit;
 
   // ice only
   WeatherLoadCase case_ice;
@@ -28,11 +30,12 @@ TEST_F(CableUnitLoadCalculatorTest, UnitCableLoad) {
   case_ice.density_ice = 57.3;
   case_ice.pressure_wind = 0;
   case_ice.temperature_cable = 0;
-  case_ice.thickness_ice = 1;
+  case_ice.thickness_ice =
+    units::Convert(1, units::ConversionType::kInchesToFeet);
 
   load_unit = c_.UnitCableLoad(case_ice);
-  EXPECT_EQ(0, helper::Round(load_unit.x(), 3));
-  EXPECT_EQ(3.729, helper::Round(load_unit.y(), 3));
+  EXPECT_EQ(0, helper::Round(load_unit.y(), 3));
+  EXPECT_EQ(3.729, helper::Round(load_unit.z(), 3));
 
   // wind only
   WeatherLoadCase case_wind;
@@ -43,8 +46,8 @@ TEST_F(CableUnitLoadCalculatorTest, UnitCableLoad) {
   case_wind.thickness_ice = 0;
 
   load_unit = c_.UnitCableLoad(case_wind);
-  EXPECT_EQ(2.308, helper::Round(load_unit.x(), 3));
-  EXPECT_EQ(1.094, helper::Round(load_unit.y(), 3));
+  EXPECT_EQ(2.308, helper::Round(load_unit.y(), 3));
+  EXPECT_EQ(1.094, helper::Round(load_unit.z(), 3));
 
   // ice and wind
   WeatherLoadCase case_both;
@@ -52,14 +55,14 @@ TEST_F(CableUnitLoadCalculatorTest, UnitCableLoad) {
   case_both.density_ice = 57.3;
   case_both.pressure_wind = 8;
   case_both.temperature_cable = 0;
-  case_both.thickness_ice = 0.5;
+  case_both.thickness_ice =
+    units::Convert(0.5, units::ConversionType::kInchesToFeet);
 
   load_unit = c_.UnitCableLoad(case_both);
-  EXPECT_EQ(1.405, helper::Round(load_unit.x(), 3));
-  EXPECT_EQ(2.099, helper::Round(load_unit.y(), 3));
+  EXPECT_EQ(1.405, helper::Round(load_unit.y(), 3));
+  EXPECT_EQ(2.099, helper::Round(load_unit.z(), 3));
 }
 
 TEST_F(CableUnitLoadCalculatorTest, Validate) {
-
   EXPECT_TRUE(c_.Validate(true, nullptr));
 }
