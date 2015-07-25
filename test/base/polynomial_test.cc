@@ -3,10 +3,9 @@
 
 #include "base/polynomial.h"
 
-#include <cmath>
-#include <vector>
-
 #include "gtest/gtest.h"
+
+#include "base/helper.h"
 
 class PolynomialTest : public ::testing::Test {
  protected:
@@ -61,14 +60,14 @@ TEST_F(PolynomialTest, Slope) {
 
 TEST_F(PolynomialTest, X) {
 
-  EXPECT_EQ(-1, std::round(p_.X(-990, 3, 0)));
-  EXPECT_EQ(0, std::round(p_.X(0, 3, 0)));
-  EXPECT_EQ(1, std::round(p_.X(990, 3, 0)));
+  EXPECT_EQ(-1, helper::Round(p_.X(-990, 3, 0), 0));
+  EXPECT_EQ(0, helper::Round(p_.X(0, 3, 0), 0));
+  EXPECT_EQ(1, helper::Round(p_.X(990, 3, 0), 0));
 }
 
 TEST_F(PolynomialTest, Y) {
 
-  EXPECT_EQ(-990, std::round(p_.Y(-1)));
-  EXPECT_EQ(0, std::round(p_.Y(0)));
-  EXPECT_EQ(990, std::round(p_.Y(1)));
+  EXPECT_EQ(-990, helper::Round(p_.Y(-1), 0));
+  EXPECT_EQ(0, helper::Round(p_.Y(0), 0));
+  EXPECT_EQ(990, helper::Round(p_.Y(1), 0));
 }

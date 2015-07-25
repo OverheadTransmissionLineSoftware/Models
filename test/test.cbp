@@ -51,7 +51,9 @@
 			<Add library="../../../gtest/make/gtest_main.a" />
 		</Linker>
 		<Unit filename="base/geometric_shapes_test.cc" />
+		<Unit filename="base/helper_test.cc" />
 		<Unit filename="base/polynomial_test.cc" />
+		<Unit filename="base/units_test.cc" />
 		<Unit filename="base/vector_test.cc" />
 		<Unit filename="sagtension/cable_component_elongation_model_test.cc" />
 		<Unit filename="sagtension/cable_elongation_model_test.cc" />

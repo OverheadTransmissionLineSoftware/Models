@@ -3,9 +3,9 @@
 
 #include "base/vector.h"
 
-#include <cmath>
-
 #include "gtest/gtest.h"
+
+#include "base/helper.h"
 
 TEST(Vector2d, Angle) {
 
@@ -14,52 +14,52 @@ TEST(Vector2d, Angle) {
   // quadrant I
   v.set_x(1);
   v.set_y(0);
-  EXPECT_EQ(0, std::round(v.Angle(false)));
-  EXPECT_EQ(0, std::round(v.Angle(true)));
+  EXPECT_EQ(0, helper::Round(v.Angle(false), 0));
+  EXPECT_EQ(0, helper::Round(v.Angle(true), 0));
 
   v.set_x(1);
   v.set_y(1);
-  EXPECT_EQ(45, std::round(v.Angle(false)));
-  EXPECT_EQ(45, std::round(v.Angle(true)));
+  EXPECT_EQ(45, helper::Round(v.Angle(false), 0));
+  EXPECT_EQ(45, helper::Round(v.Angle(true), 0));
 
   // quadrant II
   v.set_x(0);
   v.set_y(1);
-  EXPECT_EQ(90, std::round(v.Angle(false)));
-  EXPECT_EQ(90, std::round(v.Angle(true)));
+  EXPECT_EQ(90, helper::Round(v.Angle(false), 0));
+  EXPECT_EQ(90, helper::Round(v.Angle(true), 0));
 
   v.set_x(-1);
   v.set_y(1);
-  EXPECT_EQ(135, std::round(v.Angle(false)));
-  EXPECT_EQ(135, std::round(v.Angle(true)));
+  EXPECT_EQ(135, helper::Round(v.Angle(false), 0));
+  EXPECT_EQ(135, helper::Round(v.Angle(true), 0));
 
   // quadrant III
   v.set_x(-1);
   v.set_y(0);
-  EXPECT_EQ(180, std::round(v.Angle(false)));
-  EXPECT_EQ(180, std::round(v.Angle(true)));
+  EXPECT_EQ(180, helper::Round(v.Angle(false), 0));
+  EXPECT_EQ(180, helper::Round(v.Angle(true), 0));
 
   v.set_x(-1);
   v.set_y(-1);
-  EXPECT_EQ(225, std::round(v.Angle(false)));
-  EXPECT_EQ(-135, std::round(v.Angle(true)));
+  EXPECT_EQ(225, helper::Round(v.Angle(false), 0));
+  EXPECT_EQ(-135, helper::Round(v.Angle(true), 0));
 
   // quadrant IV
   v.set_x(0);
   v.set_y(-1);
-  EXPECT_EQ(270, std::round(v.Angle(false)));
-  EXPECT_EQ(-90, std::round(v.Angle(true)));
+  EXPECT_EQ(270, helper::Round(v.Angle(false), 0));
+  EXPECT_EQ(-90, helper::Round(v.Angle(true), 0));
 
   v.set_x(1);
   v.set_y(-1);
-  EXPECT_EQ(315, std::round(v.Angle(false)));
-  EXPECT_EQ(-45, std::round(v.Angle(true)));
+  EXPECT_EQ(315, helper::Round(v.Angle(false), 0));
+  EXPECT_EQ(-45, helper::Round(v.Angle(true), 0));
 }
 
 TEST(Vector2d, Magnitude) {
 
   Vector2d v(3, 4);
-  EXPECT_EQ(5, std::round(v.Magnitude()));
+  EXPECT_EQ(5, helper::Round(v.Magnitude(), 0));
 }
 
 TEST(Vector2d, Rotate) {
@@ -68,18 +68,18 @@ TEST(Vector2d, Rotate) {
 
   // positive rotation
   v.Rotate(135);
-  EXPECT_EQ(135, std::round(v.Angle(false)));
+  EXPECT_EQ(135, helper::Round(v.Angle(false), 0));
 
   // negative rotation
   v.Rotate(-45);
-  EXPECT_EQ(90, std::round(v.Angle(false)));
+  EXPECT_EQ(90, helper::Round(v.Angle(false), 0));
 
   // rotation over 360 degrees
   v.Rotate(720);
-  EXPECT_EQ(90, std::round(v.Angle(false)));
+  EXPECT_EQ(90, helper::Round(v.Angle(false), 0));
 
   // magnitude unchanged
-  EXPECT_EQ(1, std::round(v.Magnitude()));
+  EXPECT_EQ(1, helper::Round(v.Magnitude(), 0));
 }
 
 TEST(Vector2d, Scale) {
@@ -87,8 +87,8 @@ TEST(Vector2d, Scale) {
   Vector2d v(1, 0);
 
   v.Scale(100);
-  EXPECT_EQ(100, std::round(v.Magnitude()));
+  EXPECT_EQ(100, helper::Round(v.Magnitude(), 0));
 
   v.Scale(.01);
-  EXPECT_EQ(1, std::round(v.Magnitude()));
+  EXPECT_EQ(1, helper::Round(v.Magnitude(), 0));
 }

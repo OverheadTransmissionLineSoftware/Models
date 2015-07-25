@@ -3,9 +3,9 @@
 
 #include "base/geometric_shapes.h"
 
-#include <cmath>
-
 #include "gtest/gtest.h"
+
+#include "base/helper.h"
 
 class CylinderTest : public ::testing::Test {
  protected:
@@ -18,11 +18,9 @@ class CylinderTest : public ::testing::Test {
 };
 
 TEST_F(CylinderTest, AreaCrossSection) {
-
-  EXPECT_EQ(79, std::round(c_.AreaCrossSection()));
+  EXPECT_EQ(78.54, helper::Round(c_.AreaCrossSection(), 2));
 }
 
 TEST_F(CylinderTest, Volume) {
-
-  EXPECT_EQ(785, std::round(c_.Volume()));
+  EXPECT_EQ(785.4, helper::Round(c_.Volume(), 1));
 }
