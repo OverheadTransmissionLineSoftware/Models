@@ -35,7 +35,7 @@ CableElongationModel::~CableElongationModel() {
 }
 
 double CableElongationModel::Load(
-    const CableElongationModelComponentType& type_component,
+    const CableElongationModel::ComponentType& type_component,
     const double& strain) const {
 
   // updates class if necessary
@@ -46,11 +46,11 @@ double CableElongationModel::Load(
   }
 
   double load = -999999;
-  if (type_component == CableElongationModelComponentType::kCombined) {
+  if (type_component == CableElongationModel::ComponentType::kCombined) {
     load = LoadCombined(strain);
-  } else if (type_component == CableElongationModelComponentType::kCore) {
+  } else if (type_component == CableElongationModel::ComponentType::kCore) {
     load = LoadCore(strain);
-  } else if (type_component == CableElongationModelComponentType::kShell) {
+  } else if (type_component == CableElongationModel::ComponentType::kShell) {
     load = LoadShell(strain);
   }
 
@@ -58,7 +58,7 @@ double CableElongationModel::Load(
 }
 
 double CableElongationModel::Slope(
-    const CableElongationModelComponentType& type_component,
+    const CableElongationModel::ComponentType& type_component,
     const double& strain) const {
 
   // updates class if necessary
@@ -69,11 +69,11 @@ double CableElongationModel::Slope(
   }
 
   double slope = -999999;
-  if (type_component == CableElongationModelComponentType::kCombined) {
+  if (type_component == CableElongationModel::ComponentType::kCombined) {
     slope = SlopeCombined(strain);
-  } else if (type_component == CableElongationModelComponentType::kCore) {
+  } else if (type_component == CableElongationModel::ComponentType::kCore) {
     slope = SlopeCore(strain);
-  } else if (type_component == CableElongationModelComponentType::kShell) {
+  } else if (type_component == CableElongationModel::ComponentType::kShell) {
     slope = SlopeShell(strain);
   }
 
@@ -81,7 +81,7 @@ double CableElongationModel::Slope(
 }
 
 double CableElongationModel::Strain(
-    const CableElongationModelComponentType& type_component,
+    const CableElongationModel::ComponentType& type_component,
     const double& load) const {
 
   // updates class if necessary
@@ -92,11 +92,11 @@ double CableElongationModel::Strain(
   }
 
   double strain = -999999;
-  if (type_component == CableElongationModelComponentType::kCombined) {
+  if (type_component == CableElongationModel::ComponentType::kCombined) {
     strain = StrainCombined(load);
-  } else if (type_component == CableElongationModelComponentType::kCore) {
+  } else if (type_component == CableElongationModel::ComponentType::kCore) {
     strain = StrainCore(load);
-  } else if (type_component == CableElongationModelComponentType::kShell) {
+  } else if (type_component == CableElongationModel::ComponentType::kShell) {
     strain = StrainShell(load);
   }
 

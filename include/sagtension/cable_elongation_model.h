@@ -15,15 +15,6 @@
 
 /// \par OVERVIEW
 ///
-/// This enum contains types of cable elongation model components.
-enum class CableElongationModelComponentType {
-  kCombined,
-  kCore,
-  kShell
-};
-
-/// \par OVERVIEW
-///
 /// This class models the elongation of a cable.
 ///
 /// The primary features are:
@@ -69,6 +60,15 @@ enum class CableElongationModelComponentType {
 /// makes the numerical solution converge more quickly and consistently.
 class CableElongationModel {
  public:
+  /// \par OVERVIEW
+  ///
+  /// This enum contains types of cable elongation model components.
+  enum class ComponentType {
+    kCombined,
+    kCore,
+    kShell
+  };
+
   /// \brief Default constructor.
   CableElongationModel();
 
@@ -81,7 +81,7 @@ class CableElongationModel {
   /// \param[in] strain
   ///   The strain value (x-axis)
   /// \return The load (y-axis).
-  double Load(const CableElongationModelComponentType& type_component,
+  double Load(const CableElongationModel::ComponentType& type_component,
               const double& strain) const;
 
   /// \brief Gets the slope.
@@ -90,7 +90,7 @@ class CableElongationModel {
   /// \param[in] strain
   ///   The strain value (x-axis)
   /// \return The slope.
-  double Slope(const CableElongationModelComponentType& type_component,
+  double Slope(const CableElongationModel::ComponentType& type_component,
                 const double& strain) const;
 
   /// \brief Gets the strain.
@@ -99,7 +99,7 @@ class CableElongationModel {
   /// \param[in] load
   ///   The load value (y-axis)
   /// \return The strain (x-axis).
-  double Strain(const CableElongationModelComponentType& type_component,
+  double Strain(const CableElongationModel::ComponentType& type_component,
                 const double& load) const;
 
   /// \brief Validates member variables.

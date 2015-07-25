@@ -25,9 +25,9 @@ double CableStrainer::LengthFinish() const {
 
   // gets the start and finish strains
   const double strain_start = model_elongation_start_.Strain(
-      CableElongationModelComponentType::kCombined, load_start_);
+      CableElongationModel::ComponentType::kCombined, load_start_);
   const double strain_finish = model_elongation_finish_.Strain(
-      CableElongationModelComponentType::kCombined, load_finish_);
+      CableElongationModel::ComponentType::kCombined, load_finish_);
 
   // solves for finish length
   const double strain_transition = strain_finish - strain_start;
