@@ -1,22 +1,22 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "transmissionline/cable_load_constraint.h"
+#include "transmissionline/cable_constraint.h"
 
-CableLoadConstraint::CableLoadConstraint() {
+CableConstraint::CableConstraint() {
   limit = -999999;
 }
 
-CableLoadConstraint::~CableLoadConstraint() {}
+CableConstraint::~CableConstraint() {}
 
-bool CableLoadConstraint::Validate(
+bool CableConstraint::Validate(
     const bool& is_included_warnings,
     std::list<std::string>* messages_error) const {
 
   bool is_valid = true;
 
-  // validates case-load
-  if (case_load.Validate(is_included_warnings, messages_error) == false) {
+  // validates case-weather
+  if (case_weather.Validate(is_included_warnings, messages_error) == false) {
     is_valid = false;
   }
 
@@ -27,7 +27,7 @@ bool CableLoadConstraint::Validate(
 
     is_valid = false;
     if (messages_error != nullptr) {
-      messages_error->push_back("CABLE LOAD CONSTRAINT - Invalid limit");
+      messages_error->push_back("CABLE CONSTRAINT - Invalid limit");
     }
   }
 

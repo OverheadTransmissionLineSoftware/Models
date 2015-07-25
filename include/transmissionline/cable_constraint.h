@@ -1,27 +1,18 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef TLSLIBRARIES_TRANSMISSIONLINE_CABLELOADCONSTRAINT_H_
-#define TLSLIBRARIES_TRANSMISSIONLINE_CABLELOADCONSTRAINT_H_
+#ifndef TLSLIBRARIES_TRANSMISSIONLINE_CABLECONSTRAINT_H_
+#define TLSLIBRARIES_TRANSMISSIONLINE_CABLECONSTRAINT_H_
 
 #include <list>
 #include <string>
 
-#include "transmissionline/cable_load_case.h"
-
-/// \par OVERVIEW
-///
-/// This enum contains types of constraint limits.
-enum class ConstraintLimitType {
-  kHorizontalTension,
-  kCatenaryConstant,
-  kSupportTension
-};
+#include "transmissionline/weather_load_case.h"
 
 /// \par OVERVIEW
 ///
 /// This enum contains types of cable conditions.
-enum class ConditionType {
+enum class CableConditionType {
   kCreep,
   kInitial,
   kLoad
@@ -30,13 +21,22 @@ enum class ConditionType {
 /// \par OVERVIEW
 ///
 /// This struct is a container for a cable load constraint.
-struct CableLoadConstraint {
+struct CableConstraint {
  public:
+  /// \par OVERVIEW
+  ///
+  /// This enum contains types of constraint limits.
+  enum class LimitType {
+    kHorizontalTension,
+    kCatenaryConstant,
+    kSupportTension
+  };
+
   /// \brief Default constructor.
-  CableLoadConstraint();
+  CableConstraint();
 
   /// \brief Destructor.
-  ~CableLoadConstraint();
+  ~CableConstraint();
 
   /// \brief Validates member variables.
   /// \param[in] is_included_warnings
@@ -50,12 +50,12 @@ struct CableLoadConstraint {
 
   /// \var case_load
   ///   The load case.
-  CableLoadCase case_load;
+  WeatherLoadCase case_weather;
 
   /// \var condition
   ///   The state of the cable, which can determine whether the cable is
   ///   modeled as unstretched, or stretched.
-  ConditionType condition;
+  CableConditionType condition;
 
   /// \var limit
   ///   The limit that the cable cannot exceed.
@@ -63,7 +63,7 @@ struct CableLoadConstraint {
 
   /// \var type_limit
   ///   The type of constraint, which determines how the constraint is defined.
-  ConstraintLimitType type_limit;
+  CableConstraint::LimitType type_limit;
 };
 
-#endif // TLSLIBRARIES_TRANSMISSIONLINE_CABLELOADCONSTRAINT_H_
+#endif // TLSLIBRARIES_TRANSMISSIONLINE_CABLECONSTRAINT_H_
