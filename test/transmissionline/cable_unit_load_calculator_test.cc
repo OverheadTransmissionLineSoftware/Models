@@ -5,7 +5,7 @@
 
 #include "gtest/gtest.h"
 
-#include "base/convert_units.h"
+#include "base/helper.h"
 
 class CableUnitLoadCalculatorTest : public ::testing::Test {
  protected:
@@ -31,8 +31,8 @@ TEST_F(CableUnitLoadCalculatorTest, UnitCableLoad) {
   case_ice.thickness_ice = 1;
 
   load_unit = c_.UnitCableLoad(case_ice);
-  EXPECT_EQ(0, supportfunctions::Round(load_unit.x(), 3));
-  EXPECT_EQ(3.729, supportfunctions::Round(load_unit.y(), 3));
+  EXPECT_EQ(0, helper::Round(load_unit.x(), 3));
+  EXPECT_EQ(3.729, helper::Round(load_unit.y(), 3));
 
   // wind only
   WeatherLoadCase case_wind;
@@ -43,8 +43,8 @@ TEST_F(CableUnitLoadCalculatorTest, UnitCableLoad) {
   case_wind.thickness_ice = 0;
 
   load_unit = c_.UnitCableLoad(case_wind);
-  EXPECT_EQ(2.308, supportfunctions::Round(load_unit.x(), 3));
-  EXPECT_EQ(1.094, supportfunctions::Round(load_unit.y(), 3));
+  EXPECT_EQ(2.308, helper::Round(load_unit.x(), 3));
+  EXPECT_EQ(1.094, helper::Round(load_unit.y(), 3));
 
   // ice and wind
   WeatherLoadCase case_both;
@@ -55,8 +55,8 @@ TEST_F(CableUnitLoadCalculatorTest, UnitCableLoad) {
   case_both.thickness_ice = 0.5;
 
   load_unit = c_.UnitCableLoad(case_both);
-  EXPECT_EQ(1.405, supportfunctions::Round(load_unit.x(), 3));
-  EXPECT_EQ(2.099, supportfunctions::Round(load_unit.y(), 3));
+  EXPECT_EQ(1.405, helper::Round(load_unit.x(), 3));
+  EXPECT_EQ(2.099, helper::Round(load_unit.y(), 3));
 }
 
 TEST_F(CableUnitLoadCalculatorTest, Validate) {

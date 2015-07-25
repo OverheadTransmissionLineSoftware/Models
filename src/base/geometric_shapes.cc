@@ -5,7 +5,7 @@
 
 #include <cmath>
 
-#include "base/convert_units.h"
+#include "base/units.h"
 
 Cylinder::Cylinder() {
   diameter_ = -999999;
@@ -15,7 +15,7 @@ Cylinder::Cylinder() {
 Cylinder::~Cylinder() {}
 
 double Cylinder::AreaCrossSection() const {
-  return (convertunits::kPi / 4) * pow(diameter_, 2);
+  return (units::kPi / 4) * pow(diameter_, 2);
 }
 
 bool Cylinder::Validate(const bool& is_included_warnings,

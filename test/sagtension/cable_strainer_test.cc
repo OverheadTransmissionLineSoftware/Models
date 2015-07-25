@@ -3,7 +3,7 @@
 
 #include "sagtension/cable_strainer.h"
 
-#include "base/convert_units.h"
+#include "base/helper.h"
 #include "gtest/gtest.h"
 
 class CableStrainerTest : public ::testing::Test {
@@ -99,7 +99,7 @@ TEST_F(CableStrainerTest, LengthFinish) {
 
   // calculates the loaded length
   const double length = c_.LengthFinish();
-  EXPECT_EQ(1204.898, supportfunctions::Round(length, 3));
+  EXPECT_EQ(1204.898, helper::Round(length, 3));
 
   // switches unloaded and loaded states
   const CableState state1 = c_.state_start();
@@ -112,7 +112,7 @@ TEST_F(CableStrainerTest, LengthFinish) {
   c_.set_state_finish(state1);
 
   // tests if original length is calculated
-  EXPECT_EQ(1200.000, supportfunctions::Round(c_.LengthFinish(), 3));
+  EXPECT_EQ(1200.000, helper::Round(c_.LengthFinish(), 3));
 }
 
 TEST_F(CableStrainerTest, Validate) {

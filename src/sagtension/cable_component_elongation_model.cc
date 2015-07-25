@@ -3,8 +3,6 @@
 
 #include "sagtension/cable_component_elongation_model.h"
 
-#include "base/convert_units.h"
-
 CableComponentElongationModel::CableComponentElongationModel() {
 
   load_stretch_ = -999999;

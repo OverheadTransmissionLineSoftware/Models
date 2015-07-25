@@ -38,15 +38,17 @@
 		<Linker>
 			<Add directory="../../" />
 		</Linker>
-		<Unit filename="../../include/base/convert_units.h" />
 		<Unit filename="../../include/base/geometric_shapes.h" />
+		<Unit filename="../../include/base/helper.h" />
 		<Unit filename="../../include/base/point.h" />
 		<Unit filename="../../include/base/polynomial.h" />
+		<Unit filename="../../include/base/units.h" />
 		<Unit filename="../../include/base/vector.h" />
-		<Unit filename="../../src/base/convert_units.cc" />
 		<Unit filename="../../src/base/geometric_shapes.cc" />
+		<Unit filename="../../src/base/helper.cc" />
 		<Unit filename="../../src/base/point.cc" />
 		<Unit filename="../../src/base/polynomial.cc" />
+		<Unit filename="../../src/base/units.cc" />
 		<Unit filename="../../src/base/vector.cc" />
 		<Extensions>
 			<code_completion />

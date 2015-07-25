@@ -3,7 +3,7 @@
 
 #include "sagtension/cable_elongation_model.h"
 
-#include "base/convert_units.h"
+#include "base/helper.h"
 #include "gtest/gtest.h"
 
 class CableElongationModelTest : public ::testing::Test {
@@ -89,45 +89,45 @@ class CableElongationModelTest : public ::testing::Test {
 TEST_F(CableElongationModelTest, Load) {
 
   // core
-  EXPECT_EQ(5433.5, supportfunctions::Round(
+  EXPECT_EQ(5433.5, helper::Round(
       c_.Load(CableElongationModelComponentType::kCore, 0.002), 1));
 
   // shell
-  EXPECT_EQ(3754.9, supportfunctions::Round(
+  EXPECT_EQ(3754.9, helper::Round(
       c_.Load(CableElongationModelComponentType::kShell, 0.002), 1));
 
   // combined
-  EXPECT_EQ(9188.4, supportfunctions::Round(
+  EXPECT_EQ(9188.4, helper::Round(
       c_.Load(CableElongationModelComponentType::kCombined, 0.002), 1));
 }
 
 TEST_F(CableElongationModelTest, Slope) {
 
   // core
-  EXPECT_EQ(2687680, supportfunctions::Round(
+  EXPECT_EQ(2687680, helper::Round(
       c_.Slope(CableElongationModelComponentType::kCore, 0.002), 0));
 
   // shell
-  EXPECT_EQ(4648960, supportfunctions::Round(
+  EXPECT_EQ(4648960, helper::Round(
       c_.Slope(CableElongationModelComponentType::kShell, 0.002), 0));
 
   // combined
-  EXPECT_EQ(7336640, supportfunctions::Round(
+  EXPECT_EQ(7336640, helper::Round(
       c_.Slope(CableElongationModelComponentType::kCombined, 0.002), 0));
 }
 
 TEST_F(CableElongationModelTest, Strain) {
 
   // core
-  EXPECT_EQ(0.002, supportfunctions::Round(
+  EXPECT_EQ(0.002, helper::Round(
       c_.Strain(CableElongationModelComponentType::kCore, 5433.5), 3));
 
   // shell
-  EXPECT_EQ(0.002, supportfunctions::Round(
+  EXPECT_EQ(0.002, helper::Round(
       c_.Strain(CableElongationModelComponentType::kShell, 3754.9), 3));
 
   // combined
-  EXPECT_EQ(0.002, supportfunctions::Round(
+  EXPECT_EQ(0.002, helper::Round(
       c_.Strain(CableElongationModelComponentType::kCombined, 9188.4), 3));
 }
 

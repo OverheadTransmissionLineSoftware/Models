@@ -3,7 +3,7 @@
 
 #include "sagtension/cable_component_elongation_model.h"
 
-#include "base/convert_units.h"
+#include "base/helper.h"
 #include "gtest/gtest.h"
 
 class CableComponentElongationModelTest : public ::testing::Test {
@@ -50,33 +50,33 @@ class CableComponentElongationModelTest : public ::testing::Test {
 TEST_F(CableComponentElongationModelTest, Load) {
 
   // compressed region
-  EXPECT_EQ(-211.1, supportfunctions::Round(c_.Load(-0.001), 1));
+  EXPECT_EQ(-211.1, helper::Round(c_.Load(-0.001), 1));
 
   // stretched region
-  EXPECT_EQ(289.3, supportfunctions::Round(c_.Load(0.001), 1));
-  EXPECT_EQ(4938.2, supportfunctions::Round(c_.Load(0.002), 1));
+  EXPECT_EQ(289.3, helper::Round(c_.Load(0.001), 1));
+  EXPECT_EQ(4938.2, helper::Round(c_.Load(0.002), 1));
 
   // polynomial region
-  EXPECT_EQ(7301.6, supportfunctions::Round(c_.Load(0.003), 1));
-  EXPECT_EQ(9187, supportfunctions::Round(c_.Load(0.004), 1));
-  EXPECT_EQ(10645.4, supportfunctions::Round(c_.Load(0.005), 1));
+  EXPECT_EQ(7301.6, helper::Round(c_.Load(0.003), 1));
+  EXPECT_EQ(9187, helper::Round(c_.Load(0.004), 1));
+  EXPECT_EQ(10645.4, helper::Round(c_.Load(0.005), 1));
 
   // extrapolated region
-  EXPECT_EQ(18756.6, supportfunctions::Round(c_.Load(0.010), 1));
+  EXPECT_EQ(18756.6, helper::Round(c_.Load(0.010), 1));
 }
 
 TEST_F(CableComponentElongationModelTest, PointPolynomialEnd) {
 
   Point2d p = c_.PointPolynomialEnd();
-  EXPECT_EQ(0.0091, supportfunctions::Round(p.x, 4));
-  EXPECT_EQ(14711.1, supportfunctions::Round(p.y, 1));
+  EXPECT_EQ(0.0091, helper::Round(p.x, 4));
+  EXPECT_EQ(14711.1, helper::Round(p.y, 1));
 }
 
 TEST_F(CableComponentElongationModelTest, PointPolynomialStart) {
 
   Point2d p = c_.PointPolynomialStart();
-  EXPECT_EQ(0.0020, supportfunctions::Round(p.x, 4));
-  EXPECT_EQ(5000, supportfunctions::Round(p.y, 1));
+  EXPECT_EQ(0.0020, helper::Round(p.x, 4));
+  EXPECT_EQ(5000, helper::Round(p.y, 1));
 }
 
 TEST_F(CableComponentElongationModelTest, PointsRegions) {
@@ -85,73 +85,73 @@ TEST_F(CableComponentElongationModelTest, PointsRegions) {
   Point2d p;
 
   p = points.at(0);
-  EXPECT_EQ(0.000938, supportfunctions::Round(p.x, 6));
-  EXPECT_EQ(0, supportfunctions::Round(p.y, 1));
+  EXPECT_EQ(0.000938, helper::Round(p.x, 6));
+  EXPECT_EQ(0, helper::Round(p.y, 1));
 
   p = points.at(1);
-  EXPECT_EQ(0.0020, supportfunctions::Round(p.x, 4));
-  EXPECT_EQ(5000, supportfunctions::Round(p.y, 1));
+  EXPECT_EQ(0.0020, helper::Round(p.x, 4));
+  EXPECT_EQ(5000, helper::Round(p.y, 1));
 
   p = points.at(2);
-  EXPECT_EQ(0.0091, supportfunctions::Round(p.x, 4));
-  EXPECT_EQ(14711.1, supportfunctions::Round(p.y, 1));
+  EXPECT_EQ(0.0091, helper::Round(p.x, 4));
+  EXPECT_EQ(14711.1, helper::Round(p.y, 1));
 }
 
 TEST_F(CableComponentElongationModelTest, PointUnloaded) {
 
   Point2d p = c_.PointUnloaded();
-  EXPECT_EQ(0.000938, supportfunctions::Round(p.x, 6));
-  EXPECT_EQ(0, supportfunctions::Round(p.y, 1));
+  EXPECT_EQ(0.000938, helper::Round(p.x, 6));
+  EXPECT_EQ(0, helper::Round(p.y, 1));
 }
 
 TEST_F(CableComponentElongationModelTest, Slope) {
 
   // compressed region
-  EXPECT_EQ(108960, supportfunctions::Round(c_.Slope(-0.001), 0));
+  EXPECT_EQ(108960, helper::Round(c_.Slope(-0.001), 0));
 
   // stretched region
-  EXPECT_EQ(4648960, supportfunctions::Round(c_.Slope(0.001), 0));
-  EXPECT_EQ(4648960, supportfunctions::Round(c_.Slope(0.002), 0));
+  EXPECT_EQ(4648960, helper::Round(c_.Slope(0.001), 0));
+  EXPECT_EQ(4648960, helper::Round(c_.Slope(0.002), 0));
 
   // polynomial region
-  EXPECT_EQ(2111035, supportfunctions::Round(c_.Slope(0.003), 0));
-  EXPECT_EQ(1663528, supportfunctions::Round(c_.Slope(0.004), 0));
-  EXPECT_EQ(1265984, supportfunctions::Round(c_.Slope(0.005), 0));
+  EXPECT_EQ(2111035, helper::Round(c_.Slope(0.003), 0));
+  EXPECT_EQ(1663528, helper::Round(c_.Slope(0.004), 0));
+  EXPECT_EQ(1265984, helper::Round(c_.Slope(0.005), 0));
 
   // extrapolated region
-  EXPECT_EQ(4648960, supportfunctions::Round(c_.Slope(0.010), 0));
+  EXPECT_EQ(4648960, helper::Round(c_.Slope(0.010), 0));
 }
 
 TEST_F(CableComponentElongationModelTest, Strain) {
 
   // compressed region
-  EXPECT_EQ(-0.001, supportfunctions::Round(c_.Strain(-211.1), 3));
+  EXPECT_EQ(-0.001, helper::Round(c_.Strain(-211.1), 3));
 
   // stretched region
-  EXPECT_EQ(0.001, supportfunctions::Round(c_.Strain(289.3), 3));
-  EXPECT_EQ(0.002, supportfunctions::Round(c_.Strain(4938.2), 3));
+  EXPECT_EQ(0.001, helper::Round(c_.Strain(289.3), 3));
+  EXPECT_EQ(0.002, helper::Round(c_.Strain(4938.2), 3));
 
   // polynomial region
-  EXPECT_EQ(0.003, supportfunctions::Round(c_.Strain(7301.6), 3));
-  EXPECT_EQ(0.004, supportfunctions::Round(c_.Strain(9187.0), 3));
-  EXPECT_EQ(0.005, supportfunctions::Round(c_.Strain(10645.4), 3));
+  EXPECT_EQ(0.003, helper::Round(c_.Strain(7301.6), 3));
+  EXPECT_EQ(0.004, helper::Round(c_.Strain(9187.0), 3));
+  EXPECT_EQ(0.005, helper::Round(c_.Strain(10645.4), 3));
 
   // extrapolated region
-  EXPECT_EQ(0.010, supportfunctions::Round(c_.Strain(18756.6), 3));
+  EXPECT_EQ(0.010, helper::Round(c_.Strain(18756.6), 3));
 }
 
 TEST_F(CableComponentElongationModelTest, StrainThermal) {
 
   // at reference temperature
-  EXPECT_EQ(0, supportfunctions::Round(c_.StrainThermal(), 7));
+  EXPECT_EQ(0, helper::Round(c_.StrainThermal(), 7));
 
   // above reference temperature
   c_.set_temperature(212);
-  EXPECT_EQ(0.0018176, supportfunctions::Round(c_.StrainThermal(), 7));
+  EXPECT_EQ(0.0018176, helper::Round(c_.StrainThermal(), 7));
 
   // below reference temperature
   c_.set_temperature(0);
-  EXPECT_EQ(-0.000896, supportfunctions::Round(c_.StrainThermal(), 7));
+  EXPECT_EQ(-0.000896, helper::Round(c_.StrainThermal(), 7));
 }
 
 TEST_F(CableComponentElongationModelTest, Validate) {

@@ -3,7 +3,6 @@
 
 #include "sagtension/cable_state.h"
 
-#include "base/convert_units.h"
 #include "gtest/gtest.h"
 
 class CableStateTest : public ::testing::Test {

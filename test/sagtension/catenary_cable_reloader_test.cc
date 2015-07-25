@@ -3,7 +3,7 @@
 
 #include "sagtension/catenary_cable_reloader.h"
 
-#include "base/convert_units.h"
+#include "base/helper.h"
 #include "gtest/gtest.h"
 class CatenaryCableReloaderTest : public ::testing::Test {
  protected:
@@ -109,7 +109,7 @@ TEST_F(CatenaryCableReloaderTest, LengthUnloadedUnstretched) {
 
   // unstretched original catenary cable
   EXPECT_EQ(1200.8179,
-            supportfunctions::Round(c_.LengthUnloadedUnstretched(), 4));
+            helper::Round(c_.LengthUnloadedUnstretched(), 4));
 }
 
 TEST_F(CatenaryCableReloaderTest, CatenaryCableReloaded) {
@@ -121,20 +121,20 @@ TEST_F(CatenaryCableReloaderTest, CatenaryCableReloaded) {
   // nothing is modified - original and reloaded parameters are equal
   catenary_cable = c_.CatenaryCableReloaded();
   EXPECT_EQ(6000,
-            supportfunctions::Round(catenary_cable.tension_horizontal(), 1));
+            helper::Round(catenary_cable.tension_horizontal(), 1));
 
   // tests temperature changes
   state.temperature = 0;
   c_.set_state_reloaded(state);
   catenary_cable = c_.CatenaryCableReloaded();
   EXPECT_EQ(6787.6,
-            supportfunctions::Round(catenary_cable.tension_horizontal(), 1));
+            helper::Round(catenary_cable.tension_horizontal(), 1));
 
   state.temperature = 212;
   c_.set_state_reloaded(state);
   catenary_cable = c_.CatenaryCableReloaded();
   EXPECT_EQ(4702.2,
-            supportfunctions::Round(catenary_cable.tension_horizontal(), 1));
+            helper::Round(catenary_cable.tension_horizontal(), 1));
 
   // changes temperature to zero and tests unit weight changes
   state.temperature = 0;
@@ -145,18 +145,18 @@ TEST_F(CatenaryCableReloaderTest, CatenaryCableReloaded) {
   c_.set_weight_unit_reloaded(weight_unit);
   catenary_cable = c_.CatenaryCableReloaded();
   EXPECT_EQ(17125.9,
-            supportfunctions::Round(catenary_cable.tension_horizontal(), 1));
+            helper::Round(catenary_cable.tension_horizontal(), 1));
 
   weight_unit.set_y(1.405);
   weight_unit.set_z(2.099);
   c_.set_weight_unit_reloaded(weight_unit);
   catenary_cable = c_.CatenaryCableReloaded();
   EXPECT_EQ(12146.8,
-            supportfunctions::Round(catenary_cable.tension_horizontal(), 1));
+            helper::Round(catenary_cable.tension_horizontal(), 1));
 
   // sets stretch load and tests all above cases again
   const double kLoadStretch =
-      supportfunctions::Round(catenary_cable.TensionAverage(100), 1);
+      helper::Round(catenary_cable.TensionAverage(100), 1);
   EXPECT_EQ(12179, kLoadStretch);
   state.load_stretch = kLoadStretch;
   c_.set_state_reloaded(state);
@@ -168,19 +168,19 @@ TEST_F(CatenaryCableReloaderTest, CatenaryCableReloaded) {
   c_.set_weight_unit_reloaded(weight_unit);
   catenary_cable = c_.CatenaryCableReloaded();
   EXPECT_EQ(5561.5,
-            supportfunctions::Round(catenary_cable.tension_horizontal(), 1));
+            helper::Round(catenary_cable.tension_horizontal(), 1));
 
   state.temperature = 0;
   c_.set_state_reloaded(state);
   catenary_cable = c_.CatenaryCableReloaded();
   EXPECT_EQ(6320.1,
-            supportfunctions::Round(catenary_cable.tension_horizontal(), 1));
+            helper::Round(catenary_cable.tension_horizontal(), 1));
 
   state.temperature = 212;
   c_.set_state_reloaded(state);
   catenary_cable = c_.CatenaryCableReloaded();
   EXPECT_EQ(4537.2,
-            supportfunctions::Round(catenary_cable.tension_horizontal(), 1));
+            helper::Round(catenary_cable.tension_horizontal(), 1));
 
   state.temperature = 0;
   c_.set_state_reloaded(state);
@@ -189,14 +189,14 @@ TEST_F(CatenaryCableReloaderTest, CatenaryCableReloaded) {
   c_.set_weight_unit_reloaded(weight_unit);
   catenary_cable = c_.CatenaryCableReloaded();
   EXPECT_EQ(17126,
-            supportfunctions::Round(catenary_cable.tension_horizontal(), 1));
+            helper::Round(catenary_cable.tension_horizontal(), 1));
 
   weight_unit.set_y(1.405);
   weight_unit.set_z(2.099);
   c_.set_weight_unit_reloaded(weight_unit);
   catenary_cable = c_.CatenaryCableReloaded();
   EXPECT_EQ(12147,
-            supportfunctions::Round(catenary_cable.tension_horizontal(), 1));
+            helper::Round(catenary_cable.tension_horizontal(), 1));
 }
 
 TEST_F(CatenaryCableReloaderTest, Validate) {

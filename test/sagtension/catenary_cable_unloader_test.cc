@@ -3,7 +3,7 @@
 
 #include "sagtension/catenary_cable_unloader.h"
 
-#include "base/convert_units.h"
+#include "base/helper.h"
 #include "gtest/gtest.h"
 
 class CatenaryCableUnloaderTest : public ::testing::Test {
@@ -108,13 +108,13 @@ TEST_F(CatenaryCableUnloaderTest, LengthUnloaded) {
   CableState state = catenary_cable.state();
 
   // unstretched catenary cable state
-  EXPECT_EQ(1200.8179, supportfunctions::Round(c_.LengthUnloaded(), 4));
+  EXPECT_EQ(1200.8179, helper::Round(c_.LengthUnloaded(), 4));
 
   // stretched catenary cable state
   state.load_stretch = 12179.2;
   catenary_cable.set_state(state);
   c_.set_catenary_cable(catenary_cable);
-  EXPECT_EQ(1200.3543, supportfunctions::Round(c_.LengthUnloaded(), 4));
+  EXPECT_EQ(1200.3543, helper::Round(c_.LengthUnloaded(), 4));
 }
 
 TEST_F(CatenaryCableUnloaderTest, Validate) {

@@ -5,7 +5,7 @@
 
 #include <cmath>
 
-#include "base/convert_units.h"
+#include "base/units.h"
 
 Catenary2d::Catenary2d() {
   tension_horizontal_ = -999999;
@@ -130,7 +130,7 @@ Point2d Catenary2d::CoordinateChord(const double& position_fraction,
 /// origin to the left endpoint and the length from the origin to the right
 /// endpoint are summed. If the origin is beyond an endpoint, the length to the
 /// closest endpoint is treated as negative.
-/// @see Catenary2d::LengthFromOrigin
+/// \see Catenary2d::LengthFromOrigin
 double Catenary2d::Length() const {
 
   double length = -999999;
@@ -234,7 +234,9 @@ double Catenary2d::TangentAngle(const double& position_fraction,
   const double slope = sinh(coordinate.x / (tension_horizontal_/weight_unit_));
 
   // converts to degrees
-  double tangent_angle = atan(slope) * (convertunits::kRadiansToDegrees);
+  double tangent_angle = units::Convert(
+      atan(slope),
+      units::ConversionType::kRadiansToDegrees);
 
   // adjusts if direction is negative
   if (direction == AxisDirectionType::kNegative) {
@@ -262,16 +264,15 @@ Vector2d Catenary2d::TangentVector(const double& position_fraction,
   const double angle_tangent = TangentAngle(position_fraction, direction);
 
   // resolves to a unit vector
+  const double angle_radians = units::Convert(
+      angle_tangent,
+      units::ConversionType::kDegreesToRadians);
   if (direction == AxisDirectionType::kNegative) {
-    tangent_vector.set_x( -(1 * cos(angle_tangent
-                         * convertunits::kRadiansToDegrees)) );
-    tangent_vector.set_y( sin(angle_tangent
-                         * convertunits::kRadiansToDegrees) );
+    tangent_vector.set_x( -(1 * cos(angle_radians)) );
+    tangent_vector.set_y( sin(angle_radians) );
   } else if (direction == AxisDirectionType::kPositive) {
-    tangent_vector.set_x( cos(angle_tangent
-                         * convertunits::kRadiansToDegrees) );
-    tangent_vector.set_y( sin(angle_tangent
-                         * convertunits::kRadiansToDegrees) );
+    tangent_vector.set_x( cos(angle_radians) );
+    tangent_vector.set_y( sin(angle_radians) );
   }
 
   return tangent_vector;
@@ -771,8 +772,9 @@ double Catenary3d::SwingAngle() const {
     }
   }
 
-  angle_swing = atan(weight_unit_.y() / weight_unit_.z())
-                * convertunits::kRadiansToDegrees;
+  angle_swing = units::Convert(
+      atan(weight_unit_.y() / weight_unit_.z()),
+      units::ConversionType::kRadiansToDegrees);
   return angle_swing;
 }
 
@@ -852,15 +854,16 @@ Vector3d Catenary3d::TangentVector(const double& position_fraction,
   // rotates 3D vector due to transverse loading
   if (weight_unit_.y() != 0) {
 
-    if (weight_unit_.y() < 0) {
-      tangent_vector.Rotate(Plane2dType::kYz,
-                            (atan(weight_unit_.y()/weight_unit_.z())
-                             * convertunits::kRadiansToDegrees));
-    } else if (0 < weight_unit_.y()) {
-      tangent_vector.Rotate(Plane2dType::kYz,
-                            -(atan(weight_unit_.y()/weight_unit_.z())
-                              * convertunits::kRadiansToDegrees));
+    double angle_rotation = units::Convert(
+        atan(weight_unit_.y() / weight_unit_.z()),
+        units::ConversionType::kRadiansToDegrees);
+
+    if (0 < weight_unit_.y()) {
+      angle_rotation = angle_rotation * -1;
     }
+
+    tangent_vector.Rotate(Plane2dType::kYz,
+                          angle_rotation);
   }
 
   return tangent_vector;
