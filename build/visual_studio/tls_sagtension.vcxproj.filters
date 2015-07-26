@@ -32,10 +32,22 @@
     <ClInclude Include="..\..\include\sagtension\catenary_cable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\sagtension\catenary_cable_component_tension_solver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\include\sagtension\catenary_cable_reloader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\sagtension\catenary_cable_unloader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sagtension\line_cable_reloader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sagtension\line_cable_sagger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sagtension\line_cable_to_catenary_cable_converter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -55,10 +67,22 @@
     <ClCompile Include="..\..\src\sagtension\catenary_cable.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\sagtension\catenary_cable_component_tension_solver.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\sagtension\catenary_cable_reloader.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\sagtension\catenary_cable_unloader.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sagtension\line_cable_reloader.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sagtension\line_cable_sagger.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sagtension\line_cable_to_catenary_cable_converter.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
