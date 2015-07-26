@@ -76,6 +76,8 @@ class LineCableToCatenaryCableConverter {
 
  private:
   /// \brief Gets the difference between the reloaded and defined stretch load.
+  /// \param[in] load_stretch
+  ///   The defined stretch load.
   /// \return The difference between the reloaded and defined stretch load.
   /// difference = reloaded - defined
   double LoadStretchDifference(const double& load_stretch) const;

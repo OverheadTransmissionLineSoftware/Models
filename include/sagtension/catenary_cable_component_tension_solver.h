@@ -10,6 +10,12 @@
 #include "sagtension/cable_elongation_model.h"
 #include "sagtension/catenary_cable.h"
 
+/// \par OVERVIEW
+///
+/// This class solves for the tension in catenary cable components.
+///
+/// This is done by creating a CableElongationModel at the CatenaryCable
+/// CableState.
 class CatenaryCableComponentTensionSolver {
  public:
   /// \brief Default constructor.

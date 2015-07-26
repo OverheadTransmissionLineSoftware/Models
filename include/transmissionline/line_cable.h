@@ -38,15 +38,15 @@ struct LineCable {
   bool Validate(const bool& is_included_warnings = true,
                 std::list<std::string>* messages_error = nullptr) const;
 
-  /// \var cable_
+  /// \var cable
   ///   The cable.
   Cable cable;
 
-  /// \var constraint_
+  /// \var constraint
   ///   The constraint the cable is tensioned to.
   CableConstraint constraint;
 
-  /// \var spacing_attachments_ruling_span_
+  /// \var spacing_attachments_ruling_span
   ///   The attachment spacing for the ruling span geometry.
   Vector3d spacing_attachments_ruling_span;
 };
