@@ -204,4 +204,28 @@ CableComponent BuildCableComponent() {
   return component;
 }
 
+LineCable BuildLineCable() {
+
+  // builds constraint
+  WeatherLoadCase case_weather;
+  case_weather.description = "0-0-60 In";
+  case_weather.thickness_ice = 0;
+  case_weather.density_ice = 0;
+  case_weather.pressure_wind = 0;
+  case_weather.temperature_cable = 60;
+
+  CableConstraint constraint;
+  constraint.case_weather = case_weather;
+  constraint.condition = CableConditionType::kInitial;
+  constraint.limit = 6000;
+  constraint.type_limit = CableConstraint::LimitType::kHorizontalTension;
+
+  LineCable line_cable;
+  line_cable.cable = factory::BuildCable();
+  line_cable.constraint = constraint;
+  line_cable.spacing_attachments_ruling_span = Vector3d(1200, 0, 0);
+
+  return line_cable;
+}
+
 }  // namespace factory
