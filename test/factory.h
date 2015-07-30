@@ -5,6 +5,7 @@
 #define TLSLIBRARIES_TEST_FACTORY_H_
 
 #include "transmissionline/cable.h"
+#include "transmissionline/line_cable.h"
 
 /// \par OVERVIEW
 ///
@@ -17,6 +18,10 @@ namespace factory {
 
   /// \brief This function builds a cable component.
   CableComponent BuildCableComponent();
+
+  /// \brief This function builds a line cable.
+  /// \return A line cable.
+  LineCable BuildLineCable();
 
 } // namespace factory
 

@@ -35,6 +35,8 @@ library tls_transmissionline {
     ../../include/transmissionline/cable_constraint.h
     ../../include/transmissionline/cable_unit_load_calculator.h
     ../../include/transmissionline/catenary.h
+    ../../include/transmissionline/line_cable.h
+    ../../include/transmissionline/line_cable_to_catenary_converter.h
     ../../include/transmissionline/weather_load_case.h
   }
   sources {
@@ -42,6 +44,8 @@ library tls_transmissionline {
     ../../src/transmissionline/cable_constraint.cc
     ../../src/transmissionline/cable_unit_load_calculator.cc
     ../../src/transmissionline/catenary.cc
+    ../../src/transmissionline/line_cable.cc
+    ../../src/transmissionline/line_cable_to_catenary_converter.cc
     ../../src/transmissionline/weather_load_case.cc
   }
 }
@@ -57,8 +61,12 @@ library tls_sagtension {
     ../../include/sagtension/cable_state.h
     ../../include/sagtension/cable_strainer.h
     ../../include/sagtension/catenary_cable.h
+    ../../include/sagtension/catenary_cable_component_tension_solver.h
     ../../include/sagtension/catenary_cable_reloader.h
     ../../include/sagtension/catenary_cable_unloader.h
+    ../../include/sagtension/line_cable_reloader.h
+    ../../include/sagtension/line_cable_sagger.h
+    ../../include/sagtension/line_cable_to_catenary_cable_converter.h
   }
   sources {
     ../../src/sagtension/cable_component_elongation_model.cc
@@ -66,7 +74,11 @@ library tls_sagtension {
     ../../src/sagtension/cable_state.cc
     ../../src/sagtension/cable_strainer.cc
     ../../src/sagtension/catenary_cable.cc
+    ../../src/sagtension/catenary_cable_component_tension_solver.cc
     ../../src/sagtension/catenary_cable_reloader.cc
     ../../src/sagtension/catenary_cable_unloader.cc
+    ../../src/sagtension/line_cable_reloader.cc
+    ../../src/sagtension/line_cable_sagger.cc
+    ../../src/sagtension/line_cable_to_catenary_cable_converter.cc
   }
 }
