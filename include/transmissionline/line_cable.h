@@ -4,6 +4,13 @@
 #ifndef TLSLIBRARIES_TRANSMISSIONLINE_LINECABLE_H_
 #define TLSLIBRARIES_TRANSMISSIONLINE_LINECABLE_H_
 
+#include <list>
+#include <string>
+
+#include "base/vector.h"
+#include "transmissionline/cable.h"
+#include "transmissionline/cable_constraint.h"
+
 /// \par OVERVIEW
 ///
 /// This struct models a transmission cable line section (multiple spans), where
@@ -12,14 +19,6 @@
 /// \par CONSTRAINT
 ///
 /// This class is defined by the cable, and constraint that it is tensioned to.
-
-#include <list>
-#include <string>
-
-#include "base/vector.h"
-#include "transmissionline/cable.h"
-#include "transmissionline/cable_constraint.h"
-
 struct LineCable {
  public:
   /// \brief Default constructor.
