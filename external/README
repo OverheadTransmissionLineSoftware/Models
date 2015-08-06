@@ -1,0 +1,6 @@
+External Dependencies
+
+googletest
+----------
+Used for the unit testing framework. Testing build targets will link to the
+libraries built in this directory.
