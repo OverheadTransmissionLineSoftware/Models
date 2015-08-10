@@ -22,7 +22,6 @@ bool CableComponent::Validate(const bool& is_included_warnings,
   // validates coefficient-expansion-thermal-linear
   if (coefficient_expansion_linear_thermal <= -0.005
       || 0.005 < coefficient_expansion_linear_thermal) {
-
     is_valid = false;
     if (messages_error != nullptr) {
       messages_error->push_back("CABLE COMPONENT - Invalid coefficient of "

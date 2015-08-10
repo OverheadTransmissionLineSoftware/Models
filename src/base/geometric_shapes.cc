@@ -23,9 +23,7 @@ bool Cylinder::Validate(const bool& is_included_warnings,
   bool is_valid = true;
 
   // validates diameter
-  if (diameter_ <= 0
-      || ((100 < diameter_) && (is_included_warnings == true))) {
-
+  if (diameter_ <= 0) {
     is_valid = false;
     if (messages_error != nullptr) {
       messages_error->push_back("CYLINDER - Invalid diameter");
@@ -33,9 +31,7 @@ bool Cylinder::Validate(const bool& is_included_warnings,
   }
 
   // validates length
-  if (length_ <= 0
-      || ((120 < length_) && (is_included_warnings == true))) {
-
+  if (length_ <= 0) {
     is_valid = false;
     if (messages_error != nullptr) {
       messages_error->push_back("CYLINDER - Invalid length");
