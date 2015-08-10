@@ -12,8 +12,10 @@ Polynomial::Polynomial() {
   is_updated_derivative_ = false;
 }
 
-Polynomial::Polynomial(const std::vector<double> coefficients) {
+Polynomial::Polynomial(const std::vector<double>* coefficients) {
   coefficients_ = coefficients;
+  derivative_ = nullptr;
+  is_updated_derivative_ = false;
 }
 
 Polynomial::~Polynomial() {
@@ -36,7 +38,7 @@ Polynomial Polynomial::Derivative() const {
 }
 
 int Polynomial::OrderMax() const {
-  return coefficients_.size() - 1;
+  return coefficients_->size() - 1;
 }
 
 double Polynomial::Slope(const double& x) const {
@@ -67,10 +69,10 @@ double Polynomial::X(const double& y, const int& decimal_precision_y,
   const double precision_y = 1 / pow(10, decimal_precision_y);
 
   // gets a shifted polynomial so that y value is on x-axis
-  Polynomial polynomial_shifted;
-  std::vector<double> coefficients_shifted = coefficients_;
+  std::vector<double> coefficients = *coefficients_;
+  std::vector<double> coefficients_shifted = coefficients;  // copies coeffs
   coefficients_shifted.at(0) = coefficients_shifted.at(0) - y;
-  polynomial_shifted.set_coefficients(coefficients_shifted);
+  Polynomial polynomial_shifted(&coefficients_shifted);
 
   // function point
   Point2d point_function = Point2d(x_guess, -999999);
@@ -105,18 +107,18 @@ double Polynomial::Y(const double& x) const {
   const int order_max = OrderMax();
   for (int order = 0; order <= order_max; order++) {
 
-    const double coefficient =  coefficients_.at(order);
+    const double coefficient =  coefficients_->at(order);
     y = y + (coefficient * pow(x, order));
   }
 
   return y;
 }
 
-std::vector<double> Polynomial::coefficients() const {
+const std::vector<double>* Polynomial::coefficients() const {
   return coefficients_;
 }
 
-void Polynomial::set_coefficients(std::vector<double> coefficients) {
+void Polynomial::set_coefficients(const std::vector<double>* coefficients) {
   coefficients_ = coefficients;
 }
 
@@ -148,13 +150,13 @@ bool Polynomial::UpdateDerivative() const {
   const int order_max = OrderMax();
 
   // calculates derivative coefficients
-  std::vector<double> coefficients_derivative;
+  std::vector<double>* coefficients_derivative = new std::vector<double>;
   for (int order = 0; order <= order_max; order++) {
 
     if (order != 0) {
-      const double coefficient_function = coefficients_.at(order);
+      const double coefficient_function = coefficients_->at(order);
       double coefficient_derivative = coefficient_function * order;
-      coefficients_derivative.push_back(coefficient_derivative);
+      coefficients_derivative->push_back(coefficient_derivative);
     }
   }
 

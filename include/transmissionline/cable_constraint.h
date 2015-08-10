@@ -50,7 +50,7 @@ struct CableConstraint {
 
   /// \var case_weather
   ///   The weather case.
-  WeatherLoadCase case_weather;
+  const WeatherLoadCase* case_weather;
 
   /// \var condition
   ///   The state of the cable, which can determine whether the cable is

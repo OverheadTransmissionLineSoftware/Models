@@ -51,30 +51,30 @@ class CableUnitLoadCalculator {
 
   /// \brief Gets the diameter of the bare cable.
   /// \return The diameter of the bare cable.
-  double diameter_cable() const;
+  const double* diameter_cable() const;
 
   /// \brief Sets the diameter of the bare cable.
   /// \param[in] diameter_cable
   ///   The diameter of the bare cable.
-  void set_diameter_cable(const double& diameter_cable);
+  void set_diameter_cable(const double* diameter_cable);
 
   /// \brief Sets the unit weight of the bare cable.
   /// \param[in] weight_unit_cable
   ///   The unit weight of the bare cable.
-  void set_weight_unit_cable(const double& weight_unit_cable);
+  void set_weight_unit_cable(const double* weight_unit_cable);
 
   /// \brief Gets the weight of the bare cable.
   /// \return The unit weight of the bare cable.
-  double weight_unit_cable() const;
+  const double* weight_unit_cable() const;
 
  private:
   /// \var diameter_cable_
   ///   The diameter of the bare cable.
-  double diameter_cable_;
+  const double* diameter_cable_;
 
   /// \var weight_unit_cable_
   ///   The weight per unit length of the bare cable.
-  double weight_unit_cable_;
+  const double* weight_unit_cable_;
 };
 
 #endif // TLSLIBRARIES_TRANSMISSIONLINE_CABLEUNITLOADCALCULATOR_H_

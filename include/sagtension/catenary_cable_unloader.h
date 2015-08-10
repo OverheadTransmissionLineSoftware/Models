@@ -53,21 +53,21 @@ class CatenaryCableUnloader {
 
   /// \brief Gets the catenary cable.
   /// \return The catenary cable.
-  CatenaryCable catenary_cable() const;
+  const CatenaryCable* catenary_cable() const;
 
   /// \brief Sets the catenary cable.
   /// \param[in] catenary_cable
   ///   The catenary cable.
-  void set_catenary_cable(const CatenaryCable& catenary_cable);
+  void set_catenary_cable(const CatenaryCable* catenary_cable);
 
   /// \brief Sets the unloaded state.
   /// \param[in] state_unloaded
   ///   The unloaded state.
-  void set_state_unloaded(const CableState& state_unloaded);
+  void set_state_unloaded(const CableState* state_unloaded);
 
   /// \brief Gets the unloaded state.
   /// \return The unloaded state.
-  CableState state_unloaded() const;
+  const CableState* state_unloaded() const;
 
  private:
   /// \brief Determines if class is updated.
@@ -86,7 +86,7 @@ class CatenaryCableUnloader {
 
   /// \var catenary_cable_
   ///   The catenary cable that is unloaded.
-  CatenaryCable catenary_cable_;
+  const CatenaryCable* catenary_cable_;
 
   /// \var is_updated_strainer_
   ///   An indicator that tells if the cable strainer is updated.

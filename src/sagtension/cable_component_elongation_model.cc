@@ -5,10 +5,12 @@
 
 CableComponentElongationModel::CableComponentElongationModel() {
 
-  load_stretch_ = -999999;
-  temperature_ = -999999;
-  temperature_reference_ = -999999;
+  component_cable_ = nullptr;
+  temperature_ = nullptr;
+  temperature_reference_ = nullptr;
+  type_polynomial_active_ = nullptr;
 
+  load_stretch_ = -999999;
   strain_thermal_ = -999999;
 
   is_updated_polynomial_ = false;
@@ -189,18 +191,21 @@ bool CableComponentElongationModel::Validate(
   bool is_valid = true;
 
   // validates component-cable
-  if (component_cable_.Validate(is_included_warnings,
-                                messages_error) == false) {
+  if (component_cable_ == nullptr) {
     is_valid = false;
     if (messages_error != nullptr) {
       messages_error->push_back("CABLE COMPONENT ELONGATION MODEL - Invalid "
                                 "cable component");
     }
+  } else {
+    if (component_cable_->Validate(is_included_warnings,
+                                  messages_error) == false) {
+      is_valid = false;
+    }
   }
 
   // validates load-stretch
   if (load_stretch_ < 0) {
-
     is_valid = false;
     if (messages_error != nullptr) {
       messages_error->push_back("CABLE COMPONENT ELONGATION MODEL - Invalid "
@@ -209,9 +214,7 @@ bool CableComponentElongationModel::Validate(
   }
 
   // validates temperature
-  if ((temperature_ < 0)
-    || ((500 < temperature_) && (is_included_warnings == true))) {
-
+  if ((temperature_ == nullptr) || (*temperature_ < 0)) {
     is_valid = false;
     if (messages_error != nullptr) {
       messages_error->push_back("CABLE COMPONENT ELONGATION MODEL - Invalid "
@@ -220,9 +223,7 @@ bool CableComponentElongationModel::Validate(
   }
 
   // validates temperature-reference
-  if ((temperature_reference_ < 0)
-     || ((100 < temperature_reference_) && (is_included_warnings == true))) {
-
+  if ((temperature_reference_ == nullptr) || (*temperature_reference_ < 0)) {
     is_valid = false;
     if (messages_error != nullptr) {
       messages_error->push_back("CABLE COMPONENT ELONGATION MODEL - Invalid "
@@ -271,7 +272,7 @@ bool CableComponentElongationModel::Validate(
   return is_valid;
 }
 
-CableComponent CableComponentElongationModel::component_cable() const {
+const CableComponent* CableComponentElongationModel::component_cable() const {
   return component_cable_;
 }
 
@@ -280,7 +281,7 @@ double CableComponentElongationModel::load_stretch() const {
 }
 
 void CableComponentElongationModel::set_component_cable(
-    const CableComponent& component_cable) {
+    const CableComponent* component_cable) {
 
   component_cable_ = component_cable;
 
@@ -296,7 +297,7 @@ void CableComponentElongationModel::set_load_stretch(
   is_updated_regions_ = false;
 }
 
-void CableComponentElongationModel::set_temperature(const double& temperature) {
+void CableComponentElongationModel::set_temperature(const double* temperature) {
 
   temperature_ = temperature;
 
@@ -304,7 +305,7 @@ void CableComponentElongationModel::set_temperature(const double& temperature) {
 }
 
 void CableComponentElongationModel::set_temperature_reference(
-    const double& temperature_reference) {
+    const double* temperature_reference) {
 
   temperature_reference_ = temperature_reference;
 
@@ -312,7 +313,7 @@ void CableComponentElongationModel::set_temperature_reference(
 }
 
 void CableComponentElongationModel::set_type_polynomial_active(
-    const CableComponent::PolynomialType& type_polynomial_active) {
+    const CableComponent::PolynomialType* type_polynomial_active) {
 
   type_polynomial_active_ = type_polynomial_active;
 
@@ -320,16 +321,16 @@ void CableComponentElongationModel::set_type_polynomial_active(
   is_updated_regions_ = false;
 }
 
-double CableComponentElongationModel::temperature() const {
+const double* CableComponentElongationModel::temperature() const {
   return temperature_;
 }
 
-double CableComponentElongationModel::temperature_reference() const {
+const double* CableComponentElongationModel::temperature_reference() const {
   return temperature_reference_;
 }
 
-CableComponent::PolynomialType CableComponentElongationModel::type_polynomial_active()
-    const {
+const CableComponent::PolynomialType*
+    CableComponentElongationModel::type_polynomial_active() const {
   return type_polynomial_active_;
 }
 
@@ -365,7 +366,7 @@ double CableComponentElongationModel::LoadCompressed(
 
   // calculates load using compression modulus
   return ((strain - point_unloaded_.x)
-           * component_cable_.modulus_compression_elastic_area) + 0;
+           * component_cable_->modulus_compression_elastic_area) + 0;
 }
 
 double CableComponentElongationModel::LoadExtrapolated(
@@ -373,7 +374,7 @@ double CableComponentElongationModel::LoadExtrapolated(
 
   // gets load by extending tension modulus from maximum point
   return point_polynomial_end_.y + ((strain - point_polynomial_end_.x)
-          * component_cable_.modulus_tension_elastic_area);
+          * component_cable_->modulus_tension_elastic_area);
 }
 
 double CableComponentElongationModel::LoadPolynomial(
@@ -391,19 +392,19 @@ double CableComponentElongationModel::LoadStretched(
 
   // uses polynomial start point and unload using tension elastic area modulus
   return point_polynomial_start_.y - ((point_polynomial_start_.x - strain)
-          * component_cable_.modulus_tension_elastic_area);
+          * component_cable_->modulus_tension_elastic_area);
 }
 
 double CableComponentElongationModel::SlopeCompressed(
     const double& strain) const {
 
-  return component_cable_.modulus_compression_elastic_area;
+  return component_cable_->modulus_compression_elastic_area;
 }
 
 double CableComponentElongationModel::SlopeExtrapolated(
     const double& strain) const {
 
-  return component_cable_.modulus_tension_elastic_area;
+  return component_cable_->modulus_tension_elastic_area;
 }
 
 double CableComponentElongationModel::SlopePolynomial(
@@ -420,7 +421,7 @@ double CableComponentElongationModel::SlopePolynomial(
 double CableComponentElongationModel::SlopeStretched(
     const double& strain) const {
 
-  return component_cable_.modulus_tension_elastic_area;
+  return component_cable_->modulus_tension_elastic_area;
 }
 
 double CableComponentElongationModel::StrainCompressed(
@@ -428,7 +429,7 @@ double CableComponentElongationModel::StrainCompressed(
 
   // calculates strain using compression modulus
   return point_unloaded_.x - (0 - load)
-          / component_cable_.modulus_compression_elastic_area;
+          / component_cable_->modulus_compression_elastic_area;
 }
 
 double CableComponentElongationModel::StrainExtrapolated(
@@ -436,7 +437,7 @@ double CableComponentElongationModel::StrainExtrapolated(
 
   // gets strain by extending tension modulus from polynomial end point
   return point_polynomial_end_.x + ((load - point_polynomial_end_.y)
-          / component_cable_.modulus_tension_elastic_area);
+          / component_cable_->modulus_tension_elastic_area);
 }
 
 double CableComponentElongationModel::StrainPolynomial(
@@ -458,7 +459,7 @@ double CableComponentElongationModel::StrainStretched(
 
   // uses polynomial start point and unload using tension elastic area modulus
   return point_polynomial_start_.x - ((point_polynomial_start_.y - load)
-           / component_cable_.modulus_tension_elastic_area);
+           / component_cable_->modulus_tension_elastic_area);
 }
 
 bool CableComponentElongationModel::Update() const {
@@ -475,7 +476,7 @@ bool CableComponentElongationModel::Update() const {
   // updates thermal shift and regions
   if (is_updated_regions_ == false) {
 
-    is_updated_regions_ = UpdateRegions(temperature_);
+    is_updated_regions_ = UpdateRegions(*temperature_);
     if (is_updated_regions_ == false) {
       return false;
     }
@@ -487,11 +488,12 @@ bool CableComponentElongationModel::Update() const {
 
 bool CableComponentElongationModel::UpdatePointPolynomialEnd() const {
 
-  if (type_polynomial_active_ == CableComponent::PolynomialType::kCreep) {
-    point_polynomial_end_.y = component_cable_.load_limit_polynomial_creep;
-  } else if (type_polynomial_active_ == CableComponent::PolynomialType::kLoadStrain) {
+  if (*type_polynomial_active_ == CableComponent::PolynomialType::kCreep) {
+    point_polynomial_end_.y = component_cable_->load_limit_polynomial_creep;
+  } else if (*type_polynomial_active_
+             == CableComponent::PolynomialType::kLoadStrain) {
     point_polynomial_end_.y =
-        component_cable_.load_limit_polynomial_loadstrain;
+        component_cable_->load_limit_polynomial_loadstrain;
   }
 
   point_polynomial_end_.x = StrainPolynomial(point_polynomial_end_.y);
@@ -517,12 +519,13 @@ bool CableComponentElongationModel::UpdatePointUnloaded() const {
 
 bool CableComponentElongationModel::UpdatePolynomial() const {
 
-  if (type_polynomial_active_ == CableComponent::PolynomialType::kCreep) {
+  if (*type_polynomial_active_ == CableComponent::PolynomialType::kCreep) {
     polynomial_.set_coefficients(
-        component_cable_.coefficients_polynomial_creep);
-  } else if (type_polynomial_active_ == CableComponent::PolynomialType::kLoadStrain) {
+        &component_cable_->coefficients_polynomial_creep);
+  } else if (*type_polynomial_active_
+             == CableComponent::PolynomialType::kLoadStrain) {
     polynomial_.set_coefficients(
-        component_cable_.coefficients_polynomial_loadstrain);
+        &component_cable_->coefficients_polynomial_loadstrain);
   }
 
   return true;
@@ -563,8 +566,8 @@ bool CableComponentElongationModel::UpdateStrainThermal(
 
   // uses the thermal coefficient and temperature gradient to calculate thermal
   // strain
-  strain_thermal_ = component_cable_.coefficient_expansion_linear_thermal
-                    * (temperature_ - temperature_reference_);
+  strain_thermal_ = component_cable_->coefficient_expansion_linear_thermal
+                    * (temperature - *temperature_reference_);
 
   return true;
 }
@@ -582,9 +585,9 @@ bool CableComponentElongationModel::ValidatePolynomialOrigin(
 
   // caches current temperature, sets component temperature to reference and
   // updates
-  const double temperature_component = temperature_;
+  const double temperature_component = *temperature_;
 
-  if (UpdateRegions(temperature_reference_) == false) {
+  if (UpdateRegions(*temperature_reference_) == false) {
     is_valid = false;
     UpdateRegions(temperature_component);
     return is_valid;
@@ -608,7 +611,7 @@ bool CableComponentElongationModel::ValidatePolynomialOrigin(
   }
 
   // resets component temperature
-  UpdateRegions(temperature_);
+  UpdateRegions(*temperature_);
 
   return is_valid;
 }
@@ -626,9 +629,9 @@ bool CableComponentElongationModel::ValidatePolynomialShape(
 
   // caches current temperature, sets component temperature to reference and
   // updates
-  const double temperature_component = temperature_;
+  const double temperature_component = *temperature_;
 
-  if (UpdateRegions(temperature_reference_) == false) {
+  if (UpdateRegions(*temperature_reference_) == false) {
     is_valid = false;
     UpdateRegions(temperature_component);
     return is_valid;
@@ -661,7 +664,7 @@ bool CableComponentElongationModel::ValidatePolynomialShape(
     }
 
     // checks if polynomial slope exceeds elastic area modulus
-    if ((component_cable_.modulus_tension_elastic_area < slope)
+    if ((component_cable_->modulus_tension_elastic_area < slope)
         && (is_included_warnings == true)) {
 
       is_valid = false;

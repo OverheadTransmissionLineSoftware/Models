@@ -13,19 +13,19 @@ class CableStrainerTest : public ::testing::Test {
   CableStrainerTest() {
 
     // gets cable
-    Cable cable = factory::BuildCable();
+    Cable* cable = factory::BuildCable();
 
     // builds dependency object - start state
-    CableState state_start;
-    state_start.load_stretch = 12000;
-    state_start.temperature = 0;
-    state_start.temperature_stretch = 0;
+    CableState* state_start = new CableState();
+    state_start->load_stretch = 12000;
+    state_start->temperature = 0;
+    state_start->temperature_stretch = 0;
 
     // builds dependency object - finish state
-    CableState state_finish;
-    state_finish.load_stretch = 12000;
-    state_finish.temperature = 212;
-    state_finish.temperature_stretch = 0;
+    CableState* state_finish = new CableState();
+    state_finish->load_stretch = 12000;
+    state_finish->temperature = 212;
+    state_finish->temperature_stretch = 0;
 
     // builds fixture object
     c_.set_cable(cable);
@@ -48,8 +48,8 @@ TEST_F(CableStrainerTest, LengthFinish) {
   const double length2 = c_.LengthFinish();
   const double load1 = c_.load_start();
   const double load2 = c_.load_finish();
-  const CableState state1 = c_.state_start();
-  const CableState state2 = c_.state_finish();
+  const CableState* state1 = c_.state_start();
+  const CableState* state2 = c_.state_finish();
 
   c_.set_length_start(length2);
   c_.set_load_finish(load1);

@@ -114,21 +114,21 @@ class CableElongationModel {
 
   /// \brief Gets the cable.
   /// \return A copy of the cable.
-  Cable cable() const;
+  const Cable* cable() const;
 
   /// \brief Sets the cable.
   /// \param[in] cable
   ///   The cable.
-  void set_cable(const Cable& cable);
+  void set_cable(const Cable* cable);
 
   /// \brief Sets the state.
   /// \param[in] state
   ///   The state.
-  void set_state(const CableState& state);
+  void set_state(const CableState* state);
 
   /// \brief Gets the state.
   /// \return A copy of the state.
-  CableState state() const;
+  const CableState* state() const;
 
  private:
   /// \brief Determines if class is updated.
@@ -266,7 +266,7 @@ class CableElongationModel {
 
   /// \var cable_
   ///  The cable that is modeled.
-  Cable cable_;
+  const Cable* cable_;
 
   /// \var component_core_
   ///   The elongation model for the core cable component.
@@ -301,7 +301,7 @@ class CableElongationModel {
 
   /// \var state_
   ///   The parameters of the cable elongation model.
-  CableState state_;
+  const CableState* state_;
 };
 
 #endif // TLSLIBRARIES_SAGTENSION_CABLEELONGATIONMODEL_H_

@@ -49,21 +49,21 @@ class LineCableToCatenaryCableConverter {
 
   /// \brief Gets the stretch load case.
   /// \return The stretch load case.
-  WeatherLoadCase case_stretch() const;
+  const WeatherLoadCase* case_stretch() const;
 
   /// \brief Gets the line cable.
   /// \return The line cable.
-  LineCable line_cable() const;
+  const LineCable* line_cable() const;
 
   /// \brief Sets the line cable.
   /// \param[in] line_cable
   ///   The line cable.
-  void set_line_cable(const LineCable& line_cable);
+  void set_line_cable(const LineCable* line_cable);
 
   /// \brief Sets the stretch load case.
   /// \param[in] case_stretch
   ///   The stretch load case.
-  void set_case_stretch(const WeatherLoadCase& case_stretch);
+  void set_case_stretch(const WeatherLoadCase* case_stretch);
 
   /// \brief Sets the type of stretch.
   /// \param[in] type_stretch
@@ -108,7 +108,7 @@ class LineCableToCatenaryCableConverter {
 
   /// \var case_stretch_
   ///   The cable load case that defines the stretch in the cable state.
-  WeatherLoadCase case_stretch_;
+  const WeatherLoadCase* case_stretch_;
 
   /// \var catenary_cable_
   ///   The catenary cable which contains the solved for state.
@@ -120,7 +120,7 @@ class LineCableToCatenaryCableConverter {
 
   /// \var line_cable_
   ///   The line cable.
-  LineCable line_cable_;
+  const LineCable* line_cable_;
 
   /// \var reloader_
   ///   The catenary cable reloader.

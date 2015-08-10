@@ -11,7 +11,7 @@ class CatenaryCableTest : public ::testing::Test {
  protected:
   CatenaryCableTest() {
 
-    Cable cable = factory::BuildCable();
+    Cable* cable = factory::BuildCable();
 
     // builds dependency object - endpoint spacing
     Vector3d spacing_endpoints(1200, 0, 0);

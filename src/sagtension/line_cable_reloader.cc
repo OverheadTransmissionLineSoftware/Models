@@ -8,6 +8,11 @@
 #include "transmissionline/cable_unit_load_calculator.h"
 
 LineCableReloader::LineCableReloader() {
+
+  case_reloaded_ = nullptr;
+  case_stretch_ = nullptr;
+  line_cable_ = nullptr;
+
   is_updated_catenarycable_constraint_ = false;
   is_updated_load_stretch_ = false;
   is_updated_catenarycable_reloaded_ = false;
@@ -89,19 +94,41 @@ bool LineCableReloader::Validate(
   // initializes
   bool is_valid = true;
 
-  // validates loadcase-reloaded
-  if (case_reloaded_.Validate(is_included_warnings, messages_error) == false) {
+  // validates case-reloaded
+  if (case_reloaded_ == nullptr) {
     is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back("LINE CABLE RELOADER - Invalid reloaded case");
+    }
+  } else {
+    if (case_reloaded_->Validate(is_included_warnings,
+                                 messages_error) == false) {
+      is_valid = false;
+    }
   }
 
   // validates loadcase-stretch
-  if (case_stretch_.Validate(is_included_warnings, messages_error) == false) {
+  if (case_stretch_ == nullptr) {
     is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back("LINE CABLE RELOADER - Invalid stretch case");
+    }
+    if (case_stretch_->Validate(is_included_warnings,
+                                messages_error) == false) {
+      is_valid = false;
+    }
   }
 
   // validates line cable
-  if (line_cable_.Validate(is_included_warnings, messages_error) == false) {
+  if (line_cable_ == nullptr) {
     is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back("LINE CABLE RELOADER - Invalid lien cable");
+    }
+  } else {
+    if (line_cable_->Validate(is_included_warnings, messages_error) == false) {
+      is_valid = false;
+    }
   }
 
   // further validates
@@ -119,11 +146,11 @@ bool LineCableReloader::Validate(
   return is_valid;
 }
 
-WeatherLoadCase LineCableReloader::case_reloaded() const {
+const WeatherLoadCase* LineCableReloader::case_reloaded() const {
   return case_reloaded_;
 }
 
-WeatherLoadCase LineCableReloader::case_stretch() const {
+const WeatherLoadCase* LineCableReloader::case_stretch() const {
   return case_stretch_;
 }
 
@@ -135,19 +162,19 @@ double LineCableReloader::length_unloaded_unstretched_adjustment() const {
   return length_unloaded_unstretched_adjustment_;
 }
 
-LineCable LineCableReloader::line_cable() const {
+const LineCable* LineCableReloader::line_cable() const {
   return line_cable_;
 }
 
 void LineCableReloader::set_case_reloaded(
-    const WeatherLoadCase& case_reloaded) {
+    const WeatherLoadCase* case_reloaded) {
 
   case_reloaded_ = case_reloaded;
 
   is_updated_catenarycable_reloaded_ = false;
 }
 
-void LineCableReloader::set_case_stretch(const WeatherLoadCase& case_stretch) {
+void LineCableReloader::set_case_stretch(const WeatherLoadCase* case_stretch) {
 
   case_stretch_ = case_stretch;
 
@@ -174,7 +201,7 @@ void LineCableReloader::set_length_unloaded_unstretched_adjustment(
   is_updated_catenarycable_reloaded_ = false;
 }
 
-void LineCableReloader::set_line_cable(const LineCable& line_cable) {
+void LineCableReloader::set_line_cable(const LineCable* line_cable) {
 
   line_cable_ = line_cable;
 
@@ -212,8 +239,8 @@ Vector3d LineCableReloader::UnitLoad(
     const WeatherLoadCase& case_weather) const {
 
   CableUnitLoadCalculator calculator;
-  calculator.set_diameter_cable(line_cable_.cable.diameter);
-  calculator.set_weight_unit_cable(line_cable_.cable.weight_unit);
+  calculator.set_diameter_cable(&line_cable_->cable->diameter);
+  calculator.set_weight_unit_cable(&line_cable_->cable->weight_unit);
 
   return calculator.UnitCableLoad(case_weather);
 }
@@ -256,7 +283,7 @@ bool LineCableReloader::Update() const {
 
 bool LineCableReloader::UpdateCatenaryCableComponentTensionSolver() const {
 
-  solver_component_tension_.set_catenary_cable(catenarycable_reloaded_);
+  solver_component_tension_.set_catenary_cable(&catenarycable_reloaded_);
 
   return true;
 }
@@ -284,23 +311,23 @@ bool LineCableReloader::UpdateLoadStretch() const {
   if (condition_reloaded_ == CableConditionType::kInitial) {
     load_stretch_ = 0;
     return true;
-  } else if (condition_reloaded_ == line_cable_.constraint.condition) {
-    load_stretch_ = catenarycable_constraint_.state().load_stretch;
+  } else if (condition_reloaded_ == line_cable_->constraint.condition) {
+    load_stretch_ = catenarycable_constraint_.state()->load_stretch;
     return true;
   }
 
   // builds stretch state
   CableState state_stretch;
   state_stretch.load_stretch = 0;
-  state_stretch.temperature = case_stretch_.temperature_cable;
+  state_stretch.temperature = case_stretch_->temperature_cable;
   state_stretch.temperature_stretch = 0;
 
   // gets stretch unit weight
-  Vector3d weight_unit_stretch = UnitLoad(case_stretch_);
+  Vector3d weight_unit_stretch = UnitLoad(*case_stretch_);
 
   // reloads the constraint catenary cable to the stretch case
   CatenaryCableReloader reloader;
-  reloader.set_catenary_cable(catenarycable_constraint_);
+  reloader.set_catenary_cable(&catenarycable_constraint_);
   //reloader.set_length_unloaded_unstretched_adjustment(0);
   reloader.set_state_reloaded(state_stretch);
   reloader.set_weight_unit_reloaded(weight_unit_stretch);
@@ -317,15 +344,15 @@ bool LineCableReloader::UpdateReloadedCatenaryCable() const {
   // builds reloaded state
   CableState state_reloaded;
   state_reloaded.load_stretch = load_stretch_;
-  state_reloaded.temperature = case_reloaded_.temperature_cable;
-  state_reloaded.temperature_stretch = case_stretch_.temperature_cable;
+  state_reloaded.temperature = case_reloaded_->temperature_cable;
+  state_reloaded.temperature_stretch = case_stretch_->temperature_cable;
 
   // gets reloaded unit weight
-  Vector3d weight_unit_reloaded = UnitLoad(case_reloaded_);
+  Vector3d weight_unit_reloaded = UnitLoad(*case_reloaded_);
 
   // builds reloader and gets the reloaded catenary cable
   CatenaryCableReloader reloader;
-  reloader.set_catenary_cable(catenarycable_constraint_);
+  reloader.set_catenary_cable(&catenarycable_constraint_);
   //reloader.set_length_unloaded_unstretched_adjustment(0);
   reloader.set_state_reloaded(state_reloaded);
   reloader.set_weight_unit_reloaded(weight_unit_reloaded);

@@ -36,12 +36,12 @@ class LineCableToCatenaryConverter {
 
   /// \brief Gets the line cable.
   /// \return The line cable.
-  LineCable line_cable() const;
+  const LineCable* line_cable() const;
 
   /// \brief Sets the line cable.
   /// \param[in] line_cable
   ///   The line cable.
-  void set_line_cable(const LineCable& line_cable);
+  void set_line_cable(const LineCable* line_cable);
 
  private:
   /// \brief Determines if class is updated.
@@ -83,7 +83,7 @@ class LineCableToCatenaryConverter {
 
   /// \var line_cable_
   ///   The line cable.
-  LineCable line_cable_;
+  const LineCable* line_cable_;
 };
 
 #endif // TLSLIBRARIES_TRANSMISSIONLINE_LINECABLETOCATENARYCONVERTER_H_

@@ -133,7 +133,7 @@ class CableComponentElongationModel {
 
   /// \brief Gets the cable component.
   /// \return A copy of the cable component.
-  CableComponent component_cable() const;
+  const CableComponent* component_cable() const;
 
   /// \brief Gets the stretch load.
   /// \return The stretch load.
@@ -142,7 +142,7 @@ class CableComponentElongationModel {
   /// \brief Sets the cable component.
   /// \param[in] component_cable
   ///   The cable component.
-  void set_component_cable(const CableComponent& component_cable);
+  void set_component_cable(const CableComponent* component_cable);
 
   /// \brief Sets the stretch load.
   /// \param[in] load_stretch
@@ -152,30 +152,30 @@ class CableComponentElongationModel {
   /// \brief Sets the temperature of the component.
   /// \param[in] temperature
   ///   The temperature of the component.
-  void set_temperature(const double& temperature);
+  void set_temperature(const double* temperature);
 
   /// \brief Sets the reference temperature of the polynomial.
   /// \param[in] temperature_reference
   ///   The reference temperature of the polynomial.
-  void set_temperature_reference(const double& temperature_reference);
+  void set_temperature_reference(const double* temperature_reference);
 
   /// \brief Sets the type of active polynomial.
   /// \param[in] type_polynomial_active
   ///   The type of active polynomial.
   void set_type_polynomial_active(
-      const CableComponent::PolynomialType& type_polynomial_active);
+      const CableComponent::PolynomialType* type_polynomial_active);
 
   /// \brief Gets the temperature.
   /// \return The temperature.
-  double temperature() const;
+  const double* temperature() const;
 
   /// \brief Gets the reference temperature.
   /// \return The reference temperature.
-  double temperature_reference() const;
+  const double* temperature_reference() const;
 
   /// \brief Gets the type of active polynomial.
   /// \return The cable polynomial type.
-  CableComponent::PolynomialType type_polynomial_active() const;
+  const CableComponent::PolynomialType* type_polynomial_active() const;
 
  private:
   /// \brief Converts to a percent strain value for use with the thermally
@@ -325,7 +325,7 @@ class CableComponentElongationModel {
 
   /// \var component_cable_
   ///   The cable component that is being modeled.
-  CableComponent component_cable_;
+  const CableComponent* component_cable_;
 
   /// \var load_stretch_
   ///   The load the component has been stretched to.
@@ -364,17 +364,17 @@ class CableComponentElongationModel {
 
   /// \var temperature_
   ///   The specified temperature of the cable component.
-  double temperature_;
+  const double* temperature_;
 
   /// \var temperature_reference_
   ///   The base reference temperature for the cable component. The polynomial
   ///   is defined at this temperature.
-  double temperature_reference_;
+  const double* temperature_reference_;
 
   /// \var type_polynomial_active_
   ///   The type of polynomial to model. The cable component can have multiple
   ///   polynomials to describe its elongation.
-  CableComponent::PolynomialType type_polynomial_active_;
+  const CableComponent::PolynomialType* type_polynomial_active_;
 };
 
 #endif // TLSLIBRARIES_SAGTENSION_CABLECOMPONENTELONGATIONMODEL_H_

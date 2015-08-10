@@ -48,7 +48,6 @@ bool CableStrainer::Validate(const bool& is_included_warnings,
 
   // validates length-start
   if (length_start_ <= 0) {
-
     is_valid = false;
     if (messages_error != nullptr) {
       messages_error->push_back(
@@ -58,7 +57,6 @@ bool CableStrainer::Validate(const bool& is_included_warnings,
 
   // validates load-finish
   if (load_finish_ < 0) {
-
     is_valid = false;
     if (messages_error != nullptr) {
       messages_error->push_back(
@@ -68,7 +66,6 @@ bool CableStrainer::Validate(const bool& is_included_warnings,
 
   // validates load-start
   if (load_start_ < 0) {
-
     is_valid = false;
     if (messages_error != nullptr) {
       messages_error->push_back(
@@ -91,7 +88,7 @@ bool CableStrainer::Validate(const bool& is_included_warnings,
   return is_valid;
 }
 
-Cable CableStrainer::cable() const {
+const Cable* CableStrainer::cable() const {
   // doesn't matter which model it is grabbed from - both are similar
   return model_elongation_start_.cable();
 }
@@ -108,7 +105,7 @@ double CableStrainer::load_start() const {
   return load_start_;
 }
 
-void CableStrainer::set_cable(const Cable& cable) {
+void CableStrainer::set_cable(const Cable* cable) {
   model_elongation_start_.set_cable(cable);
   model_elongation_finish_.set_cable(cable);
 }
@@ -125,18 +122,18 @@ void CableStrainer::set_load_start(const double& load_start) {
   load_start_ = load_start;
 }
 
-void CableStrainer::set_state_finish(const CableState& state_finish) {
+void CableStrainer::set_state_finish(const CableState* state_finish) {
   model_elongation_finish_.set_state(state_finish);
 }
 
-void CableStrainer::set_state_start(const CableState& state_start) {
+void CableStrainer::set_state_start(const CableState* state_start) {
   model_elongation_start_.set_state(state_start);
 }
 
-CableState CableStrainer::state_finish() const {
+const CableState* CableStrainer::state_finish() const {
   return model_elongation_finish_.state();
 }
 
-CableState CableStrainer::state_start() const {
+const CableState* CableStrainer::state_start() const {
   return model_elongation_start_.state();
 }

@@ -4,6 +4,7 @@
 #include "transmissionline/cable_constraint.h"
 
 CableConstraint::CableConstraint() {
+  case_weather = nullptr;
   limit = -999999;
 }
 
@@ -16,15 +17,19 @@ bool CableConstraint::Validate(
   bool is_valid = true;
 
   // validates case-weather
-  if (case_weather.Validate(is_included_warnings, messages_error) == false) {
+  if (case_weather == nullptr) {
     is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back("CABLE CONSTRAINT - Invalid weather case");
+    }
+  } else {
+    if (case_weather->Validate(is_included_warnings, messages_error) == false) {
+      is_valid = false;
+    }
   }
 
   // validates limit
-  if (limit < 0
-      || ((limit < 100) && (is_included_warnings == true))
-      || ((100000 < limit) && (is_included_warnings == true))) {
-
+  if (limit < 0) {
     is_valid = false;
     if (messages_error != nullptr) {
       messages_error->push_back("CABLE CONSTRAINT - Invalid limit");

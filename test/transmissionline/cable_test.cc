@@ -10,7 +10,8 @@
 class CableComponentTest : public ::testing::Test {
  protected:
   CableComponentTest() {
-    c_ = factory::BuildCableComponent();
+    Cable* cable = factory::BuildCable();
+    c_ = cable->component_shell;
   }
 
   CableComponent c_;
@@ -24,7 +25,7 @@ TEST_F(CableComponentTest, Validate) {
 class CableTest : public ::testing::Test {
  protected:
   CableTest() {
-    c_ = factory::BuildCable();
+    c_ = *factory::BuildCable();
   }
 
   Cable c_;

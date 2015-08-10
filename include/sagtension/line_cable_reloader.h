@@ -76,11 +76,11 @@ class LineCableReloader {
 
   /// \brief Gets the reloaded load case.
   /// \return The reloaded load case.
-  WeatherLoadCase case_reloaded() const;
+  const WeatherLoadCase* case_reloaded() const;
 
   /// \brief Gets the stretch load case.
   /// \return The stretch load case.
-  WeatherLoadCase case_stretch() const;
+  const WeatherLoadCase* case_stretch() const;
 
   /// \brief Gets the reloaded cable condition.
   /// \return The reloaded cable condition.
@@ -92,17 +92,17 @@ class LineCableReloader {
 
   /// \brief Gets the line cable.
   /// \return The line cable.
-  LineCable line_cable() const;
+  const LineCable* line_cable() const;
 
   /// \brief Sets the reloaded load case.
   /// \param[in] case_reloaded
   ///   The reloaded load case.
-  void set_case_reloaded(const WeatherLoadCase& case_reloaded);
+  void set_case_reloaded(const WeatherLoadCase* case_reloaded);
 
   /// \brief Sets the stretch load case.
   /// \param[in] case_stretch
   ///   The stretch load case.
-  void set_case_stretch(const WeatherLoadCase& case_stretch);
+  void set_case_stretch(const WeatherLoadCase* case_stretch);
 
   /// \brief Sets the reloaded cable condition.
   /// \param[in] condition_reloaded
@@ -118,7 +118,7 @@ class LineCableReloader {
   /// \brief Sets the line cable.
   /// \param[in] line_cable
   ///   The line cable.
-  void set_line_cable(const LineCable& line_cable);
+  void set_line_cable(const LineCable* line_cable);
 
   /// \brief Sets the type of stretch.
   /// \param[in] type_stretch
@@ -163,11 +163,11 @@ class LineCableReloader {
 
   /// \var case_reloaded_
   ///   The load case that the cable is being reloaded to.
-  WeatherLoadCase case_reloaded_;
+  const WeatherLoadCase* case_reloaded_;
 
   /// \var case_stretch_
   ///   The load case that defines the cable stretch.
-  WeatherLoadCase case_stretch_;
+  const WeatherLoadCase* case_stretch_;
 
   /// \var catenarycable_constraint_
   ///   The catenary cable for the line cable constraint.
@@ -200,7 +200,7 @@ class LineCableReloader {
 
   /// \var line_cable_
   ///   The line cable that is being reloaded.
-  LineCable line_cable_;
+  const LineCable* line_cable_;
 
   /// \var load_stretch_
   ///   The load that the cable is stretched to.

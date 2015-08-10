@@ -6,6 +6,9 @@
 #include "sagtension/catenary_cable_unloader.h"
 
 CatenaryCableReloader::CatenaryCableReloader() {
+
+  catenary_cable_ = nullptr;
+
   is_updated_catenary_cable_reloaded_ = false;
   is_updated_length_unloaded_unstretched_ = false;
 
@@ -16,7 +19,7 @@ CatenaryCableReloader::CatenaryCableReloader() {
   state_unloaded_.temperature_stretch = 0;
 
   strainer_.set_load_start(0);
-  strainer_.set_state_start(state_unloaded_);
+  strainer_.set_state_start(&state_unloaded_);
 }
 
 CatenaryCableReloader::~CatenaryCableReloader() {
@@ -65,9 +68,17 @@ bool CatenaryCableReloader::Validate(
   bool is_valid = true;
 
   // validates catenary cable
-  if (catenary_cable_.Validate(is_included_warnings,
-                               messages_error) == false) {
+  if (catenary_cable_ == nullptr) {
     is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back("CATENARY CABLE RELOADER - Invalid catenary "
+                                "cable");
+    }
+  } else {
+    if (catenary_cable_->Validate(is_included_warnings,
+                                 messages_error) == false) {
+      is_valid = false;
+    }
   }
 
   // validates reloaded state
@@ -118,12 +129,12 @@ bool CatenaryCableReloader::Validate(
   return is_valid;
 }
 
-CatenaryCable CatenaryCableReloader::catenary_cable() const {
+const CatenaryCable* CatenaryCableReloader::catenary_cable() const {
   return catenary_cable_;
 }
 
 void CatenaryCableReloader::set_catenary_cable(
-    const CatenaryCable& catenary_cable) {
+    const CatenaryCable* catenary_cable) {
 
   catenary_cable_ = catenary_cable;
 
@@ -157,8 +168,13 @@ Vector3d CatenaryCableReloader::weight_unit_reloaded() const {
 
 bool CatenaryCableReloader::InitializeReloadedCatenaryCable() const {
 
-  catenary_cable_reloaded_ = catenary_cable_;
+  catenary_cable_reloaded_ = CatenaryCable();
+  catenary_cable_reloaded_.set_cable(catenary_cable_->cable());
+  catenary_cable_reloaded_.set_spacing_endpoints(
+      catenary_cable_->spacing_endpoints());
   catenary_cable_reloaded_.set_state(state_reloaded_);
+  catenary_cable_reloaded_.set_tension_horizontal(
+      catenary_cable_->tension_horizontal());
   catenary_cable_reloaded_.set_weight_unit(weight_unit_reloaded_);
 
   return true;
@@ -166,10 +182,10 @@ bool CatenaryCableReloader::InitializeReloadedCatenaryCable() const {
 
 bool CatenaryCableReloader::InitializeStrainer() const {
 
-  strainer_.set_cable(catenary_cable_.cable());
+  strainer_.set_cable(catenary_cable_->cable());
   strainer_.set_length_start(length_unloaded_unstretched_);
   strainer_.set_load_start(0);
-  strainer_.set_state_finish(state_reloaded_);
+  strainer_.set_state_finish(&state_reloaded_);
 
   return true;
 }
@@ -322,7 +338,7 @@ bool CatenaryCableReloader::UpdateLengthUnloadedUnstretched() const {
   // builds unloader that solves for unloaded cable length
   CatenaryCableUnloader unloader;
   unloader.set_catenary_cable(catenary_cable_);
-  unloader.set_state_unloaded(state_unloaded_);
+  unloader.set_state_unloaded(&state_unloaded_);
 
   // returns success status
   if (unloader.Validate(false, nullptr) == false) {
