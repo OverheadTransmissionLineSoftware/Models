@@ -12,13 +12,13 @@ class CableElongationModelTest : public ::testing::Test {
  protected:
   CableElongationModelTest() {
 
-    Cable cable = factory::BuildCable();
+    Cable* cable = factory::BuildCable();
 
     // builds dependency object - state
-    CableState state;
-    state.load_stretch = 12000;
-    state.temperature = 70;
-    state.temperature_stretch = 0;
+    CableState* state = new CableState();
+    state->load_stretch = 12000;
+    state->temperature = 70;
+    state->temperature_stretch = 0;
 
     // builds fixture object
     c_.set_cable(cable);

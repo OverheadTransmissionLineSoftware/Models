@@ -7,6 +7,7 @@
 
 LineCableToCatenaryConverter::LineCableToCatenaryConverter() {
   is_updated_catenary_ = false;
+  line_cable_ = nullptr;
 }
 
 LineCableToCatenaryConverter::~LineCableToCatenaryConverter() {
@@ -31,19 +32,27 @@ bool LineCableToCatenaryConverter::Validate(
   bool is_valid = true;
 
   // validates line cable
-  if (line_cable_.Validate(is_included_warnings, messages_error) == false) {
+  if (line_cable_ == nullptr) {
     is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back("LINE CABLE TO CATENARY CONVERTER - Invalid "
+                                "line cable");
+    }
+  } else {
+    if (line_cable_->Validate(is_included_warnings, messages_error) == false) {
+      is_valid = false;
+    }
   }
 
   // returns validation status
   return is_valid;
 }
 
-LineCable LineCableToCatenaryConverter::line_cable() const {
+const LineCable* LineCableToCatenaryConverter::line_cable() const {
   return line_cable_;
 }
 
-void LineCableToCatenaryConverter::set_line_cable(const LineCable& line_cable) {
+void LineCableToCatenaryConverter::set_line_cable(const LineCable* line_cable) {
 
   line_cable_ = line_cable;
 
@@ -64,7 +73,7 @@ bool LineCableToCatenaryConverter::SolveHorizontalTensionFromConstant() const {
   // the catenary unit weight should already be updated, so this multiplies
   // catenary constant by w to get horizontal tension
   catenary_.set_tension_horizontal(
-      line_cable_.constraint.limit * catenary_.weight_unit().Magnitude());
+      line_cable_->constraint.limit * catenary_.weight_unit().Magnitude());
 
   return true;
 }
@@ -78,7 +87,7 @@ bool LineCableToCatenaryConverter::SolveHorizontalTensionFromSupportTension()
   // y = tension-support
 
   // initializes target
-  double target_solution = line_cable_.constraint.limit;
+  double target_solution = line_cable_->constraint.limit;
 
   // declares and initializes left point
   // lowest acceptable value for catenary
@@ -95,7 +104,7 @@ bool LineCableToCatenaryConverter::SolveHorizontalTensionFromSupportTension()
   // declares and initializes right point
   // highest value (horizontal tension cannot exceed support tension)
   Point2d point_right;
-  point_right.x = line_cable_.constraint.limit;
+  point_right.x = line_cable_->constraint.limit;
   point_right.y = UpdateCatenaryMaxTension(point_right.x);
 
   // declares and initializes current point
@@ -160,12 +169,12 @@ bool LineCableToCatenaryConverter::SolveWeightUnit() const {
 
   // creates a calculator based on the line cable
   CableUnitLoadCalculator calculator;
-  calculator.set_diameter_cable(line_cable_.cable.diameter);
-  calculator.set_weight_unit_cable(line_cable_.cable.weight_unit);
+  calculator.set_diameter_cable(&line_cable_->cable->diameter);
+  calculator.set_weight_unit_cable(&line_cable_->cable->weight_unit);
 
   // calculates the unit load and updates catenary
   Vector3d load_unit = calculator.UnitCableLoad(
-      line_cable_.constraint.case_weather);
+      *line_cable_->constraint.case_weather);
   catenary_.set_weight_unit(load_unit);
 
   return true;
@@ -178,7 +187,7 @@ bool LineCableToCatenaryConverter::Update() const {
 
     // updates spacing
     catenary_.set_spacing_endpoints(
-        line_cable_.spacing_attachments_ruling_span);
+        line_cable_->spacing_attachments_ruling_span);
 
     // solves for the unit weight
     is_updated_catenary_ = SolveWeightUnit();
@@ -187,12 +196,12 @@ bool LineCableToCatenaryConverter::Update() const {
     }
 
     // solves for the horizontal tension
-    if (line_cable_.constraint.type_limit
+    if (line_cable_->constraint.type_limit
         == CableConstraint::LimitType::kHorizontalTension) {
 
-      catenary_.set_tension_horizontal(line_cable_.constraint.limit);
+      catenary_.set_tension_horizontal(line_cable_->constraint.limit);
 
-    } else if (line_cable_.constraint.type_limit
+    } else if (line_cable_->constraint.type_limit
                == CableConstraint::LimitType::kCatenaryConstant) {
 
       is_updated_catenary_ = SolveHorizontalTensionFromConstant();
@@ -200,7 +209,7 @@ bool LineCableToCatenaryConverter::Update() const {
         return false;
       }
 
-    } else if (line_cable_.constraint.type_limit
+    } else if (line_cable_->constraint.type_limit
                == CableConstraint::LimitType::kSupportTension) {
 
       is_updated_catenary_ = SolveHorizontalTensionFromSupportTension();

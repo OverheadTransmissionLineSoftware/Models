@@ -13,15 +13,15 @@ class LineCableToCatenaryConverterTest : public ::testing::Test {
   LineCableToCatenaryConverterTest() {
 
     // builds dependency object - line cable
-    Cable cable = factory::BuildCable();
+    Cable* cable = factory::BuildCable();
 
-    WeatherLoadCase case_weather;
-    case_weather.description = "0.5-8-0";
-    case_weather.thickness_ice =
+    WeatherLoadCase* case_weather = new WeatherLoadCase();
+    case_weather->description = "0.5-8-0";
+    case_weather->thickness_ice =
         units::Convert(0.5, units::ConversionType::kInchesToFeet);
-    case_weather.density_ice = 57.3;
-    case_weather.pressure_wind = 8;
-    case_weather.temperature_cable = 0;
+    case_weather->density_ice = 57.3;
+    case_weather->pressure_wind = 8;
+    case_weather->temperature_cable = 0;
 
     CableConstraint constraint;
     constraint.case_weather = case_weather;
@@ -29,10 +29,10 @@ class LineCableToCatenaryConverterTest : public ::testing::Test {
     constraint.limit = 12000;
     constraint.type_limit = CableConstraint::LimitType::kSupportTension;
     
-    LineCable line_cable;
-    line_cable.cable = cable;
-    line_cable.constraint = constraint;
-    line_cable.spacing_attachments_ruling_span = Vector3d(1200, 0, 0);
+    LineCable* line_cable = new LineCable();
+    line_cable->cable = cable;
+    line_cable->constraint = constraint;
+    line_cable->spacing_attachments_ruling_span = Vector3d(1200, 0, 0);
 
     // builds fixture object
     l_.set_line_cable(line_cable);

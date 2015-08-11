@@ -12,7 +12,7 @@ class CatenaryCableReloaderTest : public ::testing::Test {
  protected:
   CatenaryCableReloaderTest() {
 
-    Cable cable = factory::BuildCable();
+    Cable* cable = factory::BuildCable();
 
     Vector3d spacing_endpoints(1200, 0, 0);
 
@@ -23,12 +23,12 @@ class CatenaryCableReloaderTest : public ::testing::Test {
 
     Vector3d weight_unit(0, 0, 1.094);
 
-    CatenaryCable catenary_cable;
-    catenary_cable.set_cable(cable);
-    catenary_cable.set_spacing_endpoints(spacing_endpoints);
-    catenary_cable.set_state(state);
-    catenary_cable.set_tension_horizontal(6000);
-    catenary_cable.set_weight_unit(weight_unit);
+    CatenaryCable* catenary_cable = new CatenaryCable();
+    catenary_cable->set_cable(cable);
+    catenary_cable->set_spacing_endpoints(spacing_endpoints);
+    catenary_cable->set_state(state);
+    catenary_cable->set_tension_horizontal(6000);
+    catenary_cable->set_weight_unit(weight_unit);
 
     // builds dependency object - reloaded state
     CableState state_reloaded;

@@ -7,14 +7,16 @@
 
 #include "base/helper.h"
 #include "base/units.h"
+#include "factory.h"
 
 class CableUnitLoadCalculatorTest : public ::testing::Test {
  protected:
   CableUnitLoadCalculatorTest() {
 
-    c_.set_diameter_cable(
-      units::Convert(1.108, units::ConversionType::kInchesToFeet));
-    c_.set_weight_unit_cable(1.094);
+    Cable* cable = factory::BuildCable();
+
+    c_.set_diameter_cable(&cable->diameter);
+    c_.set_weight_unit_cable(&cable->weight_unit);
   }
 
   CableUnitLoadCalculator c_;

@@ -24,7 +24,7 @@ class Polynomial {
   /// \brief Alternate constructor.
   /// \param[in] coefficients
   ///   A list of coefficients.
-  Polynomial(const std::vector<double> coefficients);
+  Polynomial(const std::vector<double>* coefficients);
 
   /// \brief Destructor.
   ~Polynomial();
@@ -63,13 +63,13 @@ class Polynomial {
 
   /// \brief Gets the polynomial coefficients.
   /// \return The polynomial coefficients.
-  std::vector<double> coefficients() const;
+  const std::vector<double>* coefficients() const;
 
   /// \brief Sets the polynomial coefficients.
   /// \param[in] coefficients
   ///   A vector of polynomial coefficients. The vector index correlates to the
   ///   polynomial order.
-  void set_coefficients(std::vector<double> coefficients);
+  void set_coefficients(const std::vector<double>* coefficients);
 
  private:
   /// \brief Determines if class is updated.
@@ -87,7 +87,7 @@ class Polynomial {
 
   /// \var coefficients_
   ///   The coefficients that determine the shape and order of the polynomial.
-  std::vector<double> coefficients_;
+  const std::vector<double>* coefficients_;
 
   /// \var derivative_
   ///   The derivative of the polynomial. The derivate polynomial contains y

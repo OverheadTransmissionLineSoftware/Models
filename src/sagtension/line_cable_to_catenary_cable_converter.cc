@@ -7,6 +7,9 @@
 #include "transmissionline/line_cable_to_catenary_converter.h"
 
 LineCableToCatenaryCableConverter::LineCableToCatenaryCableConverter() {
+  case_stretch_ = nullptr;
+  line_cable_ = nullptr;
+
   is_updated_catenarycable_ = false;
 }
 
@@ -33,13 +36,29 @@ bool LineCableToCatenaryCableConverter::Validate(
   bool is_valid = true;
 
   // validates case-stretch
-  if (case_stretch_.Validate(is_included_warnings, messages_error) == false) {
+  if (case_stretch_ == nullptr) {
     is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back("LINE CABLE TO CATENARY CABLE CONVERTER - "
+                                "Invalid stretch case");
+    }
+  } else {
+    if (case_stretch_->Validate(is_included_warnings, messages_error) == false) {
+      is_valid = false;
+    }
   }
 
   // validates line cable
-  if (line_cable_.Validate(is_included_warnings, messages_error) == false) {
+  if (line_cable_ == nullptr) {
     is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back("LINE CABLE TO CATENARY CABLE CONVERTER - "
+                                "Invalid line cable");
+    }
+  } else {
+    if (line_cable_->Validate(is_included_warnings, messages_error) == false) {
+      is_valid = false;
+    }
   }
 
   // validates type-stretch
@@ -68,16 +87,16 @@ bool LineCableToCatenaryCableConverter::Validate(
   return is_valid;
 }
 
-WeatherLoadCase LineCableToCatenaryCableConverter::case_stretch() const {
+const WeatherLoadCase* LineCableToCatenaryCableConverter::case_stretch() const {
   return case_stretch_;
 }
 
-LineCable LineCableToCatenaryCableConverter::line_cable() const {
+const LineCable* LineCableToCatenaryCableConverter::line_cable() const {
   return line_cable_;
 }
 
 void LineCableToCatenaryCableConverter::set_line_cable(
-    const LineCable& line_cable) {
+    const LineCable* line_cable) {
 
   line_cable_ = line_cable;
 
@@ -85,12 +104,12 @@ void LineCableToCatenaryCableConverter::set_line_cable(
 }
 
 void LineCableToCatenaryCableConverter::set_case_stretch(
-    const WeatherLoadCase& case_stretch) {
+    const WeatherLoadCase* case_stretch) {
 
   case_stretch_ = case_stretch;
 
   CableState state;
-  state.temperature_stretch = case_stretch.temperature_cable;
+  state.temperature_stretch = case_stretch->temperature_cable;
   catenary_cable_.set_state(state);
 
   is_updated_catenarycable_ = false;
@@ -113,7 +132,7 @@ double LineCableToCatenaryCableConverter::LoadStretchDifference(
 
   // updates catenary cable and reloader with new stretch load
   UpdateCatenaryCableState(load_stretch);
-  reloader_.set_catenary_cable(catenary_cable_);
+  reloader_.set_catenary_cable(&catenary_cable_);
 
   // reloads the catenary cable at the stretch load case
   const CatenaryCable catenary_cable_reloaded =
@@ -131,15 +150,15 @@ bool LineCableToCatenaryCableConverter::InitializeReloader() const {
   // builds state
   CableState state_reloader;
   state_reloader.load_stretch = 0;
-  state_reloader.temperature = case_stretch_.temperature_cable;
+  state_reloader.temperature = case_stretch_->temperature_cable;
   state_reloader.temperature_stretch = 0;
 
   // solves for reloaded unit weight
   CableUnitLoadCalculator calculator_unitload;
-  calculator_unitload.set_diameter_cable(line_cable_.cable.diameter);
-  calculator_unitload.set_weight_unit_cable(line_cable_.cable.weight_unit);
+  calculator_unitload.set_diameter_cable(&line_cable_->cable->diameter);
+  calculator_unitload.set_weight_unit_cable(&line_cable_->cable->weight_unit);
   const Vector3d weight_unit_reloaded =
-      calculator_unitload.UnitCableLoad(case_stretch_);
+      calculator_unitload.UnitCableLoad(*case_stretch_);
 
   // initializes reloader
   reloader_.set_state_reloaded(state_reloader);
@@ -180,7 +199,7 @@ bool LineCableToCatenaryCableConverter::SolveStateLoadStretch() const {
 
   // initializes right point
   Point2d point_right;
-  point_right.x = catenary_cable_.cable().strength_rated;
+  point_right.x = catenary_cable_.cable()->strength_rated;
   point_right.y = LoadStretchDifference(point_right.x);
 
   // initializes current point
@@ -237,7 +256,7 @@ bool LineCableToCatenaryCableConverter::SolveStateLoadStretch() const {
   }
 
   // returns success status and caches result
-  CableState state = catenary_cable_.state();
+  CableState state = *catenary_cable_.state();
   if (iter < iter_max) {
     state.load_stretch = point_current.x;
     catenary_cable_.set_state(state);
@@ -275,15 +294,15 @@ bool LineCableToCatenaryCableConverter::UpdateCatenaryCable() const {
   catenary_cable_.set_weight_unit(catenary.weight_unit());
 
   // updates cable
-  catenary_cable_.set_cable(line_cable_.cable);
+  catenary_cable_.set_cable(line_cable_->cable);
 
   // updates state
   CableState state;
-  state.temperature = line_cable_.constraint.case_weather.temperature_cable;
-  state.temperature_stretch = case_stretch_.temperature_cable;
+  state.temperature = line_cable_->constraint.case_weather->temperature_cable;
+  state.temperature_stretch = case_stretch_->temperature_cable;
   catenary_cable_.set_state(state);
 
-  if (line_cable_.constraint.condition == CableConditionType::kInitial) {
+  if (line_cable_->constraint.condition == CableConditionType::kInitial) {
     state.load_stretch = 0;
     catenary_cable_.set_state(state);
   } else {
@@ -299,7 +318,7 @@ bool LineCableToCatenaryCableConverter::UpdateCatenaryCableState(
     const double& load_stretch) const {
 
   // extracts catenary cable state, modifies, and updates
-  CableState state = catenary_cable_.state();
+  CableState state = *catenary_cable_.state();
   state.load_stretch = load_stretch;
   catenary_cable_.set_state(state);
 

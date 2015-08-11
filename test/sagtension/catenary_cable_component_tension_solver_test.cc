@@ -12,7 +12,7 @@ class CatenaryCableComponentTensionSolverTest : public ::testing::Test {
  protected:
   CatenaryCableComponentTensionSolverTest() {
 
-    Cable cable = factory::BuildCable();
+    Cable* cable = factory::BuildCable();
 
     Vector3d spacing_endpoints(1200, 0, 0);
 
@@ -21,12 +21,12 @@ class CatenaryCableComponentTensionSolverTest : public ::testing::Test {
     state.temperature = 60;
     state.temperature_stretch = 0;
 
-    CatenaryCable catenary_cable;
-    catenary_cable.set_cable(cable);
-    catenary_cable.set_spacing_endpoints(spacing_endpoints);
-    catenary_cable.set_state(state);
-    catenary_cable.set_tension_horizontal(6000);
-    catenary_cable.set_weight_unit(Vector3d(0, 0, 1.094));
+    CatenaryCable* catenary_cable = new CatenaryCable();
+    catenary_cable->set_cable(cable);
+    catenary_cable->set_spacing_endpoints(spacing_endpoints);
+    catenary_cable->set_state(state);
+    catenary_cable->set_tension_horizontal(6000);
+    catenary_cable->set_weight_unit(Vector3d(0, 0, 1.094));
 
     // builds fixture object
     c_.set_catenary_cable(catenary_cable);

@@ -14,14 +14,11 @@
 namespace factory {
 
   /// \brief This function builds a cable.
-  Cable BuildCable();
-
-  /// \brief This function builds a cable component.
-  CableComponent BuildCableComponent();
+  Cable* BuildCable();
 
   /// \brief This function builds a line cable.
   /// \return A line cable.
-  LineCable BuildLineCable();
+  LineCable* BuildLineCable();
 
 } // namespace factory
 

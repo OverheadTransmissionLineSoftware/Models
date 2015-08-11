@@ -65,12 +65,12 @@ class CatenaryCableReloader {
 
   /// \brief Gets the catenary cable.
   /// \return The catenary cable.
-  CatenaryCable catenary_cable() const;
+  const CatenaryCable* catenary_cable() const;
 
   /// \brief Sets the catenary cable.
   /// \param[in] catenary_cable
   ///   The catenary cable.
-  void set_catenary_cable(const CatenaryCable& catenary_cable);
+  void set_catenary_cable(const CatenaryCable* catenary_cable);
 
   /// \brief Sets the reloaded state.
   /// \param[in] state_reloaded
@@ -135,7 +135,7 @@ class CatenaryCableReloader {
 
   /// \var catenary_cable_
   ///   The reference catenary cable.
-  CatenaryCable catenary_cable_;
+  const CatenaryCable* catenary_cable_;
 
   /// \var catenary_cable_reloaded_
   ///   The reloaded catenary cable.

@@ -13,50 +13,52 @@ class LineCableSaggerTest : public ::testing::Test {
   LineCableSaggerTest() {
 
     // gets line cable from factory
-    LineCable line_cable = factory::BuildLineCable();
+    LineCable* line_cable = factory::BuildLineCable();
 
     // builds a stretch weather case
-    WeatherLoadCase case_stretch;
-    case_stretch.description = "0.5-8-0";
-    case_stretch.thickness_ice =
+    WeatherLoadCase* case_stretch = new WeatherLoadCase();
+    case_stretch->description = "0.5-8-0";
+    case_stretch->thickness_ice =
         units::Convert(0.5, units::ConversionType::kInchesToFeet);
-    case_stretch.density_ice = 57.3;
-    case_stretch.pressure_wind = 8;
-    case_stretch.temperature_cable = 0;
+    case_stretch->density_ice = 57.3;
+    case_stretch->pressure_wind = 8;
+    case_stretch->temperature_cable = 0;
 
     // builds design constraints
     std::vector<CableConstraint> constraints;
     CableConstraint constraint;
-    WeatherLoadCase case_weather;
+    WeatherLoadCase* case_weather = new WeatherLoadCase();
 
-    case_weather.description = "0-0-60";
-    case_weather.thickness_ice = 0;
-    case_weather.density_ice = 0;
-    case_weather.pressure_wind = 0;
-    case_weather.temperature_cable = 60;
+    case_weather->description = "0-0-60";
+    case_weather->thickness_ice = 0;
+    case_weather->density_ice = 0;
+    case_weather->pressure_wind = 0;
+    case_weather->temperature_cable = 60;
     constraint.case_weather = case_weather;
     constraint.condition = CableConditionType::kInitial;
     constraint.limit = 6000;
     constraint.type_limit = CableConstraint::LimitType::kHorizontalTension;
     constraints.push_back(constraint);
 
-    case_weather.description = "0.5-8-0";
-    case_weather.thickness_ice =
+    case_weather = new WeatherLoadCase();
+    case_weather->description = "0.5-8-0";
+    case_weather->thickness_ice =
         units::Convert(0.5, units::ConversionType::kInchesToFeet);
-    case_weather.density_ice = 57.3;
-    case_weather.pressure_wind = 8;
-    case_weather.temperature_cable = 0;
+    case_weather->density_ice = 57.3;
+    case_weather->pressure_wind = 8;
+    case_weather->temperature_cable = 0;
     constraint.case_weather = case_weather;
     constraint.condition = CableConditionType::kInitial;
     constraint.limit = 12000;
     constraint.type_limit = CableConstraint::LimitType::kSupportTension;
     constraints.push_back(constraint);
 
-    case_weather.description = "0-0-212";
-    case_weather.thickness_ice = 0;
-    case_weather.density_ice = 0;
-    case_weather.pressure_wind = 0;
-    case_weather.temperature_cable = 212;
+    case_weather = new WeatherLoadCase();
+    case_weather->description = "0-0-212";
+    case_weather->thickness_ice = 0;
+    case_weather->density_ice = 0;
+    case_weather->pressure_wind = 0;
+    case_weather->temperature_cable = 212;
     constraint.case_weather = case_weather;
     constraint.condition = CableConditionType::kLoad;
     constraint.limit = 5000;

@@ -39,7 +39,7 @@ struct LineCable {
 
   /// \var cable
   ///   The cable.
-  Cable cable;
+  const Cable* cable;
 
   /// \var constraint
   ///   The constraint the cable is tensioned to.

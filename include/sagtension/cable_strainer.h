@@ -56,7 +56,7 @@ class CableStrainer {
 
   /// \brief Gets the cable.
   /// \return A copy of the cable.
-  Cable cable() const;
+  const Cable* cable() const;
 
   /// \brief Gets the length of the cable at the start state.
   /// \return The length of cable at the start state.
@@ -73,7 +73,7 @@ class CableStrainer {
   /// \brief Sets the cable.
   /// \param[in] cable
   ///   The cable.
-  void set_cable(const Cable& cable);
+  void set_cable(const Cable* cable);
 
   /// \brief Sets the length of the cable at the start state.
   /// \param[in] length_start
@@ -93,20 +93,20 @@ class CableStrainer {
   /// \brief Sets the finish state.
   /// \param[in] state_finish
   ///   The finish state.
-  void set_state_finish(const CableState& state_finish);
+  void set_state_finish(const CableState* state_finish);
 
   /// \brief Sets the start state.
   /// \param[in] state_start
   ///   The start state.
-  void set_state_start(const CableState& state_start);
+  void set_state_start(const CableState* state_start);
 
   /// \brief Gets the finish state.
   /// \return The finish state.
-  CableState state_finish() const;
+  const CableState* state_finish() const;
 
   /// \brief Gets the start state.
   /// \return The start state.
-  CableState state_start() const;
+  const CableState* state_start() const;
 
  private:
   /// \var length_start_

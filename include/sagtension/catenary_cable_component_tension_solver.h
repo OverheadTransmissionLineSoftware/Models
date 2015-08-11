@@ -22,7 +22,7 @@ class CatenaryCableComponentTensionSolver {
   CatenaryCableComponentTensionSolver();
 
   /// \brief Alternate constructor.
-  CatenaryCableComponentTensionSolver(const CatenaryCable& catenary_cable);
+  CatenaryCableComponentTensionSolver(const CatenaryCable* catenary_cable);
 
   /// \brief Destructor.
   ~CatenaryCableComponentTensionSolver();
@@ -53,17 +53,17 @@ class CatenaryCableComponentTensionSolver {
 
   /// \brief Gets the catenary cable.
   /// \return The catenary cable.
-  CatenaryCable catenary_cable() const;
+  const CatenaryCable* catenary_cable() const;
 
   /// \brief Sets the catenary cable.
   /// \param[in] catenary_cable
   ///   The catenary cable.
-  void set_catenary_cable(const CatenaryCable& catenary_cable);
+  void set_catenary_cable(const CatenaryCable* catenary_cable);
 
  private:
   /// \var catenary_cable_
   ///   The reference catenary cable.
-  CatenaryCable catenary_cable_;
+  const CatenaryCable* catenary_cable_;
 
   /// \var model_elongation_
   ///   The elongation model for the catenary cable.

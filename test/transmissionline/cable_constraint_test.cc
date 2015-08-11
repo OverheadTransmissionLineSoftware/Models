@@ -10,12 +10,12 @@ class CableConstraintTest : public ::testing::Test {
   CableConstraintTest() {
 
     // builds dependency object - weather case
-    WeatherLoadCase case_weather;
-    case_weather.description = "0-0-0 In";
-    case_weather.thickness_ice = 0;
-    case_weather.density_ice = 0;
-    case_weather.pressure_wind = 0;
-    case_weather.temperature_cable = 0;
+    WeatherLoadCase* case_weather = new WeatherLoadCase();
+    case_weather->description = "0-0-0 In";
+    case_weather->thickness_ice = 0;
+    case_weather->density_ice = 0;
+    case_weather->pressure_wind = 0;
+    case_weather->temperature_cable = 0;
 
     // builds fixture object
     c_.case_weather = case_weather;

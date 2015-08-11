@@ -4,6 +4,7 @@
 #include "sagtension/catenary_cable.h"
 
 CatenaryCable::CatenaryCable() {
+  cable_ = nullptr;
 }
 
 CatenaryCable::~CatenaryCable() {
@@ -16,8 +17,15 @@ bool CatenaryCable::Validate(const bool& is_included_warnings,
   bool is_valid = true;
 
   // validates cable
-  if (cable_.Validate(is_included_warnings, messages_error) == false) {
+  if (cable_ == nullptr) {
     is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back("CATENARY CABLE - Invalid cable");
+    }
+  } else {
+    if (cable_->Validate(is_included_warnings, messages_error) == false) {
+      is_valid = false;
+    }
   }
 
   // validates state
@@ -39,11 +47,11 @@ bool CatenaryCable::Validate(const bool& is_included_warnings,
   return is_valid;
 }
 
-Cable CatenaryCable::cable() const {
+const Cable* CatenaryCable::cable() const {
   return cable_;
 }
 
-void CatenaryCable::set_cable(const Cable& cable) {
+void CatenaryCable::set_cable(const Cable* cable) {
   cable_ = cable;
 }
 
@@ -51,8 +59,8 @@ void CatenaryCable::set_state(const CableState& state) {
   state_ = state;
 }
 
-CableState CatenaryCable::state() const {
-  return state_;
+const CableState* CatenaryCable::state() const {
+  return &state_;
 }
 
 bool CatenaryCable::ValidateCatenaryCableWeight(
@@ -62,7 +70,7 @@ bool CatenaryCable::ValidateCatenaryCableWeight(
   bool is_valid = true;
 
   // validates that catenary unit weight is greater than cable unit weight
-  if (weight_unit_.Magnitude() < cable_.weight_unit) {
+  if (weight_unit_.Magnitude() < cable_->weight_unit) {
 
     is_valid = false;
     if (messages_error != nullptr) {

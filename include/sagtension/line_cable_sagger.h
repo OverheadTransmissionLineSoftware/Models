@@ -95,7 +95,7 @@ class LineCableSagger {
 
   /// \brief Gets the stretch load case.
   /// \return The stretch load case.
-  WeatherLoadCase case_stretch() const;
+  const WeatherLoadCase* case_stretch() const;
 
   /// \brief Gets the design constraints.
   /// \return The design constraints.
@@ -103,12 +103,12 @@ class LineCableSagger {
 
   /// \brief Gets the line cable.
   /// \return The line cable.
-  LineCable line_cable() const;
+  LineCable* line_cable() const;
 
   /// \brief Sets the stretch load case.
   /// \param[in] case_stretch
   ///   The stretch load case.
-  void set_case_stretch(const WeatherLoadCase case_stretch);
+  void set_case_stretch(const WeatherLoadCase* case_stretch);
 
   /// \brief Sets the design constraints.
   /// \param[in] constraints_design
@@ -119,7 +119,7 @@ class LineCableSagger {
   /// \brief Sets the line cable.
   /// \param[in] line_cable
   ///   The line cable.
-  void set_line_cable(const LineCable& line_cable);
+  void set_line_cable(LineCable* line_cable);
 
  private:
   /// \brief Determines if class is updated.
@@ -146,7 +146,7 @@ class LineCableSagger {
 
   /// \var case_stretch_
   ///   The load case that defines the cable stretch.
-  WeatherLoadCase case_stretch_;
+  const WeatherLoadCase* case_stretch_;
 
   /// \var catenaries_constraints_actual_
   ///   The catenaries for the design constraints, which contain the actual
@@ -167,7 +167,7 @@ class LineCableSagger {
 
   /// \var line_cable_
   ///   The line cable that is being reloaded.
-  mutable LineCable line_cable_;
+  mutable LineCable* line_cable_;
 };
 
 #endif  // TLSLIBRARIES_SAGTENSION_LINECABLESAGGER_H_

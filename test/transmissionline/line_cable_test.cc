@@ -11,15 +11,15 @@ class LineCableTest : public ::testing::Test {
   LineCableTest() {
 
     // gets cable
-    Cable cable = factory::BuildCable();
+    Cable* cable = factory::BuildCable();
 
     // builds dependency object - cable constraint
-    WeatherLoadCase case_weather;
-    case_weather.description = "0-0-60";
-    case_weather.thickness_ice = 0;
-    case_weather.density_ice = 0;
-    case_weather.pressure_wind = 0;
-    case_weather.temperature_cable = 60;
+    WeatherLoadCase* case_weather = new WeatherLoadCase();
+    case_weather->description = "0-0-60";
+    case_weather->thickness_ice = 0;
+    case_weather->density_ice = 0;
+    case_weather->pressure_wind = 0;
+    case_weather->temperature_cable = 60;
 
     CableConstraint constraint;
     constraint.case_weather = case_weather;

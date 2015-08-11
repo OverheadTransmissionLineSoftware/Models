@@ -4,6 +4,7 @@
 #include "transmissionline/line_cable.h"
 
 LineCable::LineCable() {
+  cable = nullptr;
 }
 
 LineCable::~LineCable() {
@@ -15,8 +16,15 @@ bool LineCable::Validate(const bool& is_included_warnings,
   bool is_valid = true;
 
   // validates cable
-  if (cable.Validate(is_included_warnings, messages_error) == false) {
+  if (cable == nullptr) {
     is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back("LINE CABLE - Invalid cable");
+    }
+  } else {
+    if (cable->Validate(is_included_warnings, messages_error) == false) {
+      is_valid = false;
+    }
   }
 
   // validates constraint

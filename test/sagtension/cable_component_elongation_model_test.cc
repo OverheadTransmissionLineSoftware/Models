@@ -12,14 +12,17 @@ class CableComponentElongationModelTest : public ::testing::Test {
  protected:
   CableComponentElongationModelTest() {
 
-    CableComponent component = factory::BuildCableComponent();
+    const Cable* cable = factory::BuildCable();
+    const CableComponent* component = &cable->component_shell;
+    double* temperature = new double;
+    *temperature = 70;
 
     // builds fixture object
     c_.set_component_cable(component);
     c_.set_load_stretch(5000);
-    c_.set_temperature(70);
-    c_.set_temperature_reference(70);
-    c_.set_type_polynomial_active(CableComponent::PolynomialType::kLoadStrain);
+    c_.set_temperature(temperature);
+    c_.set_temperature_reference(&cable->temperature_properties_components);
+    c_.set_type_polynomial_active(&cable->type_polynomial_active);
   }
 
   CableComponentElongationModel c_;
@@ -120,15 +123,19 @@ TEST_F(CableComponentElongationModelTest, Strain) {
 
 TEST_F(CableComponentElongationModelTest, StrainThermal) {
 
+  double* temperature = new double;
+
   // at reference temperature
   EXPECT_EQ(0, helper::Round(c_.StrainThermal(), 7));
 
   // above reference temperature
-  c_.set_temperature(212);
+  *temperature = 212;
+  c_.set_temperature(temperature);
   EXPECT_EQ(0.0018176, helper::Round(c_.StrainThermal(), 7));
 
   // below reference temperature
-  c_.set_temperature(0);
+  *temperature = 0;
+  c_.set_temperature(temperature);
   EXPECT_EQ(-0.000896, helper::Round(c_.StrainThermal(), 7));
 }
 

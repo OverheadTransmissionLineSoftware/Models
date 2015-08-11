@@ -36,12 +36,12 @@ class CatenaryCable : public Catenary3d {
 
   /// \brief Gets the cable.
   /// \return The cable.
-  Cable cable() const;
+  const Cable* cable() const;
 
   /// \brief Sets the cable.
   /// \param[in] cable
   ///   The cable.
-  void set_cable(const Cable& cable);
+  void set_cable(const Cable* cable);
 
   /// \brief Sets the cable state.
   /// \param[in] state
@@ -50,7 +50,7 @@ class CatenaryCable : public Catenary3d {
 
   /// \brief Gets the cable state.
   /// \return The cable state.
-  CableState state() const;
+  const CableState* state() const;
 
  private:
   /// \brief Validates catenary and cable weight.
@@ -67,7 +67,7 @@ class CatenaryCable : public Catenary3d {
 
   /// \var cable_
   ///   The cable.
-  Cable cable_;
+  const Cable* cable_;
 
   /// \var state_
   ///   The cable state.
