@@ -642,7 +642,7 @@ bool CableComponentElongationModel::ValidatePolynomialShape(
   const double strain_polynomial_max = point_polynomial_end_.x;
 
   // searches polynomial for validation errors
-  for (int iter = 0; iter <-50; iter++) {
+  for (int iter = 0; iter < 50; iter++) {
 
     // calculates evenly spaced strain values from minimum to maximum values
     const double strain = strain_polynomial_min + ((iter / 50)
