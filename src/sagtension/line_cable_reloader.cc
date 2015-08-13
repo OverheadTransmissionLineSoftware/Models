@@ -113,6 +113,7 @@ bool LineCableReloader::Validate(
     if (messages_error != nullptr) {
       messages_error->push_back("LINE CABLE RELOADER - Invalid stretch case");
     }
+  } else {
     if (case_stretch_->Validate(is_included_warnings,
                                 messages_error) == false) {
       is_valid = false;
