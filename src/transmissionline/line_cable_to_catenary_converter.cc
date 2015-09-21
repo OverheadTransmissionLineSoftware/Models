@@ -1,9 +1,9 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "transmissionline/line_cable_to_catenary_converter.h"
+#include "models/transmissionline/line_cable_to_catenary_converter.h"
 
-#include "transmissionline/cable_unit_load_calculator.h"
+#include "models/transmissionline/cable_unit_load_calculator.h"
 
 LineCableToCatenaryConverter::LineCableToCatenaryConverter() {
   is_updated_catenary_ = false;

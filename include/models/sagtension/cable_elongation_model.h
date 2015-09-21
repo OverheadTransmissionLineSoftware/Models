@@ -1,17 +1,17 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef TLSLIBRARIES_SAGTENSION_CABLEELONGATIONMODEL_H_
-#define TLSLIBRARIES_SAGTENSION_CABLEELONGATIONMODEL_H_
+#ifndef OTLS_MODELS_SAGTENSION_CABLEELONGATIONMODEL_H_
+#define OTLS_MODELS_SAGTENSION_CABLEELONGATIONMODEL_H_
 
 #include <list>
 #include <string>
 #include <vector>
 
-#include "base/point.h"
-#include "sagtension/cable_component_elongation_model.h"
-#include "sagtension/cable_state.h"
-#include "transmissionline/cable.h"
+#include "models/base/point.h"
+#include "models/sagtension/cable_component_elongation_model.h"
+#include "models/sagtension/cable_state.h"
+#include "models/transmissionline/cable.h"
 
 /// \par OVERVIEW
 ///
@@ -304,4 +304,4 @@ class CableElongationModel {
   const CableState* state_;
 };
 
-#endif // TLSLIBRARIES_SAGTENSION_CABLEELONGATIONMODEL_H_
+#endif // OTLS_MODELS_SAGTENSION_CABLEELONGATIONMODEL_H_

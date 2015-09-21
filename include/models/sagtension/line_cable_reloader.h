@@ -1,16 +1,16 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef TLSLIBRARIES_SAGTENSION_LINECABLERELOADER_H_
-#define TLSLIBRARIES_SAGTENSION_LINECABLERELOADER_H_
+#ifndef OTLS_MODELS_SAGTENSION_LINECABLERELOADER_H_
+#define OTLS_MODELS_SAGTENSION_LINECABLERELOADER_H_
 
 #include <list>
 #include <string>
 
-#include "sagtension/cable_elongation_model.h"
-#include "sagtension/catenary_cable.h"
-#include "sagtension/catenary_cable_component_tension_solver.h"
-#include "transmissionline/line_cable.h"
+#include "models/sagtension/cable_elongation_model.h"
+#include "models/sagtension/catenary_cable.h"
+#include "models/sagtension/catenary_cable_component_tension_solver.h"
+#include "models/transmissionline/line_cable.h"
 
 /// \par OVERVIEW
 ///
@@ -215,4 +215,4 @@ class LineCableReloader {
   CableConditionType type_stretch_;
 };
 
-#endif  // TLSLIBRARIES_SAGTENSION_LINECABLERELOADER_H_
+#endif  // OTLS_MODELS_SAGTENSION_LINECABLERELOADER_H_

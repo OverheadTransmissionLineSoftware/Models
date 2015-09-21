@@ -1,16 +1,16 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef TLSLIBRARIES_SAGTENSION_LINECABLETOCATENARYCABLECONVERTER_H_
-#define TLSLIBRARIES_SAGTENSION_LINECABLETOCATENARYCABLECONVERTER_H_
+#ifndef OTLS_MODELS_SAGTENSION_LINECABLETOCATENARYCABLECONVERTER_H_
+#define OTLS_MODELS_SAGTENSION_LINECABLETOCATENARYCABLECONVERTER_H_
 
 #include <list>
 #include <string>
 
-#include "sagtension/catenary_cable.h"
-#include "sagtension/catenary_cable_reloader.h"
-#include "transmissionline/line_cable.h"
-#include "transmissionline/weather_load_case.h"
+#include "models/sagtension/catenary_cable.h"
+#include "models/sagtension/catenary_cable_reloader.h"
+#include "models/transmissionline/line_cable.h"
+#include "models/transmissionline/weather_load_case.h"
 
 /// \par OVERVIEW
 ///
@@ -131,4 +131,4 @@ class LineCableToCatenaryCableConverter {
   CableConditionType type_stretch_;
 };
 
-#endif  // TLSLIBRARIES_SAGTENSION_LINECABLETOCATENARYCABLECONVERTER_H_
+#endif  // OTLS_MODELS_SAGTENSION_LINECABLETOCATENARYCABLECONVERTER_H_

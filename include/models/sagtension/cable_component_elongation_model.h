@@ -1,15 +1,15 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef TLSLIBRARIES_SAGTENSION_CABLECOMPONENTELONGATIONMODEL_H_
-#define TLSLIBRARIES_SAGTENSION_CABLECOMPONENTELONGATIONMODEL_H_
+#ifndef OTLS_MODELS_SAGTENSION_CABLECOMPONENTELONGATIONMODEL_H_
+#define OTLS_MODELS_SAGTENSION_CABLECOMPONENTELONGATIONMODEL_H_
 
 #include <list>
 #include <string>
 
-#include "base/point.h"
-#include "base/polynomial.h"
-#include "transmissionline/cable.h"
+#include "models/base/point.h"
+#include "models/base/polynomial.h"
+#include "models/transmissionline/cable.h"
 
 /// \par OVERVIEW
 ///
@@ -377,4 +377,4 @@ class CableComponentElongationModel {
   const CableComponent::PolynomialType* type_polynomial_active_;
 };
 
-#endif // TLSLIBRARIES_SAGTENSION_CABLECOMPONENTELONGATIONMODEL_H_
+#endif // OTLS_MODELS_SAGTENSION_CABLECOMPONENTELONGATIONMODEL_H_

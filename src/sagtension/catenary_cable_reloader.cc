@@ -1,9 +1,9 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "sagtension/catenary_cable_reloader.h"
+#include "models/sagtension/catenary_cable_reloader.h"
 
-#include "sagtension/catenary_cable_unloader.h"
+#include "models/sagtension/catenary_cable_unloader.h"
 
 CatenaryCableReloader::CatenaryCableReloader() {
 

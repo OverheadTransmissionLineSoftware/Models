@@ -1,14 +1,14 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef TLSLIBRARIES_SAGTENSION_CATENARYCABLECOMPONENTTENSIONSOLVER_H_
-#define TLSLIBRARIES_SAGTENSION_CATENARYCABLECOMPONENTTENSIONSOLVER_H_
+#ifndef OTLS_MODELS_SAGTENSION_CATENARYCABLECOMPONENTTENSIONSOLVER_H_
+#define OTLS_MODELS_SAGTENSION_CATENARYCABLECOMPONENTTENSIONSOLVER_H_
 
 #include <list>
 #include <string>
 
-#include "sagtension/cable_elongation_model.h"
-#include "sagtension/catenary_cable.h"
+#include "models/sagtension/cable_elongation_model.h"
+#include "models/sagtension/catenary_cable.h"
 
 /// \par OVERVIEW
 ///
@@ -70,4 +70,4 @@ class CatenaryCableComponentTensionSolver {
   CableElongationModel model_elongation_;
 };
 
-#endif // TLSLIBRARIES_SAGTENSION_CATENARYCABLECOMPONENTTENSIONSOLVER_H_
+#endif // OTLS_MODELS_SAGTENSION_CATENARYCABLECOMPONENTTENSIONSOLVER_H_

@@ -1,7 +1,7 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "sagtension/cable_elongation_model.h"
+#include "models/sagtension/cable_elongation_model.h"
 
 #include <algorithm>
 

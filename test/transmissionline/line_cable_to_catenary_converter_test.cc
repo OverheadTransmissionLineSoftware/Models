@@ -1,12 +1,13 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "transmissionline/line_cable_to_catenary_converter.h"
+#include "models/transmissionline/line_cable_to_catenary_converter.h"
 
-#include "../test/factory.h"
-#include "base/helper.h"
-#include "base/units.h"
 #include "gtest/gtest.h"
+
+#include "factory.h"
+#include "models/base/helper.h"
+#include "models/base/units.h"
 
 class LineCableToCatenaryConverterTest : public ::testing::Test {
  protected:
@@ -28,7 +29,7 @@ class LineCableToCatenaryConverterTest : public ::testing::Test {
     constraint.condition = CableConditionType::kInitial;
     constraint.limit = 12000;
     constraint.type_limit = CableConstraint::LimitType::kSupportTension;
-    
+
     LineCable* line_cable = new LineCable();
     line_cable->cable = cable;
     line_cable->constraint = constraint;
@@ -42,12 +43,12 @@ class LineCableToCatenaryConverterTest : public ::testing::Test {
 };
 
 TEST_F(LineCableToCatenaryConverterTest, Catenary) {
-  
+
   Catenary3d catenary = l_.Catenary();
-  
+
   // horizontal tension
   EXPECT_EQ(11903, helper::Round(catenary.tension_horizontal(), 0));
-  
+
   // weight
   Vector3d weight_unit = catenary.weight_unit();
   EXPECT_EQ(0, helper::Round(weight_unit.x(), 3));

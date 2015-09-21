@@ -1,11 +1,11 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "base/polynomial.h"
+#include "models/base/polynomial.h"
 
 #include <cmath>
 
-#include "base/point.h"
+#include "models/base/point.h"
 
 Polynomial::Polynomial() {
   derivative_ = nullptr;

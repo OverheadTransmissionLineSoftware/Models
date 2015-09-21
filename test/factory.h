@@ -1,11 +1,11 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef TLSLIBRARIES_TEST_FACTORY_H_
-#define TLSLIBRARIES_TEST_FACTORY_H_
+#ifndef OTLS_MODELS_TEST_FACTORY_H_
+#define OTLS_MODELS_TEST_FACTORY_H_
 
-#include "transmissionline/cable.h"
-#include "transmissionline/line_cable.h"
+#include "models/transmissionline/cable.h"
+#include "models/transmissionline/line_cable.h"
 
 /// \par OVERVIEW
 ///
@@ -22,4 +22,4 @@ namespace factory {
 
 } // namespace factory
 
-#endif  // TLSLIBRARIES_TEST_FACTORY_H_
+#endif  // OTLS_MODELS_TEST_FACTORY_H_

@@ -1,11 +1,11 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "base/vector.h"
+#include "models/base/vector.h"
 
 #include <cmath>
 
-#include "base/units.h"
+#include "models/base/units.h"
 
 Vector2d::Vector2d() {
   x_ = -999999;
@@ -115,7 +115,7 @@ void Vector2d::Rotate(const double& angle_rotation) {
   const double angle_new = angle + angle_rotation;
 
   // resolves back to new x and y cartesian components
-  const double angle_radians = 
+  const double angle_radians =
       units::Convert(angle_new,
                      units::ConversionType::kDegreesToRadians);
   x_ = magnitude * cos(angle_radians);

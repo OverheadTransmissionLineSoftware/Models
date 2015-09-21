@@ -1,15 +1,15 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef TLSLIBRARIES_TRANSMISSIONLINE_LINECABLE_H_
-#define TLSLIBRARIES_TRANSMISSIONLINE_LINECABLE_H_
+#ifndef OTLS_MODELS_TRANSMISSIONLINE_LINECABLE_H_
+#define OTLS_MODELS_TRANSMISSIONLINE_LINECABLE_H_
 
 #include <list>
 #include <string>
 
-#include "base/vector.h"
-#include "transmissionline/cable.h"
-#include "transmissionline/cable_constraint.h"
+#include "models/base/vector.h"
+#include "models/transmissionline/cable.h"
+#include "models/transmissionline/cable_constraint.h"
 
 /// \par OVERVIEW
 ///
@@ -50,4 +50,4 @@ struct LineCable {
   Vector3d spacing_attachments_ruling_span;
 };
 
-#endif // TLSLIBRARIES_TRANSMISSIONLINE_LINECABLE_H_
+#endif // OTLS_MODELS_TRANSMISSIONLINE_LINECABLE_H_

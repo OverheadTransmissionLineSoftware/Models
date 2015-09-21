@@ -1,9 +1,9 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "sagtension/line_cable_sagger.h"
+#include "models/sagtension/line_cable_sagger.h"
 
-#include "sagtension/line_cable_reloader.h"
+#include "models/sagtension/line_cable_reloader.h"
 
 LineCableSagger::LineCableSagger() {
 

@@ -1,7 +1,7 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "sagtension/cable_state.h"
+#include "models/sagtension/cable_state.h"
 
 CableState::CableState() {
   load_stretch = -999999;

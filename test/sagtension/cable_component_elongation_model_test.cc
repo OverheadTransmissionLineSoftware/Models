@@ -1,12 +1,12 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "sagtension/cable_component_elongation_model.h"
+#include "models/sagtension/cable_component_elongation_model.h"
 
 #include "gtest/gtest.h"
 
-#include "base/helper.h"
-#include "factory.h"
+#include "models/base/helper.h"
+#include "models/factory.h"
 
 class CableComponentElongationModelTest : public ::testing::Test {
  protected:

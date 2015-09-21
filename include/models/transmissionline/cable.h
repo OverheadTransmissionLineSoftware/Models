@@ -1,8 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef TLSLIBRARIES_TRANSMISSIONLINE_CABLE_H_
-#define TLSLIBRARIES_TRANSMISSIONLINE_CABLE_H_
+#ifndef OTLS_MODELS_TRANSMISSIONLINE_CABLE_H_
+#define OTLS_MODELS_TRANSMISSIONLINE_CABLE_H_
 
 #include <list>
 #include <string>
@@ -148,4 +148,4 @@ struct Cable {
   double weight_unit;
 };
 
-#endif // TLSLIBRARIES_TRANSMISSIONLINE_CABLE_H_
+#endif // OTLS_MODELS_TRANSMISSIONLINE_CABLE_H_

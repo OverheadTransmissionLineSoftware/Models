@@ -1,11 +1,11 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "transmissionline/catenary.h"
+#include "models/transmissionline/catenary.h"
 
 #include "gtest/gtest.h"
 
-#include "base/helper.h"
+#include "models/base/helper.h"
 
 class Catenary2dTest : public ::testing::Test {
  protected:

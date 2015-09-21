@@ -1,10 +1,11 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "transmissionline/line_cable.h"
+#include "models/transmissionline/line_cable.h"
 
-#include "../test/factory.h"
 #include "gtest/gtest.h"
+
+#include "factory.h"
 
 class LineCableTest : public ::testing::Test {
  protected:
@@ -26,7 +27,7 @@ class LineCableTest : public ::testing::Test {
     constraint.condition = CableConditionType::kInitial;
     constraint.limit = 6000;
     constraint.type_limit = CableConstraint::LimitType::kHorizontalTension;
-    
+
     l_.cable = cable;
     l_.constraint = constraint;
     l_.spacing_attachments_ruling_span = Vector3d(1200, 0, 0);

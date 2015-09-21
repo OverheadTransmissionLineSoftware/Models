@@ -1,15 +1,15 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef TLSLIBRARIES_SAGTENSION_CATENARYCABLE_H_
-#define TLSLIBRARIES_SAGTENSION_CATENARYCABLE_H_
+#ifndef OTLS_MODELS_SAGTENSION_CATENARYCABLE_H_
+#define OTLS_MODELS_SAGTENSION_CATENARYCABLE_H_
 
 #include <list>
 #include <string>
 
-#include "sagtension/cable_state.h"
-#include "transmissionline/cable.h"
-#include "transmissionline/catenary.h"
+#include "models/sagtension/cable_state.h"
+#include "models/transmissionline/cable.h"
+#include "models/transmissionline/catenary.h"
 
 /// \par OVERVIEW
 ///
@@ -74,4 +74,4 @@ class CatenaryCable : public Catenary3d {
   CableState state_;
 };
 
-#endif // TLSLIBRARIES_SAGTENSION_CATENARYCABLE_H_
+#endif // OTLS_MODELS_SAGTENSION_CATENARYCABLE_H_

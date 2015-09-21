@@ -1,13 +1,13 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef TLSLIBRARIES_TRANSMISSIONLINE_CABLECONSTRAINT_H_
-#define TLSLIBRARIES_TRANSMISSIONLINE_CABLECONSTRAINT_H_
+#ifndef OTLS_MODELS_TRANSMISSIONLINE_CABLECONSTRAINT_H_
+#define OTLS_MODELS_TRANSMISSIONLINE_CABLECONSTRAINT_H_
 
 #include <list>
 #include <string>
 
-#include "transmissionline/weather_load_case.h"
+#include "models/transmissionline/weather_load_case.h"
 
 /// \par OVERVIEW
 ///
@@ -66,4 +66,4 @@ struct CableConstraint {
   CableConstraint::LimitType type_limit;
 };
 
-#endif // TLSLIBRARIES_TRANSMISSIONLINE_CABLECONSTRAINT_H_
+#endif // OTLS_MODELS_TRANSMISSIONLINE_CABLECONSTRAINT_H_

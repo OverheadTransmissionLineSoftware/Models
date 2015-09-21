@@ -1,8 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef TLSLIBRARIES_TRANSMISSIONLINE_WEATHERLOADCASE_H_
-#define TLSLIBRARIES_TRANSMISSIONLINE_WEATHERLOADCASE_H_
+#ifndef OTLS_MODELS_TRANSMISSIONLINE_WEATHERLOADCASE_H_
+#define OTLS_MODELS_TRANSMISSIONLINE_WEATHERLOADCASE_H_
 
 #include <list>
 #include <string>
@@ -50,4 +50,4 @@ struct WeatherLoadCase {
   double thickness_ice;
 };
 
-#endif // TLSLIBRARIES_TRANSMISSIONLINE_WEATHERLOADCASE_H_
+#endif // OTLS_MODELS_TRANSMISSIONLINE_WEATHERLOADCASE_H_

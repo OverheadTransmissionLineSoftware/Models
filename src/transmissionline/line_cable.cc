@@ -1,7 +1,7 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "transmissionline/line_cable.h"
+#include "models/transmissionline/line_cable.h"
 
 LineCable::LineCable() {
   cable = nullptr;

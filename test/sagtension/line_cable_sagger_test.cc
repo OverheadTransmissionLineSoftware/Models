@@ -1,12 +1,13 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "sagtension/line_cable_sagger.h"
+#include "models/sagtension/line_cable_sagger.h"
 
-#include "../test/factory.h"
-#include "base/helper.h"
-#include "base/units.h"
 #include "gtest/gtest.h"
+
+#include "factory.h"
+#include "models/base/helper.h"
+#include "models/base/units.h"
 
 class LineCableSaggerTest : public ::testing::Test {
  protected:
@@ -70,7 +71,7 @@ class LineCableSaggerTest : public ::testing::Test {
     l_.set_case_stretch(case_stretch);
     l_.set_constraints_design(constraints);
   }
-  
+
   LineCableSagger l_;
 };
 

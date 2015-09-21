@@ -1,17 +1,17 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef TLSLIBRARIES_SAGTENSION_CATENARYCABLERELOADER_H_
-#define TLSLIBRARIES_SAGTENSION_CATENARYCABLERELOADER_H_
+#ifndef OTLS_MODELS_SAGTENSION_CATENARYCABLERELOADER_H_
+#define OTLS_MODELS_SAGTENSION_CATENARYCABLERELOADER_H_
 
 #include <list>
 #include <string>
 
-#include "base/vector.h"
-#include "sagtension/cable_state.h"
-#include "sagtension/cable_strainer.h"
-#include "sagtension/catenary_cable.h"
-#include "transmissionline/catenary.h"
+#include "models/base/vector.h"
+#include "models/sagtension/cable_state.h"
+#include "models/sagtension/cable_strainer.h"
+#include "models/sagtension/catenary_cable.h"
+#include "models/transmissionline/catenary.h"
 
 /// \par OVERVIEW
 ///
@@ -171,4 +171,4 @@ class CatenaryCableReloader {
   Vector3d weight_unit_reloaded_;
 };
 
-#endif // TLSLIBRARIES_SAGTENSION_CATENARYCABLERELOADER_H_
+#endif // OTLS_MODELS_SAGTENSION_CATENARYCABLERELOADER_H_

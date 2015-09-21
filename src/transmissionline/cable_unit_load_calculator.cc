@@ -1,9 +1,9 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "transmissionline/cable_unit_load_calculator.h"
+#include "models/transmissionline/cable_unit_load_calculator.h"
 
-#include "base/geometric_shapes.h"
+#include "models/base/geometric_shapes.h"
 
 CableUnitLoadCalculator::CableUnitLoadCalculator() {
   diameter_cable_ = nullptr;

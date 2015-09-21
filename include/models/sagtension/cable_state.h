@@ -1,8 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef TLSLIBRARIES_SAGTENSION_CABLESTATE_H_
-#define TLSLIBRARIES_SAGTENSION_CABLESTATE_H_
+#ifndef OTLS_MODELS_SAGTENSION_CABLESTATE_H_
+#define OTLS_MODELS_SAGTENSION_CABLESTATE_H_
 
 #include <list>
 #include <string>
@@ -41,4 +41,4 @@ struct CableState {
   double temperature_stretch;
 };
 
-#endif // TLSLIBRARIES_SAGTENSION_CABLESTATE_H_
+#endif // OTLS_MODELS_SAGTENSION_CABLESTATE_H_

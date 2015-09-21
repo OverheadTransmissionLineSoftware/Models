@@ -5,7 +5,7 @@
 
 #include "gtest/gtest.h"
 
-#include "base/helper.h"
+#include "models/base/helper.h"
 
 class CableStateTest : public ::testing::Test {
  protected:

@@ -1,14 +1,14 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef TLSLIBRARIES_TRANSMISSIONLINE_LINECABLETOCATENARYCONVERTER_H_
-#define TLSLIBRARIES_TRANSMISSIONLINE_LINECABLETOCATENARYCONVERTER_H_
+#ifndef OTLS_MODELS_TRANSMISSIONLINE_LINECABLETOCATENARYCONVERTER_H_
+#define OTLS_MODELS_TRANSMISSIONLINE_LINECABLETOCATENARYCONVERTER_H_
 
 #include <list>
 #include <string>
 
-#include "transmissionline/catenary.h"
-#include "transmissionline/line_cable.h"
+#include "models/transmissionline/catenary.h"
+#include "models/transmissionline/line_cable.h"
 
 /// \par OVERVIEW
 ///
@@ -86,4 +86,4 @@ class LineCableToCatenaryConverter {
   const LineCable* line_cable_;
 };
 
-#endif // TLSLIBRARIES_TRANSMISSIONLINE_LINECABLETOCATENARYCONVERTER_H_
+#endif // OTLS_MODELS_TRANSMISSIONLINE_LINECABLETOCATENARYCONVERTER_H_

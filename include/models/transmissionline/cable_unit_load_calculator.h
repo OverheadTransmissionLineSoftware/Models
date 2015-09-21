@@ -1,14 +1,14 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef TLSLIBRARIES_TRANSMISSIONLINE_CABLEUNITLOADCALCULATOR_H_
-#define TLSLIBRARIES_TRANSMISSIONLINE_CABLEUNITLOADCALCULATOR_H_
+#ifndef OTLS_MODELS_TRANSMISSIONLINE_CABLEUNITLOADCALCULATOR_H_
+#define OTLS_MODELS_TRANSMISSIONLINE_CABLEUNITLOADCALCULATOR_H_
 
 #include <list>
 #include <string>
 
-#include "base/vector.h"
-#include "transmissionline/weather_load_case.h"
+#include "models/base/vector.h"
+#include "models/transmissionline/weather_load_case.h"
 
 /// \par OVERVIEW
 ///
@@ -77,4 +77,4 @@ class CableUnitLoadCalculator {
   const double* weight_unit_cable_;
 };
 
-#endif // TLSLIBRARIES_TRANSMISSIONLINE_CABLEUNITLOADCALCULATOR_H_
+#endif // OTLS_MODELS_TRANSMISSIONLINE_CABLEUNITLOADCALCULATOR_H_

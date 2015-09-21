@@ -1,15 +1,15 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef TLSLIBRARIES_SAGTENSION_CABLESTRAINER_H_
-#define TLSLIBRARIES_SAGTENSION_CABLESTRAINER_H_
+#ifndef OTLS_MODELS_SAGTENSION_CABLESTRAINER_H_
+#define OTLS_MODELS_SAGTENSION_CABLESTRAINER_H_
 
 #include <list>
 #include <string>
 
-#include "sagtension/cable_elongation_model.h"
-#include "sagtension/cable_state.h"
-#include "transmissionline/cable.h"
+#include "models/sagtension/cable_elongation_model.h"
+#include "models/sagtension/cable_state.h"
+#include "models/transmissionline/cable.h"
 
 /// \par OVERVIEW
 ///
@@ -130,4 +130,4 @@ class CableStrainer {
   CableElongationModel model_elongation_start_;
 };
 
-#endif // TLSLIBRARIES_SAGTENSION_CABLESTRAINER_H_
+#endif // OTLS_MODELS_SAGTENSION_CABLESTRAINER_H_

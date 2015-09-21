@@ -1,13 +1,13 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "transmissionline/cable_unit_load_calculator.h"
+#include "models/transmissionline/cable_unit_load_calculator.h"
 
 #include "gtest/gtest.h"
 
-#include "base/helper.h"
-#include "base/units.h"
 #include "factory.h"
+#include "models/base/helper.h"
+#include "models/base/units.h"
 
 class CableUnitLoadCalculatorTest : public ::testing::Test {
  protected:

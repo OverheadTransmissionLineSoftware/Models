@@ -1,7 +1,7 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "transmissionline/cable_constraint.h"
+#include "models/transmissionline/cable_constraint.h"
 
 CableConstraint::CableConstraint() {
   case_weather = nullptr;

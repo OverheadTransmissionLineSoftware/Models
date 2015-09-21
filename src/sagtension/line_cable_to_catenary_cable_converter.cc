@@ -1,10 +1,10 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "sagtension/line_cable_to_catenary_cable_converter.h"
+#include "models/sagtension/line_cable_to_catenary_cable_converter.h"
 
-#include "transmissionline/cable_unit_load_calculator.h"
-#include "transmissionline/line_cable_to_catenary_converter.h"
+#include "models/transmissionline/cable_unit_load_calculator.h"
+#include "models/transmissionline/line_cable_to_catenary_converter.h"
 
 LineCableToCatenaryCableConverter::LineCableToCatenaryCableConverter() {
   case_stretch_ = nullptr;

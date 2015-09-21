@@ -1,11 +1,11 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "base/geometric_shapes.h"
+#include "models/base/geometric_shapes.h"
 
 #include "gtest/gtest.h"
 
-#include "base/helper.h"
+#include "models/base/helper.h"
 
 class CylinderTest : public ::testing::Test {
  protected:

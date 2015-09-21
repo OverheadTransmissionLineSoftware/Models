@@ -1,12 +1,13 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "sagtension/line_cable_to_catenary_cable_converter.h"
+#include "models/sagtension/line_cable_to_catenary_cable_converter.h"
 
-#include "../test/factory.h"
-#include "base/helper.h"
-#include "base/units.h"
 #include "gtest/gtest.h"
+
+#include "factory.h"
+#include "models/base/helper.h"
+#include "models/base/units.h"
 
 class LineCableToCatenaryCableConverterTest : public ::testing::Test {
  protected:
