@@ -38,12 +38,12 @@
 		<Linker>
 			<Add directory="../../" />
 		</Linker>
-		<Unit filename="../../include/base/geometric_shapes.h" />
-		<Unit filename="../../include/base/helper.h" />
-		<Unit filename="../../include/base/point.h" />
-		<Unit filename="../../include/base/polynomial.h" />
-		<Unit filename="../../include/base/units.h" />
-		<Unit filename="../../include/base/vector.h" />
+		<Unit filename="../../include/models/base/geometric_shapes.h" />
+		<Unit filename="../../include/models/base/helper.h" />
+		<Unit filename="../../include/models/base/point.h" />
+		<Unit filename="../../include/models/base/polynomial.h" />
+		<Unit filename="../../include/models/base/units.h" />
+		<Unit filename="../../include/models/base/vector.h" />
 		<Unit filename="../../src/base/geometric_shapes.cc" />
 		<Unit filename="../../src/base/helper.cc" />
 		<Unit filename="../../src/base/point.cc" />

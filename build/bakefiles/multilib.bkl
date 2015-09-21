@@ -9,12 +9,12 @@ if ($toolset == gnu)
 library tls_base {
   includedirs = ../../include;
   headers {
-    ../../include/base/geometric_shapes.h
-    ../../include/base/helper.h
-    ../../include/base/point.h
-    ../../include/base/polynomial.h
-    ../../include/base/units.h
-    ../../include/base/vector.h
+    ../../include/models/base/geometric_shapes.h
+    ../../include/models/base/helper.h
+    ../../include/models/base/point.h
+    ../../include/models/base/polynomial.h
+    ../../include/models/base/units.h
+    ../../include/models/base/vector.h
   }
   sources {
     ../../src/base/geometric_shapes.cc
@@ -31,13 +31,13 @@ library tls_transmissionline {
   deps = tls_base;
   includedirs = ../../include;
   headers {
-    ../../include/transmissionline/cable.h
-    ../../include/transmissionline/cable_constraint.h
-    ../../include/transmissionline/cable_unit_load_calculator.h
-    ../../include/transmissionline/catenary.h
-    ../../include/transmissionline/line_cable.h
-    ../../include/transmissionline/line_cable_to_catenary_converter.h
-    ../../include/transmissionline/weather_load_case.h
+    ../../include/models/transmissionline/cable.h
+    ../../include/models/transmissionline/cable_constraint.h
+    ../../include/models/transmissionline/cable_unit_load_calculator.h
+    ../../include/models/transmissionline/catenary.h
+    ../../include/models/transmissionline/line_cable.h
+    ../../include/models/transmissionline/line_cable_to_catenary_converter.h
+    ../../include/models/transmissionline/weather_load_case.h
   }
   sources {
     ../../src/transmissionline/cable.cc
@@ -56,17 +56,17 @@ library tls_sagtension {
   deps = tls_transmissionline;
   includedirs = ../../include;
   headers {
-    ../../include/sagtension/cable_component_elongation_model.h
-    ../../include/sagtension/cable_elongation_model.h
-    ../../include/sagtension/cable_state.h
-    ../../include/sagtension/cable_strainer.h
-    ../../include/sagtension/catenary_cable.h
-    ../../include/sagtension/catenary_cable_component_tension_solver.h
-    ../../include/sagtension/catenary_cable_reloader.h
-    ../../include/sagtension/catenary_cable_unloader.h
-    ../../include/sagtension/line_cable_reloader.h
-    ../../include/sagtension/line_cable_sagger.h
-    ../../include/sagtension/line_cable_to_catenary_cable_converter.h
+    ../../include/models/sagtension/cable_component_elongation_model.h
+    ../../include/models/sagtension/cable_elongation_model.h
+    ../../include/models/sagtension/cable_state.h
+    ../../include/models/sagtension/cable_strainer.h
+    ../../include/models/sagtension/catenary_cable.h
+    ../../include/models/sagtension/catenary_cable_component_tension_solver.h
+    ../../include/models/sagtension/catenary_cable_reloader.h
+    ../../include/models/sagtension/catenary_cable_unloader.h
+    ../../include/models/sagtension/line_cable_reloader.h
+    ../../include/models/sagtension/line_cable_sagger.h
+    ../../include/models/sagtension/line_cable_to_catenary_cable_converter.h
   }
   sources {
     ../../src/sagtension/cable_component_elongation_model.cc

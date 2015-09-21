@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_workspace_file>
-	<Workspace title="TLS-Libraries">
+	<Workspace title="OTLS-Models">
 		<Project filename="tls_base.cbp" />
 		<Project filename="tls_sagtension.cbp">
 			<Depends filename="tls_base.cbp" />

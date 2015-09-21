@@ -90,13 +90,13 @@
     <ClCompile Include="..\..\src\transmissionline\weather_load_case.cc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\transmissionline\cable.h" />
-    <ClInclude Include="..\..\include\transmissionline\cable_constraint.h" />
-    <ClInclude Include="..\..\include\transmissionline\cable_unit_load_calculator.h" />
-    <ClInclude Include="..\..\include\transmissionline\catenary.h" />
-    <ClInclude Include="..\..\include\transmissionline\line_cable.h" />
-    <ClInclude Include="..\..\include\transmissionline\line_cable_to_catenary_converter.h" />
-    <ClInclude Include="..\..\include\transmissionline\weather_load_case.h" />
+    <ClInclude Include="..\..\include\models\transmissionline\cable.h" />
+    <ClInclude Include="..\..\include\models\transmissionline\cable_constraint.h" />
+    <ClInclude Include="..\..\include\models\transmissionline\cable_unit_load_calculator.h" />
+    <ClInclude Include="..\..\include\models\transmissionline\catenary.h" />
+    <ClInclude Include="..\..\include\models\transmissionline\line_cable.h" />
+    <ClInclude Include="..\..\include\models\transmissionline\line_cable_to_catenary_converter.h" />
+    <ClInclude Include="..\..\include\models\transmissionline\weather_load_case.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="tls_base.vcxproj">

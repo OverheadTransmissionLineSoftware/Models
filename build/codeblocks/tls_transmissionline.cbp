@@ -44,13 +44,13 @@
 		<Linker>
 			<Add directory="../../" />
 		</Linker>
-		<Unit filename="../../include/transmissionline/cable.h" />
-		<Unit filename="../../include/transmissionline/cable_constraint.h" />
-		<Unit filename="../../include/transmissionline/cable_unit_load_calculator.h" />
-		<Unit filename="../../include/transmissionline/catenary.h" />
-		<Unit filename="../../include/transmissionline/line_cable.h" />
-		<Unit filename="../../include/transmissionline/line_cable_to_catenary_converter.h" />
-		<Unit filename="../../include/transmissionline/weather_load_case.h" />
+		<Unit filename="../../include/models/transmissionline/cable.h" />
+		<Unit filename="../../include/models/transmissionline/cable_constraint.h" />
+		<Unit filename="../../include/models/transmissionline/cable_unit_load_calculator.h" />
+		<Unit filename="../../include/models/transmissionline/catenary.h" />
+		<Unit filename="../../include/models/transmissionline/line_cable.h" />
+		<Unit filename="../../include/models/transmissionline/line_cable_to_catenary_converter.h" />
+		<Unit filename="../../include/models/transmissionline/weather_load_case.h" />
 		<Unit filename="../../src/transmissionline/cable.cc" />
 		<Unit filename="../../src/transmissionline/cable_constraint.cc" />
 		<Unit filename="../../src/transmissionline/cable_unit_load_calculator.cc" />

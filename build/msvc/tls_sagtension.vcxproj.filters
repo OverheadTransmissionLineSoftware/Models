@@ -17,37 +17,37 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\sagtension\cable_component_elongation_model.h">
+    <ClInclude Include="..\..\include\models\sagtension\cable_component_elongation_model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\sagtension\cable_elongation_model.h">
+    <ClInclude Include="..\..\include\models\sagtension\cable_elongation_model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\sagtension\cable_state.h">
+    <ClInclude Include="..\..\include\models\sagtension\cable_state.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\sagtension\cable_strainer.h">
+    <ClInclude Include="..\..\include\models\sagtension\cable_strainer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\sagtension\catenary_cable.h">
+    <ClInclude Include="..\..\include\models\sagtension\catenary_cable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\sagtension\catenary_cable_component_tension_solver.h">
+    <ClInclude Include="..\..\include\models\sagtension\catenary_cable_component_tension_solver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\sagtension\catenary_cable_reloader.h">
+    <ClInclude Include="..\..\include\models\sagtension\catenary_cable_reloader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\sagtension\catenary_cable_unloader.h">
+    <ClInclude Include="..\..\include\models\sagtension\catenary_cable_unloader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\sagtension\line_cable_reloader.h">
+    <ClInclude Include="..\..\include\models\sagtension\line_cable_reloader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\sagtension\line_cable_sagger.h">
+    <ClInclude Include="..\..\include\models\sagtension\line_cable_sagger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\sagtension\line_cable_to_catenary_cable_converter.h">
+    <ClInclude Include="..\..\include\models\sagtension\line_cable_to_catenary_cable_converter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

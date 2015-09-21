@@ -89,12 +89,12 @@
     <ClCompile Include="..\..\src\base\vector.cc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\base\geometric_shapes.h" />
-    <ClInclude Include="..\..\include\base\helper.h" />
-    <ClInclude Include="..\..\include\base\point.h" />
-    <ClInclude Include="..\..\include\base\polynomial.h" />
-    <ClInclude Include="..\..\include\base\units.h" />
-    <ClInclude Include="..\..\include\base\vector.h" />
+    <ClInclude Include="..\..\include\models\base\geometric_shapes.h" />
+    <ClInclude Include="..\..\include\models\base\helper.h" />
+    <ClInclude Include="..\..\include\models\base\point.h" />
+    <ClInclude Include="..\..\include\models\base\polynomial.h" />
+    <ClInclude Include="..\..\include\models\base\units.h" />
+    <ClInclude Include="..\..\include\models\base\vector.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

@@ -17,22 +17,22 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\base\geometric_shapes.h">
+    <ClInclude Include="..\..\include\models\base\geometric_shapes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\base\helper.h">
+    <ClInclude Include="..\..\include\models\base\helper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\base\point.h">
+    <ClInclude Include="..\..\include\models\base\point.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\base\polynomial.h">
+    <ClInclude Include="..\..\include\models\base\polynomial.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\base\units.h">
+    <ClInclude Include="..\..\include\models\base\units.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\base\vector.h">
+    <ClInclude Include="..\..\include\models\base\vector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
