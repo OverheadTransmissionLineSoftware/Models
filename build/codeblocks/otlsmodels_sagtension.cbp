@@ -2,30 +2,30 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="tls_sagtension" />
+		<Option title="otlsmodels_sagtension" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="debug">
-				<Option output="debug/bin/tls_sagtension" prefix_auto="1" extension_auto="1" />
+				<Option output="debug/bin/otlsmodels_sagtension" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
 				<Option object_output="debug/obj/" />
-				<Option external_deps="debug/bin/libtls_transmissionline.a" />
+				<Option external_deps="debug/bin/libotlsmodels_transmissionline.a" />
 				<Option type="2" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
-					<Add library="debug/bin/libtls_base.a" />
-					<Add library="debug/bin/libtls_transmissionline.a" />
+					<Add library="debug/bin/libotlsmodels_base.a" />
+					<Add library="debug/bin/libotlsmodels_transmissionline.a" />
 				</Linker>
 			</Target>
 			<Target title="release">
-				<Option output="release/bin/tls_sagtension" prefix_auto="1" extension_auto="1" />
+				<Option output="release/bin/otlsmodels_sagtension" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
 				<Option object_output="release/obj/" />
-				<Option external_deps="release/bin/libtls_transmissionline.a" />
+				<Option external_deps="release/bin/libotlsmodels_transmissionline.a" />
 				<Option type="2" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -33,8 +33,8 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="release/bin/libtls_base.a" />
-					<Add library="release/bin/libtls_transmissionline.a" />
+					<Add library="release/bin/libotlsmodels_base.a" />
+					<Add library="release/bin/libotlsmodels_transmissionline.a" />
 				</Linker>
 			</Target>
 		</Build>

@@ -13,10 +13,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{94A27FF5-C4FF-53B5-9E5F-4197FC3B293C}</ProjectGuid>
+    <ProjectGuid>{DCB13E3C-2A1C-51C9-B78A-65B03ABFE541}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>tls_base</RootNamespace>
-    <ProjectName>tls_base</ProjectName>
+    <RootNamespace>otlsmodels_sagtension</RootNamespace>
+    <ProjectName>otlsmodels_sagtension</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -81,20 +81,35 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\base\geometric_shapes.cc" />
-    <ClCompile Include="..\..\src\base\helper.cc" />
-    <ClCompile Include="..\..\src\base\point.cc" />
-    <ClCompile Include="..\..\src\base\polynomial.cc" />
-    <ClCompile Include="..\..\src\base\units.cc" />
-    <ClCompile Include="..\..\src\base\vector.cc" />
+    <ClCompile Include="..\..\src\sagtension\cable_component_elongation_model.cc" />
+    <ClCompile Include="..\..\src\sagtension\cable_elongation_model.cc" />
+    <ClCompile Include="..\..\src\sagtension\cable_state.cc" />
+    <ClCompile Include="..\..\src\sagtension\cable_strainer.cc" />
+    <ClCompile Include="..\..\src\sagtension\catenary_cable.cc" />
+    <ClCompile Include="..\..\src\sagtension\catenary_cable_component_tension_solver.cc" />
+    <ClCompile Include="..\..\src\sagtension\catenary_cable_reloader.cc" />
+    <ClCompile Include="..\..\src\sagtension\catenary_cable_unloader.cc" />
+    <ClCompile Include="..\..\src\sagtension\line_cable_reloader.cc" />
+    <ClCompile Include="..\..\src\sagtension\line_cable_sagger.cc" />
+    <ClCompile Include="..\..\src\sagtension\line_cable_to_catenary_cable_converter.cc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\models\base\geometric_shapes.h" />
-    <ClInclude Include="..\..\include\models\base\helper.h" />
-    <ClInclude Include="..\..\include\models\base\point.h" />
-    <ClInclude Include="..\..\include\models\base\polynomial.h" />
-    <ClInclude Include="..\..\include\models\base\units.h" />
-    <ClInclude Include="..\..\include\models\base\vector.h" />
+    <ClInclude Include="..\..\include\models\sagtension\cable_component_elongation_model.h" />
+    <ClInclude Include="..\..\include\models\sagtension\cable_elongation_model.h" />
+    <ClInclude Include="..\..\include\models\sagtension\cable_state.h" />
+    <ClInclude Include="..\..\include\models\sagtension\cable_strainer.h" />
+    <ClInclude Include="..\..\include\models\sagtension\catenary_cable.h" />
+    <ClInclude Include="..\..\include\models\sagtension\catenary_cable_component_tension_solver.h" />
+    <ClInclude Include="..\..\include\models\sagtension\catenary_cable_reloader.h" />
+    <ClInclude Include="..\..\include\models\sagtension\catenary_cable_unloader.h" />
+    <ClInclude Include="..\..\include\models\sagtension\line_cable_reloader.h" />
+    <ClInclude Include="..\..\include\models\sagtension\line_cable_sagger.h" />
+    <ClInclude Include="..\..\include\models\sagtension\line_cable_to_catenary_cable_converter.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="otlsmodels_transmissionline.vcxproj">
+      <Project>{427f4bc8-624f-5837-ab78-6a68051429cf}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

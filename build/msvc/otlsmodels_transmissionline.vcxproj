@@ -13,10 +13,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{0FA96EAC-2120-5D9F-B84F-FD6674031BE6}</ProjectGuid>
+    <ProjectGuid>{427F4BC8-624F-5837-AB78-6A68051429CF}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>tls_transmissionline</RootNamespace>
-    <ProjectName>tls_transmissionline</ProjectName>
+    <RootNamespace>otlsmodels_transmissionline</RootNamespace>
+    <ProjectName>otlsmodels_transmissionline</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -99,8 +99,8 @@
     <ClInclude Include="..\..\include\models\transmissionline\weather_load_case.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="tls_base.vcxproj">
-      <Project>{94a27ff5-c4ff-53b5-9e5f-4197fc3b293c}</Project>
+    <ProjectReference Include="otlsmodels_base.vcxproj">
+      <Project>{0e82e066-5035-5ce4-bbd8-b6bab80f7649}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

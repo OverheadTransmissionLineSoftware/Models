@@ -2,12 +2,12 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="tls_base" />
+		<Option title="otlsmodels_base" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="debug">
-				<Option output="debug/bin/tls_base" prefix_auto="1" extension_auto="1" />
+				<Option output="debug/bin/otlsmodels_base" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
 				<Option object_output="debug/obj/" />
 				<Option type="2" />
@@ -17,7 +17,7 @@
 				</Compiler>
 			</Target>
 			<Target title="release">
-				<Option output="release/bin/tls_base" prefix_auto="1" extension_auto="1" />
+				<Option output="release/bin/otlsmodels_base" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
 				<Option object_output="release/obj/" />
 				<Option type="2" />
