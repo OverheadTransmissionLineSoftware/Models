@@ -4,7 +4,18 @@
 #ifndef OTLS_MODELS_BASE_HELPER_H_
 #define OTLS_MODELS_BASE_HELPER_H_
 
+#include <string>
+
 namespace helper {
+
+  /// \brief Converts a double precision number to a formatted string.
+  /// \param[in] value
+  ///   The value to be converted.
+  /// \param[in] precision_decimal
+  ///   The precision to round the number.
+  /// \return A string representation of the rounded number.
+  std::string DoubleToFormattedString(const double& value,
+                                      const int& precision_decimal);
 
   /// \brief Rounds the number to the specified precision.
   /// \param[in] number
