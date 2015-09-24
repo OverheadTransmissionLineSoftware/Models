@@ -6,6 +6,11 @@
 
 namespace units {
 
+  enum class UnitSystem {
+    Imperial,
+    Metric
+  };
+
   enum class ConversionType {
     kDegreesToRadians,
     kFeetToInches,
