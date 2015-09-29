@@ -15,7 +15,8 @@ std::string DoubleToFormattedString(const double& value,
   // creates a string stream to convert double to a string and returns
   // the string stream removes any trailing characters from the rounded number
   std::ostringstream stream;
-  stream << value_rounded;
+  stream.precision(precision_decimal);
+  stream << std::fixed << value_rounded;
   return stream.str();
 }
 
