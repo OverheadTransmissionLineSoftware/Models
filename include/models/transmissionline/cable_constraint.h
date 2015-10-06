@@ -20,7 +20,7 @@ enum class CableConditionType {
 
 /// \par OVERVIEW
 ///
-/// This struct is a container for a cable load constraint.
+/// This struct is a container for a cable constraint.
 struct CableConstraint {
  public:
   /// \par OVERVIEW

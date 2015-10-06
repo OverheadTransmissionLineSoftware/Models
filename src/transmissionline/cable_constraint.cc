@@ -28,11 +28,31 @@ bool CableConstraint::Validate(
     }
   }
 
+  // validates condition
+  if ((condition != CableConditionType::kCreep)
+      && (condition != CableConditionType::kInitial)
+      && (condition != CableConditionType::kLoad)) {
+    is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back("CABLE CONSTRAINT - Invalid condition");
+    }
+  }
+
   // validates limit
   if (limit < 0) {
     is_valid = false;
     if (messages_error != nullptr) {
       messages_error->push_back("CABLE CONSTRAINT - Invalid limit");
+    }
+  }
+
+  // validates type-limit
+  if ((type_limit != CableConstraint::LimitType::kCatenaryConstant)
+      && (type_limit != CableConstraint::LimitType::kHorizontalTension)
+      && (type_limit != CableConstraint::LimitType::kSupportTension)) {
+    is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back("CABLE CONSTRAINT - Invalid limit type");
     }
   }
 
