@@ -9,7 +9,7 @@
 			<Target title="debug">
 				<Option output="debug/bin/test" prefix_auto="1" extension_auto="1" />
 				<Option object_output="debug/obj/" />
-				<Option external_deps="../build/codeblocks/debug/bin/libtls_base.a;../build/codeblocks/debug/bin/libtls_sagtension.a;../build/codeblocks/debug/bin/libtls_transmissionline.a;" />
+				<Option external_deps="../build/codeblocks/debug/bin/libotlsmodels_base.a;../build/codeblocks/debug/bin/libotlsmodels_sagtension.a;../build/codeblocks/debug/bin/libotlsmodels_transmissionline.a;" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Option projectLinkerOptionsRelation="2" />
@@ -17,9 +17,9 @@
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
-					<Add library="../build/codeblocks/debug/bin/libtls_sagtension.a" />
-					<Add library="../build/codeblocks/debug/bin/libtls_transmissionline.a" />
-					<Add library="../build/codeblocks/debug/bin/libtls_base.a" />
+					<Add library="../build/codeblocks/debug/bin/libotlsmodels_sagtension.a" />
+					<Add library="../build/codeblocks/debug/bin/libotlsmodels_transmissionline.a" />
+					<Add library="../build/codeblocks/debug/bin/libotlsmodels_base.a" />
 				</Linker>
 			</Target>
 			<Target title="release">

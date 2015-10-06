@@ -5,8 +5,8 @@
 
 #include "gtest/gtest.h"
 
+#include "factory.h"
 #include "models/base/helper.h"
-#include "models/factory.h"
 
 class CableComponentElongationModelTest : public ::testing::Test {
  protected:
