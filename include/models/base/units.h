@@ -6,11 +6,17 @@
 
 namespace units {
 
+  /// \par OVERVIEW
+  ///
+  /// This enum contains unit systems.
   enum class UnitSystem {
-    Imperial,
-    Metric
+    kImperial,
+    kMetric
   };
 
+  /// \par OVERVIEW
+  ///
+  /// This enum contains types of unit conversions.
   enum class ConversionType {
     kDegreesToRadians,
     kFeetToInches,
