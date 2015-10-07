@@ -44,6 +44,17 @@ bool LineCableToCatenaryConverter::Validate(
     }
   }
 
+  // validates update process
+  if (is_valid == true) {
+    if (Update() == false) {
+      is_valid = false;
+      if (messages_error != nullptr) {
+        messages_error->push_back("LINE CABLE TO CATENARY CONVERTER - Error "
+                                  "updating class");
+      }
+    }
+  }
+
   // returns validation status
   return is_valid;
 }
