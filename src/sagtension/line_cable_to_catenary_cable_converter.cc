@@ -287,7 +287,13 @@ bool LineCableToCatenaryCableConverter::UpdateCatenaryCable() const {
   // updates catenary
   LineCableToCatenaryConverter converter;
   converter.set_line_cable(line_cable_);
-  Catenary3d catenary = converter.Catenary();
+
+  Catenary3d catenary;
+  if (converter.Validate() == false) {
+    return false;
+  } else {
+    catenary = converter.Catenary();
+  }
 
   catenary_cable_.set_spacing_endpoints(catenary.spacing_endpoints());
   catenary_cable_.set_tension_horizontal(catenary.tension_horizontal());
