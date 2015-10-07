@@ -283,43 +283,38 @@ double CableElongationModel::StrainCombined(
 
   // determines which region the target load is in, and sets left and right
   // points
+  const Point2d& point_regions_min = *points_regions_.cbegin();
+  const Point2d& point_regions_max = *(points_regions_.cend() - 1);
   Point2d point_left;
   Point2d point_right;
-  for (unsigned int index = 0; index <= points_regions_.size(); index++) {
 
-    // load is less than all points in the sorted collection
-    if (load < points_regions_.at(0).y) {
-      point_right.x = points_regions_.at(0).x;
-      point_right.y = points_regions_.at(0).y;
+  // load is less than all points in the sorted collection
+  if (load <= point_regions_min.y) {
+    point_right.x = point_regions_min.x;
+    point_right.y = point_regions_min.y;
 
-      point_left.x = point_right.x - 0.0005;
-      point_left.y = LoadCombined(point_left.x);
+    point_left.x = point_right.x - 0.0005;
+    point_left.y = LoadCombined(point_left.x);
 
-      break;
-    }
+  // load is greater than all points in the sorted collection
+  } else if (point_regions_max.y <= load) {
+    point_left.x = point_regions_max.x;
+    point_left.y = point_regions_max.y;
 
-    // load is between the points in the sorted collection
-    if (load < points_regions_.at(index).y) {
+    point_right.x = point_left.x + 0.0005;
+    point_right.y = LoadCombined(point_right.x);
 
-      point_left.x = points_regions_.at(index - 1).x;
-      point_left.y = points_regions_.at(index - 1).y;
+  // load is between the points in the sorted collection
+  } else {
+    // searches for boundary region points
+    for (auto iter = points_regions_.cbegin(); iter != points_regions_.cend();
+         iter++) {
+      point_left = *iter;
+      point_right = *(iter + 1);
 
-      point_right.x = points_regions_.at(index).x;
-      point_right.y = points_regions_.at(index).y;
-
-      break;
-    }
-
-    // load is greater than all points in the sorted collection
-    if (index == points_regions_.size()) {
-
-      point_left.x = points_regions_.at(index).x;
-      point_left.y = points_regions_.at(index).y;
-
-      point_right.x = point_left.x + 0.0005;
-      point_right.y = LoadCombined(point_right.x);
-
-      break;
+      if ((point_left.y <= load) && (load <= point_right.y)) {
+        break;
+      }
     }
   }
 
@@ -600,8 +595,8 @@ bool CableElongationModel::UpdatePointsRegions() const {
   if (is_enabled_core_ == true) {
 
     std::vector<Point2d> points_core = component_core_.PointsRegions();
-    for (auto iter = points_core.begin(); iter != points_core.end(); iter++) {
-      Point2d point = *iter;
+    for (auto iter = points_core.cbegin(); iter != points_core.cend(); iter++) {
+      const Point2d& point = *iter;
       points_regions_.push_back(point);
     }
   }
@@ -610,9 +605,9 @@ bool CableElongationModel::UpdatePointsRegions() const {
   if (is_enabled_shell_ == true) {
 
     std::vector<Point2d> points_shell = component_shell_.PointsRegions();
-    for (auto iter = points_shell.begin(); iter != points_shell.end();
+    for (auto iter = points_shell.cbegin(); iter != points_shell.cend();
         iter++) {
-      Point2d point = *iter;
+      const Point2d& point = *iter;
       points_regions_.push_back(point);
     }
   }
@@ -621,13 +616,11 @@ bool CableElongationModel::UpdatePointsRegions() const {
   std::sort(points_regions_.begin(), points_regions_.end(),
             Point2dSortXInreasing());
 
-  /// \todo can't figure out why iterators won't allow direct access to vector...
-  /// using index access and copying point in and out
   // re-calculates loads using total load function
-  for (unsigned int index = 0; index < points_regions_.size(); index++) {
-    Point2d point = points_regions_.at(index);
+  for (auto iter = points_regions_.begin(); iter != points_regions_.end();
+       iter++) {
+    Point2d& point = *iter;
     point.y = LoadCombined(point.x);
-    points_regions_.at(index) = point;
   }
 
   return true;
