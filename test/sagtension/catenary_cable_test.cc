@@ -1,11 +1,12 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "sagtension/catenary_cable.h"
+#include "models/sagtension/catenary_cable.h"
 
-#include "../test/factory.h"
-#include "base/helper.h"
 #include "gtest/gtest.h"
+
+#include "factory.h"
+#include "models/base/helper.h"
 
 class CatenaryCableTest : public ::testing::Test {
  protected:
