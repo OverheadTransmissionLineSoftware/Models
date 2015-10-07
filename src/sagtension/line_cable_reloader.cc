@@ -107,7 +107,7 @@ bool LineCableReloader::Validate(
     }
   }
 
-  // validates loadcase-stretch
+  // validates case-stretch
   if (case_stretch_ == nullptr) {
     is_valid = false;
     if (messages_error != nullptr) {
@@ -120,15 +120,35 @@ bool LineCableReloader::Validate(
     }
   }
 
+  // validates condition-reloaded
+  if ((condition_reloaded_ != CableConditionType::kCreep)
+      && (condition_reloaded_ != CableConditionType::kInitial)
+      && (condition_reloaded_ != CableConditionType::kLoad)) {
+    is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back("LINE CABLE RELAODER - Invalid reloaded "
+                                "condition");
+    }
+  }
+
   // validates line cable
   if (line_cable_ == nullptr) {
     is_valid = false;
     if (messages_error != nullptr) {
-      messages_error->push_back("LINE CABLE RELOADER - Invalid lien cable");
+      messages_error->push_back("LINE CABLE RELOADER - Invalid line cable");
     }
   } else {
     if (line_cable_->Validate(is_included_warnings, messages_error) == false) {
       is_valid = false;
+    }
+  }
+
+  // validates type-stretch
+  if ((type_stretch_ != CableConditionType::kCreep)
+      && (type_stretch_ != CableConditionType::kLoad)) {
+    is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back("LINE CABLE RELOADER - Invalid stretch type");
     }
   }
 
