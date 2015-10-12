@@ -9,7 +9,7 @@
 
 #include "models/sagtension/cable_elongation_model.h"
 #include "models/sagtension/cable_state.h"
-#include "models/transmissionline/cable.h"
+#include "models/sagtension/sag_tension_cable.h"
 
 /// \par OVERVIEW
 ///
@@ -21,6 +21,7 @@
 /// states:
 ///   - cable state (temperature, stretch load, stretch temperature)
 ///   - load
+///   - polynomial type
 ///
 /// \par CABLE ELONGATION MODELS
 ///
@@ -56,7 +57,7 @@ class CableStrainer {
 
   /// \brief Gets the cable.
   /// \return A copy of the cable.
-  const Cable* cable() const;
+  const SagTensionCable* cable() const;
 
   /// \brief Gets the length of the cable at the start state.
   /// \return The length of cable at the start state.
@@ -73,7 +74,7 @@ class CableStrainer {
   /// \brief Sets the cable.
   /// \param[in] cable
   ///   The cable.
-  void set_cable(const Cable* cable);
+  void set_cable(const SagTensionCable* cable);
 
   /// \brief Sets the length of the cable at the start state.
   /// \param[in] length_start
