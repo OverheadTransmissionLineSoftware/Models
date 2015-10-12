@@ -8,7 +8,6 @@
 #include "models/base/helper.h"
 
 TEST(Units, Convert) {
-
   // converts degrees to radians and back again
   double degrees = 180;
   const double radians = units::Convert(

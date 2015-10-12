@@ -24,7 +24,6 @@ class PolynomialTest : public ::testing::Test {
 };
 
 TEST_F(PolynomialTest, Derivative) {
-
   // first derivative
   Polynomial d1 = p_.Derivative();
   const std::vector<double>* c1 = d1.coefficients();
@@ -40,7 +39,6 @@ TEST_F(PolynomialTest, Derivative) {
 }
 
 TEST_F(PolynomialTest, OrderMax) {
-
   // existing coefficients
   EXPECT_EQ(3, p_.OrderMax());
 
@@ -52,21 +50,18 @@ TEST_F(PolynomialTest, OrderMax) {
 }
 
 TEST_F(PolynomialTest, Slope) {
-
   Polynomial d = p_.Derivative();
   const double x = 1;
   EXPECT_EQ(d.Y(x), p_.Slope(x));
 }
 
 TEST_F(PolynomialTest, X) {
-
   EXPECT_EQ(-1, helper::Round(p_.X(-990, 3, 0), 0));
   EXPECT_EQ(0, helper::Round(p_.X(0, 3, 0), 0));
   EXPECT_EQ(1, helper::Round(p_.X(990, 3, 0), 0));
 }
 
 TEST_F(PolynomialTest, Y) {
-
   EXPECT_EQ(-990, helper::Round(p_.Y(-1), 0));
   EXPECT_EQ(0, helper::Round(p_.Y(0), 0));
   EXPECT_EQ(990, helper::Round(p_.Y(1), 0));
