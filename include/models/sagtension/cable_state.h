@@ -7,6 +7,8 @@
 #include <list>
 #include <string>
 
+#include "sag_tension_cable.h"
+
 /// \par OVERVIEW
 ///
 /// This struct contains the information for a cable state.
@@ -39,6 +41,11 @@ struct CableState {
   /// \var temperature_stretch
   ///   The temperature that the cable was stretched at.
   double temperature_stretch;
+
+  /// \var type_polynomial_
+  ///   The polynomial that is used to describe the cable elongation
+  ///   characteristics.
+  SagTensionCableComponent::PolynomialType type_polynomial;
 };
 
 #endif // OTLS_MODELS_SAGTENSION_CABLESTATE_H_
