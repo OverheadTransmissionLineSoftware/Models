@@ -8,7 +8,7 @@
 #include <string>
 
 #include "models/sagtension/cable_state.h"
-#include "models/transmissionline/cable.h"
+#include "models/sagtension/sag_tension_cable.h"
 #include "models/transmissionline/catenary.h"
 
 /// \par OVERVIEW
@@ -36,12 +36,12 @@ class CatenaryCable : public Catenary3d {
 
   /// \brief Gets the cable.
   /// \return The cable.
-  const Cable* cable() const;
+  const SagTensionCable* cable() const;
 
   /// \brief Sets the cable.
   /// \param[in] cable
   ///   The cable.
-  void set_cable(const Cable* cable);
+  void set_cable(const SagTensionCable* cable);
 
   /// \brief Sets the cable state.
   /// \param[in] state
@@ -67,7 +67,7 @@ class CatenaryCable : public Catenary3d {
 
   /// \var cable_
   ///   The cable.
-  const Cable* cable_;
+  const SagTensionCable* cable_;
 
   /// \var state_
   ///   The cable state.
