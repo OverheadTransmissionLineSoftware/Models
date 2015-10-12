@@ -4,7 +4,6 @@
 #include "models/sagtension/catenary_cable_unloader.h"
 
 CatenaryCableUnloader::CatenaryCableUnloader() {
-
   catenary_cable_ = nullptr;
 
   is_updated_strainer_ = false;
@@ -16,7 +15,6 @@ CatenaryCableUnloader::~CatenaryCableUnloader() {
 }
 
 double CatenaryCableUnloader::LengthUnloaded() const {
-
   // updates class if necessary
   if (IsUpdated() == false) {
     if (Update() == false) {
@@ -30,7 +28,6 @@ double CatenaryCableUnloader::LengthUnloaded() const {
 bool CatenaryCableUnloader::Validate(
     const bool& is_included_warnings,
     std::list<std::string>* messages_error) const {
-
   bool is_valid = true;
 
   // validates catenary cable
@@ -44,6 +41,16 @@ bool CatenaryCableUnloader::Validate(
     if (catenary_cable_->Validate(is_included_warnings,
                                  messages_error) == false) {
       is_valid = false;
+    }
+  }
+
+  if (catenary_cable_->state()->type_polynomial
+      == SagTensionCableComponent::PolynomialType::kCreep) {
+    is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back("CATENARY CABLE UNLOADER - Invalid polynomial "
+                                "type. The creep polynomial should not be "
+                                "unloaded.");
     }
   }
 
@@ -76,7 +83,6 @@ const CatenaryCable* CatenaryCableUnloader::catenary_cable() const {
 
 void CatenaryCableUnloader::set_catenary_cable(
     const CatenaryCable* catenary_cable) {
-
   catenary_cable_ = catenary_cable;
 
   is_updated_strainer_ = false;
@@ -84,7 +90,6 @@ void CatenaryCableUnloader::set_catenary_cable(
 
 void CatenaryCableUnloader::set_state_unloaded(
     const CableState* state_unloaded) {
-
   strainer_.set_state_finish(state_unloaded);
 }
 
@@ -93,7 +98,6 @@ const CableState* CatenaryCableUnloader::state_unloaded() const {
 }
 
 bool CatenaryCableUnloader::IsUpdated() const {
-
   if (is_updated_strainer_ == true) {
     return true;
   } else {
@@ -102,7 +106,6 @@ bool CatenaryCableUnloader::IsUpdated() const {
 }
 
 bool CatenaryCableUnloader::Update() const {
-
   // updates strainer
   if (is_updated_strainer_ == false) {
 
@@ -117,7 +120,6 @@ bool CatenaryCableUnloader::Update() const {
 }
 
 bool CatenaryCableUnloader::UpdateStrainer() const {
-
   strainer_.set_cable(catenary_cable_->cable());
   strainer_.set_length_start(catenary_cable_->Length());
   strainer_.set_load_start(catenary_cable_->TensionAverage());
