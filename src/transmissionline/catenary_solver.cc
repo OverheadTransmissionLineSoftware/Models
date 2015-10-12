@@ -1,20 +1,22 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "models/transmissionline/line_cable_to_catenary_converter.h"
+#include "models/transmissionline/catenary_solver.h"
 
 #include "models/transmissionline/cable_unit_load_calculator.h"
 
-LineCableToCatenaryConverter::LineCableToCatenaryConverter() {
+CatenarySolver::CatenarySolver() {
+  cable_ = nullptr;
+  constraint_ = nullptr;
+  spacing_attachments_ = nullptr;
+
   is_updated_catenary_ = false;
-  line_cable_ = nullptr;
 }
 
-LineCableToCatenaryConverter::~LineCableToCatenaryConverter() {
+CatenarySolver::~CatenarySolver() {
 }
 
-Catenary3d LineCableToCatenaryConverter::Catenary() const {
-
+Catenary3d CatenarySolver::Catenary() const {
   // updates class if necessary
   if (IsUpdated() == false) {
     if (Update() == false) {
@@ -25,22 +27,59 @@ Catenary3d LineCableToCatenaryConverter::Catenary() const {
   return catenary_;
 }
 
-bool LineCableToCatenaryConverter::Validate(
+bool CatenarySolver::Validate(
     const bool& is_included_warnings,
     std::list<std::string>* messages_error) const {
-
   bool is_valid = true;
 
-  // validates line cable
-  if (line_cable_ == nullptr) {
+  // validates cable
+  if (cable_ == nullptr) {
     is_valid = false;
     if (messages_error != nullptr) {
-      messages_error->push_back("LINE CABLE TO CATENARY CONVERTER - Invalid "
-                                "line cable");
+      messages_error->push_back(
+        "CATENARY CABLE SOLVER - Invalid cable");
     }
   } else {
-    if (line_cable_->Validate(is_included_warnings, messages_error) == false) {
+    if (cable_->Validate(is_included_warnings, messages_error) == false) {
       is_valid = false;
+    }
+  }
+
+  // validates constraint
+  if (constraint_ == nullptr) {
+    is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back(
+          "CATENARY CABLE SOLVER - Invalid constraint");
+    }
+  } else {
+    if (cable_->Validate(is_included_warnings, messages_error) == false) {
+      is_valid = false;
+    }
+  }
+
+  // validates spacing-attachments
+  if (spacing_attachments_->x() <= 0) {
+    is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back(
+          "CATENARY CABLE SOLVER - Invalid horizontal attachment spacing");
+    }
+  }
+
+  if (spacing_attachments_->y() != 0) {
+    is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back(
+          "CATENARY CABLE SOLVER - Invalid attachment spacing");
+    }
+  }
+
+  if (2000 < abs(spacing_attachments_->z())) {
+    is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back(
+          "CATENARY CABLE SOLVER - Invalid vertical attachment spacing");
     }
   }
 
@@ -59,19 +98,35 @@ bool LineCableToCatenaryConverter::Validate(
   return is_valid;
 }
 
-const LineCable* LineCableToCatenaryConverter::line_cable() const {
-  return line_cable_;
+const Cable* CatenarySolver::cable() const {
+  return cable_;
 }
 
-void LineCableToCatenaryConverter::set_line_cable(const LineCable* line_cable) {
+const CableConstraint* CatenarySolver::constraint() const {
+  return constraint_;
+}
 
-  line_cable_ = line_cable;
-
+void CatenarySolver::set_cable(const Cable* cable) {
+  cable_ = cable;
   is_updated_catenary_ = false;
 }
 
-bool LineCableToCatenaryConverter::IsUpdated() const {
+void CatenarySolver::set_constraint(const CableConstraint* constraint) {
+  constraint_ = constraint;
+  is_updated_catenary_ = false;
+}
 
+void CatenarySolver::set_spacing_attachments(
+    const Vector3d* spacing_attachments) {
+  spacing_attachments_ = spacing_attachments;
+  is_updated_catenary_ = false;
+}
+
+const Vector3d* CatenarySolver::spacing_attachments() const {
+  return spacing_attachments_;
+}
+
+bool CatenarySolver::IsUpdated() const {
   if (is_updated_catenary_ == true) {
     return true;
   } else {
@@ -79,26 +134,23 @@ bool LineCableToCatenaryConverter::IsUpdated() const {
   }
 }
 
-bool LineCableToCatenaryConverter::SolveHorizontalTensionFromConstant() const {
-
+bool CatenarySolver::SolveHorizontalTensionFromConstant() const {
   // the catenary unit weight should already be updated, so this multiplies
   // catenary constant by w to get horizontal tension
-  catenary_.set_tension_horizontal(
-      line_cable_->constraint.limit * catenary_.weight_unit().Magnitude());
+  catenary_.set_tension_horizontal(constraint_->limit
+                                   * catenary_.weight_unit().Magnitude());
 
   return true;
 }
 
 /// This is done iteratively by adjusting the horizontal tension until the
 /// support tension is matched.
-bool LineCableToCatenaryConverter::SolveHorizontalTensionFromSupportTension()
-    const {
-
+bool CatenarySolver::SolveHorizontalTensionFromSupportTension() const {
   // x = tension-horizontal
   // y = tension-support
 
   // initializes target
-  double target_solution = line_cable_->constraint.limit;
+  double target_solution = constraint_->limit;
 
   // declares and initializes left point
   // lowest acceptable value for catenary
@@ -115,7 +167,7 @@ bool LineCableToCatenaryConverter::SolveHorizontalTensionFromSupportTension()
   // declares and initializes right point
   // highest value (horizontal tension cannot exceed support tension)
   Point2d point_right;
-  point_right.x = line_cable_->constraint.limit;
+  point_right.x = constraint_->limit;
   point_right.y = UpdateCatenaryMaxTension(point_right.x);
 
   // declares and initializes current point
@@ -176,29 +228,25 @@ bool LineCableToCatenaryConverter::SolveHorizontalTensionFromSupportTension()
   }
 }
 
-bool LineCableToCatenaryConverter::SolveWeightUnit() const {
-
+bool CatenarySolver::SolveWeightUnit() const {
   // creates a calculator based on the line cable
   CableUnitLoadCalculator calculator;
-  calculator.set_diameter_cable(&line_cable_->cable->diameter);
-  calculator.set_weight_unit_cable(&line_cable_->cable->weight_unit);
+  calculator.set_diameter_cable(&cable_->diameter);
+  calculator.set_weight_unit_cable(&cable_->weight_unit);
 
   // calculates the unit load and updates catenary
-  Vector3d load_unit = calculator.UnitCableLoad(
-      *line_cable_->constraint.case_weather);
+  Vector3d load_unit = calculator.UnitCableLoad(*constraint_->case_weather);
   catenary_.set_weight_unit(load_unit);
 
   return true;
 }
 
-bool LineCableToCatenaryConverter::Update() const {
-
+bool CatenarySolver::Update() const {
   // updates catenary
   if (is_updated_catenary_ == false) {
 
     // updates spacing
-    catenary_.set_spacing_endpoints(
-        line_cable_->spacing_attachments_ruling_span);
+    catenary_.set_spacing_endpoints(*spacing_attachments_);
 
     // solves for the unit weight
     is_updated_catenary_ = SolveWeightUnit();
@@ -207,12 +255,12 @@ bool LineCableToCatenaryConverter::Update() const {
     }
 
     // solves for the horizontal tension
-    if (line_cable_->constraint.type_limit
+    if (constraint_->type_limit
         == CableConstraint::LimitType::kHorizontalTension) {
 
-      catenary_.set_tension_horizontal(line_cable_->constraint.limit);
+      catenary_.set_tension_horizontal(constraint_->limit);
 
-    } else if (line_cable_->constraint.type_limit
+    } else if (constraint_->type_limit
                == CableConstraint::LimitType::kCatenaryConstant) {
 
       is_updated_catenary_ = SolveHorizontalTensionFromConstant();
@@ -220,7 +268,7 @@ bool LineCableToCatenaryConverter::Update() const {
         return false;
       }
 
-    } else if (line_cable_->constraint.type_limit
+    } else if (constraint_->type_limit
                == CableConstraint::LimitType::kSupportTension) {
 
       is_updated_catenary_ = SolveHorizontalTensionFromSupportTension();
@@ -237,9 +285,8 @@ bool LineCableToCatenaryConverter::Update() const {
   return true;
 }
 
-double LineCableToCatenaryConverter::UpdateCatenaryMaxTension(
+double CatenarySolver::UpdateCatenaryMaxTension(
     const double& tension_horizontal) const {
-
   // updates catenary
   catenary_.set_tension_horizontal(tension_horizontal);
 
