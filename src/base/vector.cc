@@ -22,7 +22,6 @@ Vector2d::~Vector2d() {}
 /// Determines which quadrant (I,II, III, IV) the vector is in, and uses the
 /// arc tangent function to calculate the angle.
 double Vector2d::Angle(const bool& is_enabled_negative_angles) const {
-
   double angle = -999999;
 
   // uses trigonometry to solve for angle of vector
@@ -32,7 +31,6 @@ double Vector2d::Angle(const bool& is_enabled_negative_angles) const {
     // Ex: For values on the positive horizontal axis (0 degrees), this helps
     // return 0 instead of 359.99999....
     if (x_ == 0) {
-
       if (0 < y_) {
         angle = units::Convert(
             units::kPi / 2,
@@ -56,9 +54,7 @@ double Vector2d::Angle(const bool& is_enabled_negative_angles) const {
         return angle; // both x_ and y_ are zero, returns invalid answer
       }
     }
-
   } else {
-
     // selects the quadrant and calculate using arc tangent function
     if (0 <= y_) {
 
@@ -71,9 +67,7 @@ double Vector2d::Angle(const bool& is_enabled_negative_angles) const {
             std::abs(atan(y_ / x_)),
             units::ConversionType::kRadiansToDegrees);
       }
-
     } else {
-
       if (x_ <= 0) {  // quadrant III
         angle = 180 + units::Convert(
             std::abs(atan(y_ / x_)),
@@ -102,7 +96,6 @@ double Vector2d::Magnitude() const {
 /// applies the angle rotation, and then converts back into cartesian
 /// components.
 void Vector2d::Rotate(const double& angle_rotation) {
-
   // checks if rotation angle is zero (or near zero) and exits if so
   if (std::abs(angle_rotation) < 0.00005)
     return;
@@ -162,7 +155,6 @@ Vector3d::~Vector3d() {}
 /// \see Vector2d
 double Vector3d::Angle(const Plane2dType& plane,
                        const bool& is_enabled_negative_angles) const {
-
   // creates a 2D vector of planar components
   Vector2d vector_2d;
 
@@ -198,7 +190,6 @@ double Vector3d::Magnitude() const {
 /// done using the Vector2d::Rotate function.
 /// \see Vector2d
 void Vector3d::Rotate(const Plane2dType& plane, const double& angle_rotation) {
-
   // checks if rotation angle is zero
   if (std::abs(angle_rotation) < 0.00005) {
     return;

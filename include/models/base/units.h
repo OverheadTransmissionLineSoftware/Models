@@ -64,9 +64,9 @@ const double kPi = 3.14159265358979;
 ///   numerator.
 /// \return The converted value.
 double Convert(const double& value,
-                const ConversionType& type,
-                const int& exponent = 1,
-                const bool& is_numerator = true);
+               const ConversionType& type,
+               const int& exponent = 1,
+               const bool& is_numerator = true);
 
 } // namespace units
 
