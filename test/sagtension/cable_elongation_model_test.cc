@@ -75,7 +75,7 @@ TEST_F(CableElongationModelTest, Strain) {
 
   // combined
   value = c_.Strain(CableElongationModel::ComponentType::kCombined, 0);
-  EXPECT_EQ(0.0001, helper::Round(value, 4));
+  EXPECT_EQ(0.000026, helper::Round(value, 6));
   value = c_.Strain(CableElongationModel::ComponentType::kCombined, 9188.4);
   EXPECT_EQ(0.002, helper::Round(value, 3));
 }
