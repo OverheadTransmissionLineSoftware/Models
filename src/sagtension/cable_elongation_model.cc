@@ -290,11 +290,21 @@ double CableElongationModel::StrainCombined(
 
   // load is less than all points in the sorted collection
   if (load <= point_regions_min.y) {
-    point_right.x = point_regions_min.x;
-    point_right.y = point_regions_min.y;
 
-    point_left.x = point_right.x - 0.0005;
-    point_left.y = LoadCombined(point_left.x);
+    // cable has no compressive ability
+    // no valid result beyond unloaded (minimum) strain
+    if ((cable_->component_core.modulus_compression_elastic_area == 0)
+        && (cable_->component_shell.modulus_compression_elastic_area == 0)) {
+      return point_regions_min.x;
+
+    // cable has compressive ability
+    } else {
+      point_right.x = point_regions_min.x;
+      point_right.y = point_regions_min.y;
+
+      point_left.x = point_right.x - 0.0005;
+      point_left.y = LoadCombined(point_left.x);
+    }
 
   // load is greater than all points in the sorted collection
   } else if (point_regions_max.y <= load) {
