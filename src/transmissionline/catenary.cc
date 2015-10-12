@@ -19,12 +19,10 @@ Catenary2d::~Catenary2d() {
 
 /// \f[ \frac{H}{w} = \frac{HorizontalTension}{UnitWeight} \f]
 double Catenary2d::Constant() const {
-
   return tension_horizontal_ / weight_unit_;
 }
 
 double Catenary2d::ConstantMinimum(const double& spacing_endpoints) {
-
   return spacing_endpoints / 2;
 }
 
@@ -132,7 +130,6 @@ Point2d Catenary2d::CoordinateChord(const double& position_fraction,
 /// closest endpoint is treated as negative.
 /// \see Catenary2d::LengthFromOrigin
 double Catenary2d::Length() const {
-
   double length = -999999;
 
   if (IsUpdated() == false) {
@@ -162,7 +159,6 @@ double Catenary2d::Length() const {
 }
 
 double Catenary2d::LengthSlack() const {
-
   if (IsUpdated() == false) {
     if (Update() == false) {
       return -999999;
@@ -173,7 +169,6 @@ double Catenary2d::LengthSlack() const {
 }
 
 double Catenary2d::PositionFractionOrigin() const {
-
   if (IsUpdated() == false) {
     if (Update() == false) {
       return -999999;
@@ -185,7 +180,6 @@ double Catenary2d::PositionFractionOrigin() const {
 }
 
 double Catenary2d::PositionFractionSagPoint() const {
-
   if (IsUpdated() == false) {
     if (Update() == false) {
       return -999999;
@@ -199,7 +193,6 @@ double Catenary2d::PositionFractionSagPoint() const {
 }
 
 double Catenary2d::Sag() const {
-
   if (IsUpdated() == false) {
     if (Update() == false) {
       return -999999;
@@ -279,7 +272,6 @@ Vector2d Catenary2d::TangentVector(const double& position_fraction,
 }
 
 double Catenary2d::Tension(const double& position_fraction) const {
-
   if (IsUpdated() == false) {
     if (Update() == false) {
       return -999999;
@@ -316,7 +308,6 @@ Vector2d Catenary2d::Tension(const double& position_fraction,
 }
 
 double Catenary2d::TensionAverage(const int& num_points) const {
-
   double tension_average = -999999;
 
   if (IsUpdated() == false) {
@@ -362,7 +353,6 @@ double Catenary2d::TensionAverage(const int& num_points) const {
 }
 
 double Catenary2d::TensionMax() const {
-
   double tension_max = -999999;
 
   if (IsUpdated() == false) {
@@ -420,21 +410,18 @@ bool Catenary2d::Validate(const bool& is_included_warnings,
 }
 
 void Catenary2d::set_spacing_endpoints(const Vector2d& spacing_endpoints) {
-
   spacing_endpoints_ = spacing_endpoints;
 
   is_updated_points_end_ = false;
 }
 
 void Catenary2d::set_tension_horizontal(const double& tension_horizontal) {
-
   tension_horizontal_ = tension_horizontal;
 
   is_updated_points_end_ = false;
 }
 
 void Catenary2d::set_weight_unit(const double& weight_unit) {
-
   weight_unit_ = weight_unit;
 
   is_updated_points_end_ = false;
@@ -458,7 +445,6 @@ double Catenary2d::weight_unit() const {
 double Catenary2d::CoordinateX(
     const double& length_origin_to_position,
     const AxisDirectionType& direction_origin_to_position) const {
-
   const double l = length_origin_to_position;
   const double h = tension_horizontal_;
   const double w = weight_unit_;
@@ -481,7 +467,6 @@ double Catenary2d::CoordinateX(
 double Catenary2d::CoordinateY(
     const double& length_origin_to_position,
     const AxisDirectionType& direction_origin_to_position) const {
-
   const double x = CoordinateX(length_origin_to_position,
                                direction_origin_to_position);
   const double h = tension_horizontal_;
@@ -501,7 +486,6 @@ bool Catenary2d::IsUpdated() const {
 
 /// \f[ CurveLength = \left| \frac{H}{w} sinh^{-1} \left(\frac{x}{\frac{H}{w}}\right) \right| \f]
 double Catenary2d::LengthFromOrigin(const Point2d& coordinate) const {
-
   const double x = coordinate.x;
   const double h = tension_horizontal_;
   const double w = weight_unit_;
@@ -510,7 +494,6 @@ double Catenary2d::LengthFromOrigin(const Point2d& coordinate) const {
 }
 
 double Catenary2d::PositionFraction(const double& tangent_angle) const {
-
   double position_fraction_lower = 0;
   double position_fraction_upper = 1;
   double position_fraction_target = -999999;
@@ -555,7 +538,6 @@ double Catenary2d::PositionFraction(const double& tangent_angle) const {
 }
 
 bool Catenary2d::Update() const {
-
   if (is_updated_points_end_ == false) {
 
     is_updated_points_end_ = UpdateEndPoints();
@@ -572,7 +554,6 @@ bool Catenary2d::Update() const {
 /// \f[ xBOL = \frac{A}{2} - \frac{H}{w} sinh^{-1} \left( \frac{\frac{B}{2}}{ \frac{H}{w} sinh \left( \frac{\frac{A}{2}}{\frac{H}{w}} \right)} \right) \f]
 /// \f[ xAOL = \frac{A}{2} + \frac{H}{w} sinh^{-1} \left( \frac{\frac{B}{2}}{ \frac{H}{w} sinh \left( \frac{\frac{A}{2}}{\frac{H}{w}} \right)} \right) \f]
 bool Catenary2d::UpdateEndPoints() const {
-
   const double h = tension_horizontal_;
   const double w = weight_unit_;
   const double a = spacing_endpoints_.x();
@@ -595,7 +576,6 @@ bool Catenary2d::UpdateEndPoints() const {
 bool Catenary2d::ValidateCurveAndSpacing(
     const bool& is_included_warnings,
     std::list<std::string>* messages_error) const {
-
   bool validate = true;
 
   const double constant_minimum =
@@ -622,7 +602,6 @@ Catenary3d::Catenary3d() {
 Catenary3d::~Catenary3d() {}
 
 double Catenary3d::Constant() const {
-
   double constant = -999999;
 
   if (IsUpdated() == false) {
@@ -635,7 +614,6 @@ double Catenary3d::Constant() const {
 }
 
 double Catenary3d::ConstantMinimum(const double& spacing_endpoints) {
-
   return Catenary2d::ConstantMinimum(spacing_endpoints);
 }
 
@@ -699,7 +677,6 @@ Point3d Catenary3d::CoordinateChord(const double& position_fraction,
 }
 
 double Catenary3d::Length() const {
-
   double length = -999999;
 
   if (IsUpdated() == false) {
@@ -712,7 +689,6 @@ double Catenary3d::Length() const {
 }
 
 double Catenary3d::LengthSlack() const {
-
   if (IsUpdated() == false) {
     if (Update() == false) {
       return -999999;
@@ -723,7 +699,6 @@ double Catenary3d::LengthSlack() const {
 }
 
 double Catenary3d::PositionFractionOrigin() const {
-
   if (IsUpdated() == false) {
     if (Update() == false) {
       return -999999;
@@ -734,7 +709,6 @@ double Catenary3d::PositionFractionOrigin() const {
 }
 
 double Catenary3d::PositionFractionSagPoint() const {
-
   if (IsUpdated() == false) {
     if (Update() == false) {
       return -999999;
@@ -745,7 +719,6 @@ double Catenary3d::PositionFractionSagPoint() const {
 }
 
 double Catenary3d::Sag() const {
-
   if (IsUpdated() == false) {
     if (Update() == false) {
       return -999999;
@@ -756,7 +729,6 @@ double Catenary3d::Sag() const {
 }
 
 double Catenary3d::SwingAngle() const {
-
   double angle_swing = -999999;
 
   if (IsUpdated() == false) {
@@ -774,7 +746,6 @@ double Catenary3d::SwingAngle() const {
 double Catenary3d::TangentAngleTransverse(
     const double& position_fraction,
     const AxisDirectionType& direction) const {
-
   if (IsUpdated() == false) {
     if (Update() == false) {
       return -999999;
@@ -795,7 +766,6 @@ double Catenary3d::TangentAngleTransverse(
 double Catenary3d::TangentAngleVertical(
     const double& position_fraction,
     const AxisDirectionType& direction) const {
-
   if (IsUpdated() == false) {
     if (Update() == false) {
       return -999999;
@@ -863,7 +833,6 @@ Vector3d Catenary3d::TangentVector(const double& position_fraction,
 }
 
 double Catenary3d::Tension(const double& position_fraction) const {
-
   if (IsUpdated() == false) {
     if (Update() == false) {
       return -999999;
@@ -896,7 +865,6 @@ Vector3d Catenary3d::Tension(const double& position_fraction,
 }
 
 double Catenary3d::TensionAverage(const int& num_points) const {
-
   if (IsUpdated() == false) {
     if (Update() == false) {
       return -999999;
@@ -907,7 +875,6 @@ double Catenary3d::TensionAverage(const int& num_points) const {
 }
 
 double Catenary3d::TensionMax() const {
-
   if (IsUpdated() == false) {
     if (Update() == false) {
       return -999999;
@@ -976,7 +943,6 @@ bool Catenary3d::Validate(const bool& is_included_warnings,
 }
 
 void Catenary3d::set_spacing_endpoints(const Vector3d& spacing_endpoints) {
-
   spacing_endpoints_ = spacing_endpoints;
 
   is_updated_catenary_2d_ = false;
@@ -987,7 +953,6 @@ void Catenary3d::set_tension_horizontal(const double& tension_horizontal) {
 }
 
 void Catenary3d::set_weight_unit(const Vector3d& weight_unit) {
-
   weight_unit_ = weight_unit;
 
   is_updated_catenary_2d_ = false;
@@ -1006,7 +971,6 @@ Vector3d Catenary3d::weight_unit() const {
 }
 
 bool Catenary3d::IsUpdated() const {
-
   if (is_updated_catenary_2d_ == true) {
     return true;
   } else {
@@ -1015,7 +979,6 @@ bool Catenary3d::IsUpdated() const {
 }
 
 bool Catenary3d::Update() const {
-
   if (is_updated_catenary_2d_ == false) {
 
     is_updated_catenary_2d_ = UpdateCatenary2d();
@@ -1029,7 +992,6 @@ bool Catenary3d::Update() const {
 }
 
 bool Catenary3d::UpdateCatenary2d() const {
-
   const double b = spacing_endpoints_.z();
   const double c = spacing_endpoints_.Magnitude();
   const double v = abs(weight_unit_.z());

@@ -10,12 +10,12 @@ CableUnitLoadCalculator::CableUnitLoadCalculator() {
   weight_unit_cable_ = nullptr;
 }
 
-CableUnitLoadCalculator::~CableUnitLoadCalculator() {}
+CableUnitLoadCalculator::~CableUnitLoadCalculator() {
+}
 
 bool CableUnitLoadCalculator::Validate(
     const bool& is_included_warnings,
     std::list<std::string>* messages_error) const {
-
   bool is_valid = true;
 
   // validates diameter-cable
@@ -48,7 +48,7 @@ bool CableUnitLoadCalculator::Validate(
 /// \f[ T = AP \f]
 Vector3d CableUnitLoadCalculator::UnitCableLoad(
     const WeatherLoadCase& case_load_weather) const {
-
+  // creates bare and iced cylinders
   Cylinder cylinder_bare;
   cylinder_bare.set_diameter(*diameter_cable_);
   cylinder_bare.set_length(1);

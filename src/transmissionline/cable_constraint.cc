@@ -13,7 +13,6 @@ CableConstraint::~CableConstraint() {}
 bool CableConstraint::Validate(
     const bool& is_included_warnings,
     std::list<std::string>* messages_error) const {
-
   bool is_valid = true;
 
   // validates case-weather
