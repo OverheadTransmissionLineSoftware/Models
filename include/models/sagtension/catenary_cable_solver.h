@@ -1,37 +1,32 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef OTLS_MODELS_SAGTENSION_LINECABLETOCATENARYCABLECONVERTER_H_
-#define OTLS_MODELS_SAGTENSION_LINECABLETOCATENARYCABLECONVERTER_H_
+#ifndef OTLS_MODELS_SAGTENSION_CATENARYCABLESOLVER_H_
+#define OTLS_MODELS_SAGTENSION_CATENARYCABLESOLVER_H_
 
 #include <list>
 #include <string>
 
 #include "models/sagtension/catenary_cable.h"
 #include "models/sagtension/catenary_cable_reloader.h"
-#include "models/transmissionline/line_cable.h"
+#include "models/transmissionline/cable_constraint.h"
 #include "models/transmissionline/weather_load_case.h"
 
 /// \par OVERVIEW
 ///
-/// This class solves for the state of a catenary cable that is used as a
-/// constraint with a non-zero stretch load. Note that for non-constraint
-/// catenary cables, the state is determined differently.
-/// \see LineCableReloader
+/// This class solves for a catenary cable.
 ///
-/// \par NUMERICAL SOLUTION
+/// \par STRETCHED CONSTRAINT CONDITION
 ///
-/// When the constraint catenary cable is stretched, it cannot be reloaded
-/// because the catenary cable is not competely solved. An iterative solution
-/// is used that guesses a stretch load, and then reloads the constraint
-/// catenary cable at the stretch case until it matches the stretch load.
-class LineCableToCatenaryCableConverter {
+/// When the constraint has a stretched condition, the catenary cable must be
+/// solved for iteratively.
+class CatenaryCableSolver {
  public:
   /// \brief Default constructor.
-  LineCableToCatenaryCableConverter();
+  CatenaryCableSolver();
 
   /// \brief Destructor.
-  ~LineCableToCatenaryCableConverter();
+  ~CatenaryCableSolver();
 
   /// \brief Gets the catenary cable with the updated state.
   /// \return The catenary cable with the updated state.
@@ -47,32 +42,51 @@ class LineCableToCatenaryCableConverter {
   bool Validate(const bool& is_included_warnings = true,
                 std::list<std::string>* messages_error = nullptr) const;
 
-  /// \brief Gets the stretch load case.
-  /// \return The stretch load case.
-  const WeatherLoadCase* case_stretch() const;
+  /// \brief Gets the cable.
+  /// \return The cable.
+  const SagTensionCable* cable() const;
 
-  /// \brief Gets the line cable.
-  /// \return The line cable.
-  const LineCable* line_cable() const;
+  /// \brief Gets the constraint.
+  /// \return The constraint.
+  const CableConstraint* constraint() const;
 
-  /// \brief Sets the line cable.
-  /// \param[in] line_cable
-  ///   The line cable.
-  void set_line_cable(const LineCable* line_cable);
+  /// \brief Sets the cable.
+  /// \param[in] cable
+  ///   The cable.
+  void set_cable(const SagTensionCable* cable);
 
-  /// \brief Sets the stretch load case.
-  /// \param[in] case_stretch
-  ///   The stretch load case.
-  void set_case_stretch(const WeatherLoadCase* case_stretch);
+  /// \brief Gets the constraint.
+  /// \param[in] constraint
+  ///   The constraint.
+  void set_constraint(const CableConstraint* constraint);
 
-  /// \brief Sets the type of stretch.
-  /// \param[in] type_stretch
-  ///   The type of stretch.
-  void set_type_stretch(const CableConditionType& type_stretch);
+  /// \brief Sets the attachment spacing.
+  /// \param[in] spacing_attachments
+  void set_spacing_attachments(const Vector3d* spacing_attachments);
 
-  /// \brief Gets the type of stretch.
-  /// \return The type of stretch.
-  CableConditionType type_stretch() const;
+  /// \brief Sets the creep stretch weathercase.
+  /// \param[in] weathercase_stretch_creep
+  ///   The creep stretch weathercase.
+  void set_weathercase_stretch_creep(
+      const WeatherLoadCase* weathercase_stretch_creep);
+
+  /// \brief Sets the load stretch weathercase.
+  /// \param[in] weathercase_stretch_load
+  ///   The load stretch weathercase.
+  void set_weathercase_stretch_load(
+      const WeatherLoadCase* weathercase_stretch_load);
+
+  /// \brief Gets the attachment spacing.
+  /// \return The attachment spacing.
+  const Vector3d* spacing_attachments() const;
+
+  /// \brief Gets the creep stretch weather case.
+  /// \return The creep stretch weather case.
+  const WeatherLoadCase* weathercase_stretch_creep() const;
+
+  /// \brief Gets the load stretch weather case.
+  /// \return The load stretch weather case.
+  const WeatherLoadCase* weathercase_stretch_load() const;
 
  private:
   /// \brief Gets the difference between the reloaded and defined stretch load.
@@ -106,9 +120,13 @@ class LineCableToCatenaryCableConverter {
   /// \brief Updates the catenary cable state.
   bool UpdateCatenaryCableState(const double& load_stretch) const;
 
-  /// \var case_stretch_
-  ///   The cable load case that defines the stretch in the cable state.
-  const WeatherLoadCase* case_stretch_;
+  /// \var cable_
+  ///   The cable.
+  const SagTensionCable* cable_;
+
+  /// \var constraint_
+  ///   The constraint.
+  const CableConstraint* constraint_;
 
   /// \var catenary_cable_
   ///   The catenary cable which contains the solved for state.
@@ -118,17 +136,21 @@ class LineCableToCatenaryCableConverter {
   ///   An indicator that tells if the catenary cable is updated.
   mutable bool is_updated_catenarycable_;
 
-  /// \var line_cable_
-  ///   The line cable.
-  const LineCable* line_cable_;
-
   /// \var reloader_
   ///   The catenary cable reloader.
   mutable CatenaryCableReloader reloader_;
 
-  /// \var type_stretch_
-  ///   The type of stretch that the cable is stretched to.
-  CableConditionType type_stretch_;
+  /// \var spacing_attachments_
+  ///   The attachment spacing for the catenary.
+  const Vector3d* spacing_attachments_;
+
+  /// \var weathercase_creep_
+  ///   The weather case that defines the creep-based stretch.
+  const WeatherLoadCase* weathercase_stretch_creep_;
+
+  /// \var weathercase_stretch_
+  ///   The weather case that defines the load-based stretch.
+  const WeatherLoadCase* weathercase_stretch_load_;
 };
 
-#endif  // OTLS_MODELS_SAGTENSION_LINECABLETOCATENARYCABLECONVERTER_H_
+#endif  // OTLS_MODELS_SAGTENSION_CATENARYCABLESOLVER_H_
