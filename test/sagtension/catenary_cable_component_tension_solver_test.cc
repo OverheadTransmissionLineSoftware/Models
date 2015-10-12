@@ -11,8 +11,7 @@
 class CatenaryCableComponentTensionSolverTest : public ::testing::Test {
  protected:
   CatenaryCableComponentTensionSolverTest() {
-
-    Cable* cable = factory::BuildCable();
+    SagTensionCable* cable = factory::BuildSagTensionCable();
 
     Vector3d spacing_endpoints(1200, 0, 0);
 
@@ -20,6 +19,8 @@ class CatenaryCableComponentTensionSolverTest : public ::testing::Test {
     state.load_stretch = 0;
     state.temperature = 60;
     state.temperature_stretch = 0;
+    state.type_polynomial =
+        SagTensionCableComponent::PolynomialType::kLoadStrain;
 
     CatenaryCable* catenary_cable = new CatenaryCable();
     catenary_cable->set_cable(cable);
@@ -36,33 +37,35 @@ class CatenaryCableComponentTensionSolverTest : public ::testing::Test {
 };
 
 TEST_F(CatenaryCableComponentTensionSolverTest, TensionAverageComponent) {
+  double value = -999999;
 
-  EXPECT_EQ(3174.0,
-            helper::Round(c_.TensionAverageComponent(
-                CableElongationModel::ComponentType::kCore), 1));
+  value = c_.TensionAverageComponent(
+      CableElongationModel::ComponentType::kCore);
+  EXPECT_EQ(3174.0, helper::Round(value, 1));
 
-  EXPECT_EQ(2838.4,
-            helper::Round(c_.TensionAverageComponent(
-                CableElongationModel::ComponentType::kShell), 1));
+  value = c_.TensionAverageComponent(
+      CableElongationModel::ComponentType::kShell);
+  EXPECT_EQ(2838.4, helper::Round(value, 1));
 
-  EXPECT_EQ(6012.3,
-            helper::Round(c_.TensionAverageComponent(
-                CableElongationModel::ComponentType::kCombined), 1));
+  value = c_.TensionAverageComponent(
+      CableElongationModel::ComponentType::kCombined);
+  EXPECT_EQ(6012.3, helper::Round(value, 1));
 }
 
 TEST_F(CatenaryCableComponentTensionSolverTest, TensionHorizontalComponent) {
+  double value = -999999;
 
-  EXPECT_EQ(3167.5,
-            helper::Round(c_.TensionHorizontalComponent(
-                CableElongationModel::ComponentType::kCore), 1));
+  value = c_.TensionHorizontalComponent(
+      CableElongationModel::ComponentType::kCore);
+  EXPECT_EQ(3167.5, helper::Round(value, 1));
 
-  EXPECT_EQ(2832.6,
-            helper::Round(c_.TensionHorizontalComponent(
-                CableElongationModel::ComponentType::kShell), 1));
+  value = c_.TensionHorizontalComponent(
+      CableElongationModel::ComponentType::kShell);
+  EXPECT_EQ(2832.6, helper::Round(value, 1));
 
-  EXPECT_EQ(6000.1,
-            helper::Round(c_.TensionHorizontalComponent(
-                CableElongationModel::ComponentType::kCombined), 1));
+  value = c_.TensionHorizontalComponent(
+      CableElongationModel::ComponentType::kCombined);
+  EXPECT_EQ(6000.1, helper::Round(value, 1));
 }
 
 TEST_F(CatenaryCableComponentTensionSolverTest, Validate) {
