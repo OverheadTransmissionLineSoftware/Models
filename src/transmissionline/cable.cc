@@ -134,7 +134,7 @@ bool Cable::Validate(const bool& is_included_warnings,
     }
   }
 
-  // validate name
+  // validates name
   // nothing to validate
 
   // validates strength-rated
@@ -158,16 +158,6 @@ bool Cable::Validate(const bool& is_included_warnings,
 
   // validates type-construction
   // nothing to validate
-
-  // validates type-polynomial-active
-  if (type_polynomial_active != CableComponent::PolynomialType::kCreep
-      && type_polynomial_active != CableComponent::PolynomialType::kLoadStrain) {
-
-    is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("CABLE - Invalid active polynomial type");
-    }
-  }
 
   // validates weight-unit
   if (weight_unit <= 0
