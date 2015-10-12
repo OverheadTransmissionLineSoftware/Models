@@ -10,7 +10,6 @@ namespace factory {
 /// This function converts the units that are typically used to describe the
 /// value into consistent units for the library classes.
 Cable* BuildCable() {
-
   Cable* cable = new Cable();
   CableComponent component;
   const double kAreaPhysical = units::Convert(
@@ -136,24 +135,24 @@ Cable* BuildCable() {
   cable->strength_rated = 31500;
   cable->temperature_properties_components = 70;
   cable->type_construction = "ASCR";
-  cable->type_polynomial_active = CableComponent::PolynomialType::kLoadStrain;
   cable->weight_unit = 1.094;
 
   return cable;
 }
 
 LineCable* BuildLineCable() {
+  WeatherLoadCase* weathercase = nullptr;
 
   // builds constraint
-  WeatherLoadCase* case_weather = new WeatherLoadCase();
-  case_weather->description = "0-0-60 In";
-  case_weather->thickness_ice = 0;
-  case_weather->density_ice = 0;
-  case_weather->pressure_wind = 0;
-  case_weather->temperature_cable = 60;
+  weathercase = new WeatherLoadCase();
+  weathercase->description = "0-0-60";
+  weathercase->thickness_ice = 0;
+  weathercase->density_ice = 0;
+  weathercase->pressure_wind = 0;
+  weathercase->temperature_cable = 60;
 
   CableConstraint constraint;
-  constraint.case_weather = case_weather;
+  constraint.case_weather = weathercase;
   constraint.condition = CableConditionType::kInitial;
   constraint.limit = 6000;
   constraint.type_limit = CableConstraint::LimitType::kHorizontalTension;
@@ -163,7 +162,35 @@ LineCable* BuildLineCable() {
   line_cable->constraint = constraint;
   line_cable->spacing_attachments_ruling_span = Vector3d(1200, 0, 0);
 
+  // builds creep stretch weathercase
+  weathercase = new WeatherLoadCase();
+  weathercase->description = "0-0-60";
+  weathercase->thickness_ice = 0;
+  weathercase->density_ice = 0;
+  weathercase->pressure_wind = 0;
+  weathercase->temperature_cable = 60;
+  line_cable->weathercase_stretch_creep = weathercase;
+
+  // builds load stretch weathercase
+  weathercase = new WeatherLoadCase();
+  weathercase->description = "0.5-8-0";
+  weathercase->thickness_ice = units::Convert(
+      0.5,
+      units::ConversionType::kInchesToFeet);
+  weathercase->density_ice = 57.3;
+  weathercase->pressure_wind = 8;
+  weathercase->temperature_cable = 00;
+  line_cable->weathercase_stretch_load = weathercase;
+
   return line_cable;
+}
+
+SagTensionCable* BuildSagTensionCable() {
+  Cable* cable = BuildCable();
+  SagTensionCable* cable_sagtension = new SagTensionCable();
+  cable_sagtension->set_cable_base(cable);
+
+  return cable_sagtension;
 }
 
 }  // namespace factory
