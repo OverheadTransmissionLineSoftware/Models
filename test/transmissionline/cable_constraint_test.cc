@@ -8,7 +8,6 @@
 class CableConstraintTest : public ::testing::Test {
  protected:
   CableConstraintTest() {
-
     // builds dependency object - weather case
     WeatherLoadCase* case_weather = new WeatherLoadCase();
     case_weather->description = "0-0-0 In";

@@ -18,7 +18,6 @@ class CableComponentTest : public ::testing::Test {
 };
 
 TEST_F(CableComponentTest, Validate) {
-
   EXPECT_TRUE(c_.Validate(true, nullptr));
 }
 

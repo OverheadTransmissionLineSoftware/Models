@@ -12,7 +12,6 @@
 class CableUnitLoadCalculatorTest : public ::testing::Test {
  protected:
   CableUnitLoadCalculatorTest() {
-
     Cable* cable = factory::BuildCable();
 
     c_.set_diameter_cable(&cable->diameter);
@@ -23,7 +22,6 @@ class CableUnitLoadCalculatorTest : public ::testing::Test {
 };
 
 TEST_F(CableUnitLoadCalculatorTest, UnitCableLoad) {
-
   Vector3d load_unit;
 
   // ice only

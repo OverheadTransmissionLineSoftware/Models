@@ -10,7 +10,6 @@
 class LineCableTest : public ::testing::Test {
  protected:
   LineCableTest() {
-
     // gets cable
     Cable* cable = factory::BuildCable();
 
