@@ -4,6 +4,7 @@
 #include "models/sagtension/sag_tension_cable.h"
 
 SagTensionCableComponent::SagTensionCableComponent() {
+  component_base_ = nullptr;
   is_updated_limit_polynomial_ = false;
   load_limit_polynomial_ = -999999;
 }
@@ -15,8 +16,79 @@ bool SagTensionCableComponent::Validate(
     const bool& is_included_warnings,
     std::list<std::string>* messages_error) const {
   bool is_valid = true;
-  /// \todo need to finish this
-  ///   should pull some of the validation away from the Cable class
+
+  // validates base component
+  if (component_base_ == nullptr) {
+    is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back(
+          "SAG TENSION CABLE COMPONENT - Invalid base component");
+    }
+    return is_valid;
+  } else {
+    component_base_->Validate(is_included_warnings, messages_error);
+  }
+
+  // validates coefficient-expansion-thermal-linear
+  if (component_base_->coefficient_expansion_linear_thermal <= -0.005
+      || 0.005 < component_base_->coefficient_expansion_linear_thermal) {
+    is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back(
+          "SAG TENSION CABLE COMPONENT - Invalid thermal expansion "
+          "coefficient");
+    }
+  }
+
+  // validates coefficients-polynomial-creep
+  if (component_base_->coefficients_polynomial_creep.size() != 5) {
+    messages_error->push_back(
+        "SAG TENSION CABLE COMPONENT - Invalid creep coefficients");
+  }
+
+  // validates coefficients-polynomial-loadstrain
+  if (component_base_->coefficients_polynomial_loadstrain.size() != 5) {
+    messages_error->push_back(
+        "SAG TENSION CABLE COMPONENT - Invalid load-strain coefficients");
+  }
+
+  // validates load-limit-polynomial-creep
+  if (component_base_->load_limit_polynomial_creep < 0) {
+    is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back(
+          "SAG TENSION CABLE COMPONENT - Invalid creep polynomial limit");
+    }
+  }
+
+  // validates load-limit-polynomial-loadstrain
+  if (component_base_->load_limit_polynomial_loadstrain < 0) {
+    is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back(
+          "SAG TENSION CABLE COMPONENT - Invalid load-strain polynomial limit");
+    }
+  }
+
+  // validates modulus-compression-elastic-area
+  if (component_base_->modulus_compression_elastic_area < 0) {
+    is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back(
+          "SAG TENSION CABLE COMPONENT- Invalid compression elastic area "
+          "modulus");
+    }
+  }
+
+  // validates modulus-tension-elastic-area
+  if (component_base_->modulus_tension_elastic_area < 0) {
+    is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back(
+          "SAG TENSION CABLE COMPONENT - Invalid tension elastic area "
+          "modulus");
+    }
+  }
 
   return is_valid;
 }
@@ -96,8 +168,35 @@ bool SagTensionCable::Validate(const bool& is_included_warnings,
                               std::list<std::string>* messages_error) const {
   bool is_valid = true;
 
-  /// \todo need to do this
-  ///   should pull some of the validation away from the Cable class
+  // validates base cable
+  if (cable_base_ == nullptr) {
+    is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back(
+          "SAG TENSION CABLE - Invalid base cable");
+    }
+    return is_valid;
+  } else {
+    cable_base_->Validate(is_included_warnings, messages_error);
+  }
+
+  // validates strength-rated
+  if (cable_base_->strength_rated < 0) {
+    is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back(
+          "SAG TENSION CABLE - Invalid rated strength");
+    }
+  }
+
+  // validates temperature-component-properties
+  if (cable_base_->temperature_properties_components < 0) {
+    is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back(
+          "SAG TENSION CABLE - Invalid component properties temperature");
+    }
+  }
 
   // returns validation status
   return is_valid;

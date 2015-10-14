@@ -19,66 +19,9 @@ bool CableComponent::Validate(const bool& is_included_warnings,
                               std::list<std::string>* messages_error) const {
   bool is_valid = true;
 
-  // validates coefficient-expansion-thermal-linear
-  if (coefficient_expansion_linear_thermal <= -0.005
-      || 0.005 < coefficient_expansion_linear_thermal) {
-    is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("CABLE COMPONENT - Invalid coefficient of "
-                                "thermal expansion");
-    }
-  }
-
-  // validates coefficients-polynomial-creep
-  if (coefficients_polynomial_creep.size() != 5) {
-    messages_error->push_back("CABLE COMPONENT - Invalid creep coefficients");
-  }
-
-  // validates coefficients-polynomial-loadstrain
-  if (coefficients_polynomial_loadstrain.size() != 5) {
-    messages_error->push_back("CABLE COMPONENT - Invalid load-strain "
-                              "coefficients");
-  }
-
-  // validates load-limit-polynomial-creep
-  if (load_limit_polynomial_creep < 0) {
-
-    is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("CABLE COMPONENT - Invalid creep polynomial "
-                                "limit");
-    }
-  }
-
-  // validates load-limit-polynomial-loadstrain
-  if (load_limit_polynomial_loadstrain < 0) {
-
-    is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("CABLE COMPONENT - Invalid load-strain "
-                                "polynomial limit");
-    }
-  }
-
-  // validates modulus-compression-elastic-area
-  if (modulus_compression_elastic_area < 0) {
-
-    is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("CABLE COMPONENT- Invalid compression elastic "
-                                "area modulus");
-    }
-  }
-
-  // validates modulus-tension-elastic-area
-  if (modulus_tension_elastic_area < 0) {
-
-    is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("COMPONENT | CABLE - Invalid tension elastic "
-                                "area modulus");
-    }
-  }
+  // Most component validation has moved to SagTensionCableComponent.
+  // This function will remain as a placeholder for validation when more
+  // libraries are developed.
 
   // returns validation status
   return is_valid;
@@ -136,25 +79,6 @@ bool Cable::Validate(const bool& is_included_warnings,
 
   // validates name
   // nothing to validate
-
-  // validates strength-rated
-  if (strength_rated < 0) {
-
-    is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("CABLE - Invalid rated strength");
-    }
-  }
-
-  // validates temperature-component-properties
-  if (temperature_properties_components < 0) {
-
-    is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("CABLE - Invalid component properties "
-                                "temperature");
-    }
-  }
 
   // validates type-construction
   // nothing to validate
