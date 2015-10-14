@@ -351,6 +351,10 @@ bool CatenaryCableSolver::UpdateCatenaryCable() const {
   solver.set_constraint(constraint_);
   solver.set_spacing_attachments(spacing_attachments_);
 
+  if (solver.Validate(false, nullptr) == false) {
+    return false;
+  }
+
   Catenary3d catenary = solver.Catenary();
 
   catenary_cable_.set_spacing_endpoints(catenary.spacing_endpoints());
