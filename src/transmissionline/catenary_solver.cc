@@ -88,8 +88,8 @@ bool CatenarySolver::Validate(
     if (Update() == false) {
       is_valid = false;
       if (messages_error != nullptr) {
-        messages_error->push_back("LINE CABLE TO CATENARY CONVERTER - Error "
-                                  "updating class");
+        messages_error->push_back(
+            "CATENARY CABLE SOLVER - Error updating class");
       }
     }
   }
@@ -155,8 +155,8 @@ bool CatenarySolver::SolveHorizontalTensionFromSupportTension() const {
   // declares and initializes left point
   // lowest acceptable value for catenary
   Point2d point_left;
-  point_left.x = 0.5 * catenary_.weight_unit().Magnitude()
-                     * catenary_.spacing_endpoints().Magnitude();
+  point_left.x = Catenary2d::ConstantMinimum(
+      catenary_.spacing_endpoints().Magnitude());
   point_left.y = UpdateCatenaryMaxTension(point_left.x);
 
   // target is less than lowest acceptable catenary value
@@ -277,6 +277,11 @@ bool CatenarySolver::Update() const {
       }
 
     } else {
+      return false;
+    }
+
+    // validates catenary to make sure that H/w is valid
+    if (catenary_.Validate(false, nullptr) == false) {
       return false;
     }
   }
