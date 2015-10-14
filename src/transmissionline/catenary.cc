@@ -406,6 +406,14 @@ bool Catenary2d::Validate(const bool& is_included_warnings,
     }
   }
 
+  // continues validation if no errors are present
+  if (is_valid == true) {
+    if (ValidateCurveAndSpacing(is_included_warnings,
+                                messages_error) == false) {
+      is_valid = false;
+    }
+  }
+
   return is_valid;
 }
 
@@ -576,23 +584,21 @@ bool Catenary2d::UpdateEndPoints() const {
 bool Catenary2d::ValidateCurveAndSpacing(
     const bool& is_included_warnings,
     std::list<std::string>* messages_error) const {
-  bool validate = true;
+  bool is_valid = true;
 
   const double constant_minimum =
       ConstantMinimum(spacing_endpoints_.Magnitude());
-
   const double constant = Constant();
 
   if (constant < constant_minimum) {
-
-    validate = false;
+    is_valid = false;
     if (messages_error != nullptr) {
       messages_error->push_back("CATENARY 2D - Invalid H/w and endpoint spacing"
                                 "combination");
     }
   }
 
-  return validate;
+  return is_valid;
 }
 
 Catenary3d::Catenary3d() {
@@ -936,6 +942,22 @@ bool Catenary3d::Validate(const bool& is_included_warnings,
     is_valid = false;
     if (messages_error != nullptr) {
       messages_error->push_back("CATENARY - Invalid vertical unit weight");
+    }
+  }
+
+  // continues validation if no errors are present
+  if (is_valid == true) {
+    if (Update() == false) {
+      is_valid = false;
+      if (messages_error != nullptr) {
+        messages_error->push_back("CATENARY - Error updating class");
+      }
+    } else {
+      // validates 2D catenary
+      if (catenary_2d_.Validate(is_included_warnings,
+                                messages_error) == false) {
+        is_valid = false;
+      }
     }
   }
 
