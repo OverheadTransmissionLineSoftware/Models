@@ -272,15 +272,17 @@ double CableElongationModel::StrainCombined(
   // load is less than all points in the sorted collection
   if (load <= point_regions_min.y) {
 
-    // cable has no compressive ability
-    // no valid result beyond unloaded (minimum) strain
-    if ((cable_->component_core()->modulus_compression_elastic_area() == 0)
-        && (cable_->component_shell()->modulus_compression_elastic_area() == 0))
-        {
-      return point_regions_min.x;
+    // determines if core and/or shell can be compressed
+    bool is_compressible_core =
+        (cable_->component_core()->modulus_compression_elastic_area() == 0);
+    bool is_compressible_shell =
+        (cable_->component_shell()->modulus_compression_elastic_area() == 0);
 
-    // cable has compressive ability
+    if ((is_compressible_core == false) && (is_compressible_shell == false)) {
+      // cable has no compressive ability, returns minimum value
+      return point_regions_min.x;
     } else {
+      // cable has compressive ability, can extrapolate into compression region
       point_right.x = point_regions_min.x;
       point_right.y = point_regions_min.y;
 
