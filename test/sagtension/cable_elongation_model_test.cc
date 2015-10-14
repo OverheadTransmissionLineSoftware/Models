@@ -78,6 +78,17 @@ TEST_F(CableElongationModelTest, Strain) {
   EXPECT_EQ(0.000026, helper::Round(value, 6));
   value = c_.Strain(CableElongationModel::ComponentType::kCombined, 9188.4);
   EXPECT_EQ(0.002, helper::Round(value, 3));
+
+  // modifies core and shell compression modulus to zero
+  // checks combined strain at zero load
+  SagTensionCable* cable = factory::BuildSagTensionCable();
+  Cable cable_base = *cable->cable_base();
+  cable_base.component_core.modulus_compression_elastic_area = 0;
+  cable_base.component_shell.modulus_compression_elastic_area = 0;
+  cable->set_cable_base(&cable_base);
+  c_.set_cable(cable);
+  value = c_.Strain(CableElongationModel::ComponentType::kCombined, 0);
+  EXPECT_EQ(-0.000022, helper::Round(value, 6));
 }
 
 TEST_F(CableElongationModelTest, Validate) {
