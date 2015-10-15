@@ -44,6 +44,8 @@ class LineCableReloader {
   Catenary3d CatenaryReloaded() const;
 
   /// \brief Gets the load the cable was stretched to.
+  /// \param[in] condition
+  ///   The cable stretch condition.
   /// \return The load the cable was stretched to.
   double LoadStretch(const CableConditionType& condition) const;
 
@@ -104,7 +106,7 @@ class LineCableReloader {
   void set_line_cable(const LineCable* line_cable);
 
   /// \brief Sets the reloaded load case.
-  /// \param[in] case_reloaded
+  /// \param[in] weathercase_reloaded
   ///   The reloaded load case.
   void set_weathercase_reloaded(const WeatherLoadCase* weathercase_reloaded);
 

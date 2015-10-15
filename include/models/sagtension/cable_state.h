@@ -42,7 +42,7 @@ struct CableState {
   ///   The temperature that the cable was stretched at.
   double temperature_stretch;
 
-  /// \var type_polynomial_
+  /// \var type_polynomial
   ///   The polynomial that is used to describe the cable elongation
   ///   characteristics.
   SagTensionCableComponent::PolynomialType type_polynomial;

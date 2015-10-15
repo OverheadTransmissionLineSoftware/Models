@@ -47,6 +47,8 @@ class SagTensionCableComponent {
   const double* coefficient_expansion_linear_thermal() const;
 
   /// \brief Gets the polynomial coefficients.
+  /// \param[in] type_polynomial
+  ///   The polynomial type.
   /// \return The polynomial coefficients.
   const std::vector<double>* coefficients_polynomial(
       const PolynomialType& type_polynomial) const;
@@ -56,6 +58,8 @@ class SagTensionCableComponent {
   const CableComponent* component_base() const;
 
   /// \brief Gets the load limit of the active polynomial.
+  /// \param[in] type_polynomial
+  ///   The polynomial type.
   /// \return The load limit of the polynomial.
   const double* load_limit_polynomial(const PolynomialType& type_polynomial)
       const;
@@ -69,8 +73,8 @@ class SagTensionCableComponent {
   const double* modulus_tension_elastic_area() const;
 
   /// \brief Sets the cable component.
-  /// \param[in] component
-  ///   The cable component.
+  /// \param[in] component_base
+  ///   The base cable component.
   void set_component_base(const CableComponent* component_base);
 
  private:
@@ -82,7 +86,7 @@ class SagTensionCableComponent {
   /// \return The success status of the update.
   bool UpdateLimitPolynomial() const;
 
-  /// \var component_
+  /// \var component_base_
   ///   The cable component that is interfaced.
   const CableComponent* component_base_;
 
@@ -144,7 +148,7 @@ class SagTensionCable {
   const double* diameter() const;
 
   /// \brief Sets the base cable.
-  /// \param[in] cable
+  /// \param[in] cable_base
   ///   The base cable.
   void set_cable_base(const Cable* cable_base);
 
@@ -161,7 +165,7 @@ class SagTensionCable {
   const double* weight_unit() const;
 
  private:
-  /// \var cable_
+  /// \var cable_base_
   ///   The cable that is interfaced.
   const Cable* cable_base_;
 

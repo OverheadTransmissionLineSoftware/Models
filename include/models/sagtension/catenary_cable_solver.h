@@ -144,11 +144,11 @@ class CatenaryCableSolver {
   ///   The attachment spacing for the catenary.
   const Vector3d* spacing_attachments_;
 
-  /// \var weathercase_creep_
+  /// \var weathercase_stretch_creep_
   ///   The weather case that defines the creep-based stretch.
   const WeatherLoadCase* weathercase_stretch_creep_;
 
-  /// \var weathercase_stretch_
+  /// \var weathercase_stretch_load_
   ///   The weather case that defines the load-based stretch.
   const WeatherLoadCase* weathercase_stretch_load_;
 };
