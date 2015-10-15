@@ -29,10 +29,10 @@
     <ClInclude Include="..\..\include\models\transmissionline\catenary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\models\transmissionline\line_cable.h">
+    <ClInclude Include="..\..\include\models\transmissionline\catenary_solver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\models\transmissionline\line_cable_to_catenary_converter.h">
+    <ClInclude Include="..\..\include\models\transmissionline\line_cable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\models\transmissionline\weather_load_case.h">
@@ -52,10 +52,10 @@
     <ClCompile Include="..\..\src\transmissionline\catenary.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\transmissionline\line_cable.cc">
+    <ClCompile Include="..\..\src\transmissionline\catenary_solver.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\transmissionline\line_cable_to_catenary_converter.cc">
+    <ClCompile Include="..\..\src\transmissionline\line_cable.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\transmissionline\weather_load_case.cc">

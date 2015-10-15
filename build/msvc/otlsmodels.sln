@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "otlsmodels_base", "otlsmodels_base.vcxproj", "{64270951-E6A3-5AB1-8A47-EAD3D561DD8C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "otlsmodels_transmissionline", "otlsmodels_transmissionline.vcxproj", "{18E22BE0-3B83-5EAE-BCB8-D0C536420EF7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{64270951-E6A3-5AB1-8A47-EAD3D561DD8C} = {64270951-E6A3-5AB1-8A47-EAD3D561DD8C}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "otlsmodels_sagtension", "otlsmodels_sagtension.vcxproj", "{AFBE05BD-EC92-5CCD-8819-D8E1FEC7F0CB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{18E22BE0-3B83-5EAE-BCB8-D0C536420EF7} = {18E22BE0-3B83-5EAE-BCB8-D0C536420EF7}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{64270951-E6A3-5AB1-8A47-EAD3D561DD8C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{64270951-E6A3-5AB1-8A47-EAD3D561DD8C}.Debug|Win32.Build.0 = Debug|Win32
+		{64270951-E6A3-5AB1-8A47-EAD3D561DD8C}.Release|Win32.ActiveCfg = Release|Win32
+		{64270951-E6A3-5AB1-8A47-EAD3D561DD8C}.Release|Win32.Build.0 = Release|Win32
+		{18E22BE0-3B83-5EAE-BCB8-D0C536420EF7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{18E22BE0-3B83-5EAE-BCB8-D0C536420EF7}.Debug|Win32.Build.0 = Debug|Win32
+		{18E22BE0-3B83-5EAE-BCB8-D0C536420EF7}.Release|Win32.ActiveCfg = Release|Win32
+		{18E22BE0-3B83-5EAE-BCB8-D0C536420EF7}.Release|Win32.Build.0 = Release|Win32
+		{AFBE05BD-EC92-5CCD-8819-D8E1FEC7F0CB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AFBE05BD-EC92-5CCD-8819-D8E1FEC7F0CB}.Debug|Win32.Build.0 = Debug|Win32
+		{AFBE05BD-EC92-5CCD-8819-D8E1FEC7F0CB}.Release|Win32.ActiveCfg = Release|Win32
+		{AFBE05BD-EC92-5CCD-8819-D8E1FEC7F0CB}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

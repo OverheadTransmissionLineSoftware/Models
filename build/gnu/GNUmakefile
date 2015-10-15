@@ -67,8 +67,8 @@ $(builddir)/otlsmodels_base_units.o: ../../src/base/units.cc
 $(builddir)/otlsmodels_base_vector.o: ../../src/base/vector.cc
 	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I../../include -std=c++11 ../../src/base/vector.cc
 
-$(builddir)/libotlsmodels_transmissionline.a: $(builddir)/otlsmodels_transmissionline_cable.o $(builddir)/otlsmodels_transmissionline_cable_constraint.o $(builddir)/otlsmodels_transmissionline_cable_unit_load_calculator.o $(builddir)/otlsmodels_transmissionline_catenary.o $(builddir)/otlsmodels_transmissionline_line_cable.o $(builddir)/otlsmodels_transmissionline_line_cable_to_catenary_converter.o $(builddir)/otlsmodels_transmissionline_weather_load_case.o $(builddir)/libotlsmodels_base.a
-	$(AR) rcu $@ $(builddir)/otlsmodels_transmissionline_cable.o $(builddir)/otlsmodels_transmissionline_cable_constraint.o $(builddir)/otlsmodels_transmissionline_cable_unit_load_calculator.o $(builddir)/otlsmodels_transmissionline_catenary.o $(builddir)/otlsmodels_transmissionline_line_cable.o $(builddir)/otlsmodels_transmissionline_line_cable_to_catenary_converter.o $(builddir)/otlsmodels_transmissionline_weather_load_case.o
+$(builddir)/libotlsmodels_transmissionline.a: $(builddir)/otlsmodels_transmissionline_cable.o $(builddir)/otlsmodels_transmissionline_cable_constraint.o $(builddir)/otlsmodels_transmissionline_cable_unit_load_calculator.o $(builddir)/otlsmodels_transmissionline_catenary.o $(builddir)/otlsmodels_transmissionline_catenary_solver.o $(builddir)/otlsmodels_transmissionline_line_cable.o $(builddir)/otlsmodels_transmissionline_weather_load_case.o $(builddir)/libotlsmodels_base.a
+	$(AR) rcu $@ $(builddir)/otlsmodels_transmissionline_cable.o $(builddir)/otlsmodels_transmissionline_cable_constraint.o $(builddir)/otlsmodels_transmissionline_cable_unit_load_calculator.o $(builddir)/otlsmodels_transmissionline_catenary.o $(builddir)/otlsmodels_transmissionline_catenary_solver.o $(builddir)/otlsmodels_transmissionline_line_cable.o $(builddir)/otlsmodels_transmissionline_weather_load_case.o
 	$(RANLIB) $@
 
 $(builddir)/otlsmodels_transmissionline_cable.o: ../../src/transmissionline/cable.cc
@@ -83,17 +83,17 @@ $(builddir)/otlsmodels_transmissionline_cable_unit_load_calculator.o: ../../src/
 $(builddir)/otlsmodels_transmissionline_catenary.o: ../../src/transmissionline/catenary.cc
 	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I../../include -std=c++11 ../../src/transmissionline/catenary.cc
 
+$(builddir)/otlsmodels_transmissionline_catenary_solver.o: ../../src/transmissionline/catenary_solver.cc
+	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I../../include -std=c++11 ../../src/transmissionline/catenary_solver.cc
+
 $(builddir)/otlsmodels_transmissionline_line_cable.o: ../../src/transmissionline/line_cable.cc
 	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I../../include -std=c++11 ../../src/transmissionline/line_cable.cc
-
-$(builddir)/otlsmodels_transmissionline_line_cable_to_catenary_converter.o: ../../src/transmissionline/line_cable_to_catenary_converter.cc
-	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I../../include -std=c++11 ../../src/transmissionline/line_cable_to_catenary_converter.cc
 
 $(builddir)/otlsmodels_transmissionline_weather_load_case.o: ../../src/transmissionline/weather_load_case.cc
 	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I../../include -std=c++11 ../../src/transmissionline/weather_load_case.cc
 
-$(builddir)/libotlsmodels_sagtension.a: $(builddir)/otlsmodels_sagtension_cable_component_elongation_model.o $(builddir)/otlsmodels_sagtension_cable_elongation_model.o $(builddir)/otlsmodels_sagtension_cable_state.o $(builddir)/otlsmodels_sagtension_cable_strainer.o $(builddir)/otlsmodels_sagtension_catenary_cable.o $(builddir)/otlsmodels_sagtension_catenary_cable_component_tension_solver.o $(builddir)/otlsmodels_sagtension_catenary_cable_reloader.o $(builddir)/otlsmodels_sagtension_catenary_cable_unloader.o $(builddir)/otlsmodels_sagtension_line_cable_reloader.o $(builddir)/otlsmodels_sagtension_line_cable_sagger.o $(builddir)/otlsmodels_sagtension_line_cable_to_catenary_cable_converter.o $(builddir)/libotlsmodels_transmissionline.a
-	$(AR) rcu $@ $(builddir)/otlsmodels_sagtension_cable_component_elongation_model.o $(builddir)/otlsmodels_sagtension_cable_elongation_model.o $(builddir)/otlsmodels_sagtension_cable_state.o $(builddir)/otlsmodels_sagtension_cable_strainer.o $(builddir)/otlsmodels_sagtension_catenary_cable.o $(builddir)/otlsmodels_sagtension_catenary_cable_component_tension_solver.o $(builddir)/otlsmodels_sagtension_catenary_cable_reloader.o $(builddir)/otlsmodels_sagtension_catenary_cable_unloader.o $(builddir)/otlsmodels_sagtension_line_cable_reloader.o $(builddir)/otlsmodels_sagtension_line_cable_sagger.o $(builddir)/otlsmodels_sagtension_line_cable_to_catenary_cable_converter.o
+$(builddir)/libotlsmodels_sagtension.a: $(builddir)/otlsmodels_sagtension_cable_component_elongation_model.o $(builddir)/otlsmodels_sagtension_cable_elongation_model.o $(builddir)/otlsmodels_sagtension_cable_state.o $(builddir)/otlsmodels_sagtension_cable_strainer.o $(builddir)/otlsmodels_sagtension_catenary_cable.o $(builddir)/otlsmodels_sagtension_catenary_cable_component_tension_solver.o $(builddir)/otlsmodels_sagtension_catenary_cable_reloader.o $(builddir)/otlsmodels_sagtension_catenary_cable_solver.o $(builddir)/otlsmodels_sagtension_catenary_cable_unloader.o $(builddir)/otlsmodels_sagtension_line_cable_reloader.o $(builddir)/otlsmodels_sagtension_line_cable_sagger.o $(builddir)/libotlsmodels_transmissionline.a
+	$(AR) rcu $@ $(builddir)/otlsmodels_sagtension_cable_component_elongation_model.o $(builddir)/otlsmodels_sagtension_cable_elongation_model.o $(builddir)/otlsmodels_sagtension_cable_state.o $(builddir)/otlsmodels_sagtension_cable_strainer.o $(builddir)/otlsmodels_sagtension_catenary_cable.o $(builddir)/otlsmodels_sagtension_catenary_cable_component_tension_solver.o $(builddir)/otlsmodels_sagtension_catenary_cable_reloader.o $(builddir)/otlsmodels_sagtension_catenary_cable_solver.o $(builddir)/otlsmodels_sagtension_catenary_cable_unloader.o $(builddir)/otlsmodels_sagtension_line_cable_reloader.o $(builddir)/otlsmodels_sagtension_line_cable_sagger.o
 	$(RANLIB) $@
 
 $(builddir)/otlsmodels_sagtension_cable_component_elongation_model.o: ../../src/sagtension/cable_component_elongation_model.cc
@@ -117,6 +117,9 @@ $(builddir)/otlsmodels_sagtension_catenary_cable_component_tension_solver.o: ../
 $(builddir)/otlsmodels_sagtension_catenary_cable_reloader.o: ../../src/sagtension/catenary_cable_reloader.cc
 	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I../../include -std=c++11 ../../src/sagtension/catenary_cable_reloader.cc
 
+$(builddir)/otlsmodels_sagtension_catenary_cable_solver.o: ../../src/sagtension/catenary_cable_solver.cc
+	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I../../include -std=c++11 ../../src/sagtension/catenary_cable_solver.cc
+
 $(builddir)/otlsmodels_sagtension_catenary_cable_unloader.o: ../../src/sagtension/catenary_cable_unloader.cc
 	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I../../include -std=c++11 ../../src/sagtension/catenary_cable_unloader.cc
 
@@ -125,9 +128,6 @@ $(builddir)/otlsmodels_sagtension_line_cable_reloader.o: ../../src/sagtension/li
 
 $(builddir)/otlsmodels_sagtension_line_cable_sagger.o: ../../src/sagtension/line_cable_sagger.cc
 	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I../../include -std=c++11 ../../src/sagtension/line_cable_sagger.cc
-
-$(builddir)/otlsmodels_sagtension_line_cable_to_catenary_cable_converter.o: ../../src/sagtension/line_cable_to_catenary_cable_converter.cc
-	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I../../include -std=c++11 ../../src/sagtension/line_cable_to_catenary_cable_converter.cc
 
 clean:
 	rm -f *.o

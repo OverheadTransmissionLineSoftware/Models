@@ -35,8 +35,8 @@ library otlsmodels_transmissionline {
     ../../include/models/transmissionline/cable_constraint.h
     ../../include/models/transmissionline/cable_unit_load_calculator.h
     ../../include/models/transmissionline/catenary.h
+    ../../include/models/transmissionline/catenary_solver.h
     ../../include/models/transmissionline/line_cable.h
-    ../../include/models/transmissionline/line_cable_to_catenary_converter.h
     ../../include/models/transmissionline/weather_load_case.h
   }
   sources {
@@ -44,8 +44,8 @@ library otlsmodels_transmissionline {
     ../../src/transmissionline/cable_constraint.cc
     ../../src/transmissionline/cable_unit_load_calculator.cc
     ../../src/transmissionline/catenary.cc
+    ../../src/transmissionline/catenary_solver.cc
     ../../src/transmissionline/line_cable.cc
-    ../../src/transmissionline/line_cable_to_catenary_converter.cc
     ../../src/transmissionline/weather_load_case.cc
   }
 }
@@ -63,10 +63,10 @@ library otlsmodels_sagtension {
     ../../include/models/sagtension/catenary_cable.h
     ../../include/models/sagtension/catenary_cable_component_tension_solver.h
     ../../include/models/sagtension/catenary_cable_reloader.h
+    ../../include/models/sagtension/catenary_cable_solver.h
     ../../include/models/sagtension/catenary_cable_unloader.h
     ../../include/models/sagtension/line_cable_reloader.h
     ../../include/models/sagtension/line_cable_sagger.h
-    ../../include/models/sagtension/line_cable_to_catenary_cable_converter.h
   }
   sources {
     ../../src/sagtension/cable_component_elongation_model.cc
@@ -76,9 +76,9 @@ library otlsmodels_sagtension {
     ../../src/sagtension/catenary_cable.cc
     ../../src/sagtension/catenary_cable_component_tension_solver.cc
     ../../src/sagtension/catenary_cable_reloader.cc
+    ../../src/sagtension/catenary_cable_solver.cc
     ../../src/sagtension/catenary_cable_unloader.cc
     ../../src/sagtension/line_cable_reloader.cc
     ../../src/sagtension/line_cable_sagger.cc
-    ../../src/sagtension/line_cable_to_catenary_cable_converter.cc
   }
 }

@@ -13,7 +13,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{DCB13E3C-2A1C-51C9-B78A-65B03ABFE541}</ProjectGuid>
+    <ProjectGuid>{AFBE05BD-EC92-5CCD-8819-D8E1FEC7F0CB}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>otlsmodels_sagtension</RootNamespace>
     <ProjectName>otlsmodels_sagtension</ProjectName>
@@ -88,10 +88,10 @@
     <ClCompile Include="..\..\src\sagtension\catenary_cable.cc" />
     <ClCompile Include="..\..\src\sagtension\catenary_cable_component_tension_solver.cc" />
     <ClCompile Include="..\..\src\sagtension\catenary_cable_reloader.cc" />
+    <ClCompile Include="..\..\src\sagtension\catenary_cable_solver.cc" />
     <ClCompile Include="..\..\src\sagtension\catenary_cable_unloader.cc" />
     <ClCompile Include="..\..\src\sagtension\line_cable_reloader.cc" />
     <ClCompile Include="..\..\src\sagtension\line_cable_sagger.cc" />
-    <ClCompile Include="..\..\src\sagtension\line_cable_to_catenary_cable_converter.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\models\sagtension\cable_component_elongation_model.h" />
@@ -101,14 +101,14 @@
     <ClInclude Include="..\..\include\models\sagtension\catenary_cable.h" />
     <ClInclude Include="..\..\include\models\sagtension\catenary_cable_component_tension_solver.h" />
     <ClInclude Include="..\..\include\models\sagtension\catenary_cable_reloader.h" />
+    <ClInclude Include="..\..\include\models\sagtension\catenary_cable_solver.h" />
     <ClInclude Include="..\..\include\models\sagtension\catenary_cable_unloader.h" />
     <ClInclude Include="..\..\include\models\sagtension\line_cable_reloader.h" />
     <ClInclude Include="..\..\include\models\sagtension\line_cable_sagger.h" />
-    <ClInclude Include="..\..\include\models\sagtension\line_cable_to_catenary_cable_converter.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="otlsmodels_transmissionline.vcxproj">
-      <Project>{427f4bc8-624f-5837-ab78-6a68051429cf}</Project>
+      <Project>{18e22be0-3b83-5eae-bcb8-d0c536420ef7}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

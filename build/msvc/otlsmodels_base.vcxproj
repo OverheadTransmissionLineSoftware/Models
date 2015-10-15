@@ -13,7 +13,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{0E82E066-5035-5CE4-BBD8-B6BAB80F7649}</ProjectGuid>
+    <ProjectGuid>{64270951-E6A3-5AB1-8A47-EAD3D561DD8C}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>otlsmodels_base</RootNamespace>
     <ProjectName>otlsmodels_base</ProjectName>
