@@ -100,14 +100,17 @@ double LineCableSagger::TensionSupportActual(const int& index) const {
 }
 
 bool LineCableSagger::Validate(const bool& is_included_warnings,
-                std::list<std::string>* messages_error) const {
+                std::list<ErrorMessage>* messages) const {
+  // initializes
   bool is_valid = true;
+  ErrorMessage message;
+  message.title = "LINE CABLE SAGGER";
 
   // validates constraints-design
   for (auto iter = constraints_design_.cbegin();
        iter != constraints_design_.cend(); iter++) {
     const CableConstraint& constraint = *iter;
-    if (constraint.Validate(is_included_warnings, messages_error) == false) {
+    if (constraint.Validate(is_included_warnings, messages) == false) {
       is_valid = false;
     }
   }
@@ -115,12 +118,37 @@ bool LineCableSagger::Validate(const bool& is_included_warnings,
   // validates line cable
   if (line_cable_ == nullptr) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("LINE CABLE SAGGER - Invalid line cable");
+    if (messages != nullptr) {
+      message.description = "Invalid line cable";
+      messages->push_back(message);
     }
   } else {
-    if (line_cable_->Validate(is_included_warnings, messages_error) == false) {
+    if (line_cable_->Validate(is_included_warnings, messages) == false) {
       is_valid = false;
+    }
+  }
+
+  // returns if errors are present
+  if (is_valid == false) {
+    return is_valid;
+  }
+
+  // validates update process
+  if (Update() == false) {
+    is_valid = false;
+    if (messages != nullptr) {
+      message.description = "";
+      if (index_constraint_controlling_ == -9999) {
+        message.description = "Error updating class. Could not solve for "
+                              "controlling constraint index";
+      } else if (is_updated_linecable_constraint_limit_ == false) {
+        message.description = "Error updating class. Could not solve for "
+                              "new constraint limit";
+      } else {
+        message.description = "Error updating class. Could not solve for "
+                              "actual design constraint limits.";
+      }
+      messages->push_back(message);
     }
   }
 
@@ -180,6 +208,9 @@ bool LineCableSagger::Update() const {
 /// loading and flags the constraint with the lowest reloaded horizontal tension
 /// as the controlling constraint.
 bool LineCableSagger::UpdateControllingConstraintIndex() const {
+  // initializes
+  index_constraint_controlling_ = -9999;
+
   // checks for multiple constraints to determine if further analysis is
   // required
   if (constraints_design_.size() == 1) {

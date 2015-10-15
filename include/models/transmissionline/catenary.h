@@ -7,6 +7,7 @@
 #include <list>
 #include <string>
 
+#include "models/base/error_message.h"
 #include "models/base/point.h"
 #include "models/base/vector.h"
 
@@ -150,12 +151,12 @@ class Catenary2d {
   /// \brief Validates member variables.
   /// \param[in] is_included_warnings
   ///   A flag that tightens the acceptable value range.
-  /// \param[in,out] messages_error
+  /// \param[in,out] messages
   ///   A list of detailed error messages. If this is provided, any validation
   ///   errors will be appended to the list.
   /// \return A boolean value indicating status of member variables.
   bool Validate(const bool& is_included_warnings = true,
-                std::list<std::string>* messages_error = nullptr) const;
+                std::list<ErrorMessage>* messages = nullptr) const;
 
   /// \brief Sets the endpoint spacing.
   /// \param[in] spacing_endpoints
@@ -229,14 +230,14 @@ class Catenary2d {
   /// \brief Validates whether the H/w is appropriate for the endpoint spacing.
   /// \param[in] is_included_warnings
   ///   A flag that tightens the acceptable value range.
-  /// \param[in,out] messages_error
+  /// \param[in,out] messages
   ///   A list of detailed error messages. If this is provided, any validation
   ///   errors will be appended to the list.
   /// \return A boolean indicating whether H/w and endpoint spacing combination
   ///         is valid.
   bool ValidateCurveAndSpacing(
       const bool& is_included_warnings = true,
-      std::list<std::string>* messages_error = nullptr) const;
+      std::list<ErrorMessage>* messages = nullptr) const;
 
   /// \var is_updated_points_end_
   ///   An indicator that tells if the end point coordinates are updated.
@@ -414,12 +415,12 @@ class Catenary3d {
   /// \brief Validates member variables.
   /// \param[in] is_included_warnings
   ///   A flag that tightens the acceptable value range.
-  /// \param[in,out] messages_error
+  /// \param[in,out] messages
   ///   A list of detailed error messages. If this is provided, any validation
   ///   errors will be appended to the list.
   /// \return A boolean value indicating status of member variables.
   bool Validate(const bool& is_included_warnings = true,
-                std::list<std::string>* messages_error = nullptr) const;
+                std::list<ErrorMessage>* messages = nullptr) const;
 
   /// \brief Sets the endpoint spacing.
   /// \param[in] spacing_endpoints

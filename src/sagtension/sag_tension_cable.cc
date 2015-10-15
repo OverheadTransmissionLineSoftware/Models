@@ -14,79 +14,85 @@ SagTensionCableComponent::~SagTensionCableComponent() {
 
 bool SagTensionCableComponent::Validate(
     const bool& is_included_warnings,
-    std::list<std::string>* messages_error) const {
+    std::list<ErrorMessage>* messages) const {
+  // initializes
   bool is_valid = true;
+  ErrorMessage message;
+  message.title = "SAG TENSION CABLE COMPONENT";
 
   // validates base component
   if (component_base_ == nullptr) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back(
-          "SAG TENSION CABLE COMPONENT - Invalid base component");
+    if (messages != nullptr) {
+      message.description = "Invalid base component";
+      messages->push_back(message);
     }
     return is_valid;
   } else {
-    component_base_->Validate(is_included_warnings, messages_error);
+    component_base_->Validate(is_included_warnings, messages);
   }
 
   // validates coefficient-expansion-thermal-linear
   if (component_base_->coefficient_expansion_linear_thermal <= -0.005
       || 0.005 < component_base_->coefficient_expansion_linear_thermal) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back(
-          "SAG TENSION CABLE COMPONENT - Invalid thermal expansion "
-          "coefficient");
+    if (messages != nullptr) {
+      message.description = "Invalid thermal expansion coefficient";
+      messages->push_back(message);
     }
   }
 
   // validates coefficients-polynomial-creep
   if (component_base_->coefficients_polynomial_creep.size() != 5) {
-    messages_error->push_back(
-        "SAG TENSION CABLE COMPONENT - Invalid creep coefficients");
+    is_valid = false;
+    if (messages != nullptr) {
+      message.description = "Invalid creep coefficients";
+      messages->push_back(message);
+    }
   }
 
   // validates coefficients-polynomial-loadstrain
   if (component_base_->coefficients_polynomial_loadstrain.size() != 5) {
-    messages_error->push_back(
-        "SAG TENSION CABLE COMPONENT - Invalid load-strain coefficients");
+    is_valid = false;
+    if (messages != nullptr) {
+      message.description = "Invalid load-strain coefficients";
+      messages->push_back(message);
+    }
   }
 
   // validates load-limit-polynomial-creep
   if (component_base_->load_limit_polynomial_creep < 0) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back(
-          "SAG TENSION CABLE COMPONENT - Invalid creep polynomial limit");
+    if (messages != nullptr) {
+      message.description = "Invalid creep polynomial limit";
+      messages->push_back(message);
     }
   }
 
   // validates load-limit-polynomial-loadstrain
   if (component_base_->load_limit_polynomial_loadstrain < 0) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back(
-          "SAG TENSION CABLE COMPONENT - Invalid load-strain polynomial limit");
+    if (messages != nullptr) {
+      message.description = "Invalid load-strain polynomial limit";
+      messages->push_back(message);
     }
   }
 
   // validates modulus-compression-elastic-area
   if (component_base_->modulus_compression_elastic_area < 0) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back(
-          "SAG TENSION CABLE COMPONENT- Invalid compression elastic area "
-          "modulus");
+    if (messages != nullptr) {
+      message.description = "Invalid compression elastic area modulus";
+      messages->push_back(message);
     }
   }
 
   // validates modulus-tension-elastic-area
   if (component_base_->modulus_tension_elastic_area < 0) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back(
-          "SAG TENSION CABLE COMPONENT - Invalid tension elastic area "
-          "modulus");
+    if (messages != nullptr) {
+      message.description = "Invalid tension elastic area modulus";
+      messages->push_back(message);
     }
   }
 
@@ -165,37 +171,52 @@ SagTensionCable::~SagTensionCable() {
 }
 
 bool SagTensionCable::Validate(const bool& is_included_warnings,
-                              std::list<std::string>* messages_error) const {
+                              std::list<ErrorMessage>* messages) const {
+  // initializes
   bool is_valid = true;
+  ErrorMessage message;
+  message.title = "SAG TENSION CABLE";
 
   // validates base cable
   if (cable_base_ == nullptr) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back(
-          "SAG TENSION CABLE - Invalid base cable");
+    if (messages != nullptr) {
+      message.description = "Invalid base cable";
+      messages->push_back(message);
     }
     return is_valid;
   } else {
-    cable_base_->Validate(is_included_warnings, messages_error);
+    cable_base_->Validate(is_included_warnings, messages);
   }
 
   // validates strength-rated
   if (cable_base_->strength_rated < 0) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back(
-          "SAG TENSION CABLE - Invalid rated strength");
+    if (messages != nullptr) {
+      message.description = "Invalid rated strength";
+      messages->push_back(message);
     }
   }
 
   // validates temperature-component-properties
   if (cable_base_->temperature_properties_components < 0) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back(
-          "SAG TENSION CABLE - Invalid component properties temperature");
+    if (messages != nullptr) {
+      message.description = "Invalid component properties temperature";
+      messages->push_back(message);
     }
+  }
+
+  // validates component-core
+  if (component_sagtension_core_.Validate(is_included_warnings,
+                                          messages) == false) {
+    is_valid = false;
+  }
+
+  // validates component-shell
+  if (component_sagtension_shell_.Validate(is_included_warnings,
+                                           messages) == false) {
+    is_valid = false;
   }
 
   // returns validation status

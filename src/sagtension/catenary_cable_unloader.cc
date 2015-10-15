@@ -27,51 +27,55 @@ double CatenaryCableUnloader::LengthUnloaded() const {
 
 bool CatenaryCableUnloader::Validate(
     const bool& is_included_warnings,
-    std::list<std::string>* messages_error) const {
+    std::list<ErrorMessage>* messages) const {
+  // initializes
   bool is_valid = true;
+  ErrorMessage message;
+  message.title = "CATENARY CABLE UNLOADER";
 
   // validates catenary cable
   if (catenary_cable_ == nullptr) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("CATENARY CABLE UNLOADER - Invalid catenary "
-                                "cable");
+    if (messages != nullptr) {
+      message.description = "Invalid catenary cable";
+      messages->push_back(message);
     }
   } else {
     if (catenary_cable_->Validate(is_included_warnings,
-                                 messages_error) == false) {
+                                 messages) == false) {
       is_valid = false;
     }
   }
 
+  // validates type-polynomial
   if (catenary_cable_->state()->type_polynomial
       == SagTensionCableComponent::PolynomialType::kCreep) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("CATENARY CABLE UNLOADER - Invalid polynomial "
-                                "type. The creep polynomial should not be "
-                                "unloaded.");
+    if (messages != nullptr) {
+      message.description = "Invalid polynomial type. The creep polynomial "
+                            "should not be unloaded.";
+      messages->push_back(message);
     }
   }
 
-  // further validates if no errors are present
-  if (is_valid == true) {
+  // returns if errors are present
+  if (is_valid == false) {
+    return is_valid;
+  }
 
-    // validates if class updates
-    if (Update() == false) {
-
-      is_valid = false;
-      if (messages_error != nullptr) {
-        messages_error->push_back(
-            "CATENARY CABLE UNLOADER - Error updating class");
-      }
+  // validates if class updates
+  if (Update() == false) {
+    is_valid = false;
+    if (messages != nullptr) {
+      message.description = "Error updating class";
+      messages->push_back(message);
     }
+  }
 
-    // validates strainer
-    if (strainer_.Validate(is_included_warnings,
-                           messages_error) == false) {
-      is_valid = false;
-    }
+  // validates strainer
+  if (strainer_.Validate(is_included_warnings,
+                         messages) == false) {
+    is_valid = false;
   }
 
   return is_valid;

@@ -29,18 +29,21 @@ Catenary3d CatenarySolver::Catenary() const {
 
 bool CatenarySolver::Validate(
     const bool& is_included_warnings,
-    std::list<std::string>* messages_error) const {
+    std::list<ErrorMessage>* messages) const {
+  // initializes
   bool is_valid = true;
+  ErrorMessage message;
+  message.title = "CATENARY SOLVER";
 
   // validates cable
   if (cable_ == nullptr) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back(
-        "CATENARY CABLE SOLVER - Invalid cable");
+    if (messages != nullptr) {
+      message.description = "Invalid cable";
+      messages->push_back(message);
     }
   } else {
-    if (cable_->Validate(is_included_warnings, messages_error) == false) {
+    if (cable_->Validate(is_included_warnings, messages) == false) {
       is_valid = false;
     }
   }
@@ -48,12 +51,12 @@ bool CatenarySolver::Validate(
   // validates constraint
   if (constraint_ == nullptr) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back(
-          "CATENARY CABLE SOLVER - Invalid constraint");
+    if (messages != nullptr) {
+      message.description = "Invalid constraint";
+      messages->push_back(message);
     }
   } else {
-    if (cable_->Validate(is_included_warnings, messages_error) == false) {
+    if (cable_->Validate(is_included_warnings, messages) == false) {
       is_valid = false;
     }
   }
@@ -61,36 +64,40 @@ bool CatenarySolver::Validate(
   // validates spacing-attachments
   if (spacing_attachments_->x() <= 0) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back(
-          "CATENARY CABLE SOLVER - Invalid horizontal attachment spacing");
+    if (messages != nullptr) {
+      message.description = "Invalid horizontal attachment spacing";
+      messages->push_back(message);
     }
   }
 
   if (spacing_attachments_->y() != 0) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back(
-          "CATENARY CABLE SOLVER - Invalid attachment spacing");
+    if (messages != nullptr) {
+      message.description = "Invalid attachment spacing";
+      messages->push_back(message);
     }
   }
 
   if (2000 < abs(spacing_attachments_->z())) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back(
-          "CATENARY CABLE SOLVER - Invalid vertical attachment spacing");
+    if (messages != nullptr) {
+      message.description = "Invalid vertical attachment spacing";
+      messages->push_back(message);
     }
   }
 
+  // returns if errors are present
+  if (is_valid == false) {
+    return false;
+  }
+
   // validates update process
-  if (is_valid == true) {
-    if (Update() == false) {
-      is_valid = false;
-      if (messages_error != nullptr) {
-        messages_error->push_back(
-            "CATENARY CABLE SOLVER - Error updating class");
-      }
+  if (Update() == false) {
+    is_valid = false;
+    if (messages != nullptr) {
+      message.description = "Error updating class. Could not solve for "
+                            "catenary";
+      messages->push_back(message);
     }
   }
 

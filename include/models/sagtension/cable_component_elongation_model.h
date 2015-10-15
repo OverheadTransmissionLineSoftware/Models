@@ -5,8 +5,8 @@
 #define OTLS_MODELS_SAGTENSION_CABLECOMPONENTELONGATIONMODEL_H_
 
 #include <list>
-#include <string>
 
+#include "models/base/error_message.h"
 #include "models/base/point.h"
 #include "models/base/polynomial.h"
 #include "models/sagtension/sag_tension_cable.h"
@@ -124,12 +124,12 @@ class CableComponentElongationModel {
   /// \brief Validates member variables.
   /// \param[in] is_included_warnings
   ///   A flag that tightens the acceptable value range.
-  /// \param[in,out] messages_error
+  /// \param[in,out] messages
   ///   A list of detailed error messages. If this is provided, any validation
   ///   errors will be appended to the list.
   /// \return A boolean value indicating status of member variables.
   bool Validate(const bool& is_included_warnings = true,
-                std::list<std::string>* messages_error = nullptr) const;
+                std::list<ErrorMessage>* messages = nullptr) const;
 
   /// \brief Gets the cable component.
   /// \return A copy of the cable component.
@@ -305,24 +305,24 @@ class CableComponentElongationModel {
   /// \brief Validates member variables by checking polynomial origin.
   /// \param[in] is_included_warnings
   ///   A flag that tightens the acceptable value range.
-  /// \param[in,out] messages_error
+  /// \param[in,out] messages
   ///   A list of detailed error messages. If this is provided, any validation
   ///   errors will be appended to the list.
   /// \return A boolean value indicating status of member variables.
   bool ValidatePolynomialOrigin(
       const bool& is_included_warnings = false,
-      std::list<std::string>* messages_error = nullptr) const;
+      std::list<ErrorMessage>* messages = nullptr) const;
 
   /// \brief Validates member variables by checking polynomial shape.
   /// \param[in] is_included_warnings
   ///   A flag that tightens the acceptable value range.
-  /// \param[in,out] messages_error
+  /// \param[in,out] messages
   ///   A list of detailed error messages. If this is provided, any validation
   ///   errors will be appended to the list.
   /// \return A boolean value indicating status of member variables.
   bool ValidatePolynomialShape(
       const bool& is_included_warnings = false,
-      std::list<std::string>* messages_error = nullptr) const;
+      std::list<ErrorMessage>* messages = nullptr) const;
 
   /// \var component_cable_
   ///   The cable component that is being modeled.

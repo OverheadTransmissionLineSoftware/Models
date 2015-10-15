@@ -15,16 +15,19 @@ CableUnitLoadCalculator::~CableUnitLoadCalculator() {
 
 bool CableUnitLoadCalculator::Validate(
     const bool& is_included_warnings,
-    std::list<std::string>* messages_error) const {
+    std::list<ErrorMessage>* messages) const {
+  // initializes
   bool is_valid = true;
+  ErrorMessage message;
+  message.title = "CABLE UNIT LOAD CALCULATOR";
 
   // validates diameter-cable
   if ((diameter_cable_ == nullptr)
       ||  (*diameter_cable_ <= 0)) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("CABLE UNIT LOAD CALCULATOR - Invalid cable "
-                                "diameter");
+    if (messages != nullptr) {
+      message.description = "Invalid cable diameter";
+      messages->push_back(message);
     }
   }
 
@@ -32,9 +35,9 @@ bool CableUnitLoadCalculator::Validate(
   if ((weight_unit_cable_ == nullptr)
       || (*weight_unit_cable_ <= 0)) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("CABLE UNIT LOAD CALCULATOR - Invalid cable "
-                                "unit weight");
+    if (messages != nullptr) {
+      message.description = "Invalid cable unit weight";
+      messages->push_back(message);
     }
   }
 

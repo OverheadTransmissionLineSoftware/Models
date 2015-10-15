@@ -4,6 +4,9 @@
 #ifndef OTLS_MODELS_SAGTENSION_SAGTENSIONCABLE_H_
 #define OTLS_MODELS_SAGTENSION_SAGTENSIONCABLE_H_
 
+#include <list>
+
+#include "models/base/error_message.h"
 #include "models/transmissionline/cable.h"
 
 /// \par OVERVIEW
@@ -35,12 +38,12 @@ class SagTensionCableComponent {
   /// \brief Validates member variables.
   /// \param[in] is_included_warnings
   ///   A flag that tightens the acceptable value range.
-  /// \param[in,out] messages_error
+  /// \param[in,out] messages
   ///   A list of detailed error messages. If this is provided, any validation
   ///   errors will be appended to the list.
   /// \return A boolean value indicating status of member variables.
   bool Validate(const bool& is_included_warnings = true,
-                std::list<std::string>* messages_error = nullptr) const;
+                std::list<ErrorMessage>* messages = nullptr) const;
 
   /// \brief Gets the coefficient of linear thermal expansion.
   /// \return The coefficient of linear thermal expansion.
@@ -72,7 +75,7 @@ class SagTensionCableComponent {
   /// \return The tension elastic area modulus of the cable component.
   const double* modulus_tension_elastic_area() const;
 
-  /// \brief Sets the cable component.
+  /// \brief Sets the base cable component.
   /// \param[in] component_base
   ///   The base cable component.
   void set_component_base(const CableComponent* component_base);
@@ -124,12 +127,12 @@ class SagTensionCable {
   /// \brief Validates member variables.
   /// \param[in] is_included_warnings
   ///   A flag that tightens the acceptable value range.
-  /// \param[in,out] messages_error
+  /// \param[in,out] messages
   ///   A list of detailed error messages. If this is provided, any validation
   ///   errors will be appended to the list.
   /// \return A boolean value indicating status of member variables.
   bool Validate(const bool& is_included_warnings = true,
-                std::list<std::string>* messages_error = nullptr) const;
+                std::list<ErrorMessage>* messages = nullptr) const;
 
   /// \brief Gets the base cable.
   /// \return The base cable.

@@ -17,39 +17,45 @@ WeatherLoadCase::~WeatherLoadCase() {
 }
 
 bool WeatherLoadCase::Validate(const bool& is_included_warnings,
-                               std::list<std::string>* messages_error) const {
+                               std::list<ErrorMessage>* messages) const {
+  // initializes
   bool is_valid = true;
+  ErrorMessage message;
+  message.title = "WEATHER LOAD CASE";
 
   // validates density-ice
   if (density_ice < 0) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("WEATHER LOAD CASE - Invalid ice density");
+    if (messages != nullptr) {
+      message.description = "Invalid ice density";
+      messages->push_back(message);
     }
   }
 
   // validates pressure-wind
   if (pressure_wind < 0) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("WEATHER LOAD CASE - Invalid wind pressure");
+    if (messages != nullptr) {
+      message.description = "Invalid wind pressure";
+      messages->push_back(message);
     }
   }
 
   // validates temperature-cable
   if (temperature_cable < -50) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("WEATHER LOAD CASE - Invalid cable "
-                                "temperature");
+    if (messages != nullptr) {
+      message.description = "Invalid cable temperature";
+      messages->push_back(message);
     }
   }
 
   // validates thickness-ice
   if (thickness_ice < 0) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("WEATHER LOAD CASE - Invalid ice thickness");
+    if (messages != nullptr) {
+      message.description = "Invalid ice thickness";
+      messages->push_back(message);
     }
   }
 

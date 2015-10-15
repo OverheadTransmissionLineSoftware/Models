@@ -5,10 +5,11 @@
 
 #include <algorithm>
 
+#include "models/base/helper.h"
+
 /// This is used for sorting a vector of Point2d objects. For this class, it is
 /// used for sorting the region points from the component elongation models.
-struct Point2dSortXInreasing
-{
+struct Point2dSortXInreasing {
   /// \brief This comparison operator determines if the first point x value is
   ///   less than the x value of the second point.
   /// \param[in] p1
@@ -103,17 +104,21 @@ double CableElongationModel::Strain(
 
 bool CableElongationModel::Validate(
     const bool& is_included_warnings,
-    std::list<std::string>* messages_error) const {
+    std::list<ErrorMessage>* messages) const {
+  // initializes
   bool is_valid = true;
+  ErrorMessage message;
+  message.title = "CABLE ELONGATION MODEL";
 
   // validates cable
   if (cable_ == nullptr) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("CABLE ELONGATION MODEL - Invalid cable");
+    if (messages != nullptr) {
+      message.description = "Invalid cable";
+      messages->push_back(message);
     }
   } else {
-    if (cable_->Validate(is_included_warnings, messages_error) == false) {
+    if (cable_->Validate(is_included_warnings, messages) == false) {
       is_valid = false;
     }
   }
@@ -121,69 +126,69 @@ bool CableElongationModel::Validate(
   // validates state
   if (state_ == nullptr) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("CABLE ELONGATION MODEL - Invalid state");
+    if (messages != nullptr) {
+      message.description = "Invalid state";
+      messages->push_back(message);
     }
   } else {
-    if (state_->Validate(is_included_warnings, messages_error) == false) {
+    if (state_->Validate(is_included_warnings, messages) == false) {
       is_valid = false;
     }
   }
 
-  // continues validation if no errors are present
-  if (is_valid == true) {
-    // validates if class updates
-    if (Update() == false) {
+  // returns if errors are present
+  if (is_valid == false) {
+    return is_valid;
+  }
 
-      is_valid = false;
-      if (messages_error != nullptr) {
-        messages_error->push_back(
-            "CABLE ELONGATION MODEL - Error updating class");
-      }
-
-      return is_valid;
+  // validates update process
+  if (Update() == false) {
+    is_valid = false;
+    if (messages != nullptr) {
+      message.description = "Error updating class";
+      messages->push_back(message);
     }
 
-    // validates that at least one component exists
-    if ((is_enabled_core_ == false) && (is_enabled_shell_ == false)) {
+    return is_valid;
+  }
 
-      is_valid = false;
-      if (messages_error != nullptr) {
-        messages_error->push_back(
-            "CABLE ELONGATION MODEL - No valid components");
-      }
-
-      return is_valid;
+  // validates that at least one component exists
+  if ((is_enabled_core_ == false) && (is_enabled_shell_ == false)) {
+    is_valid = false;
+    if (messages != nullptr) {
+      message.description = "No valid components";
+      messages->push_back(message);
     }
 
-    // validates component-core
-    if (is_enabled_core_ == true) {
-      if (model_core_.Validate(is_included_warnings,
-                                   messages_error) == false) {
-        is_valid = false;
-      }
-    }
+    return is_valid;
+  }
 
-    // validates component-shell
-    if (is_enabled_shell_ == true) {
-      if (model_shell_.Validate(is_included_warnings,
-                                    messages_error) == false) {
-        is_valid = false;
-      }
-    }
-
-    // validates components-strain-limit
-    if (ValidateComponentsStrainLimit(is_included_warnings,
-                                      messages_error) == false) {
+  // validates component-core
+  if (is_enabled_core_ == true) {
+    if (model_core_.Validate(is_included_warnings,
+                             messages) == false) {
       is_valid = false;
     }
+  }
 
-    // validates components-strain-unloaded
-    if (ValidateComponentsStrainUnloaded(is_included_warnings,
-                                         messages_error) == false) {
+  // validates component-shell
+  if (is_enabled_shell_ == true) {
+    if (model_shell_.Validate(is_included_warnings,
+                              messages) == false) {
       is_valid = false;
     }
+  }
 
+  // validates components-strain-limit
+  if (ValidateComponentsStrainLimit(is_included_warnings,
+                                    messages) == false) {
+    is_valid = false;
+  }
+
+  // validates components-strain-unloaded
+  if (ValidateComponentsStrainUnloaded(is_included_warnings,
+                                       messages) == false) {
+    is_valid = false;
   }
 
   return is_valid;
@@ -590,8 +595,11 @@ bool CableElongationModel::UpdatePointsRegions() const {
 
 bool CableElongationModel::ValidateComponentsStrainLimit(
     const bool& is_included_warnings,
-    std::list<std::string>* messages_error) const {
+    std::list<ErrorMessage>* messages) const {
+  // initializes
   bool is_valid = true;
+  ErrorMessage message;
+  message.title = "CABLE ELONGATION MODEL";
 
   // exits if warnings are not included
   if (is_included_warnings == false) {
@@ -601,11 +609,10 @@ bool CableElongationModel::ValidateComponentsStrainLimit(
   // modifies temperature to reference temperature
   if (UpdateComponentsTemperature(
       *cable_->temperature_properties_components()) == false) {
-
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back(
-          "CABLE ELONGATION MODEL - Could not verify component limits");
+    if (messages != nullptr) {
+      message.description = "Could not verify component limits";
+      messages->push_back(message);
     }
 
     return is_valid;
@@ -625,12 +632,11 @@ bool CableElongationModel::ValidateComponentsStrainLimit(
     // compares against max strain
     // if component limit is less that rated strength strain, generates error
     if (strain_limit_polynomial_core < strain_max) {
-
       is_valid = false;
-      if (messages_error != nullptr) {
-        messages_error->push_back(
-            "CABLE ELONGATION MODEL - Core polynomial limit is less than "
-            "rated strength of cable");
+      if (messages != nullptr) {
+        message.description = "Core polynomial limit is less than rated "
+                              "strength of cable";
+        messages->push_back(message);
       }
     }
 
@@ -647,12 +653,11 @@ bool CableElongationModel::ValidateComponentsStrainLimit(
     // compares against max strain
     // if component limit is less that rated strength strain, generates error
     if (strain_limit_polynomial_shell < strain_max) {
-
       is_valid = false;
-      if (messages_error != nullptr) {
-        messages_error->push_back(
-            "CABLE ELONGATION MODEL - Shell polynomial limit is less than "
-            "rated strength of cable");
+      if (messages != nullptr) {
+        message.description = "Shell polynomial limit is less than rated "
+                              "strength of cable";
+        messages->push_back(message);
       }
     }
   }
@@ -665,8 +670,11 @@ bool CableElongationModel::ValidateComponentsStrainLimit(
 
 bool CableElongationModel::ValidateComponentsStrainUnloaded(
     const bool& is_included_warnings,
-    std::list<std::string>* messages_error) const {
+    std::list<ErrorMessage>* messages) const {
+  // initializes
   bool is_valid = true;
+  ErrorMessage message;
+  message.title = "CABLE ELONGATION MODEL";
 
   // exits if warnings are not included
   if (is_included_warnings == false) {
@@ -697,14 +705,14 @@ bool CableElongationModel::ValidateComponentsStrainUnloaded(
   if (0.0005 < abs(strain_difference)
       || ((0.0001 < abs(strain_difference))
       && (is_included_warnings == true))) {
-
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back(
-          "CABLE ELONGATION MODEL - Unloaded unstretched strain difference"
-          " between shell and core");
-          //& Round(Abs(strain_unloaded_unstretched_core _
-          //            - strain_unloaded_unstretched_shell), 5))
+    if (messages != nullptr) {
+      double value = strain_unloaded_unstretched_core
+                     - strain_unloaded_unstretched_shell;
+      message.description = "Unloaded unstretched strain difference between "
+                            "shell and core = "
+                            + helper::DoubleToFormattedString(value, 5);
+      messages->push_back(message);
     }
   }
 

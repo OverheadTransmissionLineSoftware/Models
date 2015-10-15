@@ -17,7 +17,6 @@ CatenaryCableComponentTensionSolver::~CatenaryCableComponentTensionSolver() {
 
 double CatenaryCableComponentTensionSolver::TensionAverageComponent(
     const CableElongationModel::ComponentType& type_component) const {
-
   const double strain_total =
       model_elongation_.Strain(CableElongationModel::ComponentType::kCombined,
                                catenary_cable_->TensionAverage());
@@ -30,7 +29,6 @@ double CatenaryCableComponentTensionSolver::TensionAverageComponent(
 /// cable horizontal tension and entire cable average load.
 double CatenaryCableComponentTensionSolver::TensionHorizontalComponent(
     const CableElongationModel::ComponentType type_component) const {
-
   const double tension_average_component =
       TensionAverageComponent(type_component);
 
@@ -42,16 +40,18 @@ double CatenaryCableComponentTensionSolver::TensionHorizontalComponent(
 
 bool CatenaryCableComponentTensionSolver::Validate(
     const bool& is_included_warnings,
-    std::list<std::string>* messages_error) const {
-
+    std::list<ErrorMessage>* messages_error) const {
+  // initializes
   bool is_valid = true;
+  ErrorMessage message;
+  message.title = "CATENARY CABLE COMPONENT TENSION SOLVER";
 
   // validates catenary cable
   if (catenary_cable_ == nullptr) {
     is_valid = false;
     if (messages_error != nullptr) {
-      messages_error->push_back("CATENEARY CABLE COMPONENT TENSION SOLVER - "
-                                "Invalid catenary cable");
+      message.description = "Invalid catenary cable";
+      messages_error->push_back(message);
     }
   } else {
     if (catenary_cable_->Validate(is_included_warnings,
@@ -60,14 +60,15 @@ bool CatenaryCableComponentTensionSolver::Validate(
     }
   }
 
-  // further validates
-  if (is_valid == true) {
+  // returns if errors are present
+  if (is_valid == false) {
+    return is_valid;
+  }
 
-    // validates elongation model
-    if (model_elongation_.Validate(is_included_warnings,
-                                   messages_error) == false) {
-      is_valid = false;
-    }
+  // validates elongation model
+  if (model_elongation_.Validate(is_included_warnings,
+                                 messages_error) == false) {
+    is_valid = false;
   }
 
   return is_valid;
@@ -80,10 +81,9 @@ const CatenaryCable* CatenaryCableComponentTensionSolver::catenary_cable()
 
 void CatenaryCableComponentTensionSolver::set_catenary_cable(
     const CatenaryCable* catenary_cable) {
+  catenary_cable_ = catenary_cable;
 
-    catenary_cable_ = catenary_cable;
-
-    // updates cable elongation model
-    model_elongation_.set_cable(catenary_cable_->cable());
-    model_elongation_.set_state(catenary_cable_->state());
+  // updates cable elongation model
+  model_elongation_.set_cable(catenary_cable_->cable());
+  model_elongation_.set_state(catenary_cable_->state());
 }

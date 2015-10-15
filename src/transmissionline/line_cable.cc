@@ -13,61 +13,65 @@ LineCable::~LineCable() {
 }
 
 bool LineCable::Validate(const bool& is_included_warnings,
-                         std::list<std::string>* messages_error) const {
+                         std::list<ErrorMessage>* messages) const {
+  // initializes
   bool is_valid = true;
+  ErrorMessage message;
+  message.title = "LINE CABLE";
 
   // validates cable
   if (cable == nullptr) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("LINE CABLE - Invalid cable");
+    if (messages != nullptr) {
+      message.description = "Invalid cable";
+      messages->push_back(message);
     }
   } else {
-    if (cable->Validate(is_included_warnings, messages_error) == false) {
+    if (cable->Validate(is_included_warnings, messages) == false) {
       is_valid = false;
     }
   }
 
   // validates constraint
-  if (constraint.Validate(is_included_warnings, messages_error) == false) {
+  if (constraint.Validate(is_included_warnings, messages) == false) {
     is_valid = false;
   }
 
   // validates spacing-attachments-rulingspan
   if (spacing_attachments_ruling_span.x() <= 0) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("LINE CABLE - Invalid horizontal ruling span "
-                                 "attachment spacing");
+    if (messages != nullptr) {
+      message.description = "Invalid horizontal ruling span attachment spacing";
+      messages->push_back(message);
     }
   }
 
   if (spacing_attachments_ruling_span.y() != 0) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("LINE CABLE - Invalid ruling span attachment"
-                                "spacing");
+    if (messages != nullptr) {
+      message.description = "Invalid transverse ruling span attachment spacing";
+      messages->push_back(message);
     }
   }
 
   if (2000 < abs(spacing_attachments_ruling_span.z())) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("LINE CABLE - Invalid vertical ruling span"
-                                "attachment spacing");
+    if (messages != nullptr) {
+      message.description = "Invalid vertical ruling span attachment spacing";
+      messages->push_back(message);
     }
   }
 
   // validates weathercase-stretch-creep
   if (weathercase_stretch_creep == nullptr) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("LINE CABLE - Invalid creep stretch "
-                                "weathercase");
+    if (messages != nullptr) {
+      message.description = "Invalid creep stretch weathercase";
+      messages->push_back(message);
     }
   } else {
     if (weathercase_stretch_creep->Validate(is_included_warnings,
-                                            messages_error) == false) {
+                                            messages) == false) {
       is_valid = false;
     }
   }
@@ -75,13 +79,13 @@ bool LineCable::Validate(const bool& is_included_warnings,
   // validates weathercase-stretch-load
   if (weathercase_stretch_load == nullptr) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("LINE CABLE - Invalid load stretch "
-                                "weathercase");
+    if (messages != nullptr) {
+      message.description = "Invalid load stretch weathercase";
+      messages->push_back(message);
     }
   } else {
     if (weathercase_stretch_load->Validate(is_included_warnings,
-                                           messages_error) == false) {
+                                           messages) == false) {
       is_valid = false;
     }
   }

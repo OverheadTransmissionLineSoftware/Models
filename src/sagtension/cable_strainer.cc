@@ -40,46 +40,55 @@ double CableStrainer::LengthFinish() const {
 }
 
 bool CableStrainer::Validate(const bool& is_included_warnings,
-                             std::list<std::string>* messages_error) const {
+                             std::list<ErrorMessage>* messages) const {
+  // initializes
   bool is_valid = true;
+  ErrorMessage message;
+  message.title = "CABLE STRAINER";
 
   // validates length-start
   if (length_start_ <= 0) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back(
-          "CABLE STRAINER - Invalid length");
+    if (messages != nullptr) {
+      message.description = "Invalid length";
+      messages->push_back(message);
     }
   }
 
   // validates load-finish
   if (load_finish_ < 0) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back(
-          "CABLE STRAINER - Invalid finish load");
+    if (messages != nullptr) {
+      message.description = "Invalid finish load";
+      messages->push_back(message);
     }
   }
 
   // validates load-start
   if (load_start_ < 0) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back(
-          "CABLE STRAINER - Invalid start load");
+    if (messages != nullptr) {
+      message.description = "Invalid start load";
+      messages->push_back(message);
     }
   }
 
-  // further validates, if no errors are present
-  if (is_valid == true) {
+  // returns if errors are present
+  if (is_valid == false) {
+    return is_valid;
+  }
 
-    // validates elongation model
-    if (model_elongation_start_.Validate(is_included_warnings,
-                                         messages_error) == false) {
-      is_valid = false;
-    }
+  // validates elongation model
+  if (model_elongation_start_.Validate(is_included_warnings,
+                                        messages) == false) {
+    is_valid = false;
+    return is_valid;
+  }
 
-    model_elongation_finish_.Validate(is_included_warnings, nullptr);
+  if (model_elongation_finish_.Validate(is_included_warnings,
+                                        messages) == false) {
+    is_valid = false;
+    return is_valid;
   }
 
   return is_valid;

@@ -61,75 +61,85 @@ double CatenaryCableReloader::TensionHorizontal() const {
 
 bool CatenaryCableReloader::Validate(
     const bool& is_included_warnings,
-    std::list<std::string>* messages_error) const {
+    std::list<ErrorMessage>* messages) const {
+  // initializes
   bool is_valid = true;
+  ErrorMessage message;
+  message.title = "CATENARY CABLE RELOADER";
 
   // validates catenary cable
   if (catenary_cable_ == nullptr) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("CATENARY CABLE RELOADER - Invalid catenary "
-                                "cable");
+    if (messages != nullptr) {
+      message.description = "Invalid catenary cable";
+      messages->push_back(message);
     }
   } else {
     if (catenary_cable_->Validate(is_included_warnings,
-                                 messages_error) == false) {
+                                 messages) == false) {
       is_valid = false;
     }
   }
 
   // validates reloaded state
   if (state_reloaded_.Validate(is_included_warnings,
-                               messages_error) == false) {
+                               messages) == false) {
     is_valid = false;
   }
 
   // validates reloaded unit weight
   if (weight_unit_reloaded_.x() != 0) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back(
-          "CATENARY CABLE RELOADER - Invalid longtiudinal unit weight");
+    if (messages != nullptr) {
+      message.description = "Invalid longitudinal unit weight";
+      messages->push_back(message);
     }
   }
 
   if (weight_unit_reloaded_.y() < 0) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back(
-          "CATENARY CABLE RELOADER - Invalid transverse unit weight");
+    if (messages != nullptr) {
+      message.description = "Invalid transverse unit weight";
+      messages->push_back(message);
     }
   }
 
   if (weight_unit_reloaded_.z() <= 0) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back(
-          "CATENARY CABLE RELOADER - Invalid vertical unit weight");
+    if (messages != nullptr) {
+      message.description = "Invalid vertical unit weight";
+      messages->push_back(message);
     }
   }
 
   if (catenary_cable_->state()->type_polynomial
       == SagTensionCableComponent::PolynomialType::kCreep) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("CATENARY CABLE UNLOADER - Invalid polynomial "
-                                "type. The reference catenary cable creep "
-                                "polynomial should not be reloaded.");
+    if (messages != nullptr) {
+      message.description = "Invalid polynomial type. The reference catenary "
+                            "cable creep polynomial should not be reloaded.";
+      messages->push_back(message);
     }
   }
 
-  // further validates if no errors are present
-  if (is_valid == true) {
+  // returns if errors are present
+  if (is_valid == false) {
+    return is_valid;
+  }
 
-    // validates if class updates
-    if (Update() == false) {
-
-      is_valid = false;
-      if (messages_error != nullptr) {
-        messages_error->push_back(
-            "CATENARY CABLE RELOADER - Error updating class");
+  // validates update process
+  if (Update() == false) {
+    is_valid = false;
+    if (messages != nullptr) {
+      message.description = "";
+      if (is_updated_length_unloaded_unstretched_ == false) {
+        message.description = "Error updating class. Could not solve for "
+                              "unloaded unstretched length.";
+      } else if (is_updated_catenary_cable_reloaded_ == false) {
+        message.description = "Error updating class. Could not solve for "
+                              "reloaded catenary cable.";
       }
+      messages->push_back(message);
     }
   }
 

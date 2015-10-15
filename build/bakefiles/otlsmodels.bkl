@@ -9,6 +9,7 @@ if ($toolset == gnu)
 library otlsmodels_base {
   includedirs = ../../include;
   headers {
+    ../../include/models/error_message.h
     ../../include/models/base/geometric_shapes.h
     ../../include/models/base/helper.h
     ../../include/models/base/point.h

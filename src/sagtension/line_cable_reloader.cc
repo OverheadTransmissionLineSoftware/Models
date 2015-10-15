@@ -93,17 +93,19 @@ double LineCableReloader::TensionHorizontalComponent(
 
 bool LineCableReloader::Validate(
     const bool& is_included_warnings,
-    std::list<std::string>* messages_error) const {
+    std::list<ErrorMessage>* messages) const {
   // initializes
   bool is_valid = true;
+  ErrorMessage message;
+  message.title = "LINE CABLE RELOADER";
 
   // validates cable-sagtension
   if (cable_sagtension_.Validate(is_included_warnings,
-                                 messages_error) == false) {
+                                 messages) == false) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("LINE CABLE RELOADER - Invalid sag-tension "
-                                "cable");
+    if (messages != nullptr) {
+      message.description = "Invalid sag-tension cable";
+      messages->push_back(message);
     }
   }
 
@@ -112,20 +114,21 @@ bool LineCableReloader::Validate(
       && (condition_reloaded_ != CableConditionType::kInitial)
       && (condition_reloaded_ != CableConditionType::kLoad)) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("LINE CABLE RELAODER - Invalid reloaded "
-                                "condition");
+    if (messages != nullptr) {
+      message.description = "Invalid reloaded condition";
+      messages->push_back(message);
     }
   }
 
   // validates line cable
   if (line_cable_ == nullptr) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("LINE CABLE RELOADER - Invalid line cable");
+    if (messages != nullptr) {
+      message.description = "Invalid line cable";
+      messages->push_back(message);
     }
   } else {
-    if (line_cable_->Validate(is_included_warnings, messages_error) == false) {
+    if (line_cable_->Validate(is_included_warnings, messages) == false) {
       is_valid = false;
     }
   }
@@ -133,25 +136,38 @@ bool LineCableReloader::Validate(
   // validates weathercase-reloaded
   if (weathercase_reloaded_ == nullptr) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("LINE CABLE RELOADER - Invalid reloaded case");
+    if (messages != nullptr) {
+      message.description = "Invalid reloaded weathercase";
+      messages->push_back(message);
     }
   } else {
     if (weathercase_reloaded_->Validate(is_included_warnings,
-                                 messages_error) == false) {
+                                 messages) == false) {
       is_valid = false;
     }
   }
 
-  // further validates
-  if (is_valid == true) {
+  // returns if errors are present
+  if (is_valid == false) {
+    return is_valid;
+  }
 
-    // validates update process
-    if (Update() == false) {
-      is_valid = false;
-      if (messages_error != nullptr) {
-        messages_error->push_back("LINE CABLE RELOADER - Error updating class");
+  // validates update process
+  if (Update() == false) {
+    is_valid = false;
+    if (messages != nullptr) {
+      message.description = "";
+      if (is_updated_catenarycable_constraint_ == false) {
+        message.description = "Error updating class. Could not solve for "
+                              "constraint catenary cable.";
+      } else if (is_updated_stretch_ == false) {
+        message.description = "Error updating class. Could not solve for "
+                              "creep or load based stretch.";
+      } else if (is_updated_catenarycable_reloaded_ == false) {
+        message.description = "Error updating class. Could not solve for "
+                              "reloaded catenary cable.";
       }
+      messages->push_back(message);
     }
   }
 

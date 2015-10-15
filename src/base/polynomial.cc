@@ -23,7 +23,6 @@ Polynomial::~Polynomial() {
 }
 
 Polynomial Polynomial::Derivative() const {
-
   Polynomial derivative;
 
   // updates class if necessary
@@ -42,7 +41,6 @@ int Polynomial::OrderMax() const {
 }
 
 double Polynomial::Slope(const double& x) const {
-
   // updates class if necessary
   if (IsUpdated() == false) {
     if (Update() == false) {
@@ -53,11 +51,41 @@ double Polynomial::Slope(const double& x) const {
   return derivative_->Y(x);
 }
 
+bool Polynomial::Validate(const bool& is_included_warnings,
+                          std::list<ErrorMessage>* messages) const {
+  // initializes
+  bool is_valid = true;
+  ErrorMessage message;
+  message.title = "POLYNOMIAL";
+
+  // validates coefficients
+  if (coefficients_ == nullptr) {
+    is_valid = false;
+    if (messages != nullptr) {
+      message.description = "Invalid coefficients";
+      messages->push_back(message);
+    }
+  }
+
+  // returns if errors are present
+  if (is_valid == false) {
+    return is_valid;
+  }
+
+  // validates update process
+  is_valid = Update();
+  if (is_valid == false) {
+    message.description = "Error solving derivative coefficients";
+    messages->push_back(message);
+  }
+
+  return is_valid;
+}
+
 /// This method is iterative, and uses the Newton numerical method for solving
 /// for x.
 double Polynomial::X(const double& y, const int& decimal_precision_y,
                      const double& x_guess) const {
-
   // updates class if necessary
   if (IsUpdated() == false) {
     if (Update() == false) {
@@ -101,7 +129,6 @@ double Polynomial::X(const double& y, const int& decimal_precision_y,
 }
 
 double Polynomial::Y(const double& x) const {
-
   double y = 0;
 
   const int order_max = OrderMax();

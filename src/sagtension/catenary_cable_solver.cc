@@ -32,19 +32,21 @@ CatenaryCable CatenaryCableSolver::GetCatenaryCable() const {
 
 bool CatenaryCableSolver::Validate(
     const bool& is_included_warnings,
-    std::list<std::string>* messages_error) const {
+    std::list<ErrorMessage>* messages) const {
   // initializes
   bool is_valid = true;
+  ErrorMessage message;
+  message.title = "CATENARY CABLE SOLVER";
 
   // validates cable
   if (cable_ == nullptr) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back(
-        "CATENARY CABLE SOLVER - Invalid cable");
+    if (messages != nullptr) {
+      message.description = "Invalid cable";
+      messages->push_back(message);
     }
   } else {
-    if (cable_->Validate(is_included_warnings, messages_error) == false) {
+    if (cable_->Validate(is_included_warnings, messages) == false) {
       is_valid = false;
     }
   }
@@ -52,12 +54,12 @@ bool CatenaryCableSolver::Validate(
   // validates constraint
   if (constraint_ == nullptr) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back(
-          "CATENARY CABLE SOLVER - Invalid constraint");
+    if (messages != nullptr) {
+      message.description = "Invalid constraint";
+      messages->push_back(message);
     }
   } else {
-    if (cable_->Validate(is_included_warnings, messages_error) == false) {
+    if (cable_->Validate(is_included_warnings, messages) == false) {
       is_valid = false;
     }
   }
@@ -65,38 +67,38 @@ bool CatenaryCableSolver::Validate(
   // validates spacing-attachments
   if (spacing_attachments_->x() <= 0) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back(
-          "CATENARY CABLE SOLVER - Invalid horizontal attachment spacing");
+    if (messages != nullptr) {
+      message.description = "Invalid horizontal attachment spacing";
+      messages->push_back(message);
     }
   }
 
   if (spacing_attachments_->y() != 0) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back(
-          "CATENARY CABLE SOLVER - Invalid attachment spacing");
+    if (messages != nullptr) {
+      message.description = "Invalid attachment spacing";
+      messages->push_back(message);
     }
   }
 
   if (2000 < abs(spacing_attachments_->z())) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back(
-          "CATENARY CABLE SOLVER - Invalid vertical attachment spacing");
+    if (messages != nullptr) {
+      message.description = "Invalid vertical attachment spacing";
+      messages->push_back(message);
     }
   }
 
   // validates weathercase-stretch-creep
   if (weathercase_stretch_creep_ == nullptr) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back(
-          "CATENARY CABLE SOLVER - Invalid creep stretch weathercase");
+    if (messages != nullptr) {
+      message.description = "Invalid creep stretch weathercase";
+      messages->push_back(message);
     }
   } else {
     if (weathercase_stretch_creep_->Validate(is_included_warnings,
-                                             messages_error) == false) {
+                                             messages) == false) {
       is_valid = false;
     }
   }
@@ -104,27 +106,28 @@ bool CatenaryCableSolver::Validate(
   // validates weathercase-stretch-load
   if (weathercase_stretch_load_ == nullptr) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back(
-          "CATENARY CABLE SOLVER - Invalid load stretch weathercase");
+    if (messages != nullptr) {
+      message.description = "Invalid load stretch weathercase";
+      messages->push_back(message);
     }
   } else {
     if (weathercase_stretch_load_->Validate(is_included_warnings,
-                                             messages_error) == false) {
+                                            messages) == false) {
       is_valid = false;
     }
   }
 
-  // further validates
-  if (is_valid == true) {
+  // returns if errors are present
+  if (is_valid == false) {
+    return is_valid;
+  }
 
-    // validates update process
-    if (Update() == false) {
-      is_valid = false;
-      if (messages_error != nullptr) {
-        messages_error->push_back(
-            "CATENARY CABLE SOLVER - Error updating class");
-      }
+  // validates update process
+  if (Update() == false) {
+    is_valid = false;
+    if (messages != nullptr) {
+      message.description = "Error updating class";
+      messages->push_back(message);
     }
   }
 

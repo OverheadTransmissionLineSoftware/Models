@@ -38,6 +38,7 @@
 		<Linker>
 			<Add directory="../../" />
 		</Linker>
+		<Unit filename="../../include/models/base/error_message.h" />
 		<Unit filename="../../include/models/base/geometric_shapes.h" />
 		<Unit filename="../../include/models/base/helper.h" />
 		<Unit filename="../../include/models/base/point.h" />

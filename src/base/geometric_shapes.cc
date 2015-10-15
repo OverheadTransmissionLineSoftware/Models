@@ -19,22 +19,27 @@ double Cylinder::AreaCrossSection() const {
 }
 
 bool Cylinder::Validate(const bool& is_included_warnings,
-                        std::list<std::string>* messages_error) const {
+                        std::list<ErrorMessage>* messages) const {
+  // initializes
   bool is_valid = true;
+  ErrorMessage message;
+  message.title = "CYLINDER";
 
   // validates diameter
   if (diameter_ <= 0) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("CYLINDER - Invalid diameter");
+    if (messages != nullptr) {
+      message.description = "Invalid diameter";
+      messages->push_back(message);
     }
   }
 
   // validates length
   if (length_ <= 0) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("CYLINDER - Invalid length");
+    if (messages != nullptr) {
+      message.description = "Invalid length";
+      messages->push_back(message);
     }
   }
 

@@ -12,17 +12,21 @@ CableConstraint::~CableConstraint() {}
 
 bool CableConstraint::Validate(
     const bool& is_included_warnings,
-    std::list<std::string>* messages_error) const {
+    std::list<ErrorMessage>* messages) const {
+  // initializes
   bool is_valid = true;
+  ErrorMessage message;
+  message.title = "CABLE CONSTRAINT";
 
   // validates case-weather
   if (case_weather == nullptr) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("CABLE CONSTRAINT - Invalid weather case");
+    if (messages != nullptr) {
+      message.description = "Invalid weather case";
+      messages->push_back(message);
     }
   } else {
-    if (case_weather->Validate(is_included_warnings, messages_error) == false) {
+    if (case_weather->Validate(is_included_warnings, messages) == false) {
       is_valid = false;
     }
   }
@@ -32,16 +36,18 @@ bool CableConstraint::Validate(
       && (condition != CableConditionType::kInitial)
       && (condition != CableConditionType::kLoad)) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("CABLE CONSTRAINT - Invalid condition");
+    if (messages != nullptr) {
+      message.description = "Invalid condition";
+      messages->push_back(message);
     }
   }
 
   // validates limit
   if (limit < 0) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("CABLE CONSTRAINT - Invalid limit");
+    if (messages != nullptr) {
+      message.description = "Invalid limit";
+      messages->push_back(message);
     }
   }
 
@@ -50,8 +56,9 @@ bool CableConstraint::Validate(
       && (type_limit != CableConstraint::LimitType::kHorizontalTension)
       && (type_limit != CableConstraint::LimitType::kSupportTension)) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("CABLE CONSTRAINT - Invalid limit type");
+    if (messages != nullptr) {
+      message.description = "Invalid limit type";
+      messages->push_back(message);
     }
   }
 

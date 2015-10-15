@@ -13,33 +13,36 @@ CableState::~CableState() {
 }
 
 bool CableState::Validate(const bool& is_included_warnings,
-                              std::list<std::string>* messages_error) const {
+                          std::list<ErrorMessage>* messages) const {
+  // initializes
   bool is_valid = true;
+  ErrorMessage message;
+  message.title = "CABLE STATE";
 
   // validates load-stretch
   if (load_stretch < 0) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back(
-          "CABLE STATE - Invalid stretch load");
+    if (messages != nullptr) {
+      message.description = "Invalid stretch load";
+      messages->push_back(message);
     }
   }
 
   // validates temperature
   if (temperature < -50) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back(
-          "CABLE STATE - Invalid temperature");
+    if (messages != nullptr) {
+      message.description = "Invalid temperature";
+      messages->push_back(message);
     }
   }
 
   // validates temperature - stretch
   if (temperature_stretch < -50) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back(
-          "CABLE STATE - Invalid stretch temperature");
+    if (messages != nullptr) {
+      message.description = "Invalid stretch temperature";
+      messages->push_back(message);
     }
   }
 
@@ -48,9 +51,9 @@ bool CableState::Validate(const bool& is_included_warnings,
       && (type_polynomial !=
           SagTensionCableComponent::PolynomialType::kLoadStrain)) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back(
-          "CABLE STATE - Invalid polynomial type");
+    if (messages != nullptr) {
+      message.description = "Invalid polynomial type";
+      messages->push_back(message);
     }
   }
 
@@ -58,10 +61,11 @@ bool CableState::Validate(const bool& is_included_warnings,
   if ((type_polynomial == SagTensionCableComponent::PolynomialType::kCreep)
       && (load_stretch != 0)) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back(
-          "CABLE STATE - Invalid stretch load and polynomial type combination. "
-          "The creep polynomial must not have any stretch load");
+    if (messages != nullptr) {
+      message.description = "Invalid stretch load and polynomial type "
+                            "combination. The creep polynomial must not have "
+                            "any stretch load.";
+      messages->push_back(message);
     }
   }
 

@@ -5,9 +5,9 @@
 #define OTLS_MODELS_SAGTENSION_CABLEELONGATIONMODEL_H_
 
 #include <list>
-#include <string>
 #include <vector>
 
+#include "models/base/error_message.h"
 #include "models/base/point.h"
 #include "models/sagtension/cable_component_elongation_model.h"
 #include "models/sagtension/cable_state.h"
@@ -105,12 +105,12 @@ class CableElongationModel {
   /// \brief Validates member variables.
   /// \param[in] is_included_warnings
   ///   A flag that tightens the acceptable value range.
-  /// \param[in,out] messages_error
+  /// \param[in,out] messages
   ///   A list of detailed error messages. If this is provided, any validation
   ///   errors will be appended to the list.
   /// \return A boolean value indicating status of member variables.
   bool Validate(const bool& is_included_warnings,
-                std::list<std::string>* messages_error) const;
+                std::list<ErrorMessage>* messages = nullptr) const;
 
   /// \brief Gets the cable.
   /// \return A copy of the cable.
@@ -239,25 +239,25 @@ class CableElongationModel {
   ///   than cable rated strength.
   /// \param[in] is_included_warnings
   ///   A flag that tightens the acceptable value range.
-  /// \param[in,out] messages_error
+  /// \param[in,out] messages
   ///   A list of detailed error messages. If this is provided, any validation
   ///   errors will be appended to the list.
   /// \return A boolean value indicating status of member variables.
   bool ValidateComponentsStrainLimit(
       const bool& is_included_warnings = true,
-      std::list<std::string>* messages_error = nullptr) const;
+      std::list<ErrorMessage>* messages = nullptr) const;
 
   /// \brief Validates class by checking if unloaded unstretched strain of core
   ///   and shell are similar.
   /// \param[in] is_included_warnings
   ///   A flag that tightens the acceptable value range.
-  /// \param[in,out] messages_error
+  /// \param[in,out] messages
   ///   A list of detailed error messages. If this is provided, any validation
   ///   errors will be appended to the list.
   /// \return A boolean value indicating status of member variables.
   bool ValidateComponentsStrainUnloaded(
       const bool& is_included_warnings = true,
-      std::list<std::string>* messages_error = nullptr) const;
+      std::list<ErrorMessage>* messages = nullptr) const;
 
   /// \var cable_
   ///  The cable that is modeled.

@@ -16,8 +16,11 @@ CableComponent::CableComponent() {
 CableComponent::~CableComponent() {}
 
 bool CableComponent::Validate(const bool& is_included_warnings,
-                              std::list<std::string>* messages_error) const {
+                              std::list<ErrorMessage>* messages_error) const {
+  // initializes
   bool is_valid = true;
+  ErrorMessage message;
+  message.title = "CABLE COMPONENT";
 
   // Most component validation has moved to SagTensionCableComponent.
   // This function will remain as a placeholder for validation when more
@@ -41,55 +44,51 @@ Cable::Cable() {
 Cable::~Cable() {}
 
 bool Cable::Validate(const bool& is_included_warnings,
-                     std::list<std::string>* messages_error) const {
+                     std::list<ErrorMessage>* messages) const {
+  // initializes
   bool is_valid = true;
+  ErrorMessage message;
+  message.title = "CABLE";
 
   // validates area-electrical
   if (area_electrical < 0) {
-
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("CABLE - Invalid electrical area");
+    if (messages != nullptr) {
+      message.description = "Invalid electrical area";
+      messages->push_back(message);
     }
   }
 
   // validates area-physical
   if (area_physical < 0) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("CABLE - Invalid physical area");
+    if (messages != nullptr) {
+      message.description = "Invalid physical area";
+      messages->push_back(message);
     }
   }
 
   // validates component-core
-  component_core.Validate(is_included_warnings, messages_error);
+  component_core.Validate(is_included_warnings, messages);
 
   // validates component-shell
-  component_shell.Validate(is_included_warnings, messages_error);
+  component_shell.Validate(is_included_warnings, messages);
 
   // validates diameter
-  if (diameter <= 0
-      || (3 < diameter && is_included_warnings == true)) {
-
+  if (diameter <= 0) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("CABLE - Invalid diameter");
+    if (messages != nullptr) {
+      message.description = "Invalid diameter";
+      messages->push_back(message);
     }
   }
 
-  // validates name
-  // nothing to validate
-
-  // validates type-construction
-  // nothing to validate
-
   // validates weight-unit
-  if (weight_unit <= 0
-      || (10 < weight_unit && is_included_warnings == true)) {
-
+  if (weight_unit <= 0) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("CABLE - Invalid unit weight");
+    if (messages != nullptr) {
+      message.description = "Invalid unit weight";
+      messages->push_back(message);
     }
   }
 

@@ -3,6 +3,8 @@
 
 #include "models/sagtension/cable_component_elongation_model.h"
 
+#include "models/base/helper.h"
+
 CableComponentElongationModel::CableComponentElongationModel() {
   component_cable_ = nullptr;
   temperature_ = nullptr;
@@ -177,19 +179,22 @@ double CableComponentElongationModel::StrainThermal() const {
 
 bool CableComponentElongationModel::Validate(
     const bool& is_included_warnings,
-    std::list<std::string>* messages_error) const {
+    std::list<ErrorMessage>* messages) const {
+  // initializes
   bool is_valid = true;
+  ErrorMessage message;
+  message.title = "CABLE COMPONENT ELONGATION MODEL";
 
   // validates component-cable
   if (component_cable_ == nullptr) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("CABLE COMPONENT ELONGATION MODEL - Invalid "
-                                "cable component");
+    if (messages != nullptr) {
+      message.description = "Invalid cable component";
+      messages->push_back(message);
     }
   } else {
     if (component_cable_->Validate(is_included_warnings,
-                                  messages_error) == false) {
+                                   messages) == false) {
       is_valid = false;
     }
   }
@@ -197,66 +202,65 @@ bool CableComponentElongationModel::Validate(
   // validates load-stretch
   if (load_stretch_ < 0) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("CABLE COMPONENT ELONGATION MODEL - Invalid "
-                                "stretch load");
+    if (messages != nullptr) {
+      message.description = "Invalid stretch load";
+      messages->push_back(message);
     }
   }
 
   // validates temperature
   if ((temperature_ == nullptr) || (*temperature_ < 0)) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("CABLE COMPONENT ELONGATION MODEL - Invalid "
-                                "temperature");
+    if (messages != nullptr) {
+      message.description = "Invalid temperature";
+      messages->push_back(message);
     }
   }
 
   // validates temperature-reference
   if ((temperature_reference_ == nullptr) || (*temperature_reference_ < 0)) {
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("CABLE COMPONENT ELONGATION MODEL - Invalid "
-                                "reference temperature");
+    if (messages != nullptr) {
+      message.description = "Invalid reference temperature";
+      messages->push_back(message);
     }
   }
 
-  // if all class inputs are validated, continues validation checks
-  if (is_valid == true) {
+  // returns if errors are present
+  if (is_valid == false) {
+    return false;
+  }
 
-    // validates if class updates
-    if (Update() == false) {
-
-      is_valid = false;
-      if (messages_error != nullptr) {
-          messages_error->push_back("CABLE COMPONENT ELONGATION MODEL - Error "
-                                    "updating class");
-      }
-
-      return is_valid;
+  // validates update process
+  if (Update() == false) {
+    is_valid = false;
+    if (messages != nullptr) {
+      message.description = "Error updating class";
+      messages->push_back(message);
     }
 
-    // validates polynomial coefficients
-    if (polynomial_.OrderMax() != 4) {
+    return is_valid;
+  }
 
-      is_valid = false;
-      if (messages_error != nullptr) {
-        messages_error->push_back("CABLE COMPONENT ELONGATION MODEL - Invalid "
-                                  "number of polynomial coefficients");
-      }
+  // validates polynomial coefficients
+  if (polynomial_.OrderMax() != 4) {
+    is_valid = false;
+    if (messages != nullptr) {
+      message.description = "Invalid number of polynomial coefficients";
+      messages->push_back(message);
     }
+  }
 
-    // validates polynomial origin
-    if (ValidatePolynomialOrigin(is_included_warnings,
-                                messages_error) == false) {
-      is_valid = false;
-    }
+  // validates polynomial origin
+  if (ValidatePolynomialOrigin(is_included_warnings,
+                               messages) == false) {
+    is_valid = false;
+  }
 
-    // validates polynomial shape
-    if (ValidatePolynomialShape(is_included_warnings,
-                                messages_error) == false) {
-      is_valid = false;
-    }
+  // validates polynomial shape
+  if (ValidatePolynomialShape(is_included_warnings,
+                              messages) == false) {
+    is_valid = false;
   }
 
   return is_valid;
@@ -525,8 +529,11 @@ bool CableComponentElongationModel::UpdateStrainThermal(
 
 bool CableComponentElongationModel::ValidatePolynomialOrigin(
     const bool& is_included_warnings,
-    std::list<std::string>* messages_error) const {
+    std::list<ErrorMessage>* messages) const {
+  // initializes
   bool is_valid = true;
+  ErrorMessage message;
+  message.title = "CABLE COMPONENT ELONGATION MODEL";
 
   // exits if warnings are not included
   if (is_included_warnings == false) {
@@ -554,9 +561,10 @@ bool CableComponentElongationModel::ValidatePolynomialOrigin(
       && (is_included_warnings == true))) {
 
     is_valid = false;
-    if (messages_error != nullptr) {
-      messages_error->push_back("CABLE COMPONENT ELONGATION MODEL - Polynomial "
-                                "origin has a significant non-zero strain ");
+    if (messages != nullptr) {
+      message.description = "Polynomial origin has a significant non-zero "
+                            "strain";
+      messages->push_back(message);
     }
   }
 
@@ -568,8 +576,11 @@ bool CableComponentElongationModel::ValidatePolynomialOrigin(
 
 bool CableComponentElongationModel::ValidatePolynomialShape(
     const bool& is_included_warnings,
-    std::list<std::string>* messages_error) const {
+    std::list<ErrorMessage>* messages) const {
+  // initializes
   bool is_valid = true;
+  ErrorMessage message;
+  message.title = "CABLE COMPONENT ELONGATION MODEL";
 
   // exits if warnings are not included
   if (is_included_warnings == false) {
@@ -602,26 +613,24 @@ bool CableComponentElongationModel::ValidatePolynomialShape(
 
     // checks if polynomial slope is negative
     if (slope < 0) {
-
       is_valid = false;
-      if (messages_error != nullptr) {
-        messages_error->push_back(
-            "CABLE COMPONENT ELONGATION MODEL - Slope of polynomial tangent is "
-            "negative at strain = ");
-            // std::to_string(supportfunctions::Round(strain, 4)));
+      if (messages != nullptr) {
+        message.description = "Slope of polynomial tangent is negative at "
+                              "strain = "
+                              + helper::DoubleToFormattedString(strain, 4);
+        messages->push_back(message);
       }
     }
 
     // checks if polynomial slope exceeds elastic area modulus
     if ((*component_cable_->modulus_tension_elastic_area() < slope)
-        && (is_included_warnings == true)) {
-
+         && (is_included_warnings == true)) {
       is_valid = false;
-      if (messages_error != nullptr) {
-        messages_error->push_back(
-            "CABLE COMPONENT ELONGATION MODEL - Slope of polynomial tangent is "
-            " greater than the tension elastic area modulus at strain = ");
-            // std::to_string(supportfunctions::Round(strain, 4)));
+      if (messages != nullptr) {
+        message.description = "Slope of polynomial tangent is greater than the "
+                              "tension elastic area modulus at strain = "
+                              + helper::DoubleToFormattedString(strain, 4);
+        messages->push_back(message);
       }
     }
   }
