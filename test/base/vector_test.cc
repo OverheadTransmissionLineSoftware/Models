@@ -8,7 +8,6 @@
 #include "models/base/helper.h"
 
 TEST(Vector2d, Angle) {
-
   Vector2d v(0,0);
 
   // quadrant I
@@ -57,13 +56,11 @@ TEST(Vector2d, Angle) {
 }
 
 TEST(Vector2d, Magnitude) {
-
   Vector2d v(3, 4);
   EXPECT_EQ(5, helper::Round(v.Magnitude(), 0));
 }
 
 TEST(Vector2d, Rotate) {
-
   Vector2d v(1, 0);
 
   // positive rotation
@@ -83,7 +80,6 @@ TEST(Vector2d, Rotate) {
 }
 
 TEST(Vector2d, Scale) {
-
   Vector2d v(1, 0);
 
   v.Scale(100);

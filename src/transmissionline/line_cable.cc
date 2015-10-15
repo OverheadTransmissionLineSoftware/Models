@@ -5,6 +5,8 @@
 
 LineCable::LineCable() {
   cable = nullptr;
+  weathercase_stretch_creep = nullptr;
+  weathercase_stretch_load = nullptr;
 }
 
 LineCable::~LineCable() {
@@ -12,7 +14,6 @@ LineCable::~LineCable() {
 
 bool LineCable::Validate(const bool& is_included_warnings,
                          std::list<std::string>* messages_error) const {
-
   bool is_valid = true;
 
   // validates cable
@@ -54,6 +55,34 @@ bool LineCable::Validate(const bool& is_included_warnings,
     if (messages_error != nullptr) {
       messages_error->push_back("LINE CABLE - Invalid vertical ruling span"
                                 "attachment spacing");
+    }
+  }
+
+  // validates weathercase-stretch-creep
+  if (weathercase_stretch_creep == nullptr) {
+    is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back("LINE CABLE - Invalid creep stretch "
+                                "weathercase");
+    }
+  } else {
+    if (weathercase_stretch_creep->Validate(is_included_warnings,
+                                            messages_error) == false) {
+      is_valid = false;
+    }
+  }
+
+  // validates weathercase-stretch-load
+  if (weathercase_stretch_load == nullptr) {
+    is_valid = false;
+    if (messages_error != nullptr) {
+      messages_error->push_back("LINE CABLE - Invalid load stretch "
+                                "weathercase");
+    }
+  } else {
+    if (weathercase_stretch_load->Validate(is_included_warnings,
+                                           messages_error) == false) {
+      is_valid = false;
     }
   }
 

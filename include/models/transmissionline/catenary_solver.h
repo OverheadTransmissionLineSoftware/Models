@@ -1,25 +1,26 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef OTLS_MODELS_TRANSMISSIONLINE_LINECABLETOCATENARYCONVERTER_H_
-#define OTLS_MODELS_TRANSMISSIONLINE_LINECABLETOCATENARYCONVERTER_H_
+#ifndef OTLS_MODELS_TRANSMISSIONLINE_CATENARYSOLVER_H_
+#define OTLS_MODELS_TRANSMISSIONLINE_CATENARYSOLVER_H_
 
 #include <list>
 #include <string>
 
+#include "models/transmissionline/cable.h"
+#include "models/transmissionline/cable_constraint.h"
 #include "models/transmissionline/catenary.h"
-#include "models/transmissionline/line_cable.h"
 
 /// \par OVERVIEW
 ///
-/// This class converts a line cable to a catenary.
-class LineCableToCatenaryConverter {
+/// This class solves for a catenary.
+class CatenarySolver {
  public:
   /// \brief Default constructor.
-  LineCableToCatenaryConverter();
+  CatenarySolver();
 
   /// \brief Destructor.
-  ~LineCableToCatenaryConverter();
+  ~CatenarySolver();
 
   /// \brief Gets the catenary.
   Catenary3d Catenary() const;
@@ -34,14 +35,31 @@ class LineCableToCatenaryConverter {
   bool Validate(const bool& is_included_warnings = true,
                 std::list<std::string>* messages_error = nullptr) const;
 
-  /// \brief Gets the line cable.
-  /// \return The line cable.
-  const LineCable* line_cable() const;
+  /// \brief Gets the cable.
+  /// \return The cable.
+  const Cable* cable() const;
 
-  /// \brief Sets the line cable.
-  /// \param[in] line_cable
-  ///   The line cable.
-  void set_line_cable(const LineCable* line_cable);
+  /// \brief Gets the constraint.
+  /// \return The constraint.
+  const CableConstraint* constraint() const;
+
+  /// \brief Sets the cable.
+  /// \param[in] cable
+  ///   The cable.
+  void set_cable(const Cable* cable);
+
+  /// \brief Gets the constraint.
+  /// \param[in] constraint
+  ///   The constraint.
+  void set_constraint(const CableConstraint* constraint);
+
+  /// \brief Sets the attachment spacing.
+  /// \param[in] spacing_attachments
+  void set_spacing_attachments(const Vector3d* spacing_attachments);
+
+  /// \brief Gets the attachment spacing.
+  /// \return The attachment spacing.
+  const Vector3d* spacing_attachments() const;
 
  private:
   /// \brief Determines if class is updated.
@@ -73,17 +91,25 @@ class LineCableToCatenaryConverter {
   ///    catenary.
   double UpdateCatenaryMaxTension(const double& tension_horizontal) const;
 
+  /// \var cable_
+  ///   The cable.
+  const Cable* cable_;
+
   /// \var catenary_
   ///   The catenary being solved for.
   mutable Catenary3d catenary_;
+
+  /// \var constraint_
+  ///   The constraint.
+  const CableConstraint* constraint_;
 
   /// \var is_updated_catenary_
   ///   An indicator that tells if the catenary is updated.
   mutable bool is_updated_catenary_;
 
-  /// \var line_cable_
-  ///   The line cable.
-  const LineCable* line_cable_;
+  /// \var spacing_attachments_
+  ///   The attachment spacing for the catenary.
+  const Vector3d* spacing_attachments_;
 };
 
-#endif // OTLS_MODELS_TRANSMISSIONLINE_LINECABLETOCATENARYCONVERTER_H_
+#endif // OTLS_MODELS_TRANSMISSIONLINE_CATENARYSOLVER_H_

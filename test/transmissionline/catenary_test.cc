@@ -10,7 +10,6 @@
 class Catenary2dTest : public ::testing::Test {
  protected:
   Catenary2dTest() {
-
     Vector2d spacing_endpoints(1000, 0);
 
     c_.set_spacing_endpoints(spacing_endpoints);
@@ -22,12 +21,10 @@ class Catenary2dTest : public ::testing::Test {
 };
 
 TEST_F(Catenary2dTest, Constant) {
-
   EXPECT_EQ(2000, helper::Round(c_.Constant(), 0));
 }
 
 TEST_F(Catenary2dTest, Length) {
-
   // flat - lowpoint within span
   EXPECT_EQ(1010.45, helper::Round(c_.Length(), 2));
 
@@ -38,7 +35,6 @@ TEST_F(Catenary2dTest, Length) {
 }
 
 TEST_F(Catenary2dTest, LengthSlack) {
-
   // flat - lowpoint within span
   EXPECT_EQ(10.45, helper::Round(c_.LengthSlack(), 2));
 
@@ -49,13 +45,11 @@ TEST_F(Catenary2dTest, LengthSlack) {
 }
 
 TEST_F(Catenary2dTest, Tension) {
-
   EXPECT_EQ(1031.41, helper::Round(c_.Tension(0), 2));
   EXPECT_EQ(1000.00, helper::Round(c_.Tension(0.5), 2));
 }
 
 TEST_F(Catenary2dTest, TensionAverage) {
-
   // approximation method
   EXPECT_EQ(1010.54, helper::Round(c_.TensionAverage(0), 2));
 
@@ -65,7 +59,6 @@ TEST_F(Catenary2dTest, TensionAverage) {
 }
 
 TEST_F(Catenary2dTest, TensionMax) {
-
   // flat - lowpoint within span
   EXPECT_EQ(1031.41, helper::Round(c_.TensionMax(), 2));
 
@@ -76,6 +69,5 @@ TEST_F(Catenary2dTest, TensionMax) {
 }
 
 TEST_F(Catenary2dTest, Validate) {
-
   EXPECT_TRUE(c_.Validate(true, nullptr));
 }

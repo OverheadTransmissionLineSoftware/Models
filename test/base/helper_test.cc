@@ -6,7 +6,6 @@
 #include "gtest/gtest.h"
 
 TEST(Helper, Round) {
-
   const double value = 123.45;
 
   EXPECT_EQ(123, helper::Round(value, 0));

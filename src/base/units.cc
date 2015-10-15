@@ -16,7 +16,6 @@ double Convert(const double& value,
                const ConversionType& type,
                const int& exponent,
                const bool& is_numerator) {
-
   // gets factor
   double factor = -999999;
   if (type == ConversionType::kDegreesToRadians) {

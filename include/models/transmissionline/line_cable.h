@@ -48,6 +48,16 @@ struct LineCable {
   /// \var spacing_attachments_ruling_span
   ///   The attachment spacing for the ruling span geometry.
   Vector3d spacing_attachments_ruling_span;
+
+  /// \var weathercase_stretch_creep
+  ///   The weathercase that defines the amount of non-elastic stretch due to
+  ///   creep.
+  const WeatherLoadCase* weathercase_stretch_creep;
+
+  /// \var weathercase_stretch_load
+  ///   The weathercase that defines the amount of non-elastic stretch due to
+  ///   load.
+  const WeatherLoadCase* weathercase_stretch_load;
 };
 
 #endif // OTLS_MODELS_TRANSMISSIONLINE_LINECABLE_H_

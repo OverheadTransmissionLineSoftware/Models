@@ -11,21 +11,24 @@
 class CableStrainerTest : public ::testing::Test {
  protected:
   CableStrainerTest() {
-
-    // gets cable
-    Cable* cable = factory::BuildCable();
+    // builds dependency object - cable
+    SagTensionCable* cable = factory::BuildSagTensionCable();
 
     // builds dependency object - start state
     CableState* state_start = new CableState();
     state_start->load_stretch = 12000;
     state_start->temperature = 0;
     state_start->temperature_stretch = 0;
+    state_start->type_polynomial =
+        SagTensionCableComponent::PolynomialType::kLoadStrain;
 
     // builds dependency object - finish state
     CableState* state_finish = new CableState();
     state_finish->load_stretch = 12000;
     state_finish->temperature = 212;
     state_finish->temperature_stretch = 0;
+    state_finish->type_polynomial =
+        SagTensionCableComponent::PolynomialType::kLoadStrain;
 
     // builds fixture object
     c_.set_cable(cable);
@@ -39,7 +42,6 @@ class CableStrainerTest : public ::testing::Test {
 };
 
 TEST_F(CableStrainerTest, LengthFinish) {
-
   // checks loaded length
   EXPECT_TRUE(c_.length_start() < c_.LengthFinish());
 

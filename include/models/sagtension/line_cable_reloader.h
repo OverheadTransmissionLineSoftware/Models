@@ -10,16 +10,17 @@
 #include "models/sagtension/cable_elongation_model.h"
 #include "models/sagtension/catenary_cable.h"
 #include "models/sagtension/catenary_cable_component_tension_solver.h"
+#include "models/sagtension/sag_tension_cable.h"
 #include "models/transmissionline/line_cable.h"
 
 /// \par OVERVIEW
 ///
-/// This class reloads a line cable to a specified load case and condition. The
-/// basic process is as follows:
-///   - create a catenary cable based on the line cable constraint
-///   - determine the stretch at the reloaded condition
-///   - reload the catenary cable (based on the line cable constraint) at the
-///     reloaded state and loading parameters
+/// This class reloads a line cable to a specified weather case and condition.
+/// The process is as follows:
+///   - solve for a catenary cable based on the line cable information
+///   - determine the stretch load at all conditions
+///   - reload the catenary cable (based on the line cable) at the reloaded
+///     state
 ///
 /// \par STRETCH
 ///
@@ -44,7 +45,7 @@ class LineCableReloader {
 
   /// \brief Gets the load the cable was stretched to.
   /// \return The load the cable was stretched to.
-  double LoadStretch() const;
+  double LoadStretch(const CableConditionType& condition) const;
 
   /// \brief Gets the average load of the cable component.
   /// \param[in] type_component
@@ -74,14 +75,6 @@ class LineCableReloader {
   bool Validate(const bool& is_included_warnings = true,
                 std::list<std::string>* messages_error = nullptr) const;
 
-  /// \brief Gets the reloaded load case.
-  /// \return The reloaded load case.
-  const WeatherLoadCase* case_reloaded() const;
-
-  /// \brief Gets the stretch load case.
-  /// \return The stretch load case.
-  const WeatherLoadCase* case_stretch() const;
-
   /// \brief Gets the reloaded cable condition.
   /// \return The reloaded cable condition.
   CableConditionType condition_reloaded() const;
@@ -93,16 +86,6 @@ class LineCableReloader {
   /// \brief Gets the line cable.
   /// \return The line cable.
   const LineCable* line_cable() const;
-
-  /// \brief Sets the reloaded load case.
-  /// \param[in] case_reloaded
-  ///   The reloaded load case.
-  void set_case_reloaded(const WeatherLoadCase* case_reloaded);
-
-  /// \brief Sets the stretch load case.
-  /// \param[in] case_stretch
-  ///   The stretch load case.
-  void set_case_stretch(const WeatherLoadCase* case_stretch);
 
   /// \brief Sets the reloaded cable condition.
   /// \param[in] condition_reloaded
@@ -120,14 +103,14 @@ class LineCableReloader {
   ///   The line cable.
   void set_line_cable(const LineCable* line_cable);
 
-  /// \brief Sets the type of stretch.
-  /// \param[in] type_stretch
-  ///   The type of stretch.
-  void set_type_stretch(const CableConditionType& type_stretch);
+  /// \brief Sets the reloaded load case.
+  /// \param[in] case_reloaded
+  ///   The reloaded load case.
+  void set_weathercase_reloaded(const WeatherLoadCase* weathercase_reloaded);
 
-  /// \brief Gets the type of stretch.
-  /// \return The type of stretch.
-  CableConditionType type_stretch() const;
+  /// \brief Gets the reloaded load case.
+  /// \return The reloaded load case.
+  const WeatherLoadCase* weathercase_reloaded() const;
 
  private:
   /// \brief Determines if class is updated.
@@ -135,10 +118,10 @@ class LineCableReloader {
   bool IsUpdated() const;
 
   /// \brief Calculates the unit load of the catenary.
-  /// \param[in] case_weather
+  /// \param[in] weathercase
   ///   The weather case.
   /// \return The unit loading of the cable.
-  Vector3d UnitLoad(const WeatherLoadCase& case_weather) const;
+  Vector3d UnitLoad(const WeatherLoadCase& weathercase) const;
 
   /// \brief Updates cached member variables and modifies control variables if
   ///   update is required.
@@ -161,13 +144,9 @@ class LineCableReloader {
   /// \return The success status of the update.
   bool UpdateReloadedCatenaryCable() const;
 
-  /// \var case_reloaded_
-  ///   The load case that the cable is being reloaded to.
-  const WeatherLoadCase* case_reloaded_;
-
-  /// \var case_stretch_
-  ///   The load case that defines the cable stretch.
-  const WeatherLoadCase* case_stretch_;
+  /// \var cable_sagtension_
+  ///   The cable, which is referenced for sag-tension methods.
+  SagTensionCable cable_sagtension_;
 
   /// \var catenarycable_constraint_
   ///   The catenary cable for the line cable constraint.
@@ -189,9 +168,9 @@ class LineCableReloader {
   ///   An indicator that tells if the query catenary cable is updated.
   mutable bool is_updated_catenarycable_reloaded_;
 
-  /// \var is_updated_load_stretch_
+  /// \var is_updated_stretch_
   ///   An indicator that tells if the stretch load is updated.
-  mutable bool is_updated_load_stretch_;
+  mutable bool is_updated_stretch_;
 
   /// \var length_unloaded_unstretched_adjustment_
   ///   The adjustment to the unloaded unstretched length when the cable is
@@ -202,17 +181,21 @@ class LineCableReloader {
   ///   The line cable that is being reloaded.
   const LineCable* line_cable_;
 
-  /// \var load_stretch_
-  ///   The load that the cable is stretched to.
-  mutable double load_stretch_;
+  /// \var load_stretch_creep_
+  ///   The stretch load for the creep condition.
+  mutable double load_stretch_creep_;
+
+  /// \var load_stretch_load_;
+  ///   The stretch load for the load condition.
+  mutable double load_stretch_load_;
 
   /// \var solver_component_tension_
   ///   The catenary cable component tension solver.
   mutable CatenaryCableComponentTensionSolver solver_component_tension_;
 
-  /// \var type_stretch_
-  ///   The type of stretch the cable has experienced.
-  CableConditionType type_stretch_;
+  /// \var weathercase_reloaded_
+  ///   The load case that the cable is being reloaded to.
+  const WeatherLoadCase* weathercase_reloaded_;
 };
 
 #endif  // OTLS_MODELS_SAGTENSION_LINECABLERELOADER_H_

@@ -14,14 +14,6 @@
 ///  (ex: shell, core)
 struct CableComponent {
  public:
-  /// \par OVERVIEW
-  ///
-  /// This enum contains types of cable polynomials.
-  enum class PolynomialType {
-    kCreep,
-    kLoadStrain
-  };
-
   /// \brief Default constructor.
   CableComponent();
 
@@ -137,11 +129,6 @@ struct Cable {
   ///   indicates which materials the cable has, and if it contains a
   ///   reinforcing core component.
   std::string type_construction;
-
-  /// \var type_polynomial_active
-  ///   A switch that activates a specific polynomial to describe the cable
-  ///   elongation characteristics.
-  CableComponent::PolynomialType type_polynomial_active;
 
   /// \var weight_unit
   ///   The weight per unit length of the entire cable.

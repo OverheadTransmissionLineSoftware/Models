@@ -11,8 +11,7 @@
 class CatenaryCableTest : public ::testing::Test {
  protected:
   CatenaryCableTest() {
-
-    Cable* cable = factory::BuildCable();
+    SagTensionCable* cable = factory::BuildSagTensionCable();
 
     // builds dependency object - endpoint spacing
     Vector3d spacing_endpoints(1200, 0, 0);
@@ -22,6 +21,8 @@ class CatenaryCableTest : public ::testing::Test {
     state.load_stretch = 0;
     state.temperature = 0;
     state.temperature_stretch = 0;
+    state.type_polynomial =
+        SagTensionCableComponent::PolynomialType::kLoadStrain;
 
     // builds dependency object - unit weight
     Vector3d weight_unit(0, 0, 1.094);
@@ -38,6 +39,5 @@ class CatenaryCableTest : public ::testing::Test {
 };
 
 TEST_F(CatenaryCableTest, Validate) {
-
   EXPECT_TRUE(c_.Validate(false, nullptr));
 }

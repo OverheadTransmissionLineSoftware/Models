@@ -1,7 +1,7 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "models/transmissionline/line_cable_to_catenary_converter.h"
+#include "models/transmissionline/catenary_solver.h"
 
 #include "gtest/gtest.h"
 
@@ -9,10 +9,9 @@
 #include "models/base/helper.h"
 #include "models/base/units.h"
 
-class LineCableToCatenaryConverterTest : public ::testing::Test {
+class CatenarySolverTest : public ::testing::Test {
  protected:
-  LineCableToCatenaryConverterTest() {
-
+  CatenarySolverTest() {
     // builds dependency object - line cable
     Cable* cable = factory::BuildCable();
 
@@ -24,27 +23,25 @@ class LineCableToCatenaryConverterTest : public ::testing::Test {
     case_weather->pressure_wind = 8;
     case_weather->temperature_cable = 0;
 
-    CableConstraint constraint;
-    constraint.case_weather = case_weather;
-    constraint.condition = CableConditionType::kInitial;
-    constraint.limit = 12000;
-    constraint.type_limit = CableConstraint::LimitType::kSupportTension;
+    CableConstraint* constraint = new CableConstraint();
+    constraint->case_weather = case_weather;
+    constraint->condition = CableConditionType::kInitial;
+    constraint->limit = 12000;
+    constraint->type_limit = CableConstraint::LimitType::kSupportTension;
 
-    LineCable* line_cable = new LineCable();
-    line_cable->cable = cable;
-    line_cable->constraint = constraint;
-    line_cable->spacing_attachments_ruling_span = Vector3d(1200, 0, 0);
+    Vector3d* spacing_attachments = new Vector3d(1200, 0, 0);
 
     // builds fixture object
-    l_.set_line_cable(line_cable);
+    c_.set_cable(cable);
+    c_.set_constraint(constraint);
+    c_.set_spacing_attachments(spacing_attachments);
   }
 
-  LineCableToCatenaryConverter l_;
+  CatenarySolver c_;
 };
 
-TEST_F(LineCableToCatenaryConverterTest, Catenary) {
-
-  Catenary3d catenary = l_.Catenary();
+TEST_F(CatenarySolverTest, Catenary) {
+  Catenary3d catenary = c_.Catenary();
 
   // horizontal tension
   EXPECT_EQ(11903, helper::Round(catenary.tension_horizontal(), 0));
@@ -62,6 +59,6 @@ TEST_F(LineCableToCatenaryConverterTest, Catenary) {
   EXPECT_EQ(0, helper::Round(spacing.z(), 0));
 }
 
-TEST_F(LineCableToCatenaryConverterTest, Validate) {
-  EXPECT_TRUE(l_.Validate(true, nullptr));
+TEST_F(CatenarySolverTest, Validate) {
+  EXPECT_TRUE(c_.Validate(true, nullptr));
 }

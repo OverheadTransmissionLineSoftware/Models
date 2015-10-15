@@ -10,10 +10,10 @@
 class CableStateTest : public ::testing::Test {
  protected:
   CableStateTest() {
-
     c_.load_stretch = 0;
     c_.temperature = 0;
     c_.temperature_stretch = 0;
+    c_.type_polynomial = SagTensionCableComponent::PolynomialType::kLoadStrain;
   }
 
   CableState c_;

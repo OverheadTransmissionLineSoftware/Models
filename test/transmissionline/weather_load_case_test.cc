@@ -8,7 +8,6 @@
 class WeatherLoadCaseTest : public ::testing::Test {
  protected:
   WeatherLoadCaseTest() {
-
     w_.description = "0-0-60";
     w_.thickness_ice = 0;
     w_.density_ice = 0;

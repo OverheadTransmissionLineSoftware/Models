@@ -11,7 +11,7 @@
 #include "models/base/point.h"
 #include "models/sagtension/cable_component_elongation_model.h"
 #include "models/sagtension/cable_state.h"
-#include "models/transmissionline/cable.h"
+#include "models/sagtension/sag_tension_cable.h"
 
 /// \par OVERVIEW
 ///
@@ -114,12 +114,12 @@ class CableElongationModel {
 
   /// \brief Gets the cable.
   /// \return A copy of the cable.
-  const Cable* cable() const;
+  const SagTensionCable* cable() const;
 
   /// \brief Sets the cable.
   /// \param[in] cable
   ///   The cable.
-  void set_cable(const Cable* cable);
+  void set_cable(const SagTensionCable* cable);
 
   /// \brief Sets the state.
   /// \param[in] state
@@ -205,11 +205,6 @@ class CableElongationModel {
   bool Update() const;
 
 /// \todo
-/// This function may need addressed. Active polynomial does not belong
-/// in the Cable struct. May need to develop an inherited SagTensionCable
-/// which adds on this member.
-
-/// \todo
 /// The whole concept of active components was developed to avoid unnecessary
 /// component queries, but also to stop a runtime error of dividing by zero
 /// when the modulus (tension/compression) was zero. This should be addressed in
@@ -266,15 +261,15 @@ class CableElongationModel {
 
   /// \var cable_
   ///  The cable that is modeled.
-  const Cable* cable_;
+  const SagTensionCable* cable_;
 
-  /// \var component_core_
+  /// \var model_core_
   ///   The elongation model for the core cable component.
-  mutable CableComponentElongationModel component_core_;
+  mutable CableComponentElongationModel model_core_;
 
-  /// \var component_shell_
+  /// \var model_shell_
   ///   The elongation model for the shell cable component.
-  mutable CableComponentElongationModel component_shell_;
+  mutable CableComponentElongationModel model_shell_;
 
   /// \var is_enabled_core_
   ///   An indicator that tells if the core elongation model is enabled.
@@ -284,15 +279,10 @@ class CableElongationModel {
   ///   An indicator that tells if the shell elongation model is enabled.
   mutable bool is_enabled_shell_;
 
-  /// \var is_updated_components_properties_
-  ///   An indicator that tells if the properties for the component elongation
-  ///   models have been updated.
-  mutable bool is_updated_components_properties_;
-
-  /// \var is_updated_components_state_
+  /// \var is_updated_
   ///   An indicator that tells if the state for the component elongation
   ///   moels have been updated.
-  mutable bool is_updated_components_state_;
+  mutable bool is_updated_;
 
   /// \var points_regions_
   ///   The cached points from the component elongation models that show where

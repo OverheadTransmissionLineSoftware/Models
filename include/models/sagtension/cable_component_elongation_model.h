@@ -9,7 +9,7 @@
 
 #include "models/base/point.h"
 #include "models/base/polynomial.h"
-#include "models/transmissionline/cable.h"
+#include "models/sagtension/sag_tension_cable.h"
 
 /// \par OVERVIEW
 ///
@@ -133,7 +133,7 @@ class CableComponentElongationModel {
 
   /// \brief Gets the cable component.
   /// \return A copy of the cable component.
-  const CableComponent* component_cable() const;
+  const SagTensionCableComponent* component_cable() const;
 
   /// \brief Gets the stretch load.
   /// \return The stretch load.
@@ -142,7 +142,7 @@ class CableComponentElongationModel {
   /// \brief Sets the cable component.
   /// \param[in] component_cable
   ///   The cable component.
-  void set_component_cable(const CableComponent* component_cable);
+  void set_component_cable(const SagTensionCableComponent* component_cable);
 
   /// \brief Sets the stretch load.
   /// \param[in] load_stretch
@@ -163,7 +163,7 @@ class CableComponentElongationModel {
   /// \param[in] type_polynomial_active
   ///   The type of active polynomial.
   void set_type_polynomial_active(
-      const CableComponent::PolynomialType* type_polynomial_active);
+      const SagTensionCableComponent::PolynomialType* type_polynomial_active);
 
   /// \brief Gets the temperature.
   /// \return The temperature.
@@ -175,7 +175,8 @@ class CableComponentElongationModel {
 
   /// \brief Gets the type of active polynomial.
   /// \return The cable polynomial type.
-  const CableComponent::PolynomialType* type_polynomial_active() const;
+  const SagTensionCableComponent::PolynomialType* type_polynomial_active()
+      const;
 
  private:
   /// \brief Converts to a percent strain value for use with the thermally
@@ -325,7 +326,7 @@ class CableComponentElongationModel {
 
   /// \var component_cable_
   ///   The cable component that is being modeled.
-  const CableComponent* component_cable_;
+  const SagTensionCableComponent* component_cable_;
 
   /// \var load_stretch_
   ///   The load the component has been stretched to.
@@ -374,7 +375,7 @@ class CableComponentElongationModel {
   /// \var type_polynomial_active_
   ///   The type of polynomial to model. The cable component can have multiple
   ///   polynomials to describe its elongation.
-  const CableComponent::PolynomialType* type_polynomial_active_;
+  const SagTensionCableComponent::PolynomialType* type_polynomial_active_;
 };
 
 #endif // OTLS_MODELS_SAGTENSION_CABLECOMPONENTELONGATIONMODEL_H_

@@ -30,9 +30,9 @@
 /// \par CONTROLLING CONSTRAINT
 ///
 /// The controlling constraint is the most limiting of the design constraints.
-/// It alone will determine what the line cable constraint limit will be
-/// modified to. This class solves for the controlling constraint and caches
-/// the index corresponding to it.
+/// It will determine what the line cable constraint limit will be modified to.
+/// This class solves for the controlling constraint and caches the index
+/// in the design constraint vector.
 ///
 /// \par ACTUAL DESIGN CONSTRAINT LOADING
 ///
@@ -93,10 +93,6 @@ class LineCableSagger {
   bool Validate(const bool& is_included_warnings = true,
                 std::list<std::string>* messages_error = nullptr) const;
 
-  /// \brief Gets the stretch load case.
-  /// \return The stretch load case.
-  const WeatherLoadCase* case_stretch() const;
-
   /// \brief Gets the design constraints.
   /// \return The design constraints.
   std::vector<CableConstraint> constraints_design() const;
@@ -104,11 +100,6 @@ class LineCableSagger {
   /// \brief Gets the line cable.
   /// \return The line cable.
   LineCable* line_cable() const;
-
-  /// \brief Sets the stretch load case.
-  /// \param[in] case_stretch
-  ///   The stretch load case.
-  void set_case_stretch(const WeatherLoadCase* case_stretch);
 
   /// \brief Sets the design constraints.
   /// \param[in] constraints_design
@@ -143,10 +134,6 @@ class LineCableSagger {
   ///   loading.
   /// \return The success status of the update.
   bool UpdateCatenariesConstraintsActual() const;
-
-  /// \var case_stretch_
-  ///   The load case that defines the cable stretch.
-  const WeatherLoadCase* case_stretch_;
 
   /// \var catenaries_constraints_actual_
   ///   The catenaries for the design constraints, which contain the actual

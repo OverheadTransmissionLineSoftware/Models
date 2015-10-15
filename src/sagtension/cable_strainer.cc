@@ -6,7 +6,6 @@
 #include <cmath>
 
 CableStrainer::CableStrainer() {
-
   length_start_ = -999999;
   load_finish_ = -999999;
   load_start_ = -999999;
@@ -22,7 +21,6 @@ CableStrainer::~CableStrainer() {
 /// same transition strain, the final length would be equal to the initial
 /// length.
 double CableStrainer::LengthFinish() const {
-
   // gets the start and finish strains
   const double strain_start = model_elongation_start_.Strain(
       CableElongationModel::ComponentType::kCombined, load_start_);
@@ -43,7 +41,6 @@ double CableStrainer::LengthFinish() const {
 
 bool CableStrainer::Validate(const bool& is_included_warnings,
                              std::list<std::string>* messages_error) const {
-
   bool is_valid = true;
 
   // validates length-start
@@ -88,7 +85,7 @@ bool CableStrainer::Validate(const bool& is_included_warnings,
   return is_valid;
 }
 
-const Cable* CableStrainer::cable() const {
+const SagTensionCable* CableStrainer::cable() const {
   // doesn't matter which model it is grabbed from - both are similar
   return model_elongation_start_.cable();
 }
@@ -105,7 +102,7 @@ double CableStrainer::load_start() const {
   return load_start_;
 }
 
-void CableStrainer::set_cable(const Cable* cable) {
+void CableStrainer::set_cable(const SagTensionCable* cable) {
   model_elongation_start_.set_cable(cable);
   model_elongation_finish_.set_cable(cable);
 }

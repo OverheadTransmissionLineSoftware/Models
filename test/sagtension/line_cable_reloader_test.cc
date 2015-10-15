@@ -12,40 +12,27 @@
 class LineCableReloaderTest : public ::testing::Test {
  protected:
   LineCableReloaderTest() {
-
     // gets line cable from factory
     LineCable* line_cable = factory::BuildLineCable();
 
-    // builds a stretch weather case
-    WeatherLoadCase* case_stretch = new WeatherLoadCase();
-    case_stretch->description = "0.5-8-0";
-    case_stretch->thickness_ice =
-        units::Convert(0.5, units::ConversionType::kInchesToFeet);
-    case_stretch->density_ice = 57.3;
-    case_stretch->pressure_wind = 8;
-    case_stretch->temperature_cable = 0;
-
     // builds reloaded weather case
-    WeatherLoadCase* case_reloaded = new WeatherLoadCase();
-    case_reloaded->description = "0-0-60";
-    case_reloaded->thickness_ice = 0;
-    case_reloaded->density_ice = 0;
-    case_reloaded->pressure_wind = 0;
-    case_reloaded->temperature_cable = 60;
+    WeatherLoadCase* weathercase_reloaded = new WeatherLoadCase();
+    weathercase_reloaded->description = "0-0-60";
+    weathercase_reloaded->thickness_ice = 0;
+    weathercase_reloaded->density_ice = 0;
+    weathercase_reloaded->pressure_wind = 0;
+    weathercase_reloaded->temperature_cable = 60;
 
     // builds fixture object
     l_.set_line_cable(line_cable);
-    l_.set_case_stretch(case_stretch);
-    l_.set_case_reloaded(case_reloaded);
+    l_.set_weathercase_reloaded(weathercase_reloaded);
     l_.set_condition_reloaded(CableConditionType::kInitial);
-    l_.set_type_stretch(CableConditionType::kLoad);
   }
 
   LineCableReloader l_;
 };
 
 TEST_F(LineCableReloaderTest, CatenaryReloaded) {
-
   Catenary3d catenary = l_.CatenaryReloaded();
   EXPECT_EQ(6000, helper::Round(catenary.tension_horizontal(), 0));
 
@@ -53,38 +40,31 @@ TEST_F(LineCableReloaderTest, CatenaryReloaded) {
 }
 
 TEST_F(LineCableReloaderTest, LoadStretchTest) {
+  double value = -999999;
 
-  // 'initial' reloaded condition
-  l_.set_condition_reloaded(CableConditionType::kInitial);
-  EXPECT_EQ(0, helper::Round(l_.LoadStretch(), 0));
+  value = l_.LoadStretch(CableConditionType::kInitial);
+  EXPECT_EQ(0, helper::Round(value, 0));
 
-  // 'load' reloaded condition
-  l_.set_condition_reloaded(CableConditionType::kLoad);
-  EXPECT_EQ(12180, helper::Round(l_.LoadStretch(), 0));
-
-  // 'load' reloaded condition, but stretch case ice thickness is doubled
-  WeatherLoadCase case_stretch = *l_.case_stretch();
-  case_stretch.thickness_ice =
-      units::Convert(1, units::ConversionType::kInchesToFeet);
-  l_.set_case_stretch(&case_stretch);
-  EXPECT_EQ(17192, helper::Round(l_.LoadStretch(), 0));
+  value = l_.LoadStretch(CableConditionType::kLoad);
+  EXPECT_EQ(12180, helper::Round(value, 0));
 }
 
 TEST_F(LineCableReloaderTest, TensionAverageComponent) {
+  double value = -999999;
 
-  EXPECT_EQ(3174, helper::Round(
-      l_.TensionAverageComponent(CableElongationModel::ComponentType::kCore),
-      0));
+  value = l_.TensionAverageComponent(
+      CableElongationModel::ComponentType::kCore);
+  EXPECT_EQ(3174, helper::Round(value, 0));
 
-  EXPECT_EQ(2838, helper::Round(
-      l_.TensionAverageComponent(CableElongationModel::ComponentType::kShell),
-      0));
+  value = l_.TensionAverageComponent(
+      CableElongationModel::ComponentType::kShell);
+  EXPECT_EQ(2838, helper::Round(value, 0));
 }
 
 TEST_F(LineCableReloaderTest, TensionHorizontal) {
-
+  double value = -999999;
   LineCable line_cable = *l_.line_cable();
-  WeatherLoadCase* case_reloaded = new WeatherLoadCase();
+  WeatherLoadCase* weathercase_reloaded = new WeatherLoadCase();
 
   // changes the constraint type and limit to initial condition
   line_cable = *l_.line_cable();
@@ -92,45 +72,54 @@ TEST_F(LineCableReloaderTest, TensionHorizontal) {
   line_cable.constraint.limit = 6000;
   l_.set_line_cable(&line_cable);
 
-  case_reloaded->description = "0-0-60";
-  case_reloaded->thickness_ice = 0;
-  case_reloaded->density_ice = 0;
-  case_reloaded->pressure_wind = 0;
-  case_reloaded->temperature_cable = 60;
-  l_.set_case_reloaded(case_reloaded);
+  weathercase_reloaded->description = "0-0-60";
+  weathercase_reloaded->thickness_ice = 0;
+  weathercase_reloaded->density_ice = 0;
+  weathercase_reloaded->pressure_wind = 0;
+  weathercase_reloaded->temperature_cable = 60;
+  l_.set_weathercase_reloaded(weathercase_reloaded);
 
   // reloads at same case as constraint, checks all conditions
   l_.set_condition_reloaded(CableConditionType::kInitial);
-  EXPECT_EQ(6000, helper::Round(l_.TensionHorizontal(), 0));
+  value = l_.TensionHorizontal();
+  EXPECT_EQ(6000, helper::Round(value, 0));
+
   l_.set_condition_reloaded(CableConditionType::kLoad);
-  EXPECT_EQ(5561, helper::Round(l_.TensionHorizontal(), 0));
+  value = l_.TensionHorizontal();
+  EXPECT_EQ(5561, helper::Round(value, 0));
 
   // reloads at high temperature case, checks all conditions
-  case_reloaded->description = "0-0-212";
-  case_reloaded->thickness_ice = 0;
-  case_reloaded->density_ice = 0;
-  case_reloaded->pressure_wind = 0;
-  case_reloaded->temperature_cable = 212;
-  l_.set_case_reloaded(case_reloaded);
+  weathercase_reloaded->description = "0-0-212";
+  weathercase_reloaded->thickness_ice = 0;
+  weathercase_reloaded->density_ice = 0;
+  weathercase_reloaded->pressure_wind = 0;
+  weathercase_reloaded->temperature_cable = 212;
+  l_.set_weathercase_reloaded(weathercase_reloaded);
 
   l_.set_condition_reloaded(CableConditionType::kInitial);
-  EXPECT_EQ(4702, helper::Round(l_.TensionHorizontal(), 0));
+  value = l_.TensionHorizontal();
+  EXPECT_EQ(4702, helper::Round(value, 0));
+
   l_.set_condition_reloaded(CableConditionType::kLoad);
-  EXPECT_EQ(4528, helper::Round(l_.TensionHorizontal(), 0));
+  value = l_.TensionHorizontal();
+  EXPECT_EQ(4528, helper::Round(value, 0));
 
   // reloads at high load case, checks all conditions
-  case_reloaded->description = "1-8-0";
-  case_reloaded->thickness_ice =
+  weathercase_reloaded->description = "1-8-0";
+  weathercase_reloaded->thickness_ice =
     units::Convert(1, units::ConversionType::kInchesToFeet);
-  case_reloaded->density_ice = 57.3;
-  case_reloaded->pressure_wind = 8;
-  case_reloaded->temperature_cable = 0;
-  l_.set_case_reloaded(case_reloaded);
+  weathercase_reloaded->density_ice = 57.3;
+  weathercase_reloaded->pressure_wind = 8;
+  weathercase_reloaded->temperature_cable = 0;
+  l_.set_weathercase_reloaded(weathercase_reloaded);
 
   l_.set_condition_reloaded(CableConditionType::kInitial);
-  EXPECT_EQ(17126, helper::Round(l_.TensionHorizontal(), 0));
+  value = l_.TensionHorizontal();
+  EXPECT_EQ(17126, helper::Round(value, 0));
+
   l_.set_condition_reloaded(CableConditionType::kLoad);
-  EXPECT_EQ(17126, helper::Round(l_.TensionHorizontal(), 0));
+  value = l_.TensionHorizontal();
+  EXPECT_EQ(17126, helper::Round(value, 0));
 
   // changes the constraint type and limit to stretched condition
   line_cable = *l_.line_cable();
@@ -139,28 +128,32 @@ TEST_F(LineCableReloaderTest, TensionHorizontal) {
   l_.set_line_cable(&line_cable);
 
   // reloads at same case as constraint, checks all conditions
-  case_reloaded->description = "0-0-60";
-  case_reloaded->thickness_ice = 0;
-  case_reloaded->density_ice = 0;
-  case_reloaded->pressure_wind = 0;
-  case_reloaded->temperature_cable = 60;
-  l_.set_case_reloaded(case_reloaded);
+  weathercase_reloaded->description = "0-0-60";
+  weathercase_reloaded->thickness_ice = 0;
+  weathercase_reloaded->density_ice = 0;
+  weathercase_reloaded->pressure_wind = 0;
+  weathercase_reloaded->temperature_cable = 60;
+  l_.set_weathercase_reloaded(weathercase_reloaded);
 
   l_.set_condition_reloaded(CableConditionType::kInitial);
-  EXPECT_EQ(6000, helper::Round(l_.TensionHorizontal(), 0));
+  value = l_.TensionHorizontal();
+  EXPECT_EQ(6000, helper::Round(value, 0));
+
   l_.set_condition_reloaded(CableConditionType::kLoad);
-  EXPECT_EQ(5561, helper::Round(l_.TensionHorizontal(), 0));
+  value = l_.TensionHorizontal();
+  EXPECT_EQ(5562, helper::Round(value, 0));
 }
 
 TEST_F(LineCableReloaderTest, TensionHorizontalComponent) {
+  double value = -999999;
 
-  EXPECT_EQ(3174, helper::Round(
-      l_.TensionAverageComponent(CableElongationModel::ComponentType::kCore),
-      0));
+  value = l_.TensionAverageComponent(
+      CableElongationModel::ComponentType::kCore);
+  EXPECT_EQ(3174, helper::Round(value, 0));
 
-  EXPECT_EQ(2838, helper::Round(
-      l_.TensionAverageComponent(CableElongationModel::ComponentType::kShell),
-      0));
+  value = l_.TensionAverageComponent(
+      CableElongationModel::ComponentType::kShell);
+  EXPECT_EQ(2838, helper::Round(value, 0));
 }
 
 TEST_F(LineCableReloaderTest, Validate) {
