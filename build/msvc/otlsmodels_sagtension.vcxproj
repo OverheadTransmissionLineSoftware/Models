@@ -92,6 +92,7 @@
     <ClCompile Include="..\..\src\sagtension\catenary_cable_unloader.cc" />
     <ClCompile Include="..\..\src\sagtension\line_cable_reloader.cc" />
     <ClCompile Include="..\..\src\sagtension\line_cable_sagger.cc" />
+    <ClCompile Include="..\..\src\sagtension\sag_tension_cable.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\models\sagtension\cable_component_elongation_model.h" />
@@ -105,6 +106,7 @@
     <ClInclude Include="..\..\include\models\sagtension\catenary_cable_unloader.h" />
     <ClInclude Include="..\..\include\models\sagtension\line_cable_reloader.h" />
     <ClInclude Include="..\..\include\models\sagtension\line_cable_sagger.h" />
+    <ClInclude Include="..\..\include\models\sagtension\sag_tension_cable.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="otlsmodels_transmissionline.vcxproj">

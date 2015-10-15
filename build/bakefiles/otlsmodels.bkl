@@ -67,6 +67,7 @@ library otlsmodels_sagtension {
     ../../include/models/sagtension/catenary_cable_unloader.h
     ../../include/models/sagtension/line_cable_reloader.h
     ../../include/models/sagtension/line_cable_sagger.h
+    ../../include/models/sagtension/sag_tension_cable.h
   }
   sources {
     ../../src/sagtension/cable_component_elongation_model.cc
@@ -80,5 +81,6 @@ library otlsmodels_sagtension {
     ../../src/sagtension/catenary_cable_unloader.cc
     ../../src/sagtension/line_cable_reloader.cc
     ../../src/sagtension/line_cable_sagger.cc
+    ../../src/sagtension/sag_tension_cable.cc
   }
 }

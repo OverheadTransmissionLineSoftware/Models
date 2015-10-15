@@ -92,8 +92,8 @@ $(builddir)/otlsmodels_transmissionline_line_cable.o: ../../src/transmissionline
 $(builddir)/otlsmodels_transmissionline_weather_load_case.o: ../../src/transmissionline/weather_load_case.cc
 	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I../../include -std=c++11 ../../src/transmissionline/weather_load_case.cc
 
-$(builddir)/libotlsmodels_sagtension.a: $(builddir)/otlsmodels_sagtension_cable_component_elongation_model.o $(builddir)/otlsmodels_sagtension_cable_elongation_model.o $(builddir)/otlsmodels_sagtension_cable_state.o $(builddir)/otlsmodels_sagtension_cable_strainer.o $(builddir)/otlsmodels_sagtension_catenary_cable.o $(builddir)/otlsmodels_sagtension_catenary_cable_component_tension_solver.o $(builddir)/otlsmodels_sagtension_catenary_cable_reloader.o $(builddir)/otlsmodels_sagtension_catenary_cable_solver.o $(builddir)/otlsmodels_sagtension_catenary_cable_unloader.o $(builddir)/otlsmodels_sagtension_line_cable_reloader.o $(builddir)/otlsmodels_sagtension_line_cable_sagger.o $(builddir)/libotlsmodels_transmissionline.a
-	$(AR) rcu $@ $(builddir)/otlsmodels_sagtension_cable_component_elongation_model.o $(builddir)/otlsmodels_sagtension_cable_elongation_model.o $(builddir)/otlsmodels_sagtension_cable_state.o $(builddir)/otlsmodels_sagtension_cable_strainer.o $(builddir)/otlsmodels_sagtension_catenary_cable.o $(builddir)/otlsmodels_sagtension_catenary_cable_component_tension_solver.o $(builddir)/otlsmodels_sagtension_catenary_cable_reloader.o $(builddir)/otlsmodels_sagtension_catenary_cable_solver.o $(builddir)/otlsmodels_sagtension_catenary_cable_unloader.o $(builddir)/otlsmodels_sagtension_line_cable_reloader.o $(builddir)/otlsmodels_sagtension_line_cable_sagger.o
+$(builddir)/libotlsmodels_sagtension.a: $(builddir)/otlsmodels_sagtension_cable_component_elongation_model.o $(builddir)/otlsmodels_sagtension_cable_elongation_model.o $(builddir)/otlsmodels_sagtension_cable_state.o $(builddir)/otlsmodels_sagtension_cable_strainer.o $(builddir)/otlsmodels_sagtension_catenary_cable.o $(builddir)/otlsmodels_sagtension_catenary_cable_component_tension_solver.o $(builddir)/otlsmodels_sagtension_catenary_cable_reloader.o $(builddir)/otlsmodels_sagtension_catenary_cable_solver.o $(builddir)/otlsmodels_sagtension_catenary_cable_unloader.o $(builddir)/otlsmodels_sagtension_line_cable_reloader.o $(builddir)/otlsmodels_sagtension_line_cable_sagger.o $(builddir)/otlsmodels_sagtension_sag_tension_cable.o $(builddir)/libotlsmodels_transmissionline.a
+	$(AR) rcu $@ $(builddir)/otlsmodels_sagtension_cable_component_elongation_model.o $(builddir)/otlsmodels_sagtension_cable_elongation_model.o $(builddir)/otlsmodels_sagtension_cable_state.o $(builddir)/otlsmodels_sagtension_cable_strainer.o $(builddir)/otlsmodels_sagtension_catenary_cable.o $(builddir)/otlsmodels_sagtension_catenary_cable_component_tension_solver.o $(builddir)/otlsmodels_sagtension_catenary_cable_reloader.o $(builddir)/otlsmodels_sagtension_catenary_cable_solver.o $(builddir)/otlsmodels_sagtension_catenary_cable_unloader.o $(builddir)/otlsmodels_sagtension_line_cable_reloader.o $(builddir)/otlsmodels_sagtension_line_cable_sagger.o $(builddir)/otlsmodels_sagtension_sag_tension_cable.o
 	$(RANLIB) $@
 
 $(builddir)/otlsmodels_sagtension_cable_component_elongation_model.o: ../../src/sagtension/cable_component_elongation_model.cc
@@ -128,6 +128,9 @@ $(builddir)/otlsmodels_sagtension_line_cable_reloader.o: ../../src/sagtension/li
 
 $(builddir)/otlsmodels_sagtension_line_cable_sagger.o: ../../src/sagtension/line_cable_sagger.cc
 	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I../../include -std=c++11 ../../src/sagtension/line_cable_sagger.cc
+
+$(builddir)/otlsmodels_sagtension_sag_tension_cable.o: ../../src/sagtension/sag_tension_cable.cc
+	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I../../include -std=c++11 ../../src/sagtension/sag_tension_cable.cc
 
 clean:
 	rm -f *.o
