@@ -210,7 +210,12 @@ void LineCableReloader::set_length_unloaded_unstretched_adjustment(
 
 void LineCableReloader::set_line_cable(const LineCable* line_cable) {
   line_cable_ = line_cable;
-  cable_sagtension_.set_cable_base(line_cable_->cable);
+
+  if (line_cable == nullptr) {
+    cable_sagtension_.set_cable_base(nullptr);
+  } else {
+    cable_sagtension_.set_cable_base(line_cable_->cable);
+  }
 
   is_updated_catenarycable_constraint_ = false;
   is_updated_stretch_ = false;
