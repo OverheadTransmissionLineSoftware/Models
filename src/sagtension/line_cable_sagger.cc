@@ -6,6 +6,7 @@
 #include "models/sagtension/line_cable_reloader.h"
 
 LineCableSagger::LineCableSagger() {
+  constraints_design_ = nullptr;
   line_cable_ = nullptr;
 
   index_constraint_controlling_ = -9999;
@@ -23,7 +24,7 @@ double LineCableSagger::CapacityAllowable(const int& index) const {
     }
   }
 
-  CableConstraint constraint = constraints_design_.at(index);
+  CableConstraint constraint = constraints_design_->at(index);
   Catenary3d catenary = catenaries_constraints_actual_.at(index);
 
   double capacity_allowable = -999999;
@@ -107,8 +108,8 @@ bool LineCableSagger::Validate(const bool& is_included_warnings,
   message.title = "LINE CABLE SAGGER";
 
   // validates constraints-design
-  for (auto iter = constraints_design_.cbegin();
-       iter != constraints_design_.cend(); iter++) {
+  for (auto iter = constraints_design_->cbegin();
+       iter != constraints_design_->cend(); iter++) {
     const CableConstraint& constraint = *iter;
     if (constraint.Validate(is_included_warnings, messages) == false) {
       is_valid = false;
@@ -155,7 +156,7 @@ bool LineCableSagger::Validate(const bool& is_included_warnings,
   return is_valid;
 }
 
-std::vector<CableConstraint> LineCableSagger::constraints_design() const {
+const std::vector<CableConstraint>* LineCableSagger::constraints_design() const {
   return constraints_design_;
 }
 
@@ -164,7 +165,7 @@ LineCable* LineCableSagger::line_cable() const {
 }
 
 void LineCableSagger::set_constraints_design(
-      const std::vector<CableConstraint> constraints_design) {
+      const std::vector<CableConstraint>* constraints_design) {
   constraints_design_ = constraints_design;
 
   is_updated_linecable_constraint_limit_ = false;
@@ -213,7 +214,7 @@ bool LineCableSagger::UpdateControllingConstraintIndex() const {
 
   // checks for multiple constraints to determine if further analysis is
   // required
-  if (constraints_design_.size() == 1) {
+  if (constraints_design_->size() == 1) {
     index_constraint_controlling_ = 1;
     return true;
   }
@@ -230,8 +231,8 @@ bool LineCableSagger::UpdateControllingConstraintIndex() const {
   double tension_horizontal_controlling = 999999;
   index_constraint_controlling_ = -9999;
 
-  for (auto iter = constraints_design_.cbegin();
-       iter != constraints_design_.cend(); iter++) {
+  for (auto iter = constraints_design_->cbegin();
+       iter != constraints_design_->cend(); iter++) {
     const CableConstraint& constraint = *iter;
 
     // creates a line cable with the design constraint and updates reloader
@@ -248,7 +249,7 @@ bool LineCableSagger::UpdateControllingConstraintIndex() const {
 
     if (tension_horizontal < tension_horizontal_controlling) {
       tension_horizontal_controlling = tension_horizontal;
-      index_constraint_controlling_ = iter - constraints_design_.cbegin();
+      index_constraint_controlling_ = iter - constraints_design_->cbegin();
     }
   }
 
@@ -273,7 +274,7 @@ bool LineCableSagger::UpdateLineCableConstraintLimit() const {
   // creates a line cable with the controlling design constraint and updates
   // reloader
   LineCable line_cable = LineCable(*line_cable_);
-  line_cable.constraint = constraints_design_.at(index_constraint_controlling_);
+  line_cable.constraint = constraints_design_->at(index_constraint_controlling_);
   reloader.set_line_cable(&line_cable);
 
   // updates line cable constraint limit
@@ -307,8 +308,8 @@ bool LineCableSagger::UpdateCatenariesConstraintsActual() const {
   reloader.set_line_cable(line_cable_);
 
   catenaries_constraints_actual_.clear();
-  for (auto iter = constraints_design_.cbegin();
-      iter != constraints_design_.cend(); iter++) {
+  for (auto iter = constraints_design_->cbegin();
+      iter != constraints_design_->cend(); iter++) {
     const CableConstraint constraint = *iter;
 
     // updates reloader with design constraint loading

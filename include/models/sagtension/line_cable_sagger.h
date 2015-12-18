@@ -95,7 +95,7 @@ class LineCableSagger {
 
   /// \brief Gets the design constraints.
   /// \return The design constraints.
-  std::vector<CableConstraint> constraints_design() const;
+  const std::vector<CableConstraint>* constraints_design() const;
 
   /// \brief Gets the line cable.
   /// \return The line cable.
@@ -105,7 +105,7 @@ class LineCableSagger {
   /// \param[in] constraints_design
   ///   The design constraints.
   void set_constraints_design(
-      const std::vector<CableConstraint> constraints_design);
+      const std::vector<CableConstraint>* constraints_design);
 
   /// \brief Sets the line cable.
   /// \param[in] line_cable
@@ -142,7 +142,7 @@ class LineCableSagger {
 
   /// \var constraints_design_
   ///   The constraints for the line cable.
-  std::vector<CableConstraint> constraints_design_;
+  const std::vector<CableConstraint>* constraints_design_;
 
   /// \var index_constraint_controlling_
   ///   The controlling, or most limiting constraint for the line cable.
