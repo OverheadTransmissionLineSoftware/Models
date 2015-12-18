@@ -100,6 +100,11 @@ class Polynomial {
   ///   The coefficients that determine the shape and order of the polynomial.
   const std::vector<double>* coefficients_;
 
+  /// \var coefficients_derivative_
+  ///   The coefficients that determine the shape and order of the derivate
+  ///   polynomial.
+  mutable std::vector<double> coefficients_derivative_;
+
   /// \var derivative_
   ///   The derivative of the polynomial. The derivate polynomial contains y
   ///   values that correspond to the slop of the polynomial.

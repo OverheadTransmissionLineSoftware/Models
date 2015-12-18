@@ -177,20 +177,20 @@ bool Polynomial::UpdateDerivative() const {
   const int order_max = OrderMax();
 
   // calculates derivative coefficients
-  std::vector<double>* coefficients_derivative = new std::vector<double>;
+  coefficients_derivative_.clear();
   for (int order = 0; order <= order_max; order++) {
 
     if (order != 0) {
       const double coefficient_function = coefficients_->at(order);
       double coefficient_derivative = coefficient_function * order;
-      coefficients_derivative->push_back(coefficient_derivative);
+      coefficients_derivative_.push_back(coefficient_derivative);
     }
   }
 
   // deletes old derivative polynomial and creates new one
   delete derivative_;
   derivative_ = new Polynomial();
-  derivative_->set_coefficients(coefficients_derivative);
+  derivative_->set_coefficients(&coefficients_derivative_);
 
   return true;
 }
