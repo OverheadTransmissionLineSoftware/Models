@@ -12,21 +12,34 @@ class CableElongationModelTest : public ::testing::Test {
  protected:
   CableElongationModelTest() {
     // builds dependency object - cable
-    SagTensionCable* cable = factory::BuildSagTensionCable();
+    cable_ = factory::BuildCable();
+    cable_sagtension_ = new SagTensionCable();
+    cable_sagtension_->set_cable_base(cable_);
 
     // builds dependency object - state
-    CableState* state = new CableState();
-    state->load_stretch = 12000;
-    state->temperature = 70;
-    state->temperature_stretch = 0;
-    state->type_polynomial =
+    state_ = new CableState();
+    state_->load_stretch = 12000;
+    state_->temperature = 70;
+    state_->temperature_stretch = 0;
+    state_->type_polynomial =
         SagTensionCableComponent::PolynomialType::kLoadStrain;
 
     // builds fixture object
-    c_.set_cable(cable);
-    c_.set_state(state);
+    c_.set_cable(cable_sagtension_);
+    c_.set_state(state_);
   }
 
+  ~CableElongationModelTest() {
+    factory::DestroySagTensionCable(cable_sagtension_);
+    delete state_;
+  }
+
+  // allocated dependency objects
+  Cable* cable_;
+  SagTensionCable* cable_sagtension_;
+  CableState* state_;
+
+  // test object
   CableElongationModel c_;
 };
 
@@ -81,12 +94,9 @@ TEST_F(CableElongationModelTest, Strain) {
 
   // modifies core and shell compression modulus to zero
   // checks combined strain at zero load
-  SagTensionCable* cable = factory::BuildSagTensionCable();
-  Cable cable_base = *cable->cable_base();
-  cable_base.component_core.modulus_compression_elastic_area = 0;
-  cable_base.component_shell.modulus_compression_elastic_area = 0;
-  cable->set_cable_base(&cable_base);
-  c_.set_cable(cable);
+  cable_->component_core.modulus_compression_elastic_area = 0;
+  cable_->component_shell.modulus_compression_elastic_area = 0;
+  c_.set_cable(cable_sagtension_);
   value = c_.Strain(CableElongationModel::ComponentType::kCombined, 0);
   EXPECT_EQ(-0.000022, helper::Round(value, 6));
 }

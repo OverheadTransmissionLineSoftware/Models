@@ -11,23 +11,33 @@
 class CableComponentElongationModelTest : public ::testing::Test {
  protected:
   CableComponentElongationModelTest() {
-    const SagTensionCable* cable = factory::BuildSagTensionCable();
-    const SagTensionCableComponent* component = cable->component_shell();
+    cable_ = factory::BuildSagTensionCable();
+    const SagTensionCableComponent* component = cable_->component_shell();
 
-    double* temperature = new double;
-    *temperature = 70;
-    SagTensionCableComponent::PolynomialType* type_polynomial =
-        new SagTensionCableComponent::PolynomialType();
-    *type_polynomial = SagTensionCableComponent::PolynomialType::kLoadStrain;
+    temperature_ = new double(70);
+    type_polynomial_ = new SagTensionCableComponent::PolynomialType();
+    *type_polynomial_ = SagTensionCableComponent::PolynomialType::kLoadStrain;
 
     // builds fixture object
     c_.set_component_cable(component);
     c_.set_load_stretch(5000);
-    c_.set_temperature(temperature);
-    c_.set_temperature_reference(cable->temperature_properties_components());
-    c_.set_type_polynomial_active(type_polynomial);
+    c_.set_temperature(temperature_);
+    c_.set_temperature_reference(cable_->temperature_properties_components());
+    c_.set_type_polynomial_active(type_polynomial_);
   }
 
+  ~CableComponentElongationModelTest() {
+    factory::DestroySagTensionCable(cable_);
+    delete temperature_;
+    delete type_polynomial_;
+  }
+
+  // allocated dependency objects
+  SagTensionCable* cable_;
+  double* temperature_;
+  SagTensionCableComponent::PolynomialType* type_polynomial_;
+
+  // test object
   CableComponentElongationModel c_;
 };
 
@@ -145,7 +155,6 @@ TEST_F(CableComponentElongationModelTest, Strain) {
 }
 
 TEST_F(CableComponentElongationModelTest, StrainThermal) {
-  double* temperature = new double;
   double value = -999999;
 
   // at reference temperature
@@ -153,14 +162,14 @@ TEST_F(CableComponentElongationModelTest, StrainThermal) {
   EXPECT_EQ(0, helper::Round(value, 7));
 
   // above reference temperature
-  *temperature = 212;
-  c_.set_temperature(temperature);
+  *temperature_ = 212;
+  c_.set_temperature(temperature_);
   value = c_.StrainThermal();
   EXPECT_EQ(0.0018176, helper::Round(value, 7));
 
   // below reference temperature
-  *temperature = 0;
-  c_.set_temperature(temperature);
+  *temperature_ = 0;
+  c_.set_temperature(temperature_);
   value = c_.StrainThermal();
   EXPECT_EQ(-0.000896, helper::Round(value, 7));
 }

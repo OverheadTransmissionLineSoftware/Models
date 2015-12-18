@@ -25,6 +25,12 @@ namespace factory {
   /// \brief This function builds a sag-tension cable.
   SagTensionCable* BuildSagTensionCable();
 
+  /// \brief Destroys the linecable and any data referenced to it.
+  void DestroyLineCable(LineCable* linecable);
+
+  /// \brief Destroys the sag-tension cable and any data referenced to it.
+  void DestroySagTensionCable(SagTensionCable* cable);
+
 } // namespace factory
 
 #endif  // OTLS_MODELS_TEST_FACTORY_H_

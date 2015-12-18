@@ -11,7 +11,7 @@
 class CatenaryCableComponentTensionSolverTest : public ::testing::Test {
  protected:
   CatenaryCableComponentTensionSolverTest() {
-    SagTensionCable* cable = factory::BuildSagTensionCable();
+    cable_ = factory::BuildSagTensionCable();
 
     Vector3d spacing_endpoints(1200, 0, 0);
 
@@ -22,17 +22,27 @@ class CatenaryCableComponentTensionSolverTest : public ::testing::Test {
     state.type_polynomial =
         SagTensionCableComponent::PolynomialType::kLoadStrain;
 
-    CatenaryCable* catenary_cable = new CatenaryCable();
-    catenary_cable->set_cable(cable);
-    catenary_cable->set_spacing_endpoints(spacing_endpoints);
-    catenary_cable->set_state(state);
-    catenary_cable->set_tension_horizontal(6000);
-    catenary_cable->set_weight_unit(Vector3d(0, 0, 1.094));
+    catenarycable_ = new CatenaryCable();
+    catenarycable_->set_cable(cable_);
+    catenarycable_->set_spacing_endpoints(spacing_endpoints);
+    catenarycable_->set_state(state);
+    catenarycable_->set_tension_horizontal(6000);
+    catenarycable_->set_weight_unit(Vector3d(0, 0, 1.094));
 
     // builds fixture object
-    c_.set_catenary_cable(catenary_cable);
+    c_.set_catenary_cable(catenarycable_);
   }
 
+  ~CatenaryCableComponentTensionSolverTest() {
+    factory::DestroySagTensionCable(cable_);
+    delete catenarycable_;
+  }
+
+  // allocated dependency objects
+  SagTensionCable* cable_;
+  CatenaryCable* catenarycable_;
+
+  // test object
   CatenaryCableComponentTensionSolver c_;
 };
 

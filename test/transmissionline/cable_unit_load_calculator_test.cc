@@ -12,12 +12,20 @@
 class CableUnitLoadCalculatorTest : public ::testing::Test {
  protected:
   CableUnitLoadCalculatorTest() {
-    Cable* cable = factory::BuildCable();
+    cable_ = factory::BuildCable();
 
-    c_.set_diameter_cable(&cable->diameter);
-    c_.set_weight_unit_cable(&cable->weight_unit);
+    c_.set_diameter_cable(&cable_->diameter);
+    c_.set_weight_unit_cable(&cable_->weight_unit);
   }
 
+  ~CableUnitLoadCalculatorTest() {
+    delete cable_;
+  }
+
+  // allocated dependency object
+  const Cable* cable_;
+
+  // test object
   CableUnitLoadCalculator c_;
 };
 

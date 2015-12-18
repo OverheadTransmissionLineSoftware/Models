@@ -10,10 +10,18 @@
 class CableComponentTest : public ::testing::Test {
  protected:
   CableComponentTest() {
-    Cable* cable = factory::BuildCable();
-    c_ = cable->component_shell;
+    cable_ = factory::BuildCable();
+    c_ = cable_->component_shell;
   }
 
+  ~CableComponentTest() {
+    delete cable_;
+  }
+
+  // dependency object
+  Cable* cable_;
+
+  // test object
   CableComponent c_;
 };
 
@@ -24,12 +32,17 @@ TEST_F(CableComponentTest, Validate) {
 class CableTest : public ::testing::Test {
  protected:
   CableTest() {
-    c_ = *factory::BuildCable();
+    c_ = factory::BuildCable();
   }
 
-  Cable c_;
+  ~CableTest() {
+    delete c_;
+  }
+
+  // test object
+  Cable* c_;
 };
 
 TEST_F(CableTest, Validate) {
-  EXPECT_TRUE(c_.Validate(true, nullptr));
+  EXPECT_TRUE(c_->Validate(true, nullptr));
 }

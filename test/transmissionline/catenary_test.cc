@@ -17,6 +17,7 @@ class Catenary2dTest : public ::testing::Test {
     c_.set_weight_unit(0.5);
   }
 
+  // test object
   Catenary2d c_;
 };
 

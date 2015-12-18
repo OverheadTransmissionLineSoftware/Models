@@ -10,16 +10,23 @@
 class PolynomialTest : public ::testing::Test {
  protected:
   PolynomialTest() {
+    coefficients_ = new std::vector<double>;
+    coefficients_->push_back(0);
+    coefficients_->push_back(1000);
+    coefficients_->push_back(0);
+    coefficients_->push_back(-10);
 
-    std::vector<double>* coefficients = new std::vector<double>;
-    coefficients->push_back(0);
-    coefficients->push_back(1000);
-    coefficients->push_back(0);
-    coefficients->push_back(-10);
-
-    p_.set_coefficients(coefficients);
+    p_.set_coefficients(coefficients_);
   }
 
+  ~PolynomialTest() {
+    delete coefficients_;
+  }
+
+  // allocated dependency object
+  std::vector<double>* coefficients_;
+
+  // test object
   Polynomial p_;
 };
 

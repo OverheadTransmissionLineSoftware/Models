@@ -13,54 +13,68 @@ class LineCableSaggerTest : public ::testing::Test {
  protected:
   LineCableSaggerTest() {
     // gets line cable from factory
-    LineCable* line_cable = factory::BuildLineCable();
+    linecable_ = factory::BuildLineCable();
 
     // builds design constraints
-    std::vector<CableConstraint> constraints;
     CableConstraint constraint;
-    WeatherLoadCase* case_weather = new WeatherLoadCase();
+    WeatherLoadCase* weathercase = nullptr;
 
-    case_weather->description = "0-0-60";
-    case_weather->thickness_ice = 0;
-    case_weather->density_ice = 0;
-    case_weather->pressure_wind = 0;
-    case_weather->temperature_cable = 60;
-    constraint.case_weather = case_weather;
+    weathercase = new WeatherLoadCase();
+    weathercase->description = "0-0-60";
+    weathercase->thickness_ice = 0;
+    weathercase->density_ice = 0;
+    weathercase->pressure_wind = 0;
+    weathercase->temperature_cable = 60;
+    constraint.case_weather = weathercase;
     constraint.condition = CableConditionType::kInitial;
     constraint.limit = 6000;
     constraint.type_limit = CableConstraint::LimitType::kHorizontalTension;
-    constraints.push_back(constraint);
+    constraints_.push_back(constraint);
 
-    case_weather = new WeatherLoadCase();
-    case_weather->description = "0.5-8-0";
-    case_weather->thickness_ice =
+    weathercase = new WeatherLoadCase();
+    weathercase->description = "0.5-8-0";
+    weathercase->thickness_ice =
         units::Convert(0.5, units::ConversionType::kInchesToFeet);
-    case_weather->density_ice = 57.3;
-    case_weather->pressure_wind = 8;
-    case_weather->temperature_cable = 0;
-    constraint.case_weather = case_weather;
+    weathercase->density_ice = 57.3;
+    weathercase->pressure_wind = 8;
+    weathercase->temperature_cable = 0;
+    constraint.case_weather = weathercase;
     constraint.condition = CableConditionType::kInitial;
     constraint.limit = 12000;
     constraint.type_limit = CableConstraint::LimitType::kSupportTension;
-    constraints.push_back(constraint);
+    constraints_.push_back(constraint);
 
-    case_weather = new WeatherLoadCase();
-    case_weather->description = "0-0-212";
-    case_weather->thickness_ice = 0;
-    case_weather->density_ice = 0;
-    case_weather->pressure_wind = 0;
-    case_weather->temperature_cable = 212;
-    constraint.case_weather = case_weather;
+    weathercase = new WeatherLoadCase();
+    weathercase->description = "0-0-212";
+    weathercase->thickness_ice = 0;
+    weathercase->density_ice = 0;
+    weathercase->pressure_wind = 0;
+    weathercase->temperature_cable = 212;
+    constraint.case_weather = weathercase;
     constraint.condition = CableConditionType::kLoad;
     constraint.limit = 5000;
     constraint.type_limit = CableConstraint::LimitType::kCatenaryConstant;
-    constraints.push_back(constraint);
+    constraints_.push_back(constraint);
 
     // builds fixture object
-    l_.set_line_cable(line_cable);
-    l_.set_constraints_design(constraints);
+    l_.set_line_cable(linecable_);
+    l_.set_constraints_design(&constraints_);
   }
 
+  ~LineCableSaggerTest() {
+    factory::DestroyLineCable(linecable_);
+
+    for (auto iter = constraints_.begin(); iter != constraints_.end(); iter++) {
+      CableConstraint& constraint = *iter;
+      delete constraint.case_weather;
+    }
+  }
+
+  // allocated dependency objects
+  std::vector<CableConstraint> constraints_;
+  LineCable* linecable_;
+
+  // test object
   LineCableSagger l_;
 };
 

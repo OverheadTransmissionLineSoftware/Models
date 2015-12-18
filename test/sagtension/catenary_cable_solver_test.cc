@@ -13,40 +13,56 @@ class CatenaryCableSolverTest : public ::testing::Test {
  protected:
   CatenaryCableSolverTest() {
     // builds dependency object - line cable
-    SagTensionCable* cable = factory::BuildSagTensionCable();
+    cable_ = factory::BuildSagTensionCable();
 
-    WeatherLoadCase* weathercase = new WeatherLoadCase();
-    weathercase->description = "0-0-60";
-    weathercase->thickness_ice = 0;
-    weathercase->density_ice = 0;
-    weathercase->pressure_wind = 0;
-    weathercase->temperature_cable = 60;
+    weathercase_ = new WeatherLoadCase();
+    weathercase_->description = "0-0-60";
+    weathercase_->thickness_ice = 0;
+    weathercase_->density_ice = 0;
+    weathercase_->pressure_wind = 0;
+    weathercase_->temperature_cable = 60;
 
-    CableConstraint* constraint = new CableConstraint();
-    constraint->case_weather = weathercase;
-    constraint->condition = CableConditionType::kInitial;
-    constraint->limit = 6000;
-    constraint->type_limit = CableConstraint::LimitType::kHorizontalTension;
+    constraint_ = new CableConstraint();
+    constraint_->case_weather = weathercase_;
+    constraint_->condition = CableConditionType::kInitial;
+    constraint_->limit = 6000;
+    constraint_->type_limit = CableConstraint::LimitType::kHorizontalTension;
 
-    Vector3d* spacing_attachments = new Vector3d(1200, 0, 0);
+    spacing_attachments_ = new Vector3d(1200, 0, 0);
 
     // builds a stretch weather case
-    WeatherLoadCase* weathercase_stretch = new WeatherLoadCase();
-    weathercase_stretch->description = "0.5-8-0";
-    weathercase_stretch->thickness_ice =
+    weathercase_stretch_ = new WeatherLoadCase();
+    weathercase_stretch_->description = "0.5-8-0";
+    weathercase_stretch_->thickness_ice =
         units::Convert(0.5, units::ConversionType::kInchesToFeet);
-    weathercase_stretch->density_ice = 57.3;
-    weathercase_stretch->pressure_wind = 8;
-    weathercase_stretch->temperature_cable = 0;
+    weathercase_stretch_->density_ice = 57.3;
+    weathercase_stretch_->pressure_wind = 8;
+    weathercase_stretch_->temperature_cable = 0;
 
     // builds fixture object
-    c_.set_cable(cable);
-    c_.set_constraint(constraint);
-    c_.set_spacing_attachments(spacing_attachments);
-    c_.set_weathercase_stretch_creep(weathercase_stretch);
-    c_.set_weathercase_stretch_load(weathercase_stretch);
+    c_.set_cable(cable_);
+    c_.set_constraint(constraint_);
+    c_.set_spacing_attachments(spacing_attachments_);
+    c_.set_weathercase_stretch_creep(weathercase_stretch_);
+    c_.set_weathercase_stretch_load(weathercase_stretch_);
   }
 
+  ~CatenaryCableSolverTest() {
+    factory::DestroySagTensionCable(cable_);
+    delete constraint_;
+    delete spacing_attachments_;
+    delete weathercase_;
+    delete weathercase_stretch_;
+  }
+
+  // allocated dependency objects
+  SagTensionCable* cable_;
+  CableConstraint* constraint_;
+  Vector3d* spacing_attachments_;
+  WeatherLoadCase* weathercase_;
+  WeatherLoadCase* weathercase_stretch_;
+
+  // test object
   CatenaryCableSolver c_;
 };
 
@@ -61,9 +77,8 @@ TEST_F(CatenaryCableSolverTest, CatenaryCableTest) {
   EXPECT_EQ(60, state.temperature);
 
   // tests cable constraint with load condition
-  CableConstraint constraint = *c_.constraint();
-  constraint.condition = CableConditionType::kLoad;
-  c_.set_constraint(&constraint);
+  constraint_->condition = CableConditionType::kLoad;
+  c_.set_constraint(constraint_);
 
   cc = c_.GetCatenaryCable();
   state = *cc.state();

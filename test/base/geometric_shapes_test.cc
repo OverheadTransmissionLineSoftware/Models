@@ -14,6 +14,7 @@ class CylinderTest : public ::testing::Test {
     c_.set_length(10);
   }
 
+  // test object
   Cylinder c_;
 };
 

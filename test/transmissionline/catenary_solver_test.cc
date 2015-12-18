@@ -13,30 +13,44 @@ class CatenarySolverTest : public ::testing::Test {
  protected:
   CatenarySolverTest() {
     // builds dependency object - line cable
-    Cable* cable = factory::BuildCable();
+    cable_ = factory::BuildCable();
 
-    WeatherLoadCase* case_weather = new WeatherLoadCase();
-    case_weather->description = "0.5-8-0";
-    case_weather->thickness_ice =
+    weathercase_ = new WeatherLoadCase();
+    weathercase_->description = "0.5-8-0";
+    weathercase_->thickness_ice =
         units::Convert(0.5, units::ConversionType::kInchesToFeet);
-    case_weather->density_ice = 57.3;
-    case_weather->pressure_wind = 8;
-    case_weather->temperature_cable = 0;
+    weathercase_->density_ice = 57.3;
+    weathercase_->pressure_wind = 8;
+    weathercase_->temperature_cable = 0;
 
-    CableConstraint* constraint = new CableConstraint();
-    constraint->case_weather = case_weather;
-    constraint->condition = CableConditionType::kInitial;
-    constraint->limit = 12000;
-    constraint->type_limit = CableConstraint::LimitType::kSupportTension;
+    constraint_ = new CableConstraint();
+    constraint_->case_weather = weathercase_;
+    constraint_->condition = CableConditionType::kInitial;
+    constraint_->limit = 12000;
+    constraint_->type_limit = CableConstraint::LimitType::kSupportTension;
 
-    Vector3d* spacing_attachments = new Vector3d(1200, 0, 0);
+    spacing_attachments_ = new Vector3d(1200, 0, 0);
 
     // builds fixture object
-    c_.set_cable(cable);
-    c_.set_constraint(constraint);
-    c_.set_spacing_attachments(spacing_attachments);
+    c_.set_cable(cable_);
+    c_.set_constraint(constraint_);
+    c_.set_spacing_attachments(spacing_attachments_);
   }
 
+  ~CatenarySolverTest() {
+    delete cable_;
+    delete constraint_;
+    delete spacing_attachments_;
+    delete weathercase_;
+  }
+
+  // allocated dependency objects
+  const Cable* cable_;
+  CableConstraint* constraint_;
+  Vector3d* spacing_attachments_;
+  WeatherLoadCase* weathercase_;
+
+  // test object
   CatenarySolver c_;
 };
 

@@ -11,7 +11,7 @@
 class CatenaryCableReloaderTest : public ::testing::Test {
  protected:
   CatenaryCableReloaderTest() {
-    SagTensionCable* cable = factory::BuildSagTensionCable();
+    cable_ = factory::BuildSagTensionCable();
 
     Vector3d spacing_endpoints(1200, 0, 0);
 
@@ -24,12 +24,12 @@ class CatenaryCableReloaderTest : public ::testing::Test {
 
     Vector3d weight_unit(0, 0, 1.094);
 
-    CatenaryCable* catenary_cable = new CatenaryCable();
-    catenary_cable->set_cable(cable);
-    catenary_cable->set_spacing_endpoints(spacing_endpoints);
-    catenary_cable->set_state(state);
-    catenary_cable->set_tension_horizontal(6000);
-    catenary_cable->set_weight_unit(weight_unit);
+    catenarycable_ = new CatenaryCable();
+    catenarycable_->set_cable(cable_);
+    catenarycable_->set_spacing_endpoints(spacing_endpoints);
+    catenarycable_->set_state(state);
+    catenarycable_->set_tension_horizontal(6000);
+    catenarycable_->set_weight_unit(weight_unit);
 
     // builds dependency object - reloaded state
     CableState state_reloaded;
@@ -43,11 +43,21 @@ class CatenaryCableReloaderTest : public ::testing::Test {
     Vector3d weight_unit_reloaded(0, 0, 1.094);
 
     // builds fixture object
-    c_.set_catenary_cable(catenary_cable);
+    c_.set_catenary_cable(catenarycable_);
     c_.set_state_reloaded(state_reloaded);
     c_.set_weight_unit_reloaded(weight_unit_reloaded);
   }
 
+  ~CatenaryCableReloaderTest() {
+    factory::DestroySagTensionCable(cable_);
+    delete catenarycable_;
+  }
+
+  // allocated dependency objects
+  SagTensionCable* cable_;
+  CatenaryCable* catenarycable_;
+
+  // test object
   CatenaryCableReloader c_;
 };
 

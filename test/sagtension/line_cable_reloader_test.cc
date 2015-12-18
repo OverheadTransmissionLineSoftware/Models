@@ -13,22 +13,32 @@ class LineCableReloaderTest : public ::testing::Test {
  protected:
   LineCableReloaderTest() {
     // gets line cable from factory
-    LineCable* line_cable = factory::BuildLineCable();
+    linecable_ = factory::BuildLineCable();
 
     // builds reloaded weather case
-    WeatherLoadCase* weathercase_reloaded = new WeatherLoadCase();
-    weathercase_reloaded->description = "0-0-60";
-    weathercase_reloaded->thickness_ice = 0;
-    weathercase_reloaded->density_ice = 0;
-    weathercase_reloaded->pressure_wind = 0;
-    weathercase_reloaded->temperature_cable = 60;
+    weathercase_reloaded_ = new WeatherLoadCase();
+    weathercase_reloaded_->description = "0-0-60";
+    weathercase_reloaded_->thickness_ice = 0;
+    weathercase_reloaded_->density_ice = 0;
+    weathercase_reloaded_->pressure_wind = 0;
+    weathercase_reloaded_->temperature_cable = 60;
 
     // builds fixture object
-    l_.set_line_cable(line_cable);
-    l_.set_weathercase_reloaded(weathercase_reloaded);
+    l_.set_line_cable(linecable_);
+    l_.set_weathercase_reloaded(weathercase_reloaded_);
     l_.set_condition_reloaded(CableConditionType::kInitial);
   }
 
+  ~LineCableReloaderTest() {
+    factory::DestroyLineCable(linecable_);
+    delete weathercase_reloaded_;
+  }
+
+  // allocated dependency objects
+  LineCable* linecable_;
+  WeatherLoadCase* weathercase_reloaded_;
+
+  // test object
   LineCableReloader l_;
 };
 
@@ -63,21 +73,18 @@ TEST_F(LineCableReloaderTest, TensionAverageComponent) {
 
 TEST_F(LineCableReloaderTest, TensionHorizontal) {
   double value = -999999;
-  LineCable line_cable = *l_.line_cable();
-  WeatherLoadCase* weathercase_reloaded = new WeatherLoadCase();
 
   // changes the constraint type and limit to initial condition
-  line_cable = *l_.line_cable();
-  line_cable.constraint.condition = CableConditionType::kInitial;
-  line_cable.constraint.limit = 6000;
-  l_.set_line_cable(&line_cable);
+  linecable_->constraint.condition = CableConditionType::kInitial;
+  linecable_->constraint.limit = 6000;
+  l_.set_line_cable(linecable_);
 
-  weathercase_reloaded->description = "0-0-60";
-  weathercase_reloaded->thickness_ice = 0;
-  weathercase_reloaded->density_ice = 0;
-  weathercase_reloaded->pressure_wind = 0;
-  weathercase_reloaded->temperature_cable = 60;
-  l_.set_weathercase_reloaded(weathercase_reloaded);
+  weathercase_reloaded_->description = "0-0-60";
+  weathercase_reloaded_->thickness_ice = 0;
+  weathercase_reloaded_->density_ice = 0;
+  weathercase_reloaded_->pressure_wind = 0;
+  weathercase_reloaded_->temperature_cable = 60;
+  l_.set_weathercase_reloaded(weathercase_reloaded_);
 
   // reloads at same case as constraint, checks all conditions
   l_.set_condition_reloaded(CableConditionType::kInitial);
@@ -89,12 +96,12 @@ TEST_F(LineCableReloaderTest, TensionHorizontal) {
   EXPECT_EQ(5561, helper::Round(value, 0));
 
   // reloads at high temperature case, checks all conditions
-  weathercase_reloaded->description = "0-0-212";
-  weathercase_reloaded->thickness_ice = 0;
-  weathercase_reloaded->density_ice = 0;
-  weathercase_reloaded->pressure_wind = 0;
-  weathercase_reloaded->temperature_cable = 212;
-  l_.set_weathercase_reloaded(weathercase_reloaded);
+  weathercase_reloaded_->description = "0-0-212";
+  weathercase_reloaded_->thickness_ice = 0;
+  weathercase_reloaded_->density_ice = 0;
+  weathercase_reloaded_->pressure_wind = 0;
+  weathercase_reloaded_->temperature_cable = 212;
+  l_.set_weathercase_reloaded(weathercase_reloaded_);
 
   l_.set_condition_reloaded(CableConditionType::kInitial);
   value = l_.TensionHorizontal();
@@ -105,13 +112,13 @@ TEST_F(LineCableReloaderTest, TensionHorizontal) {
   EXPECT_EQ(4528, helper::Round(value, 0));
 
   // reloads at high load case, checks all conditions
-  weathercase_reloaded->description = "1-8-0";
-  weathercase_reloaded->thickness_ice =
+  weathercase_reloaded_->description = "1-8-0";
+  weathercase_reloaded_->thickness_ice =
     units::Convert(1, units::ConversionType::kInchesToFeet);
-  weathercase_reloaded->density_ice = 57.3;
-  weathercase_reloaded->pressure_wind = 8;
-  weathercase_reloaded->temperature_cable = 0;
-  l_.set_weathercase_reloaded(weathercase_reloaded);
+  weathercase_reloaded_->density_ice = 57.3;
+  weathercase_reloaded_->pressure_wind = 8;
+  weathercase_reloaded_->temperature_cable = 0;
+  l_.set_weathercase_reloaded(weathercase_reloaded_);
 
   l_.set_condition_reloaded(CableConditionType::kInitial);
   value = l_.TensionHorizontal();
@@ -122,18 +129,17 @@ TEST_F(LineCableReloaderTest, TensionHorizontal) {
   EXPECT_EQ(17126, helper::Round(value, 0));
 
   // changes the constraint type and limit to stretched condition
-  line_cable = *l_.line_cable();
-  line_cable.constraint.condition = CableConditionType::kLoad;
-  line_cable.constraint.limit = 5561.5;
-  l_.set_line_cable(&line_cable);
+  linecable_->constraint.condition = CableConditionType::kLoad;
+  linecable_->constraint.limit = 5561.5;
+  l_.set_line_cable(linecable_);
 
   // reloads at same case as constraint, checks all conditions
-  weathercase_reloaded->description = "0-0-60";
-  weathercase_reloaded->thickness_ice = 0;
-  weathercase_reloaded->density_ice = 0;
-  weathercase_reloaded->pressure_wind = 0;
-  weathercase_reloaded->temperature_cable = 60;
-  l_.set_weathercase_reloaded(weathercase_reloaded);
+  weathercase_reloaded_->description = "0-0-60";
+  weathercase_reloaded_->thickness_ice = 0;
+  weathercase_reloaded_->density_ice = 0;
+  weathercase_reloaded_->pressure_wind = 0;
+  weathercase_reloaded_->temperature_cable = 60;
+  l_.set_weathercase_reloaded(weathercase_reloaded_);
 
   l_.set_condition_reloaded(CableConditionType::kInitial);
   value = l_.TensionHorizontal();

@@ -10,12 +10,17 @@
 class LineCableTest : public ::testing::Test {
  protected:
   LineCableTest() {
-    l_ = *factory::BuildLineCable();
+    l_ = factory::BuildLineCable();
   }
 
-  LineCable l_;
+  ~LineCableTest() {
+    factory::DestroyLineCable(l_);
+  }
+
+  // test object
+  LineCable* l_;
 };
 
 TEST_F(LineCableTest, Validate) {
-  EXPECT_TRUE(l_.Validate(true, nullptr));
+  EXPECT_TRUE(l_->Validate(true, nullptr));
 }

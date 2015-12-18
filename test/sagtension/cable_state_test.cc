@@ -5,8 +5,6 @@
 
 #include "gtest/gtest.h"
 
-#include "models/base/helper.h"
-
 class CableStateTest : public ::testing::Test {
  protected:
   CableStateTest() {
@@ -16,6 +14,7 @@ class CableStateTest : public ::testing::Test {
     c_.type_polynomial = SagTensionCableComponent::PolynomialType::kLoadStrain;
   }
 
+  // test object
   CableState c_;
 };
 

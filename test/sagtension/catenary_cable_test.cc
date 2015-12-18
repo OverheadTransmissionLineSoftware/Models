@@ -6,12 +6,11 @@
 #include "gtest/gtest.h"
 
 #include "factory.h"
-#include "models/base/helper.h"
 
 class CatenaryCableTest : public ::testing::Test {
  protected:
   CatenaryCableTest() {
-    SagTensionCable* cable = factory::BuildSagTensionCable();
+    cable_ = factory::BuildSagTensionCable();
 
     // builds dependency object - endpoint spacing
     Vector3d spacing_endpoints(1200, 0, 0);
@@ -28,13 +27,21 @@ class CatenaryCableTest : public ::testing::Test {
     Vector3d weight_unit(0, 0, 1.094);
 
     // builds fixture object
-    c_.set_cable(cable);
+    c_.set_cable(cable_);
     c_.set_spacing_endpoints(spacing_endpoints);
     c_.set_state(state);
     c_.set_tension_horizontal(6000);
     c_.set_weight_unit(weight_unit);
   }
 
+  ~CatenaryCableTest() {
+    factory::DestroySagTensionCable(cable_);
+  }
+
+  // allocated dependency object
+  SagTensionCable* cable_;
+
+  // test object
   CatenaryCable c_;
 };
 

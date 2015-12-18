@@ -193,4 +193,19 @@ SagTensionCable* BuildSagTensionCable() {
   return cable_sagtension;
 }
 
+void DestroyLineCable(LineCable* linecable) {
+  delete linecable->cable;
+  delete linecable->constraint.case_weather;
+  delete linecable->weathercase_stretch_creep;
+  delete linecable->weathercase_stretch_load;
+
+  delete linecable;
+}
+
+void DestroySagTensionCable(SagTensionCable* cable) {
+  delete cable->cable_base();
+
+  delete cable;
+}
+
 }  // namespace factory
