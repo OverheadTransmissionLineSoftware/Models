@@ -215,7 +215,7 @@ bool LineCableSagger::UpdateControllingConstraintIndex() const {
   // checks for multiple constraints to determine if further analysis is
   // required
   if (constraints_design_->size() == 1) {
-    index_constraint_controlling_ = 1;
+    index_constraint_controlling_ = 0;
     return true;
   }
 
