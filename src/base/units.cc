@@ -16,12 +16,18 @@ const double kForceNewtonsToPounds = 1 / 4.4482216152605;
 const double kForcePoundsToNewtons = 4.4482216152605;
 
 // length conversion factors
+const double kLengthCentimetersToMeters = 0.01;
 const double kLengthFeetToInches = 12;
 const double kLengthFeetToMeters = 0.3048;
 const double kLengthInchesToFeet = 0.083333333333333;
+const double kLengthMetersToCentimeters = 100;
 const double kLengthMetersToFeet = 1 / 0.3048;
+const double kLengthMetersToMillimeters = 1000;
+const double kLengthMillimetersToMeters = 0.001;
 
 // pressure conversion factors
+const double kStressMegaPascalToPascal = 0.000001;
+const double kStressPascalToMegaPascal = 1000000;
 const double kStressPascalToPsf = 1 / 47.88026;
 const double kStressPsfToPascal = 47.88026;
 const double kStressPsfToPsi = 0.00694444444;
@@ -48,7 +54,6 @@ double Convert(const double& value,
                const double& factor,
                const double& exponent,
                const double& is_numerator) {
-
   // adjusts the factor based on the exponent
   double factor_adj = pow(factor, exponent);
 
@@ -91,14 +96,22 @@ double ConvertLength(const double& value,
                      const LengthConversionType& type,
                      const int& exponent,
                      const bool& is_numerator) {
-  if (type == LengthConversionType::kFeetToInches) {
+  if (type == LengthConversionType::kCentimetersToMeters) {
+    return Convert(value, kLengthCentimetersToMeters, exponent, is_numerator);
+  } else if (type == LengthConversionType::kFeetToInches) {
     return Convert(value, kLengthFeetToInches, exponent, is_numerator);
   } else if (type == LengthConversionType::kFeetToMeters) {
     return Convert(value, kLengthFeetToMeters, exponent, is_numerator);
   } else if (type == LengthConversionType::kInchesToFeet) {
     return Convert(value, kLengthInchesToFeet, exponent, is_numerator);
+  } else if (type == LengthConversionType::kMetersToCentimeters) {
+    return Convert(value, kLengthMetersToCentimeters, exponent, is_numerator);
   } else if (type == LengthConversionType::kMetersToFeet) {
     return Convert(value, kLengthMetersToFeet, exponent, is_numerator);
+  } else if (type == LengthConversionType::kMetersToMillimeters) {
+    return Convert(value, kLengthMetersToMillimeters, exponent, is_numerator);
+  } else if (type == LengthConversionType::kMillimetersToMeters) {
+    return Convert(value, kLengthMillimetersToMeters, exponent, is_numerator);
   } else {
     return -999999;
   }
@@ -108,7 +121,11 @@ double ConvertStress(const double& value,
                      const StressConversionType& type,
                      const int& exponent,
                      const bool& is_numerator) {
-  if (type == StressConversionType::kPascalToPsf) {
+  if (type == StressConversionType::kMegaPascalToPascal) {
+    return Convert(value, kStressMegaPascalToPascal, exponent, is_numerator);
+  } else if (type == StressConversionType::kPascalToMegaPascal) {
+    return Convert(value, kStressPascalToMegaPascal, exponent, is_numerator);
+  } else if (type == StressConversionType::kPascalToPsf) {
     return Convert(value, kStressPascalToPsf, exponent, is_numerator);
   } else if (type == StressConversionType::kPsfToPascal) {
     return Convert(value, kStressPsfToPascal, exponent, is_numerator);

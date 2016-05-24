@@ -30,16 +30,22 @@ enum class ForceConversionType {
 ///
 /// This enum contains types of length unit conversions.
 enum class LengthConversionType {
+  kCentimetersToMeters,
   kFeetToInches,
   kFeetToMeters,
   kInchesToFeet,
+  kMetersToCentimeters,
   kMetersToFeet,
+  kMetersToMillimeters,
+  kMillimetersToMeters
 };
 
 /// \par OVERVIEW
 ///
 /// This enum contains types of temperature unit conversions.
 enum class StressConversionType {
+  kMegaPascalToPascal,
+  kPascalToMegaPascal,
   kPascalToPsf,
   kPsfToPascal,
   kPsfToPsi,

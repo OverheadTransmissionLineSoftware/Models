@@ -28,7 +28,7 @@ TEST(Units, ConvertForce) {
   double value1 = 0;
   double value2 = 0;
 
-  // converts force - newtons to pounds and back again
+  // converts newtons to pounds and back again
   value1 = 100;
   value2 = units::ConvertForce(value1,
                                units::ForceConversionType::kNewtonsToPounds);
@@ -53,6 +53,16 @@ TEST(Units, ConvertLength) {
                           units::LengthConversionType::kInchesToFeet);
   EXPECT_EQ(2, helper::Round(value1, 0));
 
+  // converts meters to centimeters and back again
+  value1 = 10;
+  value2 = units::ConvertLength(value1,
+                          units::LengthConversionType::kMetersToCentimeters);
+  EXPECT_EQ(1000, helper::Round(value2, 0));
+
+  value1 = units::ConvertLength(value2,
+                          units::LengthConversionType::kCentimetersToMeters);
+  EXPECT_EQ(10, helper::Round(value1, 0));
+
   // converts meters to feet and back again
   value1 = 10;
   value2 = units::ConvertLength(value1,
@@ -62,11 +72,31 @@ TEST(Units, ConvertLength) {
   value1 = units::ConvertLength(value2,
                           units::LengthConversionType::kFeetToMeters);
   EXPECT_EQ(10, helper::Round(value1, 1));
+
+  // converts meters to millimeters and back again
+  value1 = 10;
+  value2 = units::ConvertLength(value1,
+                          units::LengthConversionType::kMetersToMillimeters);
+  EXPECT_EQ(10000, helper::Round(value2, 0));
+
+  value1 = units::ConvertLength(value2,
+                          units::LengthConversionType::kMillimetersToMeters);
+  EXPECT_EQ(10, helper::Round(value1, 0));
 }
 
 TEST(Units, ConvertStress) {
   double value1 = 0;
   double value2 = 0;
+
+  // converts pascal to megapascal and back again
+  value1 = 1000;
+  value2 = units::ConvertStress(value1,
+                                units::StressConversionType::kMegaPascalToPascal);
+  EXPECT_EQ(0.001, helper::Round(value2, 3));
+
+  value1 = units::ConvertStress(value2,
+                                units::StressConversionType::kPascalToMegaPascal);
+  EXPECT_EQ(1000, helper::Round(value1, 0));
 
   // converts pascal to psf and back again
   value1 = 100;
