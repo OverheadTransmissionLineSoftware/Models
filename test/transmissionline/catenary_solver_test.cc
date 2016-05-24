@@ -18,7 +18,7 @@ class CatenarySolverTest : public ::testing::Test {
     weathercase_ = new WeatherLoadCase();
     weathercase_->description = "0.5-8-0";
     weathercase_->thickness_ice =
-        units::Convert(0.5, units::ConversionType::kInchesToFeet);
+        units::ConvertLength(0.5, units::LengthConversionType::kInchesToFeet);
     weathercase_->density_ice = 57.3;
     weathercase_->pressure_wind = 8;
     weathercase_->temperature_cable = 0;

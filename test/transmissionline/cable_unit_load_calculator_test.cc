@@ -39,7 +39,7 @@ TEST_F(CableUnitLoadCalculatorTest, UnitCableLoad) {
   case_ice.pressure_wind = 0;
   case_ice.temperature_cable = 0;
   case_ice.thickness_ice =
-    units::Convert(1, units::ConversionType::kInchesToFeet);
+    units::ConvertLength(1, units::LengthConversionType::kInchesToFeet);
 
   load_unit = c_.UnitCableLoad(case_ice);
   EXPECT_EQ(0, helper::Round(load_unit.y(), 3));
@@ -64,7 +64,7 @@ TEST_F(CableUnitLoadCalculatorTest, UnitCableLoad) {
   case_both.pressure_wind = 8;
   case_both.temperature_cable = 0;
   case_both.thickness_ice =
-    units::Convert(0.5, units::ConversionType::kInchesToFeet);
+    units::ConvertLength(0.5, units::LengthConversionType::kInchesToFeet);
 
   load_unit = c_.UnitCableLoad(case_both);
   EXPECT_EQ(1.405, helper::Round(load_unit.y(), 3));
