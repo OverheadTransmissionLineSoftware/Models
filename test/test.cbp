@@ -44,12 +44,12 @@
 			<Add option="-std=c++11" />
 			<Add option="-Wall" />
 			<Add directory="../include" />
-			<Add directory="../external/googletest/include" />
+			<Add directory="../external/googletest/googletest/include" />
 			<Add directory="../test" />
 		</Compiler>
 		<Linker>
 			<Add option="-pthread" />
-			<Add library="../external/googletest/make/gtest_main.a" />
+			<Add library="../external/googletest/googletest/make/gtest_main.a" />
 		</Linker>
 		<Unit filename="base/geometric_shapes_test.cc" />
 		<Unit filename="base/helper_test.cc" />
