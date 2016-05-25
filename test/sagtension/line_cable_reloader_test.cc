@@ -114,7 +114,7 @@ TEST_F(LineCableReloaderTest, TensionHorizontal) {
   // reloads at high load case, checks all conditions
   weathercase_reloaded_->description = "1-8-0";
   weathercase_reloaded_->thickness_ice =
-    units::Convert(1, units::ConversionType::kInchesToFeet);
+    units::ConvertLength(1, units::LengthConversionType::kInchesToFeet);
   weathercase_reloaded_->density_ice = 57.3;
   weathercase_reloaded_->pressure_wind = 8;
   weathercase_reloaded_->temperature_cable = 0;

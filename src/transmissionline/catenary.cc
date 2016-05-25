@@ -227,9 +227,9 @@ double Catenary2d::TangentAngle(const double& position_fraction,
   const double slope = sinh(coordinate.x / (tension_horizontal_/weight_unit_));
 
   // converts to degrees
-  double tangent_angle = units::Convert(
+  double tangent_angle = units::ConvertAngle(
       atan(slope),
-      units::ConversionType::kRadiansToDegrees);
+      units::AngleConversionType::kRadiansToDegrees);
 
   // adjusts if direction is negative
   if (direction == AxisDirectionType::kNegative) {
@@ -257,9 +257,9 @@ Vector2d Catenary2d::TangentVector(const double& position_fraction,
   const double angle_tangent = TangentAngle(position_fraction, direction);
 
   // resolves to a unit vector
-  const double angle_radians = units::Convert(
+  const double angle_radians = units::ConvertAngle(
       angle_tangent,
-      units::ConversionType::kDegreesToRadians);
+      units::AngleConversionType::kDegreesToRadians);
   if (direction == AxisDirectionType::kNegative) {
     tangent_vector.set_x( -(1 * cos(angle_radians)) );
     tangent_vector.set_y( sin(angle_radians) );
@@ -757,9 +757,9 @@ double Catenary3d::SwingAngle() const {
     }
   }
 
-  angle_swing = units::Convert(
+  angle_swing = units::ConvertAngle(
       atan(weight_unit_.y() / weight_unit_.z()),
-      units::ConversionType::kRadiansToDegrees);
+      units::AngleConversionType::kRadiansToDegrees);
   return angle_swing;
 }
 
@@ -837,9 +837,9 @@ Vector3d Catenary3d::TangentVector(const double& position_fraction,
   // rotates 3D vector due to transverse loading
   if (weight_unit_.y() != 0) {
 
-    double angle_rotation = units::Convert(
+    double angle_rotation = units::ConvertAngle(
         atan(weight_unit_.y() / weight_unit_.z()),
-        units::ConversionType::kRadiansToDegrees);
+        units::AngleConversionType::kRadiansToDegrees);
 
     if (0 < weight_unit_.y()) {
       angle_rotation = angle_rotation * -1;

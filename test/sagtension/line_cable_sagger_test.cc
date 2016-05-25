@@ -34,7 +34,7 @@ class LineCableSaggerTest : public ::testing::Test {
     weathercase = new WeatherLoadCase();
     weathercase->description = "0.5-8-0";
     weathercase->thickness_ice =
-        units::Convert(0.5, units::ConversionType::kInchesToFeet);
+        units::ConvertLength(0.5, units::LengthConversionType::kInchesToFeet);
     weathercase->density_ice = 57.3;
     weathercase->pressure_wind = 8;
     weathercase->temperature_cable = 0;

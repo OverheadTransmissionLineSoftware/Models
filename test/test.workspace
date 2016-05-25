@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_workspace_file>
-	<Workspace title="TLS-Libraries Test">
+	<Workspace title="OTLS Models Test">
 		<Project filename="test.cbp">
 			<Depends filename="../build/codeblocks/tls_base.cbp" />
 			<Depends filename="../build/codeblocks/tls_sagtension.cbp" />

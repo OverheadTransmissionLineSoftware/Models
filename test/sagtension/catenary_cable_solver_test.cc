@@ -34,7 +34,7 @@ class CatenaryCableSolverTest : public ::testing::Test {
     weathercase_stretch_ = new WeatherLoadCase();
     weathercase_stretch_->description = "0.5-8-0";
     weathercase_stretch_->thickness_ice =
-        units::Convert(0.5, units::ConversionType::kInchesToFeet);
+        units::ConvertLength(0.5, units::LengthConversionType::kInchesToFeet);
     weathercase_stretch_->density_ice = 57.3;
     weathercase_stretch_->pressure_wind = 8;
     weathercase_stretch_->temperature_cable = 0;
