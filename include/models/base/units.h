@@ -42,7 +42,7 @@ enum class LengthConversionType {
 
 /// \par OVERVIEW
 ///
-/// This enum contains types of temperature unit conversions.
+/// This enum contains types of stress unit conversions.
 enum class StressConversionType {
   kMegaPascalToPascal,
   kPascalToMegaPascal,
