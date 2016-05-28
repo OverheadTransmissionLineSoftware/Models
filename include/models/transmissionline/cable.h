@@ -88,11 +88,6 @@ struct Cable {
   bool Validate(const bool& is_included_warnings = true,
                 std::list<ErrorMessage>* messages = nullptr) const;
 
-  /// \var area_electrical
-  ///   The electrical area of the entire cable, usually restricted to the
-  ///   electrical current carrying area of the cable.
-  double area_electrical;
-
   /// \var area_physical
   ///   The physical cross section area of the entire cable.
   double area_physical;

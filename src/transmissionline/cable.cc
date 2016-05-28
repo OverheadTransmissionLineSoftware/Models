@@ -31,7 +31,6 @@ bool CableComponent::Validate(const bool& is_included_warnings,
 }
 
 Cable::Cable() {
-  area_electrical = -999999;
   area_physical = -999999;
   diameter = -999999;
   name = "";
@@ -49,15 +48,6 @@ bool Cable::Validate(const bool& is_included_warnings,
   bool is_valid = true;
   ErrorMessage message;
   message.title = "CABLE";
-
-  // validates area-electrical
-  if (area_electrical < 0) {
-    is_valid = false;
-    if (messages != nullptr) {
-      message.description = "Invalid electrical area";
-      messages->push_back(message);
-    }
-  }
 
   // validates area-physical
   if (area_physical < 0) {
