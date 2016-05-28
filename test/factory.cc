@@ -127,7 +127,6 @@ Cable* BuildCable() {
   cable->component_shell = component;
 
   // finishes building cable
-  cable->area_electrical = 795000;
   cable->area_physical = kAreaPhysical;
   cable->diameter = units::ConvertLength(
       1.108, units::LengthConversionType::kInchesToFeet);
