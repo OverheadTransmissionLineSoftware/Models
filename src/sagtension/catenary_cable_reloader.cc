@@ -238,7 +238,8 @@ bool CatenaryCableReloader::SolveReloadedCatenaryCableTension() const {
   // lowest acceptable value for catenary
   Point2d point_left;
   point_left.x = catenary_cable_reloaded_.ConstantMinimum(
-      catenary_cable_reloaded_.spacing_endpoints().Magnitude());
+      catenary_cable_reloaded_.spacing_endpoints().Magnitude())
+      * catenary_cable_reloaded_.weight_unit().Magnitude();
   point_left.y = LengthDifference(point_left.x);
 
   // declares and initializes right point
@@ -304,8 +305,8 @@ bool CatenaryCableReloader::SolveReloadedCatenaryCableTension() const {
 
       point_right.x = point_current.x;
       point_right.y = point_current.y;
-
     }
+    iter++;
   }
 
   // returns success status
