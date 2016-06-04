@@ -163,7 +163,8 @@ bool CatenarySolver::SolveHorizontalTensionFromSupportTension() const {
   // lowest acceptable value for catenary
   Point2d point_left;
   point_left.x = Catenary2d::ConstantMinimum(
-      catenary_.spacing_endpoints().Magnitude());
+      catenary_.spacing_endpoints().Magnitude())
+      * catenary_.weight_unit().Magnitude();
   point_left.y = UpdateCatenaryMaxTension(point_left.x);
 
   // target is less than lowest acceptable catenary value

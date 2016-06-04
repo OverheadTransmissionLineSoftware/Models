@@ -209,7 +209,7 @@ bool CableComponentElongationModel::Validate(
   }
 
   // validates temperature
-  if ((temperature_ == nullptr) || (*temperature_ < 0)) {
+  if ((temperature_ == nullptr) || (*temperature_ < -100)) {
     is_valid = false;
     if (messages != nullptr) {
       message.description = "Invalid temperature";
@@ -218,7 +218,7 @@ bool CableComponentElongationModel::Validate(
   }
 
   // validates temperature-reference
-  if ((temperature_reference_ == nullptr) || (*temperature_reference_ < 0)) {
+  if ((temperature_reference_ == nullptr) || (*temperature_reference_ < -100)) {
     is_valid = false;
     if (messages != nullptr) {
       message.description = "Invalid reference temperature";

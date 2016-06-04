@@ -29,7 +29,7 @@ bool CableState::Validate(const bool& is_included_warnings,
   }
 
   // validates temperature
-  if (temperature < -50) {
+  if (temperature < -100) {
     is_valid = false;
     if (messages != nullptr) {
       message.description = "Invalid temperature";
@@ -38,7 +38,7 @@ bool CableState::Validate(const bool& is_included_warnings,
   }
 
   // validates temperature - stretch
-  if (temperature_stretch < -50) {
+  if (temperature_stretch < -100) {
     is_valid = false;
     if (messages != nullptr) {
       message.description = "Invalid stretch temperature";
