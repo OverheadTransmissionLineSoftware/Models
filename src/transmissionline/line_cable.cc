@@ -3,6 +3,8 @@
 
 #include "models/transmissionline/line_cable.h"
 
+#include "models/transmissionline/catenary_solver.h"
+
 LineCable::LineCable() {
   cable = nullptr;
   weathercase_stretch_creep = nullptr;
@@ -88,6 +90,16 @@ bool LineCable::Validate(const bool& is_included_warnings,
                                            messages) == false) {
       is_valid = false;
     }
+  }
+
+  // validates if catenary can be solved for with contraint and ruling
+  // span geometry
+  CatenarySolver solver;
+  solver.set_cable(cable);
+  solver.set_constraint(&constraint);
+  solver.set_spacing_attachments(&spacing_attachments_ruling_span);
+  if (solver.Validate(is_included_warnings, messages) == false) {
+    is_valid = false;
   }
 
   // returns validation status
