@@ -8,6 +8,18 @@
 
 namespace helper {
 
+/// \brief Compares the characters of two strings.
+/// \param[in] str1
+///   The first string.
+/// \param[in] str2
+///   The second string.
+/// \return This function returns -1 if the first string is less than the
+///   second, 0 if they are equal, and 1 if the first is greater than the
+///   second.
+/// This function is NOT case sensitive. 'A' and 'a' are treated as identical
+/// characters for comparison.
+int CompareStrings(const std::string& str1, const std::string& str2);
+
 /// \brief Converts a double precision number to a formatted string.
 /// \param[in] value
 ///   The value to be converted.
@@ -16,6 +28,12 @@ namespace helper {
 /// \return A string representation of the rounded number.
 std::string DoubleToFormattedString(const double& value,
                                     const int& precision_decimal);
+
+/// \brief Determines if the string is numeric.
+/// \param[in] str
+///   The string.
+/// \return If the string is numeric.
+bool IsNumeric(const std::string& str);
 
 /// \brief Rounds the number to the specified precision.
 /// \param[in] number

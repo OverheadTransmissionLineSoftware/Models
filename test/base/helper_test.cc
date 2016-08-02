@@ -5,6 +5,36 @@
 
 #include "gtest/gtest.h"
 
+TEST(Helper, CompareStrings) {
+  std::string str1;
+  std::string str2;
+
+  // tests equality
+  str1 = "Test";
+  str2 = "Test";
+  EXPECT_EQ(0, helper::CompareStrings(str1, str2));
+
+  // tests character comparison
+  str1 = "a";
+  str2 = "b";
+  EXPECT_EQ(-1, helper::CompareStrings(str1, str2));
+
+  // tests length
+  str1 = "11111";
+  str2 = "1111";
+  EXPECT_EQ(1, helper::CompareStrings(str1, str2));
+}
+
+TEST(Helper, IsNumeric) {
+  std::string str;
+
+  str = "-0.75";
+  EXPECT_TRUE(helper::IsNumeric(str));
+
+  str = str + "a";
+  EXPECT_FALSE(helper::IsNumeric(str));
+}
+
 TEST(Helper, Round) {
   const double value = 123.45;
 
