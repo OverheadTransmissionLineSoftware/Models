@@ -91,6 +91,12 @@ Point2d Catenary2d::Coordinate(const double& position_fraction,
   coordinate.y = CoordinateY(length_origin_to_position,
                              direction_origin_to_position);
 
+  // shifts coordinate origin if requested
+  if (is_shifted_origin == true) {
+    coordinate.x = coordinate.x - point_end_left_.x;
+    coordinate.y = coordinate.y - point_end_left_.y;
+  }
+
   return coordinate;
 }
 
@@ -104,21 +110,19 @@ Point2d Catenary2d::CoordinateChord(const double& position_fraction,
     }
   }
 
-  // gets a catenary coordinate
-  Point2d coordinate_catenary = Coordinate(position_fraction,
-                                is_shifted_origin);
+  // gets a catenary coordinate to compare to left end point
+  Point2d coordinate_catenary = Coordinate(position_fraction, false);
 
   // calculates a chord coordinate
   coordinate_chord.x = coordinate_catenary.x;
   coordinate_chord.y = point_end_left_.y
                        + ((coordinate_catenary.x - point_end_left_.x)
-                          * (spacing_endpoints_.y() / spacing_endpoints_.x()));
+                       * (spacing_endpoints_.y() / spacing_endpoints_.x()));
 
   // checks if shifted coordinate is requested, modifies if necessary
   if (is_shifted_origin == true) {
     coordinate_chord.x = coordinate_chord.x - point_end_left_.x;
-    coordinate_chord.y = coordinate_chord.y
-                         - point_end_left_.y;
+    coordinate_chord.y = coordinate_chord.y - point_end_left_.y;
   }
 
   return coordinate_chord;
@@ -1044,7 +1048,7 @@ bool Catenary3d::Update() const {
 bool Catenary3d::UpdateCatenary2d() const {
   const double b = spacing_endpoints_.z();
   const double c = spacing_endpoints_.Magnitude();
-  const double v = abs(weight_unit_.z());
+  const double v = std::abs(weight_unit_.z());
   const double w = weight_unit_.Magnitude();
 
   // solves for 2D catenary endpoint spacing
