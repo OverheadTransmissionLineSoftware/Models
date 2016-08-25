@@ -305,24 +305,19 @@ class Catenary3d {
   /// \param[in] position_fraction
   ///   A decimal ranging from 0 and 1 that describes position on the curve by
   ///   the fraction of curve length from the left end point.
-  /// \param[in] is_shifted_origin
-  ///   A flag that shifts the coordinate system origin to the left end point.
   /// \return A 3D coordinate point containing the x, y, and z position of the
-  ///   catenary curve.
-  Point3d Coordinate(const double& position_fraction,
-                     const bool& is_shifted_origin = false) const;
+  ///   catenary curve relative to the left end point (which is the origin).
+  Point3d Coordinate(const double& position_fraction) const;
 
   /// \brief Gets a coordinate point at a location on the straight line
   ///   connecting the end points.
   /// \param[in] position_fraction
   ///   A decimal ranging from 0 and 1 that describes position on the curve by
   ///   the fraction of curve length from the left end point.
-  /// \param[in] is_shifted_origin
-  ///   A flag that shifts the coordinate system origin to the left end point.
   /// \return A 3D coordinate point containing the x, y, and z position of the
-  ///   straight line connecting the end points.
-  Point3d CoordinateChord(const double& position_fraction,
-                          const bool& is_shifted_origin = false) const;
+  ///   straight line connecting the end points, relative to the left end point
+  ///   (which is the origin).
+  Point3d CoordinateChord(const double& position_fraction) const;
 
   /// \brief Gets the curve length.
   /// \return The curve length between endpoints.

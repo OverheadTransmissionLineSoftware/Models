@@ -145,17 +145,17 @@ TEST_F(Catenary3dTest, Coordinate) {
   Point3d coord;
 
   // no transverse unit load
-  coord = c_.Coordinate(0, true);
+  coord = c_.Coordinate(0);
   EXPECT_EQ(0, helper::Round(coord.x, 1));
   EXPECT_EQ(0, helper::Round(coord.y, 1));
   EXPECT_EQ(0, helper::Round(coord.z, 1));
 
-  coord = c_.Coordinate(0.5, true);
+  coord = c_.Coordinate(0.5);
   EXPECT_EQ(500, helper::Round(coord.x, 1));
   EXPECT_EQ(0, helper::Round(coord.y, 1));
   EXPECT_EQ(-62.8, helper::Round(coord.z, 1));
 
-  coord = c_.Coordinate(1, true);
+  coord = c_.Coordinate(1);
   EXPECT_EQ(1000, helper::Round(coord.x, 1));
   EXPECT_EQ(0, helper::Round(coord.y, 1));
   EXPECT_EQ(0, helper::Round(coord.z, 1));
@@ -163,17 +163,17 @@ TEST_F(Catenary3dTest, Coordinate) {
   // transverse load
   c_.set_weight_unit(Vector3d(0, 0.3535533, 0.3535533));
 
-  coord = c_.Coordinate(0, true);
+  coord = c_.Coordinate(0);
   EXPECT_EQ(0, helper::Round(coord.x, 1));
   EXPECT_EQ(0, helper::Round(coord.y, 1));
   EXPECT_EQ(0, helper::Round(coord.z, 1));
 
-  coord = c_.Coordinate(0.5, true);
+  coord = c_.Coordinate(0.5);
   EXPECT_EQ(500, helper::Round(coord.x, 1));
   EXPECT_EQ(-44.4, helper::Round(coord.y, 1));
   EXPECT_EQ(-44.4, helper::Round(coord.z, 1));
 
-  coord = c_.Coordinate(1, true);
+  coord = c_.Coordinate(1);
   EXPECT_EQ(1000, helper::Round(coord.x, 1));
   EXPECT_EQ(0, helper::Round(coord.y, 1));
   EXPECT_EQ(0, helper::Round(coord.z, 1));
@@ -186,27 +186,20 @@ TEST_F(Catenary3dTest, CoordinateChord) {
   Vector3d spacing(1000, 0, 100);
   c_.set_spacing_endpoints(spacing);
 
-  // unshfted points, no transverse load
-  coord = c_.CoordinateChord(0, false);
-  EXPECT_EQ(-302.4, helper::Round(coord.x, 1));
-  EXPECT_EQ(0, helper::Round(coord.y, 1));
-  EXPECT_EQ(22.9, helper::Round(coord.z, 1));
-
-  coord = c_.CoordinateChord(0.5, false);
-  EXPECT_EQ(203.8, helper::Round(coord.x, 1));
-  EXPECT_EQ(0, helper::Round(coord.y, 1));
-  EXPECT_EQ(73.5, helper::Round(coord.z, 1));
-
-  coord = c_.CoordinateChord(1, false);
-  EXPECT_EQ(697.6, helper::Round(coord.x, 1));
-  EXPECT_EQ(0, helper::Round(coord.y, 1));
-  EXPECT_EQ(122.9, helper::Round(coord.z, 1));
-
-  // shifted point
-  coord = c_.CoordinateChord(0, true);
+  coord = c_.CoordinateChord(0);
   EXPECT_EQ(0, helper::Round(coord.x, 1));
   EXPECT_EQ(0, helper::Round(coord.y, 1));
   EXPECT_EQ(0, helper::Round(coord.z, 1));
+
+  coord = c_.CoordinateChord(0.5);
+  EXPECT_EQ(506.2, helper::Round(coord.x, 1));
+  EXPECT_EQ(0, helper::Round(coord.y, 1));
+  EXPECT_EQ(50.6, helper::Round(coord.z, 1));
+
+  coord = c_.CoordinateChord(1);
+  EXPECT_EQ(1000, helper::Round(coord.x, 1));
+  EXPECT_EQ(0, helper::Round(coord.y, 1));
+  EXPECT_EQ(100, helper::Round(coord.z, 1));
 }
 
 TEST_F(Catenary3dTest, Validate) {

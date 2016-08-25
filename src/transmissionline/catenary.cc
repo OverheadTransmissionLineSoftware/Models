@@ -641,8 +641,7 @@ double Catenary3d::ConstantMinimum(const double& spacing_endpoints) {
   return Catenary2d::ConstantMinimum(spacing_endpoints);
 }
 
-Point3d Catenary3d::Coordinate(const double& position_fraction,
-                               const bool& is_shifted_origin) const {
+Point3d Catenary3d::Coordinate(const double& position_fraction) const {
   Point3d coordinate_catenary;
 
   if (IsUpdated() == false) {
@@ -653,11 +652,11 @@ Point3d Catenary3d::Coordinate(const double& position_fraction,
 
   // gets a 2D chord coordinate
   Point2d coordinate_2d_chord = catenary_2d_.CoordinateChord(position_fraction,
-                                is_shifted_origin);
+                                true);
 
   // gets a 2D curve coordinate
   Point2d coordinate_2d_curve = catenary_2d_.Coordinate(position_fraction,
-                                is_shifted_origin);
+                                true);
 
   // creates a vector between chord coordinate and curve coordinate
   // rotates vector transversely according to unit loading
@@ -678,8 +677,7 @@ Point3d Catenary3d::Coordinate(const double& position_fraction,
   return coordinate_catenary;
 }
 
-Point3d Catenary3d::CoordinateChord(const double& position_fraction,
-                                    const bool& is_shifted_origin) const {
+Point3d Catenary3d::CoordinateChord(const double& position_fraction) const {
   Point3d coordinate_chord;
 
   if (IsUpdated() == false) {
@@ -690,7 +688,7 @@ Point3d Catenary3d::CoordinateChord(const double& position_fraction,
 
   // gets a 2d chord coordinate from 2D catenary
   Point2d coordinate_2d_chord = catenary_2d_.CoordinateChord(position_fraction,
-                                is_shifted_origin);
+                                true);
 
   // converts to 3D coordinate system
   coordinate_chord.x = coordinate_2d_chord.x;
