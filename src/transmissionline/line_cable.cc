@@ -92,6 +92,11 @@ bool LineCable::Validate(const bool& is_included_warnings,
     }
   }
 
+  // returns if errors are present
+  if (is_valid == false) {
+    return is_valid;
+  }
+
   // validates if catenary can be solved for with contraint and ruling
   // span geometry
   CatenarySolver solver;
