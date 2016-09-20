@@ -1,38 +1,39 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "otlsmodels_base", "otlsmodels_base.vcxproj", "{64270951-E6A3-5AB1-8A47-EAD3D561DD8C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "otlsmodels_base", "otlsmodels_base.vcxproj", "{8A3681DE-D718-4B86-8820-FA5074B58934}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "otlsmodels_transmissionline", "otlsmodels_transmissionline.vcxproj", "{18E22BE0-3B83-5EAE-BCB8-D0C536420EF7}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "otlsmodels_transmissionline", "otlsmodels_transmissionline.vcxproj", "{EC902B82-BEAF-4F88-8A05-2675850D5B74}"
 	ProjectSection(ProjectDependencies) = postProject
-		{64270951-E6A3-5AB1-8A47-EAD3D561DD8C} = {64270951-E6A3-5AB1-8A47-EAD3D561DD8C}
+		{8A3681DE-D718-4B86-8820-FA5074B58934} = {8A3681DE-D718-4B86-8820-FA5074B58934}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "otlsmodels_sagtension", "otlsmodels_sagtension.vcxproj", "{AFBE05BD-EC92-5CCD-8819-D8E1FEC7F0CB}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "otlsmodels_sagtension", "otlsmodels_sagtension.vcxproj", "{DFAEC1D3-FFF8-4817-92B7-B3767AE0DCF1}"
 	ProjectSection(ProjectDependencies) = postProject
-		{18E22BE0-3B83-5EAE-BCB8-D0C536420EF7} = {18E22BE0-3B83-5EAE-BCB8-D0C536420EF7}
+		{EC902B82-BEAF-4F88-8A05-2675850D5B74} = {EC902B82-BEAF-4F88-8A05-2675850D5B74}
+		{8A3681DE-D718-4B86-8820-FA5074B58934} = {8A3681DE-D718-4B86-8820-FA5074B58934}
 	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Win32 = Debug|Win32
-		Release|Win32 = Release|Win32
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{64270951-E6A3-5AB1-8A47-EAD3D561DD8C}.Debug|Win32.ActiveCfg = Debug|Win32
-		{64270951-E6A3-5AB1-8A47-EAD3D561DD8C}.Debug|Win32.Build.0 = Debug|Win32
-		{64270951-E6A3-5AB1-8A47-EAD3D561DD8C}.Release|Win32.ActiveCfg = Release|Win32
-		{64270951-E6A3-5AB1-8A47-EAD3D561DD8C}.Release|Win32.Build.0 = Release|Win32
-		{18E22BE0-3B83-5EAE-BCB8-D0C536420EF7}.Debug|Win32.ActiveCfg = Debug|Win32
-		{18E22BE0-3B83-5EAE-BCB8-D0C536420EF7}.Debug|Win32.Build.0 = Debug|Win32
-		{18E22BE0-3B83-5EAE-BCB8-D0C536420EF7}.Release|Win32.ActiveCfg = Release|Win32
-		{18E22BE0-3B83-5EAE-BCB8-D0C536420EF7}.Release|Win32.Build.0 = Release|Win32
-		{AFBE05BD-EC92-5CCD-8819-D8E1FEC7F0CB}.Debug|Win32.ActiveCfg = Debug|Win32
-		{AFBE05BD-EC92-5CCD-8819-D8E1FEC7F0CB}.Debug|Win32.Build.0 = Debug|Win32
-		{AFBE05BD-EC92-5CCD-8819-D8E1FEC7F0CB}.Release|Win32.ActiveCfg = Release|Win32
-		{AFBE05BD-EC92-5CCD-8819-D8E1FEC7F0CB}.Release|Win32.Build.0 = Release|Win32
+		{8A3681DE-D718-4B86-8820-FA5074B58934}.Debug|x64.ActiveCfg = Debug|x64
+		{8A3681DE-D718-4B86-8820-FA5074B58934}.Debug|x64.Build.0 = Debug|x64
+		{8A3681DE-D718-4B86-8820-FA5074B58934}.Release|x64.ActiveCfg = Release|x64
+		{8A3681DE-D718-4B86-8820-FA5074B58934}.Release|x64.Build.0 = Release|x64
+		{EC902B82-BEAF-4F88-8A05-2675850D5B74}.Debug|x64.ActiveCfg = Debug|x64
+		{EC902B82-BEAF-4F88-8A05-2675850D5B74}.Debug|x64.Build.0 = Debug|x64
+		{EC902B82-BEAF-4F88-8A05-2675850D5B74}.Release|x64.ActiveCfg = Release|x64
+		{EC902B82-BEAF-4F88-8A05-2675850D5B74}.Release|x64.Build.0 = Release|x64
+		{DFAEC1D3-FFF8-4817-92B7-B3767AE0DCF1}.Debug|x64.ActiveCfg = Debug|x64
+		{DFAEC1D3-FFF8-4817-92B7-B3767AE0DCF1}.Debug|x64.Build.0 = Debug|x64
+		{DFAEC1D3-FFF8-4817-92B7-B3767AE0DCF1}.Release|x64.ActiveCfg = Release|x64
+		{DFAEC1D3-FFF8-4817-92B7-B3767AE0DCF1}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
