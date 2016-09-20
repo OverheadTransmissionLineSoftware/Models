@@ -53,7 +53,7 @@ const double kTemperatureFahrenheitToCelsius = 1 / 1.8;
 double Convert(const double& value,
                const double& factor,
                const double& exponent,
-               const double& is_numerator) {
+               const bool& is_numerator) {
   // adjusts the factor based on the exponent
   double factor_adj = pow(factor, exponent);
 
