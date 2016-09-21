@@ -1,4 +1,4 @@
-# Overhead Transmission Line Software - Models
+# OTLS - MODELS
 This repository contains multiple libraries that model a transmission line, as
 well as provide engineering calculations. Each library has its own subfolder to
 distinguish it from others.
