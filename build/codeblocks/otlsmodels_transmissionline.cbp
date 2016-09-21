@@ -7,24 +7,24 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="debug">
-				<Option output="debug/bin/otlsmodels_transmissionline" prefix_auto="1" extension_auto="1" />
+				<Option output="debug/otlsmodels_transmissionlined" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
 				<Option object_output="debug/obj/" />
-				<Option external_deps="debug/bin/libotlsmodels_base.a" />
+				<Option external_deps="debug/libotlsmodels_based.a" />
 				<Option type="2" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
-					<Add library="debug/bin/libotlsmodels_base.a" />
+					<Add library="debug/libotlsmodels_based.a" />
 				</Linker>
 			</Target>
 			<Target title="release">
-				<Option output="release/bin/otlsmodels_transmissionline" prefix_auto="1" extension_auto="1" />
+				<Option output="release/otlsmodels_transmissionline" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
 				<Option object_output="release/obj/" />
-				<Option external_deps="release/bin/libotlsmodels_base.a" />
+				<Option external_deps="release/libotlsmodels_base.a" />
 				<Option type="2" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -32,7 +32,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="release/bin/libotlsmodels_base.a" />
+					<Add library="release/libotlsmodels_base.a" />
 				</Linker>
 			</Target>
 		</Build>
