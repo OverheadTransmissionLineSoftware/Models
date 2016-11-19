@@ -54,6 +54,7 @@ bool CableConstraint::Validate(
   // validates type-limit
   if ((type_limit != CableConstraint::LimitType::kCatenaryConstant)
       && (type_limit != CableConstraint::LimitType::kHorizontalTension)
+      && (type_limit != CableConstraint::LimitType::kSag)
       && (type_limit != CableConstraint::LimitType::kSupportTension)) {
     is_valid = false;
     if (messages != nullptr) {

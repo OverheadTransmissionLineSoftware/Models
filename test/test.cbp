@@ -7,9 +7,9 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="debug">
-				<Option output="debug/bin/test" prefix_auto="1" extension_auto="1" />
+				<Option output="debug/test" prefix_auto="1" extension_auto="1" />
 				<Option object_output="debug/obj/" />
-				<Option external_deps="../build/codeblocks/debug/bin/libotlsmodels_base.a;../build/codeblocks/debug/bin/libotlsmodels_sagtension.a;../build/codeblocks/debug/bin/libotlsmodels_transmissionline.a;" />
+				<Option external_deps="../build/codeblocks/debug/libotlsmodels_based.a;../build/codeblocks/debug/libotlsmodels_sagtensiond.a;../build/codeblocks/debug/libotlsmodels_transmissionlined.a;" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Option projectLinkerOptionsRelation="2" />
@@ -17,15 +17,15 @@
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
-					<Add library="../build/codeblocks/debug/bin/libotlsmodels_sagtension.a" />
-					<Add library="../build/codeblocks/debug/bin/libotlsmodels_transmissionline.a" />
-					<Add library="../build/codeblocks/debug/bin/libotlsmodels_base.a" />
+					<Add library="../build/codeblocks/debug/libotlsmodels_sagtensiond.a" />
+					<Add library="../build/codeblocks/debug/libotlsmodels_transmissionlined.a" />
+					<Add library="../build/codeblocks/debug/libotlsmodels_based.a" />
 				</Linker>
 			</Target>
 			<Target title="release">
-				<Option output="release/bin/test" prefix_auto="1" extension_auto="1" />
+				<Option output="release/test" prefix_auto="1" extension_auto="1" />
 				<Option object_output="release/obj/" />
-				<Option external_deps="../build/codeblocks/release/bin/libotlsmodels_base.a;../build/codeblocks/release/bin/libotlsmodels_sagtension.a;../build/codeblocks/release/bin/libotlsmodels_transmissionline.a;" />
+				<Option external_deps="../build/codeblocks/release/libotlsmodels_base.a;../build/codeblocks/release/libotlsmodels_sagtension.a;../build/codeblocks/release/libotlsmodels_transmissionline.a;" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Option projectLinkerOptionsRelation="2" />
@@ -34,9 +34,9 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="../build/codeblocks/release/bin/libotlsmodels_sagtension.a" />
-					<Add library="../build/codeblocks/release/bin/libotlsmodels_transmissionline.a" />
-					<Add library="../build/codeblocks/release/bin/libotlsmodels_base.a" />
+					<Add library="../build/codeblocks/release/libotlsmodels_sagtension.a" />
+					<Add library="../build/codeblocks/release/libotlsmodels_transmissionline.a" />
+					<Add library="../build/codeblocks/release/libotlsmodels_base.a" />
 				</Linker>
 			</Target>
 		</Build>
