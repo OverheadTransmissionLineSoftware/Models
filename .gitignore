@@ -41,5 +41,5 @@
 # OTLS-Models generated executables #
 ######################################
 *.exe
-test/debug/bin/test
-test/release/bin/test
+test/debug/test
+test/release/test
