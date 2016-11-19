@@ -29,6 +29,7 @@ struct CableConstraint {
   enum class LimitType {
     kHorizontalTension,
     kCatenaryConstant,
+    kSag,
     kSupportTension
   };
 

@@ -151,6 +151,91 @@ bool CatenarySolver::SolveHorizontalTensionFromConstant() const {
 }
 
 /// This is done iteratively by adjusting the horizontal tension until the
+/// sag is matched.
+bool CatenarySolver::SolveHorizontalTensionFromSag() const {
+  // x = tension-horizontal
+  // y = sag
+
+  // initializes target
+  double target_solution = constraint_->limit;
+
+  // declares and initializes left point
+  // lowest acceptable value for catenary
+  Point2d point_left;
+  point_left.x = Catenary2d::ConstantMinimum(
+      catenary_.spacing_endpoints().Magnitude())
+      * catenary_.weight_unit().Magnitude();
+  point_left.y = UpdateCatenarySag(point_left.x);
+
+  // target sag is greater than lowest acceptable catenary value
+  if (point_left.y < target_solution) {
+    return false;
+  }
+
+  // declares and initializes right point to 10,000 H/w
+  Point2d point_right;
+  point_right.x = point_left.x * 1.10;
+  point_right.y = UpdateCatenarySag(point_right.x);
+
+  // declares and initializes current point
+  Point2d point_current;
+
+  // iterates
+  unsigned int iter = 0;
+  const int iter_max = 100;
+  while (0.5 < abs(point_left.x - point_right.x) && (iter <= iter_max)) {
+
+    // gets current point x value using left and right points
+    // calculates tangent line between points, extrapolates using line
+    double slope_line = (point_right.y - point_left.y)
+                        / (point_right.x - point_left.x);
+
+    point_current.x = point_left.x
+                      + ((target_solution - point_left.y) / slope_line);
+
+    // gets current point y value
+    point_current.y = UpdateCatenarySag(point_current.x);
+
+    // updates either left or right point based on current point
+    if (point_current.x < point_left.x) {
+
+      point_right.x = point_left.x;
+      point_right.y = point_left.y;
+      point_left.x = point_current.x;
+      point_left.y = point_current.y;
+
+    } else if ((point_left.x < point_current.x)
+        && (point_current.x < point_right.x)) {
+
+      if (point_current.y < target_solution) {
+        point_right.x = point_current.x;
+        point_right.y = point_current.y;
+      } else if (target_solution < point_current.y) {
+        point_left.x = point_current.x;
+        point_left.y = point_current.y;
+      }
+
+    } else if (point_right.x < point_current.x) {
+
+      point_left.x = point_right.x;
+      point_left.y = point_right.y;
+      point_right.x = point_current.x;
+      point_right.y = point_current.y;
+    }
+    iter++;
+  }
+
+  // returns success status
+  if (iter < iter_max) {
+    catenary_.set_tension_horizontal(point_current.x);
+    return true;
+  } else {
+    catenary_.set_tension_horizontal(-999999);
+    return false;
+  }
+}
+
+/// This is done iteratively by adjusting the horizontal tension until the
 /// support tension is matched.
 bool CatenarySolver::SolveHorizontalTensionFromSupportTension() const {
   // x = tension-horizontal
@@ -264,14 +349,21 @@ bool CatenarySolver::Update() const {
 
     // solves for the horizontal tension
     if (constraint_->type_limit
+               == CableConstraint::LimitType::kCatenaryConstant) {
+
+      is_updated_catenary_ = SolveHorizontalTensionFromConstant();
+      if (is_updated_catenary_ == false) {
+        return false;
+      }
+
+    } else if (constraint_->type_limit
         == CableConstraint::LimitType::kHorizontalTension) {
 
       catenary_.set_tension_horizontal(constraint_->limit);
 
-    } else if (constraint_->type_limit
-               == CableConstraint::LimitType::kCatenaryConstant) {
+    } else if (constraint_->type_limit == CableConstraint::LimitType::kSag) {
 
-      is_updated_catenary_ = SolveHorizontalTensionFromConstant();
+      is_updated_catenary_ = SolveHorizontalTensionFromSag();
       if (is_updated_catenary_ == false) {
         return false;
       }
@@ -305,4 +397,13 @@ double CatenarySolver::UpdateCatenaryMaxTension(
 
   // returns support tension
   return catenary_.TensionMax();
+}
+
+double CatenarySolver::UpdateCatenarySag(
+    const double& tension_horizontal) const {
+  // updates catenary
+  catenary_.set_tension_horizontal(tension_horizontal);
+
+  // returns sag
+  return catenary_.Sag();
 }

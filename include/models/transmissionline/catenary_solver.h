@@ -72,12 +72,17 @@ class CatenarySolver {
   bool Update() const;
 
   /// \brief Solves and updates catenary horizontal tension by converting from
-  ///    the catenary constant.
+  ///   the catenary constant.
   /// \return A boolean indicating the success status of the update.
   bool SolveHorizontalTensionFromConstant() const;
 
   /// \brief Solves and updates catenary horizontal tension by converting from
-  ///    support tension.
+  ///   sag.
+  /// \return A boolean indicating the success status of the update.
+  bool SolveHorizontalTensionFromSag() const;
+
+  /// \brief Solves and updates catenary horizontal tension by converting from
+  ///   support tension.
   /// \return A boolean indicating the success status of the update.
   bool SolveHorizontalTensionFromSupportTension() const;
 
@@ -86,10 +91,17 @@ class CatenarySolver {
   bool SolveWeightUnit() const;
 
   /// \brief Updates catenary tension and calculates new support tension.
-  /// \param tension_horizontal The new horizontal tension for the catenary.
-  /// \return The support tension correlating to the new horizontal tension of the
-  ///    catenary.
+  /// \param[in] tension_horizontal
+  ///   The new horizontal tension for the catenary.
+  /// \return The support tension correlating to the new horizontal tension of
+  ///   the catenary.
   double UpdateCatenaryMaxTension(const double& tension_horizontal) const;
+
+  /// \brief Updates catenary horizontal tension and calculates new sag.
+  /// \param[in] tension_horizontal
+  ///   The new horizontal tension for the catenary.
+  /// \return The sag correlating to the new horizontal tension of the catenary.
+  double UpdateCatenarySag(const double& tension_horizontal) const;
 
   /// \var cable_
   ///   The cable.

@@ -26,8 +26,8 @@ class CatenarySolverTest : public ::testing::Test {
     constraint_ = new CableConstraint();
     constraint_->case_weather = weathercase_;
     constraint_->condition = CableConditionType::kInitial;
-    constraint_->limit = 12000;
-    constraint_->type_limit = CableConstraint::LimitType::kSupportTension;
+    constraint_->limit = 4000;
+    constraint_->type_limit = CableConstraint::LimitType::kCatenaryConstant;
 
     spacing_attachments_ = new Vector3d(1200, 0, 0);
 
@@ -55,10 +55,8 @@ class CatenarySolverTest : public ::testing::Test {
 };
 
 TEST_F(CatenarySolverTest, Catenary) {
+  // gets catenary and saves values for comparison
   Catenary3d catenary = c_.Catenary();
-
-  // horizontal tension
-  EXPECT_EQ(11903, helper::Round(catenary.tension_horizontal(), 0));
 
   // weight
   Vector3d weight_unit = catenary.weight_unit();
@@ -71,6 +69,30 @@ TEST_F(CatenarySolverTest, Catenary) {
   EXPECT_EQ(1200, helper::Round(spacing.x(), 0));
   EXPECT_EQ(0, helper::Round(spacing.y(), 0));
   EXPECT_EQ(0, helper::Round(spacing.z(), 0));
+
+  // horizontal tension - from catenary constant type constraint
+  EXPECT_EQ(10104.3, helper::Round(catenary.tension_horizontal(), 1));
+
+  // horizontal tension - from horizontal tension type constraint
+  constraint_->limit = 10104.3;
+  constraint_->type_limit = CableConstraint::LimitType::kHorizontalTension;
+  c_.set_constraint(constraint_);
+  catenary = c_.Catenary();
+  EXPECT_EQ(10104.3, helper::Round(catenary.tension_horizontal(), 1));
+
+  // horizontal tension - from sag type constraint
+  constraint_->limit = 45.0844;
+  constraint_->type_limit = CableConstraint::LimitType::kSag;
+  c_.set_constraint(constraint_);
+  catenary = c_.Catenary();
+  EXPECT_EQ(10104.3, helper::Round(catenary.tension_horizontal(), 1));
+
+  // horizontal tension - from support tension type constraint
+  constraint_->limit = 10218.2;
+  constraint_->type_limit = CableConstraint::LimitType::kSupportTension;
+  c_.set_constraint(constraint_);
+  catenary = c_.Catenary();
+  EXPECT_EQ(10104.3, helper::Round(catenary.tension_horizontal(), 1));
 }
 
 TEST_F(CatenarySolverTest, Validate) {
