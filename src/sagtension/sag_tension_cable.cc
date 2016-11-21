@@ -5,8 +5,6 @@
 
 SagTensionCableComponent::SagTensionCableComponent() {
   component_base_ = nullptr;
-  is_updated_limit_polynomial_ = false;
-  load_limit_polynomial_ = -999999;
 }
 
 SagTensionCableComponent::~SagTensionCableComponent() {
@@ -121,11 +119,6 @@ const CableComponent* SagTensionCableComponent::component_base() const {
 
 const double* SagTensionCableComponent::load_limit_polynomial(
     const PolynomialType& type_polynomial) const {
-  /// \todo implement update process
-  //if (IsUpdated() == false) {
-  //  return nullptr;
-  //}
-  
   if (type_polynomial == PolynomialType::kCreep) {
     return &component_base_->load_limit_polynomial_creep;
   } else if (type_polynomial == PolynomialType::kLoadStrain) {
@@ -147,21 +140,6 @@ const double* SagTensionCableComponent::modulus_tension_elastic_area() const {
 void SagTensionCableComponent::set_component_base(
     const CableComponent* component_base) {
   component_base_ = component_base;
-  is_updated_limit_polynomial_ = false;
-}
-
-bool SagTensionCableComponent::IsUpdated() const {
-  if (is_updated_limit_polynomial_ == true) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-bool SagTensionCableComponent::UpdateLimitPolynomial() const {
-  /// \todo need to finish this
-
-  return true;
 }
 
 SagTensionCable::SagTensionCable() {

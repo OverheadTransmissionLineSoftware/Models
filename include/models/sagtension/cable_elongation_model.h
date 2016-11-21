@@ -124,11 +124,11 @@ class CableElongationModel {
   /// \brief Sets the state.
   /// \param[in] state
   ///   The state.
-  void set_state(const CableState* state);
+  void set_state(const CableState& state);
 
   /// \brief Gets the state.
   /// \return A copy of the state.
-  const CableState* state() const;
+  CableState state() const;
 
  private:
   /// \brief Determines if class is updated.
@@ -291,7 +291,7 @@ class CableElongationModel {
 
   /// \var state_
   ///   The parameters of the cable elongation model.
-  const CableState* state_;
+  CableState state_;
 };
 
 #endif // OTLS_MODELS_SAGTENSION_CABLEELONGATIONMODEL_H_

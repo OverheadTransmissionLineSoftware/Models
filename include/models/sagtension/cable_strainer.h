@@ -8,20 +8,10 @@
 
 #include "models/base/error_message.h"
 #include "models/sagtension/cable_elongation_model.h"
-#include "models/sagtension/cable_state.h"
-#include "models/sagtension/sag_tension_cable.h"
 
 /// \par OVERVIEW
 ///
 /// This class strains the cable from a starting state to a finish state.
-///
-/// \par START AND FINISH STATE
-///
-/// The following parameters can be specified for both starting and finish
-/// states:
-///   - cable state (temperature, stretch load, stretch temperature)
-///   - load
-///   - polynomial type
 ///
 /// \par CABLE ELONGATION MODELS
 ///
@@ -55,10 +45,6 @@ class CableStrainer {
   bool Validate(const bool& is_included_warnings,
                 std::list<ErrorMessage>* messages = nullptr) const;
 
-  /// \brief Gets the cable.
-  /// \return A copy of the cable.
-  const SagTensionCable* cable() const;
-
   /// \brief Gets the length of the cable at the start state.
   /// \return The length of cable at the start state.
   double length_start() const;
@@ -71,10 +57,13 @@ class CableStrainer {
   /// \return The load of the cable at the start state.
   double load_start() const;
 
-  /// \brief Sets the cable.
-  /// \param[in] cable
-  ///   The cable.
-  void set_cable(const SagTensionCable* cable);
+  /// \brief Gets the model for the finish state.
+  /// \return The model for the finish state.
+  const CableElongationModel* model_finish() const;
+
+  /// \brief Gets the model for the start state.
+  /// \return The model for the start state.
+  const CableElongationModel* model_start() const;
 
   /// \brief Sets the length of the cable at the start state.
   /// \param[in] length_start
@@ -91,23 +80,15 @@ class CableStrainer {
   ///   The load of the cable at the start state.
   void set_load_start(const double& load_start);
 
-  /// \brief Sets the finish state.
-  /// \param[in] state_finish
-  ///   The finish state.
-  void set_state_finish(const CableState* state_finish);
+  /// \brief Sets the model for the finish state.
+  /// \param[in] model_finish
+  ///   The model for the finish state.
+  void set_model_finish(const CableElongationModel* model_finish);
 
-  /// \brief Sets the start state.
-  /// \param[in] state_start
-  ///   The start state.
-  void set_state_start(const CableState* state_start);
-
-  /// \brief Gets the finish state.
-  /// \return The finish state.
-  const CableState* state_finish() const;
-
-  /// \brief Gets the start state.
-  /// \return The start state.
-  const CableState* state_start() const;
+  /// \brief Sets the model for the start state.
+  /// \param[in] model_start
+  ///   The model for the start state.
+  void set_model_start(const CableElongationModel* model_start);
 
  private:
   /// \var length_start_
@@ -124,11 +105,11 @@ class CableStrainer {
 
   /// \var model_elongation_finish_
   ///   The elongation model for the cable in the finish state.
-  CableElongationModel model_elongation_finish_;
+  const CableElongationModel* model_elongation_finish_;
 
   /// \var model_elongation_start_
   ///   The elongation model for the cable in the start state.
-  CableElongationModel model_elongation_start_;
+  const CableElongationModel* model_elongation_start_;
 };
 
 #endif // OTLS_MODELS_SAGTENSION_CABLESTRAINER_H_

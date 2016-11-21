@@ -139,6 +139,21 @@ Cable* BuildCable() {
   return cable;
 }
 
+CableElongationModel* BuildCableElongationModel(const SagTensionCable* cable) {
+  CableElongationModel* model = new CableElongationModel();
+
+  CableState state;
+  state.load_stretch = 0;
+  state.temperature_stretch = 0;
+  state.temperature = 70;
+  state.type_polynomial = SagTensionCableComponent::PolynomialType::kLoadStrain;
+
+  model->set_cable(cable);
+  model->set_state(state);
+
+  return model;
+}
+
 LineCable* BuildLineCable() {
   WeatherLoadCase* weathercase = nullptr;
 

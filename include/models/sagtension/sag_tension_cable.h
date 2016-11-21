@@ -13,12 +13,6 @@
 ///
 /// This class provides an interface for the cable component for use in the
 /// sag-tension library.
-///
-/// \par POLYNOMIAL LIMIT SOLVING
-///
-/// If the cable component struct polynomial limit is invalid (<0), this class
-/// will solve for the polynomial limit for each component.
-/// \see UpdatePolynomialLimits
 class SagTensionCableComponent {
  public:
   /// \par OVERVIEW
@@ -81,26 +75,9 @@ class SagTensionCableComponent {
   void set_component_base(const CableComponent* component_base);
 
  private:
-  /// \brief Determines if class is updated.
-  /// \return A boolean indicating if class is updated.
-  bool IsUpdated() const;
-
-  /// \brief Updates the polynomial limits.
-  /// \return The success status of the update.
-  bool UpdateLimitPolynomial() const;
-
   /// \var component_base_
   ///   The cable component that is interfaced.
   const CableComponent* component_base_;
-
-  /// \var is_updated_limit_polynomial_
-  ///   An indicator that tells if the polynomial limit is updated.
-  mutable bool is_updated_limit_polynomial_;
-
-  /// \var load_limit_polynomial_
-  ///   The load limit for the polynomial. This value is only solved for if the
-  ///   limit in the cable component struct is invalid.
-  mutable double load_limit_polynomial_;
 };
 
 /// \par OVERVIEW

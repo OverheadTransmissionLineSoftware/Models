@@ -6,38 +6,33 @@
 #include "models/sagtension/catenary_cable_unloader.h"
 
 CatenaryCableReloader::CatenaryCableReloader() {
-  catenary_cable_ = nullptr;
+  catenary_ = nullptr;
 
-  is_updated_catenary_cable_reloaded_ = false;
-  is_updated_length_unloaded_unstretched_ = false;
+  is_updated_catenary_reloaded_ = false;
+  is_updated_length_unloaded_ = false;
 
-  length_unloaded_unstretched_ = -999999;
+  length_unloaded_ = -999999;
 
-  state_unloaded_.load_stretch = 0;
-  state_unloaded_.temperature = 32;
-  state_unloaded_.temperature_stretch = 0;
-  state_unloaded_.type_polynomial =
-      SagTensionCableComponent::PolynomialType::kLoadStrain;
-
-  strainer_.set_load_start(0);
-  strainer_.set_state_start(&state_unloaded_);
+  model_reference_ = nullptr;
+  model_reloaded_ = nullptr;
+  weight_unit_reloaded_ = nullptr;
 }
 
 CatenaryCableReloader::~CatenaryCableReloader() {
 }
 
-CatenaryCable CatenaryCableReloader::CatenaryCableReloaded() const {
+Catenary3d CatenaryCableReloader::CatenaryReloaded() const {
   // updates class if necessary
   if (IsUpdated() == false) {
     if (Update() == false) {
-      return CatenaryCable();
+      return Catenary3d();
     }
   }
 
-  return catenary_cable_reloaded_;
+  return catenary_reloaded_;
 }
 
-double CatenaryCableReloader::LengthUnloadedUnstretched() const {
+double CatenaryCableReloader::LengthUnloaded() const {
   // updates class if necessary
   if (IsUpdated() == false) {
     if (Update() == false) {
@@ -45,7 +40,7 @@ double CatenaryCableReloader::LengthUnloadedUnstretched() const {
     }
   }
 
-  return length_unloaded_unstretched_;
+  return length_unloaded_;
 }
 
 double CatenaryCableReloader::TensionHorizontal() const {
@@ -56,7 +51,7 @@ double CatenaryCableReloader::TensionHorizontal() const {
     }
   }
 
-  return catenary_cable_reloaded_.tension_horizontal();
+  return catenary_reloaded_.tension_horizontal();
 }
 
 bool CatenaryCableReloader::Validate(
@@ -67,58 +62,75 @@ bool CatenaryCableReloader::Validate(
   ErrorMessage message;
   message.title = "CATENARY CABLE RELOADER";
 
-  // validates catenary cable
-  if (catenary_cable_ == nullptr) {
+  // validates catenary
+  if (catenary_ == nullptr) {
     is_valid = false;
     if (messages != nullptr) {
-      message.description = "Invalid catenary cable";
+      message.description = "Invalid catenary";
       messages->push_back(message);
     }
   } else {
-    if (catenary_cable_->Validate(is_included_warnings,
-                                 messages) == false) {
+    if (catenary_->Validate(is_included_warnings,
+                            messages) == false) {
       is_valid = false;
     }
   }
 
-  // validates reloaded state
-  if (state_reloaded_.Validate(is_included_warnings,
-                               messages) == false) {
+  // validates model-reference
+  if (model_reference_ == nullptr) {
     is_valid = false;
+    if (messages != nullptr) {
+      message.description = "Invalid reference cable model";
+      messages->push_back(message);
+    }
+  } else {
+    if (model_reference_->Validate(is_included_warnings,
+                                   messages) == false) {
+      is_valid = false;
+    }
+  }
+
+  // validates model-reloaded
+  if (model_reloaded_ == nullptr) {
+    is_valid = false;
+    if (messages != nullptr) {
+      message.description = "Invalid reloaded cable model";
+      messages->push_back(message);
+    }
+  } else {
+    if (model_reloaded_->Validate(is_included_warnings,
+                                  messages) == false) {
+      is_valid = false;
+    }
   }
 
   // validates reloaded unit weight
-  if (weight_unit_reloaded_.x() != 0) {
-    is_valid = false;
-    if (messages != nullptr) {
-      message.description = "Invalid longitudinal unit weight";
-      messages->push_back(message);
-    }
-  }
+  if (weight_unit_reloaded_ == nullptr) {
 
-  if (weight_unit_reloaded_.y() < 0) {
-    is_valid = false;
-    if (messages != nullptr) {
-      message.description = "Invalid transverse unit weight";
-      messages->push_back(message);
-    }
-  }
 
-  if (weight_unit_reloaded_.z() <= 0) {
-    is_valid = false;
-    if (messages != nullptr) {
-      message.description = "Invalid vertical unit weight";
-      messages->push_back(message);
+  } else {
+    if (weight_unit_reloaded_->x() != 0) {
+      is_valid = false;
+      if (messages != nullptr) {
+        message.description = "Invalid longitudinal unit weight";
+        messages->push_back(message);
+      }
     }
-  }
 
-  if (catenary_cable_->state()->type_polynomial
-      == SagTensionCableComponent::PolynomialType::kCreep) {
-    is_valid = false;
-    if (messages != nullptr) {
-      message.description = "Invalid polynomial type. The reference catenary "
-                            "cable creep polynomial should not be reloaded.";
-      messages->push_back(message);
+    if (weight_unit_reloaded_->y() < 0) {
+      is_valid = false;
+      if (messages != nullptr) {
+        message.description = "Invalid transverse unit weight";
+        messages->push_back(message);
+      }
+    }
+
+    if (weight_unit_reloaded_->z() <= 0) {
+      is_valid = false;
+      if (messages != nullptr) {
+        message.description = "Invalid vertical unit weight";
+        messages->push_back(message);
+      }
     }
   }
 
@@ -132,10 +144,10 @@ bool CatenaryCableReloader::Validate(
     is_valid = false;
     if (messages != nullptr) {
       message.description = "";
-      if (is_updated_length_unloaded_unstretched_ == false) {
+      if (is_updated_length_unloaded_ == false) {
         message.description = "Error updating class. Could not solve for "
                               "unloaded unstretched length.";
-      } else if (is_updated_catenary_cable_reloaded_ == false) {
+      } else if (is_updated_catenary_reloaded_ == false) {
         message.description = "Error updating class. Could not solve for "
                               "reloaded catenary cable.";
       }
@@ -146,64 +158,71 @@ bool CatenaryCableReloader::Validate(
   return is_valid;
 }
 
-const CatenaryCable* CatenaryCableReloader::catenary_cable() const {
-  return catenary_cable_;
+const Catenary3d* CatenaryCableReloader::catenary() const {
+  return catenary_;
 }
 
-void CatenaryCableReloader::set_catenary_cable(
-    const CatenaryCable* catenary_cable) {
-  catenary_cable_ = catenary_cable;
-
-  is_updated_length_unloaded_unstretched_ = false;
-  is_updated_catenary_cable_reloaded_ = false;
+const CableElongationModel* CatenaryCableReloader::model_reference() const {
+  return model_reference_;
 }
 
-void CatenaryCableReloader::set_state_reloaded(
-    const CableState& state_reloaded) {
-  state_reloaded_ = state_reloaded;
+const CableElongationModel* CatenaryCableReloader::model_reloaded() const {
+  return model_reloaded_;
+}
 
-  is_updated_catenary_cable_reloaded_ = false;
+void CatenaryCableReloader::set_catenary(const Catenary3d* catenary) {
+  catenary_ = catenary;
+
+  is_updated_length_unloaded_ = false;
+  is_updated_catenary_reloaded_ = false;
+}
+
+void CatenaryCableReloader::set_model_reference(
+    const CableElongationModel* model_reference) {
+  model_reference_ = model_reference;
+
+  is_updated_length_unloaded_ = false;
+  is_updated_catenary_reloaded_ = false;
+}
+
+void CatenaryCableReloader::set_model_reloaded(
+    const CableElongationModel* model_reloaded) {
+  model_reloaded_ = model_reloaded;
+
+  is_updated_catenary_reloaded_ = false;
 }
 
 void CatenaryCableReloader::set_weight_unit_reloaded(
-    const Vector3d& weight_unit_reloaded) {
+    const Vector3d* weight_unit_reloaded) {
   weight_unit_reloaded_ = weight_unit_reloaded;
 
-  is_updated_catenary_cable_reloaded_ = false;
+  is_updated_catenary_reloaded_ = false;
 }
 
-CableState CatenaryCableReloader::state_reloaded() const {
-  return state_reloaded_;
-}
-
-Vector3d CatenaryCableReloader::weight_unit_reloaded() const {
+const Vector3d* CatenaryCableReloader::weight_unit_reloaded() const {
   return weight_unit_reloaded_;
 }
 
-bool CatenaryCableReloader::InitializeReloadedCatenaryCable() const {
-  catenary_cable_reloaded_ = CatenaryCable();
-  catenary_cable_reloaded_.set_cable(catenary_cable_->cable());
-  catenary_cable_reloaded_.set_spacing_endpoints(
-      catenary_cable_->spacing_endpoints());
-  catenary_cable_reloaded_.set_state(state_reloaded_);
-  catenary_cable_reloaded_.set_tension_horizontal(
-      catenary_cable_->tension_horizontal());
-  catenary_cable_reloaded_.set_weight_unit(weight_unit_reloaded_);
+bool CatenaryCableReloader::InitializeReloadedCatenary() const {
+  catenary_reloaded_ = Catenary3d();
+  catenary_reloaded_.set_spacing_endpoints(catenary_->spacing_endpoints());
+  catenary_reloaded_.set_tension_horizontal(catenary_->tension_horizontal());
+  catenary_reloaded_.set_weight_unit(*weight_unit_reloaded_);
 
   return true;
 }
 
 bool CatenaryCableReloader::InitializeStrainer() const {
-  strainer_.set_cable(catenary_cable_->cable());
-  strainer_.set_length_start(length_unloaded_unstretched_);
+  strainer_.set_length_start(length_unloaded_);
   strainer_.set_load_start(0);
-  strainer_.set_state_finish(&state_reloaded_);
+  strainer_.set_model_finish(model_reloaded_);
+  strainer_.set_model_start(model_reference_);
 
   return true;
 }
 
 bool CatenaryCableReloader::IsUpdated() const {
-  if (is_updated_catenary_cable_reloaded_ == true) {
+  if (is_updated_catenary_reloaded_ == true) {
     return true;
   } else {
     return false;
@@ -212,9 +231,9 @@ bool CatenaryCableReloader::IsUpdated() const {
 
 double CatenaryCableReloader::LengthDifference(
     const double& tension_horizontal) const {
-  UpdatedReloadedCatenaryCableAndStrainer(tension_horizontal);
+  UpdatedReloadedCatenaryAndStrainer(tension_horizontal);
 
-  const double length_catenary = catenary_cable_reloaded_.Length();
+  const double length_catenary = catenary_reloaded_.Length();
   const double length_cable = strainer_.LengthFinish();
 
   return length_catenary - length_cable;
@@ -223,11 +242,11 @@ double CatenaryCableReloader::LengthDifference(
 /// This function solves for the loaded length of the catenary-cable by
 /// iterating the catenary horizontal tension and strainer average tension
 /// until the loaded length of both is within tolerance.
-bool CatenaryCableReloader::SolveReloadedCatenaryCableTension() const {
+bool CatenaryCableReloader::SolveReloadedCatenaryTension() const {
   // x = horizontal tension
   // y = length difference  i.e.(catenary length - cable length)
 
-  InitializeReloadedCatenaryCable();
+  InitializeReloadedCatenary();
   InitializeStrainer();
 
   // uses an iterative routine to determine solution
@@ -237,9 +256,9 @@ bool CatenaryCableReloader::SolveReloadedCatenaryCableTension() const {
   // declares and initializes left point
   // lowest acceptable value for catenary
   Point2d point_left;
-  point_left.x = catenary_cable_reloaded_.ConstantMinimum(
-      catenary_cable_reloaded_.spacing_endpoints().Magnitude())
-      * catenary_cable_reloaded_.weight_unit().Magnitude();
+  point_left.x = catenary_reloaded_.ConstantMinimum(
+      catenary_reloaded_.spacing_endpoints().Magnitude())
+      * catenary_reloaded_.weight_unit().Magnitude();
   point_left.y = LengthDifference(point_left.x);
 
   // declares and initializes right point
@@ -319,19 +338,17 @@ bool CatenaryCableReloader::SolveReloadedCatenaryCableTension() const {
 
 bool CatenaryCableReloader::Update() const {
   // updates length-unloaded-unstretch
-  if (is_updated_length_unloaded_unstretched_ == false) {
-
-    is_updated_length_unloaded_unstretched_ = UpdateLengthUnloadedUnstretched();
-    if (is_updated_length_unloaded_unstretched_ == false) {
+  if (is_updated_length_unloaded_ == false) {
+    is_updated_length_unloaded_ = UpdateLengthUnloaded();
+    if (is_updated_length_unloaded_ == false) {
       return false;
     }
   }
 
   // updates catenary-cable-reloaded
-  if (is_updated_catenary_cable_reloaded_ == false) {
-
-    is_updated_catenary_cable_reloaded_ = SolveReloadedCatenaryCableTension();
-    if (is_updated_catenary_cable_reloaded_ == false) {
+  if (is_updated_catenary_reloaded_ == false) {
+    is_updated_catenary_reloaded_ = SolveReloadedCatenaryTension();
+    if (is_updated_catenary_reloaded_ == false) {
       return false;
     }
   }
@@ -340,28 +357,29 @@ bool CatenaryCableReloader::Update() const {
   return true;
 }
 
-bool CatenaryCableReloader::UpdateLengthUnloadedUnstretched() const {
-  length_unloaded_unstretched_ = -999999;
+bool CatenaryCableReloader::UpdateLengthUnloaded() const {
+  length_unloaded_ = -999999;
 
   // builds unloader that solves for unloaded cable length
   CatenaryCableUnloader unloader;
-  unloader.set_catenary_cable(catenary_cable_);
-  unloader.set_state_unloaded(&state_unloaded_);
+  unloader.set_catenary(catenary_);
+  unloader.set_model_reference(model_reference_);
+  unloader.set_model_unloaded(model_reference_);
 
   // returns success status
   if (unloader.Validate(false, nullptr) == false) {
     return false;
   } else {
-    length_unloaded_unstretched_ = unloader.LengthUnloaded();
+    length_unloaded_ = unloader.LengthUnloaded();
     return true;
   }
 }
 
-bool CatenaryCableReloader::UpdatedReloadedCatenaryCableAndStrainer(
+bool CatenaryCableReloader::UpdatedReloadedCatenaryAndStrainer(
     const double& tension_horizontal) const {
-  // updates the reloaded catenary-cable and strainer
-  catenary_cable_reloaded_.set_tension_horizontal(tension_horizontal);
-  strainer_.set_load_finish(catenary_cable_reloaded_.TensionAverage());
+  // updates the reloaded catenary and strainer
+  catenary_reloaded_.set_tension_horizontal(tension_horizontal);
+  strainer_.set_load_finish(catenary_reloaded_.TensionAverage());
 
   return true;
 }

@@ -4,9 +4,7 @@
 #include "models/sagtension/catenary_cable_unloader.h"
 
 CatenaryCableUnloader::CatenaryCableUnloader() {
-  catenary_cable_ = nullptr;
-
-  is_updated_strainer_ = false;
+  catenary_ = nullptr;
 
   strainer_.set_load_finish(0);
 }
@@ -15,13 +13,6 @@ CatenaryCableUnloader::~CatenaryCableUnloader() {
 }
 
 double CatenaryCableUnloader::LengthUnloaded() const {
-  // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
-  }
-
   return strainer_.LengthFinish();
 }
 
@@ -33,42 +24,17 @@ bool CatenaryCableUnloader::Validate(
   ErrorMessage message;
   message.title = "CATENARY CABLE UNLOADER";
 
-  // validates catenary cable
-  if (catenary_cable_ == nullptr) {
+  // validates catenary
+  if (catenary_ == nullptr) {
     is_valid = false;
     if (messages != nullptr) {
-      message.description = "Invalid catenary cable";
+      message.description = "Invalid catenary";
       messages->push_back(message);
     }
   } else {
-    if (catenary_cable_->Validate(is_included_warnings,
-                                 messages) == false) {
+    if (catenary_->Validate(is_included_warnings,
+                            messages) == false) {
       is_valid = false;
-    }
-  }
-
-  // validates type-polynomial
-  if (catenary_cable_->state()->type_polynomial
-      == SagTensionCableComponent::PolynomialType::kCreep) {
-    is_valid = false;
-    if (messages != nullptr) {
-      message.description = "Invalid polynomial type. The creep polynomial "
-                            "should not be unloaded.";
-      messages->push_back(message);
-    }
-  }
-
-  // returns if errors are present
-  if (is_valid == false) {
-    return is_valid;
-  }
-
-  // validates if class updates
-  if (Update() == false) {
-    is_valid = false;
-    if (messages != nullptr) {
-      message.description = "Error updating class";
-      messages->push_back(message);
     }
   }
 
@@ -81,53 +47,31 @@ bool CatenaryCableUnloader::Validate(
   return is_valid;
 }
 
-const CatenaryCable* CatenaryCableUnloader::catenary_cable() const {
-  return catenary_cable_;
+const Catenary3d* CatenaryCableUnloader::catenary() const {
+  return catenary_;
 }
 
-void CatenaryCableUnloader::set_catenary_cable(
-    const CatenaryCable* catenary_cable) {
-  catenary_cable_ = catenary_cable;
-
-  is_updated_strainer_ = false;
+const CableElongationModel* CatenaryCableUnloader::model_reference() const {
+  return strainer_.model_start();
 }
 
-void CatenaryCableUnloader::set_state_unloaded(
-    const CableState* state_unloaded) {
-  strainer_.set_state_finish(state_unloaded);
+const CableElongationModel* CatenaryCableUnloader::model_unloaded() const {
+  return strainer_.model_finish();
 }
 
-const CableState* CatenaryCableUnloader::state_unloaded() const {
-  return strainer_.state_finish();
+void CatenaryCableUnloader::set_catenary(const Catenary3d* catenary) {
+  catenary_ = catenary;
+
+  strainer_.set_length_start(catenary_->Length());
+  strainer_.set_load_start(catenary_->TensionAverage(100));
 }
 
-bool CatenaryCableUnloader::IsUpdated() const {
-  if (is_updated_strainer_ == true) {
-    return true;
-  } else {
-    return false;
-  }
+void CatenaryCableUnloader::set_model_reference(
+    const CableElongationModel* model_reference) {
+  strainer_.set_model_start(model_reference);
 }
 
-bool CatenaryCableUnloader::Update() const {
-  // updates strainer
-  if (is_updated_strainer_ == false) {
-
-    is_updated_strainer_ = UpdateStrainer();
-    if (is_updated_strainer_ == false) {
-      return false;
-    }
-  }
-
-  // if it reaches this point, update was successful
-  return true;
-}
-
-bool CatenaryCableUnloader::UpdateStrainer() const {
-  strainer_.set_cable(catenary_cable_->cable());
-  strainer_.set_length_start(catenary_cable_->Length());
-  strainer_.set_load_start(catenary_cable_->TensionAverage());
-  strainer_.set_state_start(catenary_cable_->state());
-
-  return true;
+void CatenaryCableUnloader::set_model_unloaded(
+    const CableElongationModel* model_unloaded) {
+  strainer_.set_model_finish(model_unloaded);
 }

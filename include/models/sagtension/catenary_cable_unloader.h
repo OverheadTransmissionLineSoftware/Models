@@ -7,28 +7,25 @@
 #include <list>
 
 #include "models/base/error_message.h"
-#include "models/base/vector.h"
-#include "models/sagtension/cable_state.h"
 #include "models/sagtension/cable_strainer.h"
-#include "models/sagtension/catenary_cable.h"
 #include "models/transmissionline/catenary.h"
 
 /// \par OVERVIEW
 ///
-/// This class unloads a catenary cable.
+/// This class unloads a catenary to a specified state by using cable
+/// elongation models.
 ///
-/// \par LOADED STATE
+/// \par CATENARY
 ///
-/// The catenary catenary cable represents the cable in the loaded state.
+/// The catenary represents a mechanically loaded cable. The catenary tension
+/// varies along the curve, and must be approximated by an effective or average
+/// tension in order to interact with the cable elongation models.
 ///
-/// The catenary tension varies along the curve. To interact with the cable
-/// elongation model, the catenary tension is converted to a constant effective
-/// tension which produces the same elongation as the catenary loading.
+/// \par CABLE ELONGATION MODELS
 ///
-/// \par UNLOADED STATE
-///
-/// The cable segment is unloaded according to the specified parameters, and is
-/// no longer modeled as a catenary.
+/// This class supports having two models for the cable: reference and unloaded.
+/// These must be identical cables, but can be different states. This allows the
+/// cable to be unloaded to different temperatures and stretch amounts.
 class CatenaryCableUnloader {
  public:
   /// \brief Default constructor.
@@ -51,46 +48,37 @@ class CatenaryCableUnloader {
   bool Validate(const bool& is_included_warnings,
                 std::list<ErrorMessage>* messages) const;
 
-  /// \brief Gets the catenary cable.
-  /// \return The catenary cable.
-  const CatenaryCable* catenary_cable() const;
+  /// \brief Gets the catenary.
+  /// \return The catenary.
+  const Catenary3d* catenary() const;
 
-  /// \brief Sets the catenary cable.
-  /// \param[in] catenary_cable
-  ///   The catenary cable.
-  void set_catenary_cable(const CatenaryCable* catenary_cable);
+  /// \brief Gets the reference (starting) elongation model.
+  /// \return The reference (starting) elongation model.
+  const CableElongationModel* model_reference() const;
 
-  /// \brief Sets the unloaded state.
-  /// \param[in] state_unloaded
-  ///   The unloaded state.
-  void set_state_unloaded(const CableState* state_unloaded);
+  /// \brief Gets the unloaded elongation model.
+  /// \return The unloaded elongation model.
+  const CableElongationModel* model_unloaded() const;
 
-  /// \brief Gets the unloaded state.
-  /// \return The unloaded state.
-  const CableState* state_unloaded() const;
+  /// \brief Sets the catenary.
+  /// \param[in] catenary
+  ///   The catenary.
+  void set_catenary(const Catenary3d* catenary);
+
+  /// \brief Sets the reference (starting) elongation model.
+  /// \param[in] model_reference
+  ///   The reference elongation model.
+  void set_model_reference(const CableElongationModel* model_reference);
+
+  /// \brief Sets the unloaded elongation model.
+  /// \param[in] model_unloaded
+  ///   The unloaded elongation model.
+  void set_model_unloaded(const CableElongationModel* model_unloaded);
 
  private:
-  /// \brief Determines if class is updated.
-  /// \return A boolean indicating if class is updated.
-  bool IsUpdated() const;
-
-  /// \brief Updates cached member variables and modifies control variables if
-  ///   update is required.
-  /// \return A boolean indicating if class updates completed successfully.
-  bool Update() const;
-
-  /// \brief Updates the strainer with the laoded state (catenary cable)
-  ///   parameters.
-  /// \return The success status of the update.
-  bool UpdateStrainer() const;
-
-  /// \var catenary_cable_
-  ///   The catenary cable that is unloaded.
-  const CatenaryCable* catenary_cable_;
-
-  /// \var is_updated_strainer_
-  ///   An indicator that tells if the cable strainer is updated.
-  mutable bool is_updated_strainer_;
+  /// \var catenary_
+  ///   The catenary.
+  const Catenary3d* catenary_;
 
   /// \var strainer_
   ///   The strainer that uses cable elongation models to strain the cable from
