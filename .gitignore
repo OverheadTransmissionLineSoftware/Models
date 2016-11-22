@@ -18,6 +18,8 @@
 *.db
 *.idb
 *.ilk
+*.iobj
+*.ipdb
 *.lastbuildstate
 *.opendb
 *.pdb
