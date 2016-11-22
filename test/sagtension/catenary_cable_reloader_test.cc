@@ -11,10 +11,18 @@
 class CatenaryCableReloaderTest : public ::testing::Test {
  protected:
   CatenaryCableReloaderTest() {
+    // builds dependency object - cable
     cable_ = factory::BuildSagTensionCable();
 
+    // builds dependency object - catenary
     Vector3d spacing_endpoints(1200, 0, 0);
+    Vector3d weight_unit(0, 0, 1.094);
 
+    catenary_.set_spacing_endpoints(spacing_endpoints);
+    catenary_.set_tension_horizontal(6000);
+    catenary_.set_weight_unit(weight_unit);
+
+    // builds dependency object - reference cable model
     CableState state;
     state.load_stretch = 0;
     state.temperature = 60;
@@ -22,16 +30,10 @@ class CatenaryCableReloaderTest : public ::testing::Test {
     state.type_polynomial =
         SagTensionCableComponent::PolynomialType::kLoadStrain;
 
-    Vector3d weight_unit(0, 0, 1.094);
+    model_reference_ = factory::BuildCableElongationModel(cable_);
+    model_reference_->set_state(state);
 
-    catenarycable_ = new CatenaryCable();
-    catenarycable_->set_cable(cable_);
-    catenarycable_->set_spacing_endpoints(spacing_endpoints);
-    catenarycable_->set_state(state);
-    catenarycable_->set_tension_horizontal(6000);
-    catenarycable_->set_weight_unit(weight_unit);
-
-    // builds dependency object - reloaded state
+    // builds dependency object - reloaded cable model
     CableState state_reloaded;
     state_reloaded.load_stretch = 0;
     state_reloaded.temperature = 60;
@@ -39,121 +41,136 @@ class CatenaryCableReloaderTest : public ::testing::Test {
     state_reloaded.type_polynomial =
         SagTensionCableComponent::PolynomialType::kLoadStrain;
 
+    model_reloaded_ = factory::BuildCableElongationModel(cable_);
+    model_reloaded_->set_state(state_reloaded);
+
     // builds dependency object - reloaded unit weight
-    Vector3d weight_unit_reloaded(0, 0, 1.094);
+    weight_unit_reloaded_ = Vector3d(0, 0, 1.094);
 
     // builds fixture object
-    c_.set_catenary_cable(catenarycable_);
-    c_.set_state_reloaded(state_reloaded);
-    c_.set_weight_unit_reloaded(weight_unit_reloaded);
+    c_.set_catenary(&catenary_);
+    c_.set_model_reference(model_reference_);
+    c_.set_model_reloaded(model_reloaded_);
+    c_.set_weight_unit_reloaded(&weight_unit_reloaded_);
   }
 
   ~CatenaryCableReloaderTest() {
     factory::DestroySagTensionCable(cable_);
-    delete catenarycable_;
+    delete model_reference_;
+    delete model_reloaded_;
   }
 
   // allocated dependency objects
   SagTensionCable* cable_;
-  CatenaryCable* catenarycable_;
+  Catenary3d catenary_;
+  CableElongationModel* model_reference_;
+  CableElongationModel* model_reloaded_;
+  Vector3d weight_unit_reloaded_;
 
   // test object
   CatenaryCableReloader c_;
 };
 
-TEST_F(CatenaryCableReloaderTest, LengthUnloadedUnstretched) {
+TEST_F(CatenaryCableReloaderTest, LengthUnloaded) {
   double value = -999999;
 
   // unstretched original catenary cable
-  value = c_.LengthUnloadedUnstretched();
-  EXPECT_EQ(1200.82, helper::Round(value, 2));
+  value = c_.LengthUnloaded();
+  EXPECT_EQ(1201.04, helper::Round(value, 2));
 }
 
-TEST_F(CatenaryCableReloaderTest, CatenaryCableReloaded) {
+TEST_F(CatenaryCableReloaderTest, CatenaryReloaded) {
   double value = -999999;
 
-  CatenaryCable catenary_cable;
-  CableState state = c_.state_reloaded();
-  Vector3d weight_unit = c_.weight_unit_reloaded();
+  Catenary3d catenary;
+  CableState state = c_.model_reloaded()->state();
 
   // nothing is modified - original and reloaded parameters are equal
-  catenary_cable = c_.CatenaryCableReloaded();
-  value = catenary_cable.tension_horizontal();
+  catenary = c_.CatenaryReloaded();
+  value = catenary.tension_horizontal();
   EXPECT_EQ(6000, helper::Round(value, 0));
 
   // tests temperature changes
   state.temperature = 0;
-  c_.set_state_reloaded(state);
-  catenary_cable = c_.CatenaryCableReloaded();
-  value = catenary_cable.tension_horizontal();
+  model_reloaded_->set_state(state);
+  c_.set_model_reloaded(model_reloaded_);
+  catenary = c_.CatenaryReloaded();
+  value = catenary.tension_horizontal();
   EXPECT_EQ(6788, helper::Round(value, 0));
 
   state.temperature = 212;
-  c_.set_state_reloaded(state);
-  catenary_cable = c_.CatenaryCableReloaded();
-  value = catenary_cable.tension_horizontal();
+  model_reloaded_->set_state(state);
+  c_.set_model_reloaded(model_reloaded_);
+  catenary = c_.CatenaryReloaded();
+  value = catenary.tension_horizontal();
   EXPECT_EQ(4702, helper::Round(value, 0));
 
   // changes temperature to zero and tests unit weight changes
   state.temperature = 0;
-  c_.set_state_reloaded(state);
+  model_reloaded_->set_state(state);
+  c_.set_model_reloaded(model_reloaded_);
 
-  weight_unit.set_y(2.072);
-  weight_unit.set_z(3.729);
-  c_.set_weight_unit_reloaded(weight_unit);
-  catenary_cable = c_.CatenaryCableReloaded();
-  value = catenary_cable.tension_horizontal();
+  weight_unit_reloaded_.set_y(2.072);
+  weight_unit_reloaded_.set_z(3.729);
+  c_.set_weight_unit_reloaded(&weight_unit_reloaded_);
+  catenary = c_.CatenaryReloaded();
+  value = catenary.tension_horizontal();
   EXPECT_EQ(17126, helper::Round(value, 0));
 
-  weight_unit.set_y(1.405);
-  weight_unit.set_z(2.099);
-  c_.set_weight_unit_reloaded(weight_unit);
-  catenary_cable = c_.CatenaryCableReloaded();
-  value = catenary_cable.tension_horizontal();
+  weight_unit_reloaded_.set_y(1.405);
+  weight_unit_reloaded_.set_z(2.099);
+  c_.set_weight_unit_reloaded(&weight_unit_reloaded_);
+  catenary = c_.CatenaryReloaded();
+  value = catenary.tension_horizontal();
   EXPECT_EQ(12147, helper::Round(value, 0));
 
   // sets stretch load and tests all above cases again
   const double kLoadStretch =
-      helper::Round(catenary_cable.TensionAverage(100), 0);
+      helper::Round(catenary.TensionAverage(100), 0);
   EXPECT_EQ(12179, kLoadStretch);
   state.load_stretch = kLoadStretch;
-  c_.set_state_reloaded(state);
+  model_reloaded_->set_state(state);
+  c_.set_model_reloaded(model_reloaded_);
 
   state.temperature = 60;
-  c_.set_state_reloaded(state);
-  weight_unit.set_y(0);
-  weight_unit.set_z(1.094);
-  c_.set_weight_unit_reloaded(weight_unit);
-  catenary_cable = c_.CatenaryCableReloaded();
-  value = catenary_cable.tension_horizontal();
+  model_reloaded_->set_state(state);
+  c_.set_model_reloaded(model_reloaded_);
+  weight_unit_reloaded_.set_y(0);
+  weight_unit_reloaded_.set_z(1.094);
+  c_.set_weight_unit_reloaded(&weight_unit_reloaded_);
+  catenary = c_.CatenaryReloaded();
+  value = catenary.tension_horizontal();
   EXPECT_EQ(5562, helper::Round(value, 0));
 
   state.temperature = 0;
-  c_.set_state_reloaded(state);
-  catenary_cable = c_.CatenaryCableReloaded();
-  value = catenary_cable.tension_horizontal();
+  model_reloaded_->set_state(state);
+  c_.set_model_reloaded(model_reloaded_);
+  catenary = c_.CatenaryReloaded();
+  value = catenary.tension_horizontal();
   EXPECT_EQ(6320, helper::Round(value, 0));
 
   state.temperature = 212;
-  c_.set_state_reloaded(state);
-  catenary_cable = c_.CatenaryCableReloaded();
-  value = catenary_cable.tension_horizontal();
+  model_reloaded_->set_state(state);
+  c_.set_model_reloaded(model_reloaded_);
+  catenary = c_.CatenaryReloaded();
+  value = catenary.tension_horizontal();
   EXPECT_EQ(4528, helper::Round(value, 0));
 
   state.temperature = 0;
-  c_.set_state_reloaded(state);
-  weight_unit.set_y(2.072);
-  weight_unit.set_z(3.729);
-  c_.set_weight_unit_reloaded(weight_unit);
-  catenary_cable = c_.CatenaryCableReloaded();
-  value = catenary_cable.tension_horizontal();
+  model_reloaded_->set_state(state);
+  c_.set_model_reloaded(model_reloaded_);
+  weight_unit_reloaded_.set_y(2.072);
+  weight_unit_reloaded_.set_z(3.729);
+  c_.set_weight_unit_reloaded(&weight_unit_reloaded_);
+  catenary = c_.CatenaryReloaded();
+  value = catenary.tension_horizontal();
   EXPECT_EQ(17126, helper::Round(value, 0));
 
-  weight_unit.set_y(1.405);
-  weight_unit.set_z(2.099);
-  c_.set_weight_unit_reloaded(weight_unit);
-  catenary_cable = c_.CatenaryCableReloaded();
-  value = catenary_cable.tension_horizontal();
+  weight_unit_reloaded_.set_y(1.405);
+  weight_unit_reloaded_.set_z(2.099);
+  c_.set_weight_unit_reloaded(&weight_unit_reloaded_);
+  catenary = c_.CatenaryReloaded();
+  value = catenary.tension_horizontal();
   EXPECT_EQ(12147, helper::Round(value, 0));
 }
 

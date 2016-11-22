@@ -14,41 +14,36 @@ class CableStrainerTest : public ::testing::Test {
     // builds dependency object - cable
     cable_ = factory::BuildSagTensionCable();
 
-    // builds dependency object - start state
-    state_start_ = new CableState();
-    state_start_->load_stretch = 12000;
-    state_start_->temperature = 0;
-    state_start_->temperature_stretch = 0;
-    state_start_->type_polynomial =
-        SagTensionCableComponent::PolynomialType::kLoadStrain;
+    // builds dependency object - start cable model
+    model_start_ = factory::BuildCableElongationModel(cable_);
 
-    // builds dependency object - finish state
-    state_finish_ = new CableState();
-    state_finish_->load_stretch = 12000;
-    state_finish_->temperature = 212;
-    state_finish_->temperature_stretch = 0;
-    state_finish_->type_polynomial =
-        SagTensionCableComponent::PolynomialType::kLoadStrain;
+    // builds dependency object - finish cable model
+    CableState state = model_start_->state();
+    state.load_stretch = 12000;
+    state.temperature = 212;
+    state.temperature_stretch = 0;
+
+    model_finish_ = factory::BuildCableElongationModel(cable_);
+    model_finish_->set_state(state);
 
     // builds fixture object
-    c_.set_cable(cable_);
     c_.set_length_start(1200);
     c_.set_load_finish(10000);
     c_.set_load_start(0);
-    c_.set_state_finish(state_finish_);
-    c_.set_state_start(state_start_);
+    c_.set_model_finish(model_finish_);
+    c_.set_model_start(model_start_);
   }
 
   ~CableStrainerTest() {
     factory::DestroySagTensionCable(cable_);
-    delete state_start_;
-    delete state_finish_;
+    delete model_finish_;
+    delete model_start_;
   }
 
   // allocated dependency objects
   SagTensionCable* cable_;
-  CableState* state_start_;
-  CableState* state_finish_;
+  CableElongationModel* model_finish_;
+  CableElongationModel* model_start_;
 
   // test object
   CableStrainer c_;
@@ -67,8 +62,8 @@ TEST_F(CableStrainerTest, LengthFinish) {
   c_.set_length_start(length_finish);
   c_.set_load_start(load_finish);
   c_.set_load_finish(load_start);
-  c_.set_state_start(state_finish_);
-  c_.set_state_finish(state_start_);
+  c_.set_model_start(model_finish_);
+  c_.set_model_finish(model_start_);
 
   // tests if original length is calculated
   EXPECT_EQ(length_start, helper::Round(c_.LengthFinish(), 3));
