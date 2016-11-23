@@ -3,6 +3,8 @@
 
 #include "models/transmissionline/line_cable.h"
 
+#include <cmath>
+
 #include "models/transmissionline/catenary_solver.h"
 
 LineCable::LineCable() {
@@ -56,7 +58,7 @@ bool LineCable::Validate(const bool& is_included_warnings,
     }
   }
 
-  if (2000 < abs(spacing_attachments_ruling_span.z())) {
+  if (2000 < std::abs(spacing_attachments_ruling_span.z())) {
     is_valid = false;
     if (messages != nullptr) {
       message.description = "Invalid vertical ruling span attachment spacing";

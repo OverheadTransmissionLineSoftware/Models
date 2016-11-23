@@ -3,6 +3,8 @@
 
 #include "models/sagtension/catenary_cable_reloader.h"
 
+#include <cmath>
+
 #include "models/sagtension/catenary_cable_unloader.h"
 
 CatenaryCableReloader::CatenaryCableReloader() {
@@ -273,7 +275,7 @@ bool CatenaryCableReloader::SolveReloadedCatenaryTension() const {
   // iterates until target is reached
   int iter = 0;
   const int iter_max = 100;
-  while (0.01 < abs(point_left.x - point_right.x) && (iter < iter_max)) {
+  while (0.01 < std::abs(point_left.x - point_right.x) && (iter < iter_max)) {
 
     // gets current point horizontal tension using left and right points
     if ((point_left.y > target_solution)

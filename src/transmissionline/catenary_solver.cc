@@ -3,6 +3,8 @@
 
 #include "models/transmissionline/catenary_solver.h"
 
+#include <cmath>
+
 #include "models/transmissionline/cable_unit_load_calculator.h"
 
 CatenarySolver::CatenarySolver() {
@@ -78,7 +80,7 @@ bool CatenarySolver::Validate(
     }
   }
 
-  if (2000 < abs(spacing_attachments_->z())) {
+  if (2000 < std::abs(spacing_attachments_->z())) {
     is_valid = false;
     if (messages != nullptr) {
       message.description = "Invalid vertical attachment spacing";
@@ -183,7 +185,7 @@ bool CatenarySolver::SolveHorizontalTensionFromSag() const {
   // iterates
   unsigned int iter = 0;
   const int iter_max = 100;
-  while (0.5 < abs(point_left.x - point_right.x) && (iter <= iter_max)) {
+  while (0.5 < std::abs(point_left.x - point_right.x) && (iter <= iter_max)) {
 
     // gets current point x value using left and right points
     // calculates tangent line between points, extrapolates using line
@@ -269,7 +271,7 @@ bool CatenarySolver::SolveHorizontalTensionFromSupportTension() const {
   // iterates
   unsigned int iter = 0;
   const int iter_max = 100;
-  while (0.5 < abs(point_left.x - point_right.x) && (iter <= iter_max)) {
+  while (0.5 < std::abs(point_left.x - point_right.x) && (iter <= iter_max)) {
 
     // gets current point x value using left and right points
     // calculates tangent line between points, extrapolates using line

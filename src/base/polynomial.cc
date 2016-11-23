@@ -110,7 +110,7 @@ double Polynomial::X(const double& y, const int& decimal_precision_y,
 
   // iterates until the value is within tolerance
   int iter = 0;
-  while (precision_y < abs(point_function.y) && (iter < 100)) {
+  while (precision_y < std::abs(point_function.y) && (iter < 100)) {
 
     // calculates y value for shifted polynomial and derivative
     point_function.y = polynomial_shifted.Y(point_function.x);

@@ -3,6 +3,8 @@
 
 #include "models/sagtension/line_cable_reloader.h"
 
+#include <cmath>
+
 #include "models/sagtension/catenary_cable_reloader.h"
 #include "models/transmissionline/catenary_solver.h"
 #include "models/transmissionline/cable_unit_load_calculator.h"
@@ -410,7 +412,7 @@ bool LineCableReloader::UpdateConstraintCableModel() const {
   const double precision = 0.1;
   double slope_line = -999999;
 
-  while ((precision < abs(point_current.y - target_solution))
+  while ((precision < std::abs(point_current.y - target_solution))
       && (iter < iter_max)) {
 
     // solves for new stretch value is calculated for current point

@@ -4,6 +4,7 @@
 #include "models/sagtension/cable_elongation_model.h"
 
 #include <algorithm>
+#include <cmath>
 
 #include "models/base/helper.h"
 
@@ -317,7 +318,7 @@ double CableElongationModel::StrainCombined(
   double precision = 1 / pow(10, precision_decimal_load);
   double slope_line =-999999;
 
-  while ((precision < abs(point_current.y - load)) && (iter < 100)) {
+  while ((precision < std::abs(point_current.y - load)) && (iter < 100)) {
 
     // calculates new strain value by using tangent line between points,
     // extrapolates using line
@@ -693,8 +694,8 @@ bool CableElongationModel::ValidateComponentsStrainUnloaded(
       strain_unloaded_unstretched_core - strain_unloaded_unstretched_shell;
 
   // validates unloaded unstretched strain differences
-  if (0.0005 < abs(strain_difference)
-      || ((0.0001 < abs(strain_difference))
+  if (0.0005 < std::abs(strain_difference)
+      || ((0.0001 < std::abs(strain_difference))
       && (is_included_warnings == true))) {
     is_valid = false;
     if (messages != nullptr) {

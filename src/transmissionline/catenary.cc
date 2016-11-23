@@ -408,8 +408,8 @@ bool Catenary2d::Validate(const bool& is_included_warnings,
   }
 
   // validates spacing-endpoint-vertical
-  if (10000 < abs(spacing_endpoints_.y())
-      || 2000 <= abs(spacing_endpoints_.y()) ) {
+  if (10000 < std::abs(spacing_endpoints_.y())
+      || 2000 <= std::abs(spacing_endpoints_.y()) ) {
     is_valid = false;
     if (messages != nullptr) {
       message.description = "Invalid vertical endpoint spacing";
@@ -523,7 +523,7 @@ double Catenary2d::PositionFraction(const double& tangent_angle) const {
   int iter = 0;
   const int kIterMax = 100;
 
-  while ((0.001 < abs(tangent_angle - tangent_angle_position)
+  while ((0.001 < std::abs(tangent_angle - tangent_angle_position)
       || (0.0001 < position_fraction_upper - position_fraction_lower))
       && (iter < kIterMax)) {
 
@@ -778,8 +778,8 @@ double Catenary3d::TangentAngleTransverse(
   Vector3d tangent_vector = TangentVector(position_fraction, direction);
 
   // adjusts components to use only positive values in unit circle
-  tangent_vector.set_y( abs(tangent_vector.y()) );
-  tangent_vector.set_z( abs(tangent_vector.z()) );
+  tangent_vector.set_y( std::abs(tangent_vector.y()) );
+  tangent_vector.set_z( std::abs(tangent_vector.z()) );
 
   // returns transverse angle
   return tangent_vector.Angle(Plane2dType::kZy, true);
@@ -798,7 +798,7 @@ double Catenary3d::TangentAngleVertical(
   Vector3d tangent_vector = TangentVector(position_fraction, direction);
 
   // adjusts x component to use only positive values in unit circle
-  tangent_vector.set_x( abs(tangent_vector.x()) );
+  tangent_vector.set_x( std::abs(tangent_vector.x()) );
 
   // returns vertical angle
   return tangent_vector.Angle(Plane2dType::kXz, true);
@@ -933,8 +933,8 @@ bool Catenary3d::Validate(const bool& is_included_warnings,
   }
 
   // validates spacing-endpoint-vertical
-  if (10000 < abs(spacing_endpoints_.z())
-      || 2000 <= abs(spacing_endpoints_.z()) ) {
+  if (10000 < std::abs(spacing_endpoints_.z())
+      || 2000 <= std::abs(spacing_endpoints_.z()) ) {
     is_valid = false;
     if (messages != nullptr) {
       message.description = "Invalid vertical endpoint spacing";
