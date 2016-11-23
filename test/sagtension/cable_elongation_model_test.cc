@@ -16,28 +16,26 @@ class CableElongationModelTest : public ::testing::Test {
     cable_sagtension_ = new SagTensionCable();
     cable_sagtension_->set_cable_base(cable_);
 
-    // builds dependency object - state
-    state_ = new CableState();
-    state_->load_stretch = 12000;
-    state_->temperature = 70;
-    state_->temperature_stretch = 0;
-    state_->type_polynomial =
-        SagTensionCableComponent::PolynomialType::kLoadStrain;
-
     // builds fixture object
-    c_.set_cable(cable_sagtension_);
-    c_.set_state(state_);
+    c_ = *factory::BuildCableElongationModel(cable_sagtension_);
+
+    // modifies state
+    CableState state = c_.state();
+    state.load_stretch = 12000;
+    state.temperature = 70;
+    state.temperature_stretch = 0;
+    state.type_polynomial =
+        SagTensionCableComponent::PolynomialType::kLoadStrain;
+    c_.set_state(state);
   }
 
   ~CableElongationModelTest() {
     factory::DestroySagTensionCable(cable_sagtension_);
-    delete state_;
   }
 
   // allocated dependency objects
   Cable* cable_;
   SagTensionCable* cable_sagtension_;
-  CableState* state_;
 
   // test object
   CableElongationModel c_;

@@ -8,19 +8,20 @@
 
 #include "models/base/error_message.h"
 #include "models/sagtension/cable_elongation_model.h"
-#include "models/sagtension/catenary_cable.h"
-#include "models/sagtension/catenary_cable_component_tension_solver.h"
 #include "models/sagtension/sag_tension_cable.h"
+#include "models/transmissionline/catenary.h"
 #include "models/transmissionline/line_cable.h"
 
 /// \par OVERVIEW
 ///
 /// This class reloads a line cable to a specified weather case and condition.
 /// The process is as follows:
-///   - solve for a catenary cable based on the line cable information
-///   - determine the stretch load at all conditions
-///   - reload the catenary cable (based on the line cable) at the reloaded
-///     state
+///   - solve for a catenary based on the line cable constraint
+///   - build cable models for the constraint, creep-stretch, load-stretch, and
+///     reloaded weathercases
+///   - determine the stretch load for creep and load conditions
+///   - reload the catenary (based on the line cable constraint) at the reloaded
+///     weathercase
 ///
 /// \par STRETCH
 ///
@@ -115,6 +116,12 @@ class LineCableReloader {
   const WeatherLoadCase* weathercase_reloaded() const;
 
  private:
+  /// \brief Initializes the models defined in the line cable.
+  /// \return The success status of the update.
+  /// This function initializes the cable models with the correct temperature
+  /// and polynomial, but does not solve for any stretch.
+  bool InitializeLineCableModels() const;
+
   /// \brief Determines if class is updated.
   /// \return A boolean indicating if class is updated.
   bool IsUpdated() const;
@@ -130,45 +137,51 @@ class LineCableReloader {
   /// \return A boolean indicating if class updates completed successfully.
   bool Update() const;
 
-  /// \brief Updates catenary cable tension solver.
+  /// \brief Updates the constraint cable model.
   /// \return The success status of the update.
-  bool UpdateCatenaryCableComponentTensionSolver() const;
+  /// This function further updates the constraint cable model to include any
+  /// stretch.
+  bool UpdateConstraintCableModel() const;
 
-  /// \brief Updates the constraint catenary cable.
+  /// \brief Updates the constraint catenary.
   /// \return The success status of the update.
-  bool UpdateConstraintCatenaryCable() const;
+  bool UpdateConstraintCatenary() const;
 
-  /// \brief Updates the reloaded state.
+  /// \brief Updates the stretch due to load and creep.
   /// \return The success status of the update.
   bool UpdateLoadStretch() const;
 
-  /// \brief Updates the reloaded catenary cable.
+  /// \brief Updates the reloaded cable model.
   /// \return The success status of the update.
-  bool UpdateReloadedCatenaryCable() const;
+  bool UpdateReloadedCableModel() const;
+
+  /// \brief Updates the reloaded catenary.
+  /// \return The success status of the update.
+  bool UpdateReloadedCatenary() const;
 
   /// \var cable_sagtension_
   ///   The cable, which is referenced for sag-tension methods.
   SagTensionCable cable_sagtension_;
 
-  /// \var catenarycable_constraint_
-  ///   The catenary cable for the line cable constraint.
-  mutable CatenaryCable catenarycable_constraint_;
+  /// \var catenary_constraint_
+  ///   The catenary for the line cable constraint.
+  mutable Catenary3d catenary_constraint_;
 
-  /// \var catenarycable_reloaded_
-  ///   The catenary cable that is reloaded.
-  mutable CatenaryCable catenarycable_reloaded_;
+  /// \var catenary_reloaded_
+  ///   The catenary that is reloaded.
+  mutable Catenary3d catenary_reloaded_;
 
   /// \var condition_reloaded_
   ///   The condition of the cable when loaded at the query load case.
   CableConditionType condition_reloaded_;
 
-  /// \var is_updated_catenarycable_constraint_
+  /// \var is_updated_catenary_constraint_
   ///   An indicator that tells if the constraint catenary cable is updated.
-  mutable bool is_updated_catenarycable_constraint_;
+  mutable bool is_updated_catenary_constraint_;
 
-  /// \var is_updated_catenarycable_reloaded_
+  /// \var is_updated_catenary_reloaded_
   ///   An indicator that tells if the query catenary cable is updated.
-  mutable bool is_updated_catenarycable_reloaded_;
+  mutable bool is_updated_catenary_reloaded_;
 
   /// \var is_updated_stretch_
   ///   An indicator that tells if the stretch load is updated.
@@ -177,6 +190,7 @@ class LineCableReloader {
   /// \var length_unloaded_unstretched_adjustment_
   ///   The adjustment to the unloaded unstretched length when the cable is
   ///   reloaded.
+  /// \todo This needs to be implemented.
   mutable double length_unloaded_unstretched_adjustment_;
 
   /// \var line_cable_
@@ -191,9 +205,26 @@ class LineCableReloader {
   ///   The stretch load for the load condition.
   mutable double load_stretch_load_;
 
-  /// \var solver_component_tension_
-  ///   The catenary cable component tension solver.
-  mutable CatenaryCableComponentTensionSolver solver_component_tension_;
+  /// \var model_constraint_
+  ///   The cable model for the constraint weathercase. This model may contain
+  ///   stretch, depending on the constraint condition.
+  mutable CableElongationModel model_constraint_;
+
+  /// \var model_creep_
+  ///   The cable model used for solving creep stretch. This model will always
+  ///   contain zero stretch to ensure that only the polynomial is referenced.
+  mutable CableElongationModel model_creep_;
+
+  /// \var model_load_
+  ///   The cable model used for solving heavy load stretch. This model will
+  ///   always contain zero stretch to ensure that only the polynomial is
+  ///   referenced.
+  mutable CableElongationModel model_load_;
+
+  /// \var model_reloaded_
+  ///   The cable model for the reloaded weathercase. This model may contain
+  ///   stretch, depending on the reloaded condition.
+  mutable CableElongationModel model_reloaded_;
 
   /// \var weathercase_reloaded_
   ///   The load case that the cable is being reloaded to.

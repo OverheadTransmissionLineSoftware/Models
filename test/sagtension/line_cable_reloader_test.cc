@@ -49,7 +49,7 @@ TEST_F(LineCableReloaderTest, CatenaryReloaded) {
   // more reloading tests are done in the horizontal tension test
 }
 
-TEST_F(LineCableReloaderTest, LoadStretchTest) {
+TEST_F(LineCableReloaderTest, LoadStretch) {
   double value = -999999;
 
   value = l_.LoadStretch(CableConditionType::kInitial);

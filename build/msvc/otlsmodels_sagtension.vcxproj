@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -57,10 +57,7 @@
     <ClInclude Include="..\..\include\models\sagtension\cable_elongation_model.h" />
     <ClInclude Include="..\..\include\models\sagtension\cable_state.h" />
     <ClInclude Include="..\..\include\models\sagtension\cable_strainer.h" />
-    <ClInclude Include="..\..\include\models\sagtension\catenary_cable.h" />
-    <ClInclude Include="..\..\include\models\sagtension\catenary_cable_component_tension_solver.h" />
     <ClInclude Include="..\..\include\models\sagtension\catenary_cable_reloader.h" />
-    <ClInclude Include="..\..\include\models\sagtension\catenary_cable_solver.h" />
     <ClInclude Include="..\..\include\models\sagtension\catenary_cable_unloader.h" />
     <ClInclude Include="..\..\include\models\sagtension\line_cable_reloader.h" />
     <ClInclude Include="..\..\include\models\sagtension\line_cable_sagger.h" />
@@ -71,10 +68,7 @@
     <ClCompile Include="..\..\src\sagtension\cable_elongation_model.cc" />
     <ClCompile Include="..\..\src\sagtension\cable_state.cc" />
     <ClCompile Include="..\..\src\sagtension\cable_strainer.cc" />
-    <ClCompile Include="..\..\src\sagtension\catenary_cable.cc" />
-    <ClCompile Include="..\..\src\sagtension\catenary_cable_component_tension_solver.cc" />
     <ClCompile Include="..\..\src\sagtension\catenary_cable_reloader.cc" />
-    <ClCompile Include="..\..\src\sagtension\catenary_cable_solver.cc" />
     <ClCompile Include="..\..\src\sagtension\catenary_cable_unloader.cc" />
     <ClCompile Include="..\..\src\sagtension\line_cable_reloader.cc" />
     <ClCompile Include="..\..\src\sagtension\line_cable_sagger.cc" />

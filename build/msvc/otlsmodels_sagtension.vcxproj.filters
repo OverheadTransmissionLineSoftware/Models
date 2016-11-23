@@ -27,16 +27,7 @@
     <ClInclude Include="..\..\include\models\sagtension\cable_strainer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\models\sagtension\catenary_cable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\models\sagtension\catenary_cable_component_tension_solver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\models\sagtension\catenary_cable_reloader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\models\sagtension\catenary_cable_solver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\models\sagtension\catenary_cable_unloader.h">
@@ -65,16 +56,7 @@
     <ClCompile Include="..\..\src\sagtension\cable_strainer.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\sagtension\catenary_cable.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\sagtension\catenary_cable_component_tension_solver.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\sagtension\catenary_cable_reloader.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\sagtension\catenary_cable_solver.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\sagtension\catenary_cable_unloader.cc">

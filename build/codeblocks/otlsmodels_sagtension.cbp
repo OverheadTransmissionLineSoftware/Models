@@ -50,10 +50,7 @@
 		<Unit filename="../../include/models/sagtension/cable_elongation_model.h" />
 		<Unit filename="../../include/models/sagtension/cable_state.h" />
 		<Unit filename="../../include/models/sagtension/cable_strainer.h" />
-		<Unit filename="../../include/models/sagtension/catenary_cable.h" />
-		<Unit filename="../../include/models/sagtension/catenary_cable_component_tension_solver.h" />
 		<Unit filename="../../include/models/sagtension/catenary_cable_reloader.h" />
-		<Unit filename="../../include/models/sagtension/catenary_cable_solver.h" />
 		<Unit filename="../../include/models/sagtension/catenary_cable_unloader.h" />
 		<Unit filename="../../include/models/sagtension/line_cable_reloader.h" />
 		<Unit filename="../../include/models/sagtension/line_cable_sagger.h" />
@@ -62,10 +59,7 @@
 		<Unit filename="../../src/sagtension/cable_elongation_model.cc" />
 		<Unit filename="../../src/sagtension/cable_state.cc" />
 		<Unit filename="../../src/sagtension/cable_strainer.cc" />
-		<Unit filename="../../src/sagtension/catenary_cable.cc" />
-		<Unit filename="../../src/sagtension/catenary_cable_component_tension_solver.cc" />
 		<Unit filename="../../src/sagtension/catenary_cable_reloader.cc" />
-		<Unit filename="../../src/sagtension/catenary_cable_solver.cc" />
 		<Unit filename="../../src/sagtension/catenary_cable_unloader.cc" />
 		<Unit filename="../../src/sagtension/line_cable_reloader.cc" />
 		<Unit filename="../../src/sagtension/line_cable_sagger.cc" />

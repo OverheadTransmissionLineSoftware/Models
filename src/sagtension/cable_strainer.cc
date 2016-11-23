@@ -9,6 +9,8 @@ CableStrainer::CableStrainer() {
   length_start_ = -999999;
   load_finish_ = -999999;
   load_start_ = -999999;
+  model_elongation_finish_ = nullptr;
+  model_elongation_start_ = nullptr;
 }
 
 CableStrainer::~CableStrainer() {
@@ -22,9 +24,9 @@ CableStrainer::~CableStrainer() {
 /// length.
 double CableStrainer::LengthFinish() const {
   // gets the start and finish strains
-  const double strain_start = model_elongation_start_.Strain(
+  const double strain_start = model_elongation_start_->Strain(
       CableElongationModel::ComponentType::kCombined, load_start_);
-  const double strain_finish = model_elongation_finish_.Strain(
+  const double strain_finish = model_elongation_finish_->Strain(
       CableElongationModel::ComponentType::kCombined, load_finish_);
 
   // solves for finish length
@@ -78,25 +80,30 @@ bool CableStrainer::Validate(const bool& is_included_warnings,
     return is_valid;
   }
 
+  // validates that models have same sag-tension cable
+  if (model_elongation_start_->cable() != model_elongation_finish_->cable()) {
+    is_valid = false;
+    if (messages != nullptr) {
+      message.description = "Cables used in the start and finish elongation "
+                            "models do not match";
+      messages->push_back(message);
+    }
+  }
+
   // validates elongation model
-  if (model_elongation_start_.Validate(is_included_warnings,
+  if (model_elongation_start_->Validate(is_included_warnings,
                                         messages) == false) {
     is_valid = false;
     return is_valid;
   }
 
-  if (model_elongation_finish_.Validate(is_included_warnings,
-                                        messages) == false) {
+  if (model_elongation_finish_->Validate(is_included_warnings,
+                                         messages) == false) {
     is_valid = false;
     return is_valid;
   }
 
   return is_valid;
-}
-
-const SagTensionCable* CableStrainer::cable() const {
-  // doesn't matter which model it is grabbed from - both are similar
-  return model_elongation_start_.cable();
 }
 
 double CableStrainer::length_start() const {
@@ -111,9 +118,12 @@ double CableStrainer::load_start() const {
   return load_start_;
 }
 
-void CableStrainer::set_cable(const SagTensionCable* cable) {
-  model_elongation_start_.set_cable(cable);
-  model_elongation_finish_.set_cable(cable);
+const CableElongationModel* CableStrainer::model_finish() const {
+  return model_elongation_finish_;
+}
+
+const CableElongationModel* CableStrainer::model_start() const {
+  return model_elongation_start_;
 }
 
 void CableStrainer::set_length_start(const double& length_start) {
@@ -128,18 +138,10 @@ void CableStrainer::set_load_start(const double& load_start) {
   load_start_ = load_start;
 }
 
-void CableStrainer::set_state_finish(const CableState* state_finish) {
-  model_elongation_finish_.set_state(state_finish);
+void CableStrainer::set_model_finish(const CableElongationModel* model_finish) {
+  model_elongation_finish_ = model_finish;
 }
 
-void CableStrainer::set_state_start(const CableState* state_start) {
-  model_elongation_start_.set_state(state_start);
-}
-
-const CableState* CableStrainer::state_finish() const {
-  return model_elongation_finish_.state();
-}
-
-const CableState* CableStrainer::state_start() const {
-  return model_elongation_start_.state();
+void CableStrainer::set_model_start(const CableElongationModel* model_start) {
+  model_elongation_start_ = model_start;
 }
