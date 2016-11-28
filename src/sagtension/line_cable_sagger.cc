@@ -24,8 +24,8 @@ double LineCableSagger::CapacityAllowable(const int& index) const {
     }
   }
 
-  CableConstraint constraint = constraints_design_->at(index);
-  Catenary3d catenary = catenaries_constraints_actual_.at(index);
+  const CableConstraint& constraint = constraints_design_->at(index);
+  const Catenary3d& catenary = catenaries_constraints_actual_.at(index);
 
   double capacity_allowable = -999999;
   if (constraint.type_limit
@@ -50,7 +50,7 @@ double LineCableSagger::CatenaryConstantActual(const int& index) const {
     }
   }
 
-  Catenary3d catenary = catenaries_constraints_actual_.at(index);
+  const Catenary3d& catenary = catenaries_constraints_actual_.at(index);
   return catenary.Constant();
 }
 
@@ -84,7 +84,7 @@ double LineCableSagger::TensionHorizontalActual(const int& index) const {
     }
   }
 
-  Catenary3d catenary = catenaries_constraints_actual_.at(index);
+  const Catenary3d& catenary = catenaries_constraints_actual_.at(index);
   return catenary.tension_horizontal();
 }
 
@@ -96,7 +96,7 @@ double LineCableSagger::TensionSupportActual(const int& index) const {
     }
   }
 
-  Catenary3d catenary = catenaries_constraints_actual_.at(index);
+  const Catenary3d& catenary = catenaries_constraints_actual_.at(index);
   return catenary.TensionMax();
 }
 
@@ -310,7 +310,7 @@ bool LineCableSagger::UpdateCatenariesConstraintsActual() const {
   catenaries_constraints_actual_.clear();
   for (auto iter = constraints_design_->cbegin();
       iter != constraints_design_->cend(); iter++) {
-    const CableConstraint constraint = *iter;
+    const CableConstraint& constraint = *iter;
 
     // updates reloader with design constraint loading
     reloader.set_weathercase_reloaded(constraint.case_weather);

@@ -134,7 +134,7 @@ double Polynomial::Y(const double& x) const {
   const int order_max = OrderMax();
   for (int order = 0; order <= order_max; order++) {
 
-    const double coefficient =  coefficients_->at(order);
+    const double& coefficient =  coefficients_->at(order);
     y = y + (coefficient * pow(x, order));
   }
 
@@ -181,7 +181,7 @@ bool Polynomial::UpdateDerivative() const {
   for (int order = 0; order <= order_max; order++) {
 
     if (order != 0) {
-      const double coefficient_function = coefficients_->at(order);
+      const double& coefficient_function = coefficients_->at(order);
       double coefficient_derivative = coefficient_function * order;
       coefficients_derivative_.push_back(coefficient_derivative);
     }
