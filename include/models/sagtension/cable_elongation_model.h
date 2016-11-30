@@ -32,8 +32,8 @@
 /// \par STRETCH
 ///
 /// This class uses components that support a stretched condition. The stretch
-/// load and temperature are defined for the entire cable, and then the stretch
-/// is solved individually for each component.
+/// parameters are defined for the entire cable, and then the stretch is solved
+/// individually for each component.
 ///
 /// \par TEMPERATURE
 ///
@@ -126,9 +126,18 @@ class CableElongationModel {
   ///   The state.
   void set_state(const CableState& state);
 
+  /// \brief Sets the stretch state.
+  /// \param[in] state_stretch
+  ///   The stretch state.
+  void set_state_stretch(const CableStretchState& state_stretch);
+
   /// \brief Gets the state.
   /// \return A copy of the state.
   CableState state() const;
+
+  /// \brief Gets the stretch state.
+  /// \return The stretch state.
+  CableStretchState state_stretch() const;
 
  private:
   /// \brief Determines if class is updated.
@@ -204,32 +213,17 @@ class CableElongationModel {
   /// \return A boolean indicating if class updates completed successfully.
   bool Update() const;
 
-/// \todo
-/// The whole concept of active components was developed to avoid unnecessary
-/// component queries, but also to stop a runtime error of dividing by zero
-/// when the modulus (tension/compression) was zero. This should be addressed in
-/// the CableComponentElongationModel class. So basically, tagging component
-/// models as active may not be required.
-
-  /// \brief Updates which component models are enabled, and what polynomial
-  ///   types they are using.
+  /// \brief Updates the component models to reflect the cable state.
+  /// \param[in] state
+  ///   The state to update the components to.
   /// \return A boolean indicating the success status of the update.
-  bool UpdateComponentsEnabled() const;
+  /// This function will also call the region points to be updated.
+  bool UpdateComponentsState(const CableState& state) const;
 
-  /// \brief Updates the stretch load for the components.
+  /// \brief Updates the component models to reflect the stretch state, and
+  ///   then solves for component stretch.
   /// \return A boolean indicating the success status of the update.
-  bool UpdateComponentsLoadStretch() const;
-
-  /// \brief Updates the cable component struct for each component elongation
-  ///   model.
-  /// \return A boolean indicating the success status of the update.
-  bool UpdateComponentsProperties() const;
-
-  /// \brief Updates the temperature for the component models.
-  /// \param[in] temperature
-  ///   The temperature to update the component models to.
-  /// \return A boolean indicating the success status of the update.
-  bool UpdateComponentsTemperature(const double& temperature) const;
+  bool UpdateComponentsStretch() const;
 
   /// \brief Updates the cached points for the regions in the component models.
   /// \return A boolean indicating the success status of the update.
@@ -271,18 +265,15 @@ class CableElongationModel {
   ///   The elongation model for the shell cable component.
   mutable CableComponentElongationModel model_shell_;
 
-  /// \var is_enabled_core_
-  ///   An indicator that tells if the core elongation model is enabled.
-  mutable bool is_enabled_core_;
-
-  /// \var is_enabled_shell_
-  ///   An indicator that tells if the shell elongation model is enabled.
-  mutable bool is_enabled_shell_;
-
-  /// \var is_updated_
+  /// \var is_updated_state_
   ///   An indicator that tells if the state for the component elongation
-  ///   moels have been updated.
-  mutable bool is_updated_;
+  ///   models have been updated.
+  mutable bool is_updated_state_;
+
+  /// \var is_updated_stretch_
+  ///   An indicator that tells if the stretch for the component elongation
+  ///   models have been updated.
+  mutable bool is_updated_stretch_;
 
   /// \var points_regions_
   ///   The cached points from the component elongation models that show where
@@ -290,8 +281,22 @@ class CableElongationModel {
   mutable std::vector<Point2d> points_regions_;
 
   /// \var state_
-  ///   The parameters of the cable elongation model.
+  ///   The cable state parameters that are used for calculating load/strain
+  ///   values.
   CableState state_;
+
+  /// \var state_stretch_
+  ///   The cable state parameters that are used for solving the component
+  ///   stretch.
+  CableStretchState state_stretch_;
+
+  /// \var state_stretch_core_;
+  ///   The cable state parameters that define the core component stretch.
+  mutable CableStretchState state_stretch_core_;
+
+  /// \var state_stretch_shell_;
+  ///   The cable state parameters that define the shell component stretch.
+  mutable CableStretchState state_stretch_shell_;
 };
 
 #endif // OTLS_MODELS_SAGTENSION_CABLEELONGATIONMODEL_H_

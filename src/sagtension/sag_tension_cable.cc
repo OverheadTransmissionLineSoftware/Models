@@ -10,6 +10,10 @@ SagTensionCableComponent::SagTensionCableComponent() {
 SagTensionCableComponent::~SagTensionCableComponent() {
 }
 
+bool SagTensionCableComponent::IsEnabled() const {
+  return is_enabled_;
+}
+
 bool SagTensionCableComponent::Validate(
     const bool& is_included_warnings,
     std::list<ErrorMessage>* messages) const {
@@ -140,12 +144,78 @@ const double* SagTensionCableComponent::modulus_tension_elastic_area() const {
 void SagTensionCableComponent::set_component_base(
     const CableComponent* component_base) {
   component_base_ = component_base;
+
+  if (component_base_ == nullptr) {
+    is_enabled_ = false;
+  } else {
+    UpdateIsEnabled();
+  }
+}
+
+/// The routine searches the component polynomial coefficients. If non-zero
+/// values are present for both polynomials the component is flagged as enabled.
+void SagTensionCableComponent::UpdateIsEnabled() {
+  is_enabled_ = false;
+  const std::vector<double>* coefficients = nullptr;
+
+  // gets creep polynomials and scans coefficients for a non-zero value
+  bool is_valid_creep = false;
+  coefficients = &component_base_->coefficients_polynomial_creep;
+  for (auto iter = coefficients->cbegin(); iter != coefficients->cend();
+       iter++) {
+    const double& coefficient = *iter;
+    if (coefficient != 0) {
+      is_valid_creep = true;
+      break;
+    }
+  }
+
+  // gets loadstrain polynomial and scans coefficients for a non-zero value
+  bool is_valid_loadstrain = false;
+  coefficients = &component_base_->coefficients_polynomial_loadstrain;
+  for (auto iter = coefficients->cbegin(); iter != coefficients->cend();
+       iter++) {
+    const double& coefficient = *iter;
+    if (coefficient != 0) {
+      is_valid_loadstrain = true;
+      break;
+    }
+  }
+
+  // updates enabled status
+  if ((is_valid_creep == true) && (is_valid_loadstrain == true)) {
+    is_enabled_ = true;
+  } else {
+    is_enabled_ = false;
+  }
 }
 
 SagTensionCable::SagTensionCable() {
+  cable_base_ = nullptr;
 }
 
 SagTensionCable::~SagTensionCable() {
+}
+
+bool SagTensionCable::IsEnabled(
+    const SagTensionCable::ComponentType& type_component) const {
+  // selects based on component type
+  if (type_component == SagTensionCable::ComponentType::kCombined) {
+    const bool& is_enabled_core = component_sagtension_core_.IsEnabled();
+    const bool& is_enabled_shell = component_sagtension_shell_.IsEnabled();
+
+    if ((is_enabled_core == true) || (is_enabled_shell == true)) {
+      return true;
+    } else {
+      return false;
+    }
+  } else if (type_component == SagTensionCable::ComponentType::kCore) {
+    return component_sagtension_core_.IsEnabled();
+  } else if (type_component == SagTensionCable::ComponentType::kShell) {
+    return component_sagtension_shell_.IsEnabled();
+  } else {
+    return false;
+  }
 }
 
 bool SagTensionCable::Validate(const bool& is_included_warnings,
@@ -186,15 +256,19 @@ bool SagTensionCable::Validate(const bool& is_included_warnings,
   }
 
   // validates component-core
-  if (component_sagtension_core_.Validate(is_included_warnings,
-                                          messages) == false) {
-    is_valid = false;
+  if (component_sagtension_core_.IsEnabled() == true) {
+    if (component_sagtension_core_.Validate(is_included_warnings,
+                                            messages) == false) {
+      is_valid = false;
+    }
   }
 
   // validates component-shell
-  if (component_sagtension_shell_.Validate(is_included_warnings,
-                                           messages) == false) {
-    is_valid = false;
+  if (component_sagtension_shell_.IsEnabled() == true) {
+    if (component_sagtension_shell_.Validate(is_included_warnings,
+                                             messages) == false) {
+      is_valid = false;
+    }
   }
 
   // returns validation status
@@ -219,8 +293,15 @@ const double* SagTensionCable::diameter() const {
 
 void SagTensionCable::set_cable_base(const Cable* cable_base) {
   cable_base_ = cable_base;
-  component_sagtension_core_.set_component_base(&cable_base_->component_core);
-  component_sagtension_shell_.set_component_base(&cable_base_->component_shell);
+
+  if (cable_base_ == nullptr) {
+    component_sagtension_core_.set_component_base(nullptr);
+    component_sagtension_shell_.set_component_base(nullptr);
+  } else {
+    component_sagtension_core_.set_component_base(&cable_base_->component_core);
+    component_sagtension_shell_.set_component_base(
+        &cable_base_->component_shell);
+  }
 }
 
 const double* SagTensionCable::strength_rated() const {

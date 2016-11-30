@@ -109,6 +109,7 @@
     <ClCompile Include="sagtension\catenary_cable_unloader_test.cc" />
     <ClCompile Include="sagtension\line_cable_reloader_test.cc" />
     <ClCompile Include="sagtension\line_cable_sagger_test.cc" />
+    <ClCompile Include="sagtension\sag_tension_cable_test.cc" />
     <ClCompile Include="test.cc" />
     <ClCompile Include="transmissionline\cable_constraint_test.cc" />
     <ClCompile Include="transmissionline\cable_test.cc" />

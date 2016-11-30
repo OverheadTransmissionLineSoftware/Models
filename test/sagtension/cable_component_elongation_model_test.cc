@@ -11,31 +11,36 @@
 class CableComponentElongationModelTest : public ::testing::Test {
  protected:
   CableComponentElongationModelTest() {
+    // builds dependency object - component
     cable_ = factory::BuildSagTensionCable();
     const SagTensionCableComponent* component = cable_->component_shell();
 
-    temperature_ = new double(70);
-    type_polynomial_ = new SagTensionCableComponent::PolynomialType();
-    *type_polynomial_ = SagTensionCableComponent::PolynomialType::kLoadStrain;
+    // builds dependency object - state
+    state_.temperature = 70;
+    state_.type_polynomial =
+        SagTensionCableComponent::PolynomialType::kLoadStrain;
+
+    // builds dependency object - stretch state
+    state_stretch_.load = 5000;
+    state_stretch_.temperature = 70;
+    state_stretch_.type_polynomial =
+        SagTensionCableComponent::PolynomialType::kLoadStrain;
 
     // builds fixture object
     c_.set_component_cable(component);
-    c_.set_load_stretch(5000);
-    c_.set_temperature(temperature_);
+    c_.set_state(&state_);
+    c_.set_state_stretch(&state_stretch_);
     c_.set_temperature_reference(cable_->temperature_properties_components());
-    c_.set_type_polynomial_active(type_polynomial_);
   }
 
   ~CableComponentElongationModelTest() {
     factory::DestroySagTensionCable(cable_);
-    delete temperature_;
-    delete type_polynomial_;
   }
 
   // allocated dependency objects
   SagTensionCable* cable_;
-  double* temperature_;
-  SagTensionCableComponent::PolynomialType* type_polynomial_;
+  CableState state_;
+  CableStretchState state_stretch_;
 
   // test object
   CableComponentElongationModel c_;
@@ -45,38 +50,55 @@ TEST_F(CableComponentElongationModelTest, Load) {
   double value = -999999;
 
   // compressed region
-  value = c_.Load(-0.001);
+  value = c_.Load(-0.0010);
   EXPECT_EQ(-211.1, helper::Round(value, 1));
 
   // stretched region
-  value = c_.Load(0.001);
+  value = c_.Load(0.0010);
   EXPECT_EQ(289.3, helper::Round(value, 1));
-  value = c_.Load(0.002);
+  value = c_.Load(0.0020);
   EXPECT_EQ(4938.2, helper::Round(value, 1));
 
   // polynomial region
-  value = c_.Load(0.003);
+  value = c_.Load(0.0030);
   EXPECT_EQ(7301.6, helper::Round(value, 1));
-  value = c_.Load(0.004);
+  value = c_.Load(0.0040);
   EXPECT_EQ(9187, helper::Round(value, 1));
-  value = c_.Load(0.005);
+  value = c_.Load(0.0050);
   EXPECT_EQ(10645.4, helper::Round(value, 1));
 
   // extrapolated region
   value = c_.Load(0.010);
   EXPECT_EQ(18756.6, helper::Round(value, 1));
-}
 
-TEST_F(CableComponentElongationModelTest, PointPolynomialEnd) {
-  Point2d p = c_.PointPolynomialEnd();
-  EXPECT_EQ(0.0091, helper::Round(p.x, 4));
-  EXPECT_EQ(14711.1, helper::Round(p.y, 1));
-}
+  // adjusts to creep stretch state and repeats tests
+  // this should stretch the component more than before
+  state_stretch_.load = 1500;
+  state_stretch_.type_polynomial =
+      SagTensionCableComponent::PolynomialType::kCreep;
+  c_.set_state_stretch(&state_stretch_);
 
-TEST_F(CableComponentElongationModelTest, PointPolynomialStart) {
-  Point2d p = c_.PointPolynomialStart();
-  EXPECT_EQ(0.0020, helper::Round(p.x, 4));
-  EXPECT_EQ(5000, helper::Round(p.y, 1));
+  // compressed region
+  value = c_.Load(-0.0010);
+  EXPECT_EQ(-224.0, helper::Round(value, 1));
+
+  // stretched region
+  value = c_.Load(0.0010);
+  EXPECT_EQ(-6.1, helper::Round(value, 1));
+  value = c_.Load(0.0020);
+  EXPECT_EQ(4390.0, helper::Round(value, 1));
+
+  // polynomial region
+  value = c_.Load(0.0030);
+  EXPECT_EQ(7301.6, helper::Round(value, 1));
+  value = c_.Load(0.0040);
+  EXPECT_EQ(9187, helper::Round(value, 1));
+  value = c_.Load(0.0050);
+  EXPECT_EQ(10645.4, helper::Round(value, 1));
+
+  // extrapolated region
+  value = c_.Load(0.0100);
+  EXPECT_EQ(18756.6, helper::Round(value, 1));
 }
 
 TEST_F(CableComponentElongationModelTest, PointsRegions) {
@@ -94,12 +116,6 @@ TEST_F(CableComponentElongationModelTest, PointsRegions) {
   p = points.at(2);
   EXPECT_EQ(0.0091, helper::Round(p.x, 4));
   EXPECT_EQ(14711.1, helper::Round(p.y, 1));
-}
-
-TEST_F(CableComponentElongationModelTest, PointUnloaded) {
-  Point2d p = c_.PointUnloaded();
-  EXPECT_EQ(0.000938, helper::Round(p.x, 6));
-  EXPECT_EQ(0, helper::Round(p.y, 1));
 }
 
 TEST_F(CableComponentElongationModelTest, Slope) {
@@ -133,25 +149,54 @@ TEST_F(CableComponentElongationModelTest, Strain) {
 
   // compressed region
   value = c_.Strain(-211.1);
-  EXPECT_EQ(-0.001, helper::Round(value, 3));
+  EXPECT_EQ(-0.0010, helper::Round(value, 4));
 
   // stretched region
   value = c_.Strain(289.3);
-  EXPECT_EQ(0.001, helper::Round(value, 3));
+  EXPECT_EQ(0.0010, helper::Round(value, 4));
   value = c_.Strain(4938.2);
-  EXPECT_EQ(0.002, helper::Round(value, 3));
+  EXPECT_EQ(0.0020, helper::Round(value, 4));
 
   // polynomial region
   value = c_.Strain(7301.6);
-  EXPECT_EQ(0.003, helper::Round(value, 3));
+  EXPECT_EQ(0.0030, helper::Round(value, 4));
   value = c_.Strain(9187.0);
-  EXPECT_EQ(0.004, helper::Round(value, 3));
+  EXPECT_EQ(0.0040, helper::Round(value, 4));
   value = c_.Strain(10645.4);
-  EXPECT_EQ(0.005, helper::Round(value, 3));
+  EXPECT_EQ(0.0050, helper::Round(value, 4));
 
   // extrapolated region
   value = c_.Strain(18756.6);
-  EXPECT_EQ(0.010, helper::Round(value, 3));
+  EXPECT_EQ(0.0100, helper::Round(value, 4));
+
+  // adjusts to creep stretch state and repeats tests
+  // this should stretch the component more than before
+  state_stretch_.load = 1500;
+  state_stretch_.type_polynomial =
+      SagTensionCableComponent::PolynomialType::kCreep;
+  c_.set_state_stretch(&state_stretch_);
+
+  // compressed region
+  value = c_.Strain(-211.1);
+  EXPECT_EQ(-0.0009, helper::Round(value, 4));
+
+  // stretched region
+  value = c_.Strain(289.3);
+  EXPECT_EQ(0.0011, helper::Round(value, 4));
+  value = c_.Strain(4938.2);
+  EXPECT_EQ(0.0021, helper::Round(value, 4));
+
+  // polynomial region
+  value = c_.Strain(7301.6);
+  EXPECT_EQ(0.0030, helper::Round(value, 4));
+  value = c_.Strain(9187.0);
+  EXPECT_EQ(0.0040, helper::Round(value, 4));
+  value = c_.Strain(10645.4);
+  EXPECT_EQ(0.0050, helper::Round(value, 4));
+
+  // extrapolated region
+  value = c_.Strain(18756.6);
+  EXPECT_EQ(0.0100, helper::Round(value, 4));
 }
 
 TEST_F(CableComponentElongationModelTest, StrainThermal) {
@@ -162,14 +207,14 @@ TEST_F(CableComponentElongationModelTest, StrainThermal) {
   EXPECT_EQ(0, helper::Round(value, 7));
 
   // above reference temperature
-  *temperature_ = 212;
-  c_.set_temperature(temperature_);
+  state_.temperature = 212;
+  c_.set_state(&state_);
   value = c_.StrainThermal();
   EXPECT_EQ(0.0018176, helper::Round(value, 7));
 
   // below reference temperature
-  *temperature_ = 0;
-  c_.set_temperature(temperature_);
+  state_.temperature = 0;
+  c_.set_state(&state_);
   value = c_.StrainThermal();
   EXPECT_EQ(-0.000896, helper::Round(value, 7));
 }

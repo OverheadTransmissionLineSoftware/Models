@@ -19,14 +19,13 @@ class CableElongationModelTest : public ::testing::Test {
     // builds fixture object
     c_ = *factory::BuildCableElongationModel(cable_sagtension_);
 
-    // modifies state
-    CableState state = c_.state();
-    state.load_stretch = 12000;
-    state.temperature = 70;
-    state.temperature_stretch = 0;
-    state.type_polynomial =
+    // modifies stretch state
+    CableStretchState state_stretch = c_.state_stretch();
+    state_stretch.load = 12000;
+    state_stretch.temperature = 0;
+    state_stretch.type_polynomial =
         SagTensionCableComponent::PolynomialType::kLoadStrain;
-    c_.set_state(state);
+    c_.set_state_stretch(state_stretch);
   }
 
   ~CableElongationModelTest() {
@@ -45,15 +44,15 @@ TEST_F(CableElongationModelTest, Load) {
   double value = -999999;
 
   // core
-  value = c_.Load(CableElongationModel::ComponentType::kCore, 0.002);
+  value = c_.Load(CableElongationModel::ComponentType::kCore, 0.0020);
   EXPECT_EQ(5433.5, helper::Round(value, 1));
 
   // shell
-  value = c_.Load(CableElongationModel::ComponentType::kShell, 0.002);
+  value = c_.Load(CableElongationModel::ComponentType::kShell, 0.0020);
   EXPECT_EQ(3754.9, helper::Round(value, 1));
 
   // combined
-  value = c_.Load(CableElongationModel::ComponentType::kCombined, 0.002);
+  value = c_.Load(CableElongationModel::ComponentType::kCombined, 0.0020);
   EXPECT_EQ(9188.4, helper::Round(value, 1));
 }
 
@@ -61,15 +60,15 @@ TEST_F(CableElongationModelTest, Slope) {
   double value = -999999;
 
   // core
-  value = c_.Slope(CableElongationModel::ComponentType::kCore, 0.002);
+  value = c_.Slope(CableElongationModel::ComponentType::kCore, 0.0020);
   EXPECT_EQ(2687680, helper::Round(value, 0));
 
   // shell
-  value = c_.Slope(CableElongationModel::ComponentType::kShell, 0.002);
+  value = c_.Slope(CableElongationModel::ComponentType::kShell, 0.0020);
   EXPECT_EQ(4648960, helper::Round(value, 0));
 
   // combined
-  value = c_.Slope(CableElongationModel::ComponentType::kCombined, 0.002);
+  value = c_.Slope(CableElongationModel::ComponentType::kCombined, 0.0020);
   EXPECT_EQ(7336640, helper::Round(value, 0));
 }
 
@@ -78,17 +77,17 @@ TEST_F(CableElongationModelTest, Strain) {
 
   // core
   value = c_.Strain(CableElongationModel::ComponentType::kCore, 5433.5);
-  EXPECT_EQ(0.002, helper::Round(value, 3));
+  EXPECT_EQ(0.0020, helper::Round(value, 4));
 
   // shell
   value = c_.Strain(CableElongationModel::ComponentType::kShell, 3754.9);
-  EXPECT_EQ(0.002, helper::Round(value, 3));
+  EXPECT_EQ(0.0020, helper::Round(value, 4));
 
   // combined
   value = c_.Strain(CableElongationModel::ComponentType::kCombined, 0);
   EXPECT_EQ(0.000026, helper::Round(value, 6));
   value = c_.Strain(CableElongationModel::ComponentType::kCombined, 9188.4);
-  EXPECT_EQ(0.002, helper::Round(value, 3));
+  EXPECT_EQ(0.0020, helper::Round(value, 4));
 
   // modifies core and shell compression modulus to zero
   // checks combined strain at zero load

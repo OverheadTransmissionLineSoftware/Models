@@ -18,13 +18,20 @@ class CableStrainerTest : public ::testing::Test {
     model_start_ = factory::BuildCableElongationModel(cable_);
 
     // builds dependency object - finish cable model
-    CableState state = model_start_->state();
-    state.load_stretch = 12000;
+    CableState state;
     state.temperature = 212;
-    state.temperature_stretch = 0;
+    state.type_polynomial =
+        SagTensionCableComponent::PolynomialType::kLoadStrain;
+
+    CableStretchState state_stretch;
+    state_stretch.load = 12000;
+    state_stretch.temperature = 0;
+    state_stretch.type_polynomial =
+        SagTensionCableComponent::PolynomialType::kLoadStrain;
 
     model_finish_ = factory::BuildCableElongationModel(cable_);
     model_finish_->set_state(state);
+    model_finish_->set_state_stretch(state_stretch);
 
     // builds fixture object
     c_.set_length_start(1200);

@@ -49,16 +49,6 @@ TEST_F(LineCableReloaderTest, CatenaryReloaded) {
   // more reloading tests are done in the horizontal tension test
 }
 
-TEST_F(LineCableReloaderTest, LoadStretch) {
-  double value = -999999;
-
-  value = l_.LoadStretch(CableConditionType::kInitial);
-  EXPECT_EQ(0, helper::Round(value, 0));
-
-  value = l_.LoadStretch(CableConditionType::kLoad);
-  EXPECT_EQ(12180, helper::Round(value, 0));
-}
-
 TEST_F(LineCableReloaderTest, TensionAverageComponent) {
   double value = -999999;
 

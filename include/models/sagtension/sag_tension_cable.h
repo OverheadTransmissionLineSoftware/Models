@@ -29,6 +29,10 @@ class SagTensionCableComponent {
   /// \brief Destructor.
   ~SagTensionCableComponent();
 
+  /// \brief Determines if the component is enabled.
+  /// \return If the component is enabled.
+  bool IsEnabled() const;
+
   /// \brief Validates member variables.
   /// \param[in] is_included_warnings
   ///   A flag that tightens the acceptable value range.
@@ -75,9 +79,16 @@ class SagTensionCableComponent {
   void set_component_base(const CableComponent* component_base);
 
  private:
+  /// \brief Updates if the component is enabled.
+  void UpdateIsEnabled();
+
   /// \var component_base_
   ///   The cable component that is interfaced.
   const CableComponent* component_base_;
+
+  /// \var is_enabled_
+  ///   An indicator that determines if the component is enabled.
+  bool is_enabled_;
 };
 
 /// \par OVERVIEW
@@ -100,6 +111,13 @@ class SagTensionCable {
 
   /// \brief Destructor.
   ~SagTensionCable();
+
+  /// \brief Determines if portions of the cable are enabled.
+  /// \param[in] type_component
+  ///   The component type.
+  /// \return If the cable component is enabled. If the combined enumeration is
+  /// specified, true will be returned if any single component is enabled.
+  bool IsEnabled(const SagTensionCable::ComponentType& type_component) const;
 
   /// \brief Validates member variables.
   /// \param[in] is_included_warnings

@@ -8,9 +8,7 @@
 class CableStateTest : public ::testing::Test {
  protected:
   CableStateTest() {
-    c_.load_stretch = 0;
     c_.temperature = 0;
-    c_.temperature_stretch = 0;
     c_.type_polynomial = SagTensionCableComponent::PolynomialType::kLoadStrain;
   }
 
@@ -19,5 +17,21 @@ class CableStateTest : public ::testing::Test {
 };
 
 TEST_F(CableStateTest, Validate) {
+  EXPECT_TRUE(c_.Validate(true, nullptr));
+}
+
+class CableStretchStateTest : public ::testing::Test {
+ protected:
+  CableStretchStateTest() {
+    c_.load = 0;
+    c_.temperature = 0;
+    c_.type_polynomial = SagTensionCableComponent::PolynomialType::kLoadStrain;
+  }
+
+  // test object
+  CableStretchState c_;
+};
+
+TEST_F(CableStretchStateTest, Validate) {
   EXPECT_TRUE(c_.Validate(true, nullptr));
 }
