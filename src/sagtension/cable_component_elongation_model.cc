@@ -3,16 +3,19 @@
 
 #include "models/sagtension/cable_component_elongation_model.h"
 
+#include <cmath>
+
 #include "models/base/helper.h"
 
 CableComponentElongationModel::CableComponentElongationModel() {
   component_ = nullptr;
-  polynomial_state_ = nullptr;
   state_ = nullptr;
   state_stretch_ = nullptr;
   temperature_reference_ = nullptr;
 
   load_stretch_ = -999999;
+  modulus_extrapolate_creep_ = -999999;
+  modulus_extrapolate_loadstrain_ = -999999;
   strain_thermal_state_ = -999999;
   strain_thermal_stretch_ = -999999;
 
@@ -31,8 +34,9 @@ double CableComponentElongationModel::Load(const double& strain) const {
     }
   }
 
-  // return load for state model
-  return Load(*polynomial_state_, points_state_, strain_thermal_state_, strain);
+  // returns load for state model
+  return Load(state_->type_polynomial, points_state_, strain_thermal_state_,
+              strain);
 }
 
 std::vector<Point2d> CableComponentElongationModel::PointsRegions() const {
@@ -54,30 +58,9 @@ double CableComponentElongationModel::Slope(const double& strain) const {
     }
   }
 
-  // creates friendly names for points
-  const Point2d& point_unloaded = points_state_.at(0);
-  const Point2d& point_polynomial_start = points_state_.at(1);
-  const Point2d& point_polynomial_end = points_state_.at(2);
-
-  // selects region based on strain value
-  double slope = -999999;
-  if (strain < point_unloaded.x) {
-    // compressed region
-    slope = *component_->modulus_compression_elastic_area();
-  } else if ((point_unloaded.x <= strain)
-      && (strain <= point_polynomial_start.x)) {
-    // stretched region
-    slope = *component_->modulus_tension_elastic_area();
-  } else if ((point_polynomial_start.x < strain)
-      && (strain < point_polynomial_end.x)) {
-    // polynomial region
-    slope = SlopePolynomial(*polynomial_state_, strain_thermal_state_, strain);
-  } else if (point_polynomial_end.x <= strain) {
-    // extrapolated region
-    slope = *component_->modulus_tension_elastic_area();
-  }
-
-  return slope;
+  // returns slope for state model
+  return Slope(state_->type_polynomial, points_state_, strain_thermal_state_,
+               strain);
 }
 
 double CableComponentElongationModel::Strain(const double& load) const {
@@ -89,7 +72,8 @@ double CableComponentElongationModel::Strain(const double& load) const {
   }
 
   // returns strain for state model
-  return Strain(*polynomial_state_, points_state_, strain_thermal_state_, load);
+  return Strain(state_->type_polynomial, points_state_, strain_thermal_state_,
+                load);
 }
 
 double CableComponentElongationModel::StrainThermal() const {
@@ -232,6 +216,9 @@ void CableComponentElongationModel::set_component_cable(
     coefficients = component_->coefficients_polynomial(
         SagTensionCableComponent::PolynomialType::kLoadStrain);
     polynomial_loadstrain_.set_coefficients(coefficients);
+
+    // updates extrapolation slopes
+    UpdateModulusExtrapolate();
   }
 
   is_updated_stretch_ = false;
@@ -298,10 +285,11 @@ bool CableComponentElongationModel::IsUpdated() const {
   }
 }
 
-double CableComponentElongationModel::Load(const Polynomial& polynomial,
-                                           const std::vector<Point2d>& points,
-                                           const double& strain_thermal,
-                                           const double& strain) const {
+double CableComponentElongationModel::Load(
+    const SagTensionCableComponent::PolynomialType& type_polynomial,
+    const std::vector<Point2d>& points,
+    const double& strain_thermal,
+    const double& strain) const {
   double load = -999999;
 
   // creates friendly names for points
@@ -324,12 +312,30 @@ double CableComponentElongationModel::Load(const Polynomial& polynomial,
   } else if ((point_polynomial_start.x < strain)
       && (strain < point_polynomial_end.x)) {
     // polynomial region
-    load = LoadPolynomial(polynomial, strain_thermal, strain);
+    const Polynomial* polynomial = nullptr;
+    if (type_polynomial == SagTensionCableComponent::PolynomialType::kCreep) {
+      polynomial = &polynomial_creep_;
+    } else if (type_polynomial ==
+        SagTensionCableComponent::PolynomialType::kLoadStrain) {
+      polynomial = &polynomial_loadstrain_;
+    } else {
+      return -999999;
+    }
+
+    load = LoadPolynomial(*polynomial, strain_thermal, strain);
   } else if (point_polynomial_end.x <= strain) {
     // extrapolated region
-    load = LoadLinearExtension(point_polynomial_end,
-                               *component_->modulus_tension_elastic_area(),
-                               strain);
+    const double* modulus = nullptr;
+    if (type_polynomial == SagTensionCableComponent::PolynomialType::kCreep) {
+      modulus = &modulus_extrapolate_creep_;
+    } else if (type_polynomial ==
+        SagTensionCableComponent::PolynomialType::kLoadStrain) {
+      modulus = &modulus_extrapolate_loadstrain_;
+    } else {
+      return -999999;
+    }
+
+    load = LoadLinearExtension(point_polynomial_end, *modulus, strain);
   }
 
   return load;
@@ -394,6 +400,57 @@ void CableComponentElongationModel::PointsRegions(
   points.push_back(point_polynomial_end);
 }
 
+double CableComponentElongationModel::Slope(
+    const SagTensionCableComponent::PolynomialType& type_polynomial,
+    const std::vector<Point2d>& points,
+    const double& strain_thermal,
+    const double& strain) const {
+  double slope = -999999;
+
+  // creates friendly names for points
+  const Point2d& point_unloaded = points_state_.at(0);
+  const Point2d& point_polynomial_start = points_state_.at(1);
+  const Point2d& point_polynomial_end = points_state_.at(2);
+
+  // selects region based on strain value
+  if (strain < point_unloaded.x) {
+    // compressed region
+    slope = *component_->modulus_compression_elastic_area();
+  } else if ((point_unloaded.x <= strain)
+      && (strain <= point_polynomial_start.x)) {
+    // stretched region
+    slope = *component_->modulus_tension_elastic_area();
+  } else if ((point_polynomial_start.x < strain)
+      && (strain < point_polynomial_end.x)) {
+    // polynomial region
+    const Polynomial* polynomial = nullptr;
+    if (type_polynomial == SagTensionCableComponent::PolynomialType::kCreep) {
+      polynomial = &polynomial_creep_;
+    } else if (type_polynomial ==
+        SagTensionCableComponent::PolynomialType::kLoadStrain) {
+      polynomial = &polynomial_loadstrain_;
+    } else {
+      return -999999;
+    }
+
+    slope = SlopePolynomial(*polynomial,
+                            strain_thermal_state_,
+                            strain);
+  } else if (point_polynomial_end.x <= strain) {
+    // extrapolated region
+    if (type_polynomial == SagTensionCableComponent::PolynomialType::kCreep) {
+      slope = modulus_extrapolate_creep_;
+    } else if (type_polynomial ==
+        SagTensionCableComponent::PolynomialType::kLoadStrain) {
+      slope = modulus_extrapolate_loadstrain_;
+    } else {
+      return -999999;
+    }
+  }
+
+  return slope;
+}
+
 double CableComponentElongationModel::SlopePolynomial(
     const Polynomial& polynomial,
     const double& strain_thermal,
@@ -408,10 +465,11 @@ double CableComponentElongationModel::SlopePolynomial(
   return polynomial.Slope(percent_strain_polynomial) * 100;
 }
 
-double CableComponentElongationModel::Strain(const Polynomial& polynomial,
-                                             const std::vector<Point2d>& points,
-                                             const double& strain_thermal,
-                                             const double& load) const {
+double CableComponentElongationModel::Strain(
+    const SagTensionCableComponent::PolynomialType& type_polynomial,
+    const std::vector<Point2d>& points,
+    const double& strain_thermal,
+    const double& load) const {
   double strain = -999999;
 
   // creates friendly names for points
@@ -435,12 +493,30 @@ double CableComponentElongationModel::Strain(const Polynomial& polynomial,
   } else if ((point_polynomial_start.y < load)
       && (load < point_polynomial_end.y)) {
     // polynomial region
-    strain = StrainPolynomial(polynomial, strain_thermal, load);
+    const Polynomial* polynomial = nullptr;
+    if (type_polynomial == SagTensionCableComponent::PolynomialType::kCreep) {
+      polynomial = &polynomial_creep_;
+    } else if (type_polynomial ==
+        SagTensionCableComponent::PolynomialType::kLoadStrain) {
+      polynomial = &polynomial_loadstrain_;
+    } else {
+      return -999999;
+    }
+
+    strain = StrainPolynomial(*polynomial, strain_thermal, load);
   } else if (point_polynomial_end.y <= load) {
     // extrapolated region
-    strain = StrainLinearExtension(point_polynomial_end,
-                                   *component_->modulus_tension_elastic_area(),
-                                   load);
+    const double* modulus = nullptr;
+    if (type_polynomial == SagTensionCableComponent::PolynomialType::kCreep) {
+      modulus = &modulus_extrapolate_creep_;
+    } else if (type_polynomial ==
+        SagTensionCableComponent::PolynomialType::kLoadStrain) {
+      modulus = &modulus_extrapolate_loadstrain_;
+    } else {
+      return -999999;
+    }
+
+    strain = StrainLinearExtension(point_polynomial_end, *modulus, load);
   }
 
   return strain;
@@ -498,22 +574,70 @@ bool CableComponentElongationModel::Update() const {
   return true;
 }
 
+void CableComponentElongationModel::UpdateModulusExtrapolate() const {
+  const double kSlopeMin = 100000;
+
+  // updates the creep polynomial extrapolation slope
+  if (polynomial_creep_.coefficients()->empty() == true) {
+    modulus_extrapolate_creep_ = -999999;
+  } else {
+    // gets max strain value for polynomial
+    const double strain_max = StrainPolynomial(
+        polynomial_creep_,
+        0,
+        *component_->load_limit_polynomial(
+            SagTensionCableComponent::PolynomialType::kCreep));
+
+    // solves for tangency slope
+    modulus_extrapolate_creep_ = SlopePolynomial(polynomial_creep_,
+                                                 0,
+                                                 strain_max);
+
+    // corrects if the slope is too low
+    if (modulus_extrapolate_creep_ < kSlopeMin) {
+      modulus_extrapolate_creep_ = kSlopeMin;
+    }
+  }
+
+  // updates the load-strain polynomial extrapolation slope
+  if (polynomial_loadstrain_.coefficients()->empty() == true) {
+    modulus_extrapolate_loadstrain_ = -999999;
+  } else {
+    // gets max strain value for polynomial
+    const double strain_max = StrainPolynomial(
+        polynomial_loadstrain_,
+        0,
+        *component_->load_limit_polynomial(
+            SagTensionCableComponent::PolynomialType::kLoadStrain));
+
+    // solves for tangency slope
+    modulus_extrapolate_loadstrain_ = SlopePolynomial(polynomial_loadstrain_,
+                                                      0,
+                                                      strain_max);
+
+    // corrects if the slope is too low
+    if (modulus_extrapolate_loadstrain_ < kSlopeMin) {
+      modulus_extrapolate_loadstrain_ = kSlopeMin;
+    }
+  }
+}
+
 bool CableComponentElongationModel::UpdateState(const CableState& state) const {
   // updates strain-thermal
   strain_thermal_state_ = StrainThermal(state.temperature);
 
   // updates state polynomial pointer
-  polynomial_state_ = nullptr;
+  const Polynomial* polynomial = nullptr;
   if (state_->type_polynomial ==
       SagTensionCableComponent::PolynomialType::kCreep) {
-    polynomial_state_ = &polynomial_creep_;
+    polynomial = &polynomial_creep_;
   } else if (state_->type_polynomial ==
       SagTensionCableComponent::PolynomialType::kLoadStrain) {
-    polynomial_state_ = &polynomial_loadstrain_;
+    polynomial = &polynomial_loadstrain_;
   }
 
   // updates points
-  PointsRegions(*polynomial_state_,
+  PointsRegions(*polynomial,
                 state.temperature,
                 *component_->load_limit_polynomial(state.type_polynomial),
                 load_stretch_,
@@ -566,30 +690,30 @@ bool CableComponentElongationModel::UpdateStretch() const {
                 points_stretch_load_);
 
   // creates an interface for the model the stretch is being transferred from
-  const Polynomial* polynomial_from = nullptr;
+  const SagTensionCableComponent::PolynomialType* type_polynomial_from =
+      &state_stretch_->type_polynomial;
+
   const std::vector<Point2d>* points_from = nullptr;
   if (state_stretch_->type_polynomial ==
       SagTensionCableComponent::PolynomialType::kCreep) {
-    polynomial_from = &polynomial_creep_;
     points_from = &points_stretch_creep_;
   } else if (state_stretch_->type_polynomial ==
       SagTensionCableComponent::PolynomialType::kLoadStrain) {
-    polynomial_from = &polynomial_loadstrain_;
     points_from = &points_stretch_load_;
   } else {
     return false;
   }
 
   // creates an interface for the model the stretch is being transferred to
-  const Polynomial* polynomial_to = nullptr;
+  const SagTensionCableComponent::PolynomialType* type_polynomial_to =
+      &state_->type_polynomial;
+
   const std::vector<Point2d>* points_to = nullptr;
   if (state_->type_polynomial ==
       SagTensionCableComponent::PolynomialType::kCreep) {
-    polynomial_to = &polynomial_creep_;
     points_to = &points_stretch_creep_;
   } else if (state_->type_polynomial ==
       SagTensionCableComponent::PolynomialType::kLoadStrain) {
-    polynomial_to = &polynomial_loadstrain_;
     points_to = &points_stretch_load_;
   } else {
     return false;
@@ -605,7 +729,7 @@ bool CableComponentElongationModel::UpdateStretch() const {
   // other stretch polynomial
   Point2d point_stretch;
   point_stretch.y = state_stretch_->load;
-  point_stretch.x = Strain(*polynomial_from, *points_from,
+  point_stretch.x = Strain(*type_polynomial_from, *points_from,
                            strain_thermal_stretch_, point_stretch.y);
 
   // initializes target
@@ -621,7 +745,7 @@ bool CableComponentElongationModel::UpdateStretch() const {
   load_from = LoadLinearExtension(point_stretch,
                                   *component_->modulus_tension_elastic_area(),
                                   point_left.x);
-  load_to = Load(*polynomial_to, *points_to,
+  load_to = Load(*type_polynomial_to, *points_to,
                  strain_thermal_stretch_, point_left.x);
   point_left.y = load_to - load_from;
 
@@ -631,7 +755,7 @@ bool CableComponentElongationModel::UpdateStretch() const {
   load_from = LoadLinearExtension(point_stretch,
                                   *component_->modulus_tension_elastic_area(),
                                   point_right.x);
-  load_to = Load(*polynomial_to, *points_to,
+  load_to = Load(*type_polynomial_to, *points_to,
                  strain_thermal_stretch_, point_right.x);
   point_right.y = load_to - load_from;
 
@@ -656,7 +780,7 @@ bool CableComponentElongationModel::UpdateStretch() const {
     load_from = LoadLinearExtension(point_stretch,
                                     *component_->modulus_tension_elastic_area(),
                                     point_current.x);
-    load_to = Load(*polynomial_to, *points_to,
+    load_to = Load(*type_polynomial_to, *points_to,
                    strain_thermal_stretch_,
                    point_current.x);
     point_current.y = load_to - load_from;

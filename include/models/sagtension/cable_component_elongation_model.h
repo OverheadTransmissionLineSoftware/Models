@@ -81,8 +81,8 @@
 ///     component was stretched to, and the end point is the limit where the
 ///     polynomial is no longer valid at describing the component elongation.
 ///   - Extrapolated: The load/strain of the component is beyond the polynomial
-///     end point. All elongation is assumed elastic, and the component
-///     elongates according to the tension elastic area modulus.
+///     end point. The modulus used to extrapolate is tangent to the polynomial
+///     limit point.
 class CableComponentElongationModel {
  public:
   /// \brief Default constructor.
@@ -193,8 +193,8 @@ class CableComponentElongationModel {
   bool IsUpdated() const;
 
   /// \brief Gets the load for the specified parameters.
-  /// \param[in] polynomial
-  ///   The polynomial.
+  /// \param[in] type_polynomial
+  ///   The polynomial type.
   /// \param[in] points
   ///   The region points.
   /// \param[in] strain_thermal
@@ -202,7 +202,7 @@ class CableComponentElongationModel {
   /// \param[in] strain
   ///   The strain.
   /// \return The load.
-  double Load(const Polynomial& polynomial,
+  double Load(const SagTensionCableComponent::PolynomialType& type_polynomial,
               const std::vector<Point2d>& points,
               const double& strain_thermal,
               const double& strain) const;
@@ -254,6 +254,21 @@ class CableComponentElongationModel {
                      const double& load_stretch,
                      std::vector<Point2d>& points) const;
 
+  /// \brief Gets the slope for the specified parameters.
+  /// \param[in] type_polynomial
+  ///   The polynomial type.
+  /// \param[in] points
+  ///   The region points.
+  /// \param[in] strain_thermal
+  ///   The thermal strain from reference temperature.
+  /// \param[in] strain
+  ///   The strain value (x-axis).
+  /// \return The slope.
+  double Slope(const SagTensionCableComponent::PolynomialType& type_polynomial,
+               const std::vector<Point2d>& points,
+               const double& strain_thermal,
+               const double& strain) const;
+
   /// \brief Gets the slope from the polynomial.
   /// \param[in] polynomial
   ///   The polynomial to use.
@@ -270,8 +285,8 @@ class CableComponentElongationModel {
                          const double& strain) const;
 
   /// \brief Gets the strain for the specified parameters.
-  /// \param[in] polynomial
-  ///   The polynomial.
+  /// \param[in] type_polynomial
+  ///   The polynomial type.
   /// \param[in] points
   ///   The region points.
   /// \param[in] strain_thermal
@@ -279,7 +294,7 @@ class CableComponentElongationModel {
   /// \param[in] load
   ///   The load.
   /// \return The strain.
-  double Strain(const Polynomial& polynomial,
+  double Strain(const SagTensionCableComponent::PolynomialType& type_polynomial,
                 const std::vector<Point2d>& points,
                 const double& strain_thermal,
                 const double& load) const;
@@ -318,6 +333,10 @@ class CableComponentElongationModel {
   ///   update is required.
   /// \return A boolean indicating if class updates completed successfully.
   bool Update() const;
+
+  /// \brief Updates the slope used to extrapolate from the creep and
+  ///   load-strain polynomials.
+  void UpdateModulusExtrapolate() const;
 
   /// \brief Updates the component state.
   /// \param[in] state
@@ -373,6 +392,15 @@ class CableComponentElongationModel {
   ///   stretch load, the model will erroneously show less stretch.
   mutable double load_stretch_;
 
+  /// \var modulus_extrapolate_creep_;
+  ///   The elongation modulus used to extrapolate from the creep polynomial.
+  mutable double modulus_extrapolate_creep_;
+
+  /// \var modulus_extrapolate_loadstrain_;
+  ///   The elongation modulus used to extrapolate from the load-strain
+  ///   polynomial.
+  mutable double modulus_extrapolate_loadstrain_;
+
   /// \var points_state_
   ///   The region points for the state model. These points are in increasing
   ///   order.
@@ -398,10 +426,6 @@ class CableComponentElongationModel {
   /// \var polynomial_loadstrain_
   ///   The polynomial that describes the cable component elongation.
   Polynomial polynomial_loadstrain_;
-
-  /// \var polynomial_state_
-  ///   The polynomial that is selected for the state.
-  mutable const Polynomial* polynomial_state_;
 
   /// \var strain_thermal_state_
   ///   The amount of strain due to shifting from reference temperature to the
