@@ -151,7 +151,7 @@ TEST_F(CatenaryCableReloaderTest, CatenaryReloaded) {
   c_.set_weight_unit_reloaded(&weight_unit_reloaded_);
   catenary = c_.CatenaryReloaded();
   value = catenary.tension_horizontal();
-  EXPECT_EQ(5562, helper::Round(value, 0));
+  EXPECT_EQ(5561, helper::Round(value, 0));
 
   state.temperature = 0;
   model_reloaded_->set_state(state);

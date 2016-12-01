@@ -90,7 +90,7 @@ TEST_F(CatenaryCableUnloaderTest, LengthUnloaded) {
   model_reference_->set_state_stretch(state_stretch);
   c_.set_model_reference(model_reference_);
   value = c_.LengthUnloaded();
-  EXPECT_EQ(1200.35, helper::Round(value, 2));
+  EXPECT_EQ(1200.36, helper::Round(value, 2));
 }
 
 TEST_F(CatenaryCableUnloaderTest, Validate) {

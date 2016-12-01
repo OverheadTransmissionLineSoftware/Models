@@ -69,7 +69,7 @@ TEST_F(CableComponentElongationModelTest, Load) {
 
   // extrapolated region
   value = c_.Load(0.010);
-  EXPECT_EQ(18756.6, helper::Round(value, 1));
+  EXPECT_EQ(15851.8, helper::Round(value, 1));
 
   // adjusts to creep stretch state and repeats tests
   // this should stretch the component more than before
@@ -98,7 +98,7 @@ TEST_F(CableComponentElongationModelTest, Load) {
 
   // extrapolated region
   value = c_.Load(0.0100);
-  EXPECT_EQ(18756.6, helper::Round(value, 1));
+  EXPECT_EQ(15851.8, helper::Round(value, 1));
 }
 
 TEST_F(CableComponentElongationModelTest, PointsRegions) {
@@ -141,7 +141,7 @@ TEST_F(CableComponentElongationModelTest, Slope) {
 
   // extrapolated region
   value = c_.Slope(0.010);
-  EXPECT_EQ(4648960, helper::Round(value, 0));
+  EXPECT_EQ(1310911, helper::Round(value, 0));
 }
 
 TEST_F(CableComponentElongationModelTest, Strain) {
@@ -166,7 +166,7 @@ TEST_F(CableComponentElongationModelTest, Strain) {
   EXPECT_EQ(0.0050, helper::Round(value, 4));
 
   // extrapolated region
-  value = c_.Strain(18756.6);
+  value = c_.Strain(15851.8);
   EXPECT_EQ(0.0100, helper::Round(value, 4));
 
   // adjusts to creep stretch state and repeats tests
@@ -195,7 +195,7 @@ TEST_F(CableComponentElongationModelTest, Strain) {
   EXPECT_EQ(0.0050, helper::Round(value, 4));
 
   // extrapolated region
-  value = c_.Strain(18756.6);
+  value = c_.Strain(15851.8);
   EXPECT_EQ(0.0100, helper::Round(value, 4));
 }
 
