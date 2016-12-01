@@ -411,7 +411,7 @@ bool LineCableReloader::UpdateConstraintCableModel() const {
   // iterates until target solution is reached
   unsigned int iter = 1;
   const int iter_max = 100;
-  const double precision = 0.1;
+  const double precision = 0.01;
   double slope_line = -999999;
 
   while ((precision < std::abs(point_current.y - target_solution))

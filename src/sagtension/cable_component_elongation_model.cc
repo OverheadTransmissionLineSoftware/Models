@@ -642,7 +642,7 @@ bool CableComponentElongationModel::UpdateStretch() const {
   unsigned int iter = 0;
   const int iter_max = 100;
 
-  while ((0.1 < std::abs(point_current.y - target_solution))
+  while ((0.01 < std::abs(point_current.y - target_solution))
          && (iter <= iter_max)) {
     // gets current point x value using left and right points
     // calculates tangent line between points, extrapolates using line
