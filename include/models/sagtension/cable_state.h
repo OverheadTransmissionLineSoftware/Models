@@ -11,7 +11,7 @@
 
 /// \par OVERVIEW
 ///
-/// This struct contains the information for a cable state.
+/// This struct contains cable elongation state parameters.
 struct CableState {
  public:
   /// \brief Default constructor.
@@ -30,22 +30,40 @@ struct CableState {
   bool Validate(const bool& is_included_warnings = true,
                 std::list<ErrorMessage>* messages = nullptr) const;
 
-  /// \var load_stretch
-  ///   The load that the cable is stretched to.
-  double load_stretch;
-
   /// \var temperature
   ///   The temperature of the cable.
   double temperature;
-
-  /// \var temperature_stretch
-  ///   The temperature that the cable was stretched at.
-  double temperature_stretch;
 
   /// \var type_polynomial
   ///   The polynomial that is used to describe the cable elongation
   ///   characteristics.
   SagTensionCableComponent::PolynomialType type_polynomial;
+};
+
+/// \par OVERVIEW
+///
+/// This struct contains additional cable elongation state parameters that are
+/// needed when determining the stretch of a cable.
+struct CableStretchState : public CableState {
+  /// \brief Constructor.
+  CableStretchState();
+
+  /// \brief Destructor.
+  ~CableStretchState();
+
+  /// \brief Validates member variables.
+  /// \param[in] is_included_warnings
+  ///   A flag that tightens the acceptable value range.
+  /// \param[in,out] messages
+  ///   A list of detailed error messages. If this is provided, any validation
+  ///   errors will be appended to the list.
+  /// \return A boolean value indicating status of member variables.
+  bool Validate(const bool& is_included_warnings = true,
+                std::list<ErrorMessage>* messages = nullptr) const;
+
+  /// \var load
+  ///   The load that the cable is stretched to.
+  double load;
 };
 
 #endif // OTLS_MODELS_SAGTENSION_CABLESTATE_H_

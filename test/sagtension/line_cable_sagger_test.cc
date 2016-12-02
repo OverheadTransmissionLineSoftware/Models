@@ -95,7 +95,7 @@ TEST_F(LineCableSaggerTest, CatenaryConstantActual) {
   double value = -999999;
 
   value = l_.CatenaryConstantActual(0);
-  EXPECT_EQ(5320, helper::Round(value, 0));
+  EXPECT_EQ(5319, helper::Round(value, 0));
 
   value = l_.CatenaryConstantActual(1);
   EXPECT_EQ(4712, helper::Round(value, 0));
@@ -115,27 +115,27 @@ TEST_F(LineCableSaggerTest, LimitContraintSaggedLineCable) {
   double value = -999999;
 
   value = l_.LimitConstraintSaggedLineCable();
-  EXPECT_EQ(5820, helper::Round(value, 0));
+  EXPECT_EQ(5819, helper::Round(value, 0));
 }
 
 TEST_F(LineCableSaggerTest, TensionHorizontalActual) {
   double value = -999999;
 
   value = l_.TensionHorizontalActual(0);
-  EXPECT_EQ(5820, helper::Round(value, 0));
+  EXPECT_EQ(5819, helper::Round(value, 0));
 
   value = l_.TensionHorizontalActual(1);
   EXPECT_EQ(11903, helper::Round(value, 0));
 
   value = l_.TensionHorizontalActual(2);
-  EXPECT_EQ(4449, helper::Round(value, 0));
+  EXPECT_EQ(4448, helper::Round(value, 0));
 }
 
 TEST_F(LineCableSaggerTest, TensionSupportActual) {
   double value = -999999;
 
   value = l_.TensionSupportActual(0);
-  EXPECT_EQ(5857, helper::Round(value, 0));
+  EXPECT_EQ(5856, helper::Round(value, 0));
 
   value = l_.TensionSupportActual(1);
   EXPECT_EQ(12000, helper::Round(value, 0));

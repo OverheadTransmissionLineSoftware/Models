@@ -24,25 +24,35 @@ class CatenaryCableUnloaderTest : public ::testing::Test {
 
     // builds dependency object - reference cable model
     CableState state;
-    state.load_stretch = 0;
     state.temperature = 60;
-    state.temperature_stretch = 0;
     state.type_polynomial =
+        SagTensionCableComponent::PolynomialType::kLoadStrain;
+
+    CableStretchState state_stretch;
+    state_stretch.load = 0;
+    state_stretch.temperature = 0;
+    state_stretch.type_polynomial =
         SagTensionCableComponent::PolynomialType::kLoadStrain;
 
     model_reference_ = factory::BuildCableElongationModel(cable_);
     model_reference_->set_state(state);
+    model_reference_->set_state_stretch(state_stretch);
 
     // builds dependency object - unloaded cable model
-    CableState state_unloaded;
-    state_unloaded.load_stretch = 0;
-    state_unloaded.temperature = 32;
-    state_unloaded.temperature_stretch = 0;
-    state_unloaded.type_polynomial =
+    state = CableState();
+    state.temperature = 32;
+    state.type_polynomial =
+        SagTensionCableComponent::PolynomialType::kLoadStrain;
+
+    state_stretch = CableStretchState();
+    state_stretch.load = 0;
+    state_stretch.temperature = 0;
+    state_stretch.type_polynomial =
         SagTensionCableComponent::PolynomialType::kLoadStrain;
 
     model_unloaded_ = factory::BuildCableElongationModel(cable_);
-    model_unloaded_->set_state(state_unloaded);
+    model_unloaded_->set_state(state);
+    model_unloaded_->set_state_stretch(state_stretch);
 
     // builds fixture object
     c_.set_catenary(&catenary_);
@@ -69,18 +79,18 @@ class CatenaryCableUnloaderTest : public ::testing::Test {
 TEST_F(CatenaryCableUnloaderTest, LengthUnloaded) {
   double value = -999999;
 
-  CableState state = model_reference_->state();
+  CableStretchState state_stretch = model_reference_->state_stretch();
 
   // unstretched catenary cable state
   value = c_.LengthUnloaded();
   EXPECT_EQ(1200.82, helper::Round(value, 2));
 
   // stretched catenary cable state
-  state.load_stretch = 12179.2;
-  model_reference_->set_state(state);
+  state_stretch.load = 12179.2;
+  model_reference_->set_state_stretch(state_stretch);
   c_.set_model_reference(model_reference_);
   value = c_.LengthUnloaded();
-  EXPECT_EQ(1200.35, helper::Round(value, 2));
+  EXPECT_EQ(1200.36, helper::Round(value, 2));
 }
 
 TEST_F(CatenaryCableUnloaderTest, Validate) {

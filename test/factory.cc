@@ -143,13 +143,18 @@ CableElongationModel* BuildCableElongationModel(const SagTensionCable* cable) {
   CableElongationModel* model = new CableElongationModel();
 
   CableState state;
-  state.load_stretch = 0;
-  state.temperature_stretch = 0;
-  state.temperature = 70;
+  state.temperature = *cable->temperature_properties_components();
   state.type_polynomial = SagTensionCableComponent::PolynomialType::kLoadStrain;
+
+  CableStretchState state_stretch;
+  state_stretch.load = 0;
+  state_stretch.temperature = 0;
+  state_stretch.type_polynomial =
+      SagTensionCableComponent::PolynomialType::kLoadStrain;
 
   model->set_cable(cable);
   model->set_state(state);
+  model->set_state_stretch(state_stretch);
 
   return model;
 }

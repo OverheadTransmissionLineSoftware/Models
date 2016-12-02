@@ -27,10 +27,8 @@ struct Point2dSortXInreasing {
 CableElongationModel::CableElongationModel() {
   cable_ = nullptr;
 
-  is_enabled_core_ = false;
-  is_enabled_shell_ = false;
-
-  is_updated_ = false;
+  is_updated_state_ = false;
+  is_updated_stretch_ = false;
 }
 
 CableElongationModel::~CableElongationModel() {
@@ -128,6 +126,11 @@ bool CableElongationModel::Validate(
     is_valid = false;
   }
 
+  // validates state-stretch
+  if (state_stretch_.Validate(is_included_warnings, messages) == false) {
+    is_valid = false;
+  }
+
   // returns if errors are present
   if (is_valid == false) {
     return is_valid;
@@ -145,7 +148,7 @@ bool CableElongationModel::Validate(
   }
 
   // validates that at least one component exists
-  if ((is_enabled_core_ == false) && (is_enabled_shell_ == false)) {
+  if (cable_->IsEnabled(SagTensionCable::ComponentType::kCombined) == false) {
     is_valid = false;
     if (messages != nullptr) {
       message.description = "No valid components";
@@ -156,7 +159,7 @@ bool CableElongationModel::Validate(
   }
 
   // validates component-core
-  if (is_enabled_core_ == true) {
+  if (cable_->IsEnabled(SagTensionCable::ComponentType::kCore) == true) {
     if (model_core_.Validate(is_included_warnings,
                              messages) == false) {
       is_valid = false;
@@ -164,7 +167,7 @@ bool CableElongationModel::Validate(
   }
 
   // validates component-shell
-  if (is_enabled_shell_ == true) {
+  if (cable_->IsEnabled(SagTensionCable::ComponentType::kShell)) {
     if (model_shell_.Validate(is_included_warnings,
                               messages) == false) {
       is_valid = false;
@@ -192,21 +195,56 @@ const SagTensionCable* CableElongationModel::cable() const {
 
 void CableElongationModel::set_cable(const SagTensionCable* cable) {
   cable_ = cable;
-  is_updated_ = false;
+
+  if (cable_ != nullptr) {
+    // updates core model
+    if (cable_->IsEnabled(SagTensionCable::ComponentType::kCore) == true) {
+      model_core_.set_component_cable(cable_->component_core());
+      model_core_.set_temperature_reference(
+          cable_->temperature_properties_components());
+    } else {
+      model_core_ = CableComponentElongationModel();
+    }
+
+    // updates shell model
+    if (cable_->IsEnabled(SagTensionCable::ComponentType::kShell) == true) {
+      model_shell_.set_component_cable(cable_->component_shell());
+      model_shell_.set_temperature_reference(
+          cable_->temperature_properties_components());
+    } else {
+      model_shell_ = CableComponentElongationModel();
+    }
+  }
+
+  is_updated_stretch_ = false;
+  is_updated_state_ = false;
 }
 
 void CableElongationModel::set_state(const CableState& state) {
   state_ = state;
 
-  is_updated_ = false;
+  is_updated_state_ = false;
+}
+
+void CableElongationModel::set_state_stretch(
+    const CableStretchState& state_stretch) {
+  state_stretch_ = state_stretch;
+
+  is_updated_stretch_ = false;
+  is_updated_state_ = false;
 }
 
 CableState CableElongationModel::state() const {
   return state_;
 }
 
+CableStretchState CableElongationModel::state_stretch() const {
+  return state_stretch_;
+}
+
 bool CableElongationModel::IsUpdated() const {
-  if (is_updated_ == true) {
+  if ((is_updated_stretch_ == true)
+      && (is_updated_state_)) {
     return true;
   } else {
     return false;
@@ -218,7 +256,7 @@ double CableElongationModel::LoadCombined(const double& strain) const {
 }
 
 double CableElongationModel::LoadCore(const double& strain) const {
-  if (is_enabled_core_ == true) {
+  if (cable_->IsEnabled(SagTensionCable::ComponentType::kCore) == true) {
     return model_core_.Load(strain);
   } else {
     return 0;
@@ -226,7 +264,7 @@ double CableElongationModel::LoadCore(const double& strain) const {
 }
 
 double CableElongationModel::LoadShell(const double& strain) const {
-  if (is_enabled_shell_ == true) {
+  if (cable_->IsEnabled(SagTensionCable::ComponentType::kShell) == true) {
     return model_shell_.Load(strain);
   } else {
     return 0;
@@ -238,7 +276,7 @@ double CableElongationModel::SlopeCombined(const double& strain) const {
 }
 
 double CableElongationModel::SlopeCore(const double& strain) const {
-  if (is_enabled_core_ == true) {
+  if (cable_->IsEnabled(SagTensionCable::ComponentType::kCore) == true) {
     return model_core_.Slope(strain);
   } else {
     return 0;
@@ -246,7 +284,7 @@ double CableElongationModel::SlopeCore(const double& strain) const {
 }
 
 double CableElongationModel::SlopeShell(const double& strain) const {
-  if (is_enabled_shell_ == true) {
+  if (cable_->IsEnabled(SagTensionCable::ComponentType::kShell) == true) {
     return model_shell_.Slope(strain);
   } else {
     return 0;
@@ -371,7 +409,7 @@ double CableElongationModel::StrainCombined(
 }
 
 double CableElongationModel::StrainCore(const double& load) const {
-  if (is_enabled_core_ == true) {
+  if (cable_->IsEnabled(SagTensionCable::ComponentType::kCore) == true) {
     return model_core_.Strain(load);
   } else {
     return 0;
@@ -379,7 +417,7 @@ double CableElongationModel::StrainCore(const double& load) const {
 }
 
 double CableElongationModel::StrainShell(const double& load) const {
-  if (is_enabled_shell_ == true) {
+  if (cable_->IsEnabled(SagTensionCable::ComponentType::kShell) == true) {
     return model_shell_.Strain(load);
   } else {
     return 0;
@@ -387,28 +425,18 @@ double CableElongationModel::StrainShell(const double& load) const {
 }
 
 bool CableElongationModel::Update() const {
-  if (is_updated_ == false) {
-    // updates if components are enabled
-    is_updated_ = UpdateComponentsEnabled();
-    if (is_updated_ == false) {
+  // updates stretch
+  if (is_updated_stretch_ == false) {
+    is_updated_stretch_ = UpdateComponentsStretch();
+    if (is_updated_stretch_ == false) {
       return false;
     }
+  }
 
-    // updates component properties
-    is_updated_ = UpdateComponentsProperties();
-    if (is_updated_ == false) {
-      return false;
-    }
-    // updates components-stretch
-    is_updated_ = UpdateComponentsLoadStretch();
-    if (is_updated_ == false) {
-      return false;
-    }
-
-    // updates components-temperature
-    is_updated_ =
-        UpdateComponentsTemperature(state_.temperature);
-    if (is_updated_ == false) {
+  // updates state
+  if (is_updated_state_ == false) {
+    is_updated_state_ = UpdateComponentsState(state_);
+    if (is_updated_state_ == false) {
       return false;
     }
   }
@@ -417,41 +445,20 @@ bool CableElongationModel::Update() const {
   return true;
 }
 
-/// Based on the active polynomial, the routine searches the component
-/// polynomial coefficients. If non-zero values are present, the component
-/// is flagged as enabled.
-bool CableElongationModel::UpdateComponentsEnabled() const {
-  // gets polynomial type
-  const SagTensionCableComponent::PolynomialType& type_polynomial =
-      state_.type_polynomial;
-
-  const std::vector<double>* coefficients = nullptr;
-
-  // gets core polynomial and scans coefficients for a non-zero value
-  is_enabled_core_ = false;
-  coefficients = cable_->component_core()->coefficients_polynomial(
-      type_polynomial);
-  for (auto iter = coefficients->cbegin(); iter != coefficients->cend();
-       iter++) {
-    const double& coefficient = *iter;
-    if (coefficient != 0) {
-      is_enabled_core_ = true;
-      break;
-    }
+bool CableElongationModel::UpdateComponentsState(
+    const CableState& state) const {
+  // if core component is enabled, updates state
+  if (cable_->IsEnabled(SagTensionCable::ComponentType::kCore) == true) {
+    model_core_.set_state(&state);
   }
 
-  // gets shell polynomial and scans coefficients for a non-zero value
-  is_enabled_shell_ = false;
-  coefficients = cable_->component_shell()->coefficients_polynomial(
-      type_polynomial);
-  for (auto iter = coefficients->cbegin(); iter != coefficients->cend();
-       iter++) {
-    const double& coefficient = *iter;
-    if (coefficient != 0) {
-      is_enabled_shell_ = true;
-      break;
-    }
+  // if shell component is enabled, updates state
+  if (cable_->IsEnabled(SagTensionCable::ComponentType::kShell) == true) {
+    model_shell_.set_state(&state);
   }
+
+  // updates the region points
+  UpdatePointsRegions();
 
   return true;
 }
@@ -460,87 +467,46 @@ bool CableElongationModel::UpdateComponentsEnabled() const {
 /// stretch temperature. The strain for the entire cable is calculated at the
 /// stretch load for the entire cable. The load for each component is
 /// calculated and updated.
-bool CableElongationModel::UpdateComponentsLoadStretch() const {
-  // initializes stretch
-  if (is_enabled_core_ == true) {
-    model_core_.set_load_stretch(0);
+bool CableElongationModel::UpdateComponentsStretch() const {
+  // initializes the stretch state for the components
+  if (cable_->IsEnabled(SagTensionCable::ComponentType::kCore) == true) {
+    state_stretch_core_ = state_stretch_;
+    state_stretch_core_.load = 0;
+    model_core_.set_state_stretch(&state_stretch_core_);
   }
 
-  if (is_enabled_shell_ == true) {
-    model_shell_.set_load_stretch(0);
+  if (cable_->IsEnabled(SagTensionCable::ComponentType::kShell) == true) {
+    state_stretch_shell_ = state_stretch_;
+    state_stretch_shell_.load = 0;
+    model_shell_.set_state_stretch(&state_stretch_shell_);
   }
 
   // checks if stretch is not defined or not required
-  if (state_.load_stretch == 0) {
+  if (state_stretch_.load == 0) {
     return true;
   }
 
-  // modifies temperature to stretch temperature
-  if (UpdateComponentsTemperature(state_.temperature_stretch) == false) {
-    return false;
-  }
+  // updates component model states to the stretch state
+  CableState state;
+  state.temperature = state_stretch_.temperature;
+  state.type_polynomial = state_stretch_.type_polynomial;
 
-  // gets the stretch point of the cable
+  UpdateComponentsState(state);
+
+  // gets the stretch point of the entire cable
   Point2d point_stretch;
-  point_stretch.y = state_.load_stretch;
+  point_stretch.y = state_stretch_.load;
   point_stretch.x = StrainCombined(point_stretch.y);
 
-  // gets stretch load of core using strain from entire cable
-  double load_stretch_core = LoadCore(point_stretch.x);
-
-  // gets stretch load of shell using strain from entire cable
-  double load_stretch_shell = LoadShell(point_stretch.x);
-
   // updates component stretch loads
-  if (is_enabled_core_ == true) {
-    model_core_.set_load_stretch(load_stretch_core);
+  if (cable_->IsEnabled(SagTensionCable::ComponentType::kCore) == true) {
+    state_stretch_core_.load = LoadCore(point_stretch.x);
+    model_core_.set_state_stretch(&state_stretch_core_);
   }
 
-  if (is_enabled_shell_ == true) {
-    model_shell_.set_load_stretch(load_stretch_shell);
-  }
-
-  // resets temperature to initial value
-  UpdateComponentsTemperature(state_.temperature);
-
-  return true;
-}
-
-bool CableElongationModel::UpdateComponentsProperties() const {
-  // if core component is enabled, updates properties
-  if (is_enabled_core_ == true) {
-    model_core_.set_component_cable(cable_->component_core());
-    model_core_.set_temperature_reference(
-        cable_->temperature_properties_components());
-    model_core_.set_type_polynomial_active(&state_.type_polynomial);
-  }
-
-  // if shell component is enabled, updates properties
-  if (is_enabled_shell_ == true) {
-    model_shell_.set_component_cable(cable_->component_shell());
-    model_shell_.set_temperature_reference(
-        cable_->temperature_properties_components());
-    model_shell_.set_type_polynomial_active(&state_.type_polynomial);
-  }
-
-  return true;
-}
-
-bool CableElongationModel::UpdateComponentsTemperature(
-    const double& temperature) const {
-  // updates component-core
-  if (is_enabled_core_ == true) {
-    model_core_.set_temperature(&temperature);
-  }
-
-  // updates component-shell
-  if (is_enabled_shell_ == true) {
-    model_shell_.set_temperature(&temperature);
-  }
-
-  // updates region points
-  if (UpdatePointsRegions() == false) {
-    return false;
+  if (cable_->IsEnabled(SagTensionCable::ComponentType::kShell) == true) {
+    state_stretch_shell_.load = LoadShell(point_stretch.x);
+    model_shell_.set_state_stretch(&state_stretch_shell_);
   }
 
   return true;
@@ -551,8 +517,7 @@ bool CableElongationModel::UpdatePointsRegions() const {
   points_regions_.clear();
 
   // gets region boundary points for core and adds to container
-  if (is_enabled_core_ == true) {
-
+  if (cable_->IsEnabled(SagTensionCable::ComponentType::kCore) == true) {
     std::vector<Point2d> points_core = model_core_.PointsRegions();
     for (auto iter = points_core.cbegin(); iter != points_core.cend(); iter++) {
       const Point2d& point = *iter;
@@ -561,8 +526,7 @@ bool CableElongationModel::UpdatePointsRegions() const {
   }
 
   // gets region boundary points for shell and adds to vector
-  if (is_enabled_shell_ == true) {
-
+  if (cable_->IsEnabled(SagTensionCable::ComponentType::kShell) == true) {
     std::vector<Point2d> points_shell = model_shell_.PointsRegions();
     for (auto iter = points_shell.cbegin(); iter != points_shell.cend();
         iter++) {
@@ -598,24 +562,18 @@ bool CableElongationModel::ValidateComponentsStrainLimit(
     return is_valid;
   }
 
-  // modifies temperature to reference temperature
-  if (UpdateComponentsTemperature(
-      *cable_->temperature_properties_components()) == false) {
-    is_valid = false;
-    if (messages != nullptr) {
-      message.description = "Could not verify component limits";
-      messages->push_back(message);
-    }
+  // modifies component states to reference temperature
+  CableState state;
+  state.temperature = *cable_->temperature_properties_components();
+  state.type_polynomial = SagTensionCableComponent::PolynomialType::kLoadStrain;
 
-    return is_valid;
-  }
+  UpdateComponentsState(state);
 
   // gets strain at rated strength
   const double strain_max = StrainCombined(*cable_->strength_rated());
 
   // checks core, if enabled
-  if (is_enabled_core_ == true) {
-
+  if (cable_->IsEnabled(SagTensionCable::ComponentType::kCore) == true) {
     // gets polynomial limit for core
     const double strain_limit_polynomial_core = StrainCore(
         *model_core_.component_cable()->load_limit_polynomial(
@@ -635,8 +593,7 @@ bool CableElongationModel::ValidateComponentsStrainLimit(
   }
 
   // checks shell, if enabled
-  if (is_enabled_shell_ == true) {
-
+  if (cable_->IsEnabled(SagTensionCable::ComponentType::kShell) == true) {
     // gets polynomial limit for shell
     const double strain_limit_polynomial_shell = StrainShell(
         *model_shell_.component_cable()->load_limit_polynomial(
@@ -654,8 +611,8 @@ bool CableElongationModel::ValidateComponentsStrainLimit(
     }
   }
 
-  // restores temperature
-  UpdateComponentsTemperature(state_.temperature);
+  // restores component states
+  UpdateComponentsState(state_);
 
   return is_valid;
 }
@@ -674,17 +631,28 @@ bool CableElongationModel::ValidateComponentsStrainUnloaded(
   }
 
   // determines if this check is necessary, both core and shell must be enabled
-  if ((is_enabled_core_ == false) || (is_enabled_shell_ == false)) {
+  if ((cable_->IsEnabled(SagTensionCable::ComponentType::kCore) == false)
+      || (cable_->IsEnabled(SagTensionCable::ComponentType::kCore) == false)) {
     return is_valid;
   }
 
-  // caches temperature and stretch for components, modifies temperature and
-  // stretch to reference values
-  const double load_stretch_core = model_core_.load_stretch();
-  const double load_stretch_shell = model_shell_.load_stretch();
-  model_core_.set_load_stretch(0);
-  model_shell_.set_load_stretch(0);
-  UpdateComponentsTemperature(*cable_->temperature_properties_components());
+  // creates states and stretch states for components at reference temp with
+  // no stretch
+  CableState state;
+  state.temperature = *cable_->temperature_properties_components();
+  state.type_polynomial = SagTensionCableComponent::PolynomialType::kLoadStrain;
+
+  CableStretchState state_stretch;
+  state_stretch.load = 0;
+  state_stretch.temperature = *cable_->temperature_properties_components();
+  state_stretch.type_polynomial =
+      SagTensionCableComponent::PolynomialType::kLoadStrain;
+
+  model_core_.set_state(&state);
+  model_core_.set_state_stretch(&state_stretch);
+
+  model_shell_.set_state(&state);
+  model_shell_.set_state_stretch(&state_stretch);
 
   // gets unloaded unstretched strains for core and shell, calculates
   // difference
@@ -708,10 +676,12 @@ bool CableElongationModel::ValidateComponentsStrainUnloaded(
     }
   }
 
-  // restores temperature
-  model_core_.set_load_stretch(load_stretch_core);
-  model_shell_.set_load_stretch(load_stretch_shell);
-  UpdateComponentsTemperature(state_.temperature);
+  // restores component states
+  model_core_.set_state(&state_);
+  model_core_.set_state_stretch(&state_stretch_);
+
+  model_shell_.set_state(&state_);
+  model_shell_.set_state_stretch(&state_stretch_);
 
   return is_valid;
 }

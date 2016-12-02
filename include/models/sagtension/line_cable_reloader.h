@@ -44,12 +44,6 @@ class LineCableReloader {
   /// \return A catenary at the reloaded load case.
   Catenary3d CatenaryReloaded() const;
 
-  /// \brief Gets the load the cable was stretched to.
-  /// \param[in] condition
-  ///   The cable stretch condition.
-  /// \return The load the cable was stretched to.
-  double LoadStretch(const CableConditionType& condition) const;
-
   /// \brief Gets the average load of the cable component.
   /// \param[in] type_component
   ///   The model component type.
@@ -197,14 +191,6 @@ class LineCableReloader {
   ///   The line cable that is being reloaded.
   const LineCable* line_cable_;
 
-  /// \var load_stretch_creep_
-  ///   The stretch load for the creep condition.
-  mutable double load_stretch_creep_;
-
-  /// \var load_stretch_load_;
-  ///   The stretch load for the load condition.
-  mutable double load_stretch_load_;
-
   /// \var model_constraint_
   ///   The cable model for the constraint weathercase. This model may contain
   ///   stretch, depending on the constraint condition.
@@ -225,6 +211,14 @@ class LineCableReloader {
   ///   The cable model for the reloaded weathercase. This model may contain
   ///   stretch, depending on the reloaded condition.
   mutable CableElongationModel model_reloaded_;
+
+  /// \var state_stretch_creep_
+  ///   The stretch state for the creep condition.
+  mutable CableStretchState state_stretch_creep_;
+
+  /// \var state_stretch_load_;
+  ///   The stretch state for the load condition.
+  mutable CableStretchState state_stretch_load_;
 
   /// \var weathercase_reloaded_
   ///   The load case that the cable is being reloaded to.

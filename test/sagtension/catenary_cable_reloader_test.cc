@@ -24,25 +24,35 @@ class CatenaryCableReloaderTest : public ::testing::Test {
 
     // builds dependency object - reference cable model
     CableState state;
-    state.load_stretch = 0;
     state.temperature = 60;
-    state.temperature_stretch = 0;
     state.type_polynomial =
+        SagTensionCableComponent::PolynomialType::kLoadStrain;
+
+    CableStretchState state_stretch;
+    state_stretch.load = 0;
+    state_stretch.temperature = 0;
+    state_stretch.type_polynomial =
         SagTensionCableComponent::PolynomialType::kLoadStrain;
 
     model_reference_ = factory::BuildCableElongationModel(cable_);
     model_reference_->set_state(state);
+    model_reference_->set_state_stretch(state_stretch);
 
     // builds dependency object - reloaded cable model
-    CableState state_reloaded;
-    state_reloaded.load_stretch = 0;
-    state_reloaded.temperature = 60;
-    state_reloaded.temperature_stretch = 0;
-    state_reloaded.type_polynomial =
+    state = CableState();
+    state.temperature = 60;
+    state.type_polynomial =
+        SagTensionCableComponent::PolynomialType::kLoadStrain;
+
+    state_stretch = CableStretchState();
+    state_stretch.load = 0;
+    state_stretch.temperature = 0;
+    state_stretch.type_polynomial =
         SagTensionCableComponent::PolynomialType::kLoadStrain;
 
     model_reloaded_ = factory::BuildCableElongationModel(cable_);
-    model_reloaded_->set_state(state_reloaded);
+    model_reloaded_->set_state(state);
+    model_reloaded_->set_state_stretch(state_stretch);
 
     // builds dependency object - reloaded unit weight
     weight_unit_reloaded_ = Vector3d(0, 0, 1.094);
@@ -84,6 +94,7 @@ TEST_F(CatenaryCableReloaderTest, CatenaryReloaded) {
 
   Catenary3d catenary;
   CableState state = c_.model_reloaded()->state();
+  CableStretchState state_stretch = c_.model_reloaded()->state_stretch();
 
   // nothing is modified - original and reloaded parameters are equal
   catenary = c_.CatenaryReloaded();
@@ -128,8 +139,8 @@ TEST_F(CatenaryCableReloaderTest, CatenaryReloaded) {
   const double kLoadStretch =
       helper::Round(catenary.TensionAverage(100), 0);
   EXPECT_EQ(12179, kLoadStretch);
-  state.load_stretch = kLoadStretch;
-  model_reloaded_->set_state(state);
+  state_stretch.load = kLoadStretch;
+  model_reloaded_->set_state_stretch(state_stretch);
   c_.set_model_reloaded(model_reloaded_);
 
   state.temperature = 60;
@@ -140,7 +151,7 @@ TEST_F(CatenaryCableReloaderTest, CatenaryReloaded) {
   c_.set_weight_unit_reloaded(&weight_unit_reloaded_);
   catenary = c_.CatenaryReloaded();
   value = catenary.tension_horizontal();
-  EXPECT_EQ(5562, helper::Round(value, 0));
+  EXPECT_EQ(5561, helper::Round(value, 0));
 
   state.temperature = 0;
   model_reloaded_->set_state(state);

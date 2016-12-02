@@ -63,7 +63,7 @@ void CatenaryCableUnloader::set_catenary(const Catenary3d* catenary) {
   catenary_ = catenary;
 
   strainer_.set_length_start(catenary_->Length());
-  strainer_.set_load_start(catenary_->TensionAverage(100));
+  strainer_.set_load_start(catenary_->TensionAverage());
 }
 
 void CatenaryCableUnloader::set_model_reference(
