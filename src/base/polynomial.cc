@@ -147,6 +147,8 @@ const std::vector<double>* Polynomial::coefficients() const {
 
 void Polynomial::set_coefficients(const std::vector<double>* coefficients) {
   coefficients_ = coefficients;
+
+  is_updated_derivative_ = false;
 }
 
 bool Polynomial::IsUpdated() const {
