@@ -1,6 +1,10 @@
-## SOURCE CODE DOCUMENTATION
+## Source Code Documentation
+Generate the source documentation.
+```
+doxygen docs/doxygen_config
+```
 
-* To generate the source documentation: `doxygen doxygen_config`
-* To view the HTML documentation, open the index.html file in a browser.
+View the documentation by opening the `docs/html/index.html` file in a browser.
 
-See the Doxygen [website](http://www.stack.nl/~dimitri/doxygen/) for more details.
+See the Doxygen [website](http://www.stack.nl/~dimitri/doxygen/) for more
+details.
