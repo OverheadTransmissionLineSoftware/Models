@@ -12,7 +12,7 @@ This library provides base functionality needed for most libraries.
 ## TransmissionLine
 This library contains classes/methods that model a transmission line.
 * Cables
-  * Catenary position/tension
+  * Catenary position/tension (3D)
   * Weathercases
 
 ## SagTension
@@ -20,7 +20,6 @@ This library contains classes/methods that model cable sag-tension behavior.
 * Experimental Plastic Elongation (EPE) Cable Model
   * Individual shell/core components
   * Tension/compression extrapolation
-* Inclined (3D) catenary geometry
 * Load and creep stretch
 * Resolving multiple tension constraints
 
