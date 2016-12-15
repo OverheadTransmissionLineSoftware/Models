@@ -5,8 +5,6 @@
 
 CableComponent::CableComponent() {
   coefficient_expansion_linear_thermal = -999999;
-  coefficients_polynomial_creep = std::vector<double>(5, 0);
-  coefficients_polynomial_loadstrain = std::vector<double>(5, 0);
   load_limit_polynomial_creep = -999999;
   load_limit_polynomial_loadstrain = -999999;
   modulus_compression_elastic_area = -999999;
