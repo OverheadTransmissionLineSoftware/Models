@@ -642,60 +642,79 @@ double Catenary3d::ConstantMinimum(const double& spacing_endpoints) {
 }
 
 Point3d Catenary3d::Coordinate(const double& position_fraction) const {
-  Point3d coordinate_catenary;
+  Point3d coordinate;
 
   if (IsUpdated() == false) {
     if (Update() == false) {
-      return coordinate_catenary;
+      return coordinate;
     }
   }
 
-  // gets a 2D chord coordinate
-  Point2d coordinate_2d_chord = catenary_2d_.CoordinateChord(position_fraction,
-                                true);
+  // initializes
+  Vector3d vector;
+  double angle = -999999;
 
   // gets a 2D curve coordinate
-  Point2d coordinate_2d_curve = catenary_2d_.Coordinate(position_fraction,
-                                true);
+  Point2d coord_2d_curve = catenary_2d_.Coordinate(position_fraction,
+                                                   true);
 
-  // creates a vector between chord coordinate and curve coordinate
-  // rotates vector transversely according to unit loading
-  Vector3d vector_chord_to_curve;
-  vector_chord_to_curve.set_x(0);
-  vector_chord_to_curve.set_y(0);
-  vector_chord_to_curve.set_z(coordinate_2d_curve.y - coordinate_2d_chord.y);
-  vector_chord_to_curve.Rotate(Plane2dType::kZy,
-                               weight_unit_.Angle(Plane2dType::kZy));
+  // gets a 2D chord coordiante
+  Point2d coord_2d_chord = catenary_2d_.CoordinateChord(position_fraction,
+                                                        true);
 
+  // translates coordinate components for the xz plane
+  // creates a vector between BOL coord (0,0) and curve coordinate
+  vector.set_x(coord_2d_curve.x - 0);
+  vector.set_y(0);
+  vector.set_z(coord_2d_curve.y - 0);
 
-  // uses 2D chord coordinate and chord-to-curve vector to solve for 3D curve
-  // coordinate
-  coordinate_catenary.x = coordinate_2d_chord.x;
-  coordinate_catenary.y = 0 + vector_chord_to_curve.y();
-  coordinate_catenary.z = coordinate_2d_chord.y + vector_chord_to_curve.z();
+  // rotates vector along xz axis
+  const double kAngleXz2d = catenary_2d_.spacing_endpoints().Angle();
+  const double kAngleXz3d = spacing_endpoints_.Angle(Plane2dType::kXz);
+  angle = kAngleXz3d - kAngleXz2d;
+  vector.Rotate(Plane2dType::kXz, angle);
 
-  return coordinate_catenary;
+  // updates coordinate components
+  coordinate.x = vector.x();
+  coordinate.z = vector.z();
+
+  // translates coordinate components for the yz plane
+  // creates a vector between chord point and curve coordinate
+  const double kSag = coord_2d_curve.y - coord_2d_chord.y;
+  vector.set_x(0);
+  vector.set_y(0);
+  vector.set_z(kSag);
+
+  // rotates vector along yz axis
+  angle = weight_unit_.Angle(Plane2dType::kZy);
+  vector.Rotate(Plane2dType::kYz, angle);
+
+  // updates coordinate components
+  coordinate.y = vector.y();
+  coordinate.z = coordinate.z + std::abs(kSag - vector.z());
+
+  return coordinate;
 }
 
 Point3d Catenary3d::CoordinateChord(const double& position_fraction) const {
-  Point3d coordinate_chord;
+  Point3d coordinate;
 
   if (IsUpdated() == false) {
     if (Update() == false) {
-      return coordinate_chord;
+      return coordinate;
     }
   }
 
-  // gets a 2d chord coordinate from 2D catenary
-  Point2d coordinate_2d_chord = catenary_2d_.CoordinateChord(position_fraction,
-                                true);
+  // gets a catenary coordinate
+  Point3d coordinate_catenary = Coordinate(position_fraction);
 
-  // converts to 3D coordinate system
-  coordinate_chord.x = coordinate_2d_chord.x;
-  coordinate_chord.y = 0;
-  coordinate_chord.z = coordinate_2d_chord.y;
+  // calculates a chord coordinate
+  coordinate.x = coordinate_catenary.x;
+  coordinate.y = 0;
+  coordinate.z =  coordinate.x
+                  * (spacing_endpoints_.z() / spacing_endpoints_.x());
 
-  return coordinate_chord;
+  return coordinate;
 }
 
 double Catenary3d::Length() const {

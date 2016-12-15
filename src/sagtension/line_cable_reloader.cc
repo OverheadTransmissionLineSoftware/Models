@@ -169,10 +169,6 @@ CableConditionType LineCableReloader::condition_reloaded() const {
   return condition_reloaded_;
 }
 
-double LineCableReloader::length_unloaded_unstretched_adjustment() const {
-  return length_unloaded_unstretched_adjustment_;
-}
-
 const LineCable* LineCableReloader::line_cable() const {
   return line_cable_;
 }
@@ -187,14 +183,6 @@ void LineCableReloader::set_weathercase_reloaded(
 void LineCableReloader::set_condition_reloaded(
     const CableConditionType& condition_reloaded) {
   condition_reloaded_ = condition_reloaded;
-
-  is_updated_catenary_reloaded_ = false;
-}
-
-void LineCableReloader::set_length_unloaded_unstretched_adjustment(
-    const double& length_unloaded_unstretched_adjustment) {
-  length_unloaded_unstretched_adjustment_ =
-      length_unloaded_unstretched_adjustment;
 
   is_updated_catenary_reloaded_ = false;
 }

@@ -76,10 +76,6 @@ class LineCableReloader {
   /// \return The reloaded cable condition.
   CableConditionType condition_reloaded() const;
 
-  /// \brief Gets the unloaded unstretched cable length adjustment.
-  /// \return The unloaded unstretched cable length adjustment.
-  double length_unloaded_unstretched_adjustment() const;
-
   /// \brief Gets the line cable.
   /// \return The line cable.
   const LineCable* line_cable() const;
@@ -88,12 +84,6 @@ class LineCableReloader {
   /// \param[in] condition_reloaded
   ///   The reloaded cable condition.
   void set_condition_reloaded(const CableConditionType& condition_reloaded);
-
-  /// \brief Sets the unloaded unstretched cable length adjustment.
-  /// \param[in] length_unloaded_unstretched_adjustment
-  ///   The unloaded unstretched cable length adjustment.
-  void set_length_unloaded_unstretched_adjustment(
-      const double& length_unloaded_unstretched_adjustment);
 
   /// \brief Sets the line cable.
   /// \param[in] line_cable
@@ -180,12 +170,6 @@ class LineCableReloader {
   /// \var is_updated_stretch_
   ///   An indicator that tells if the stretch load is updated.
   mutable bool is_updated_stretch_;
-
-  /// \var length_unloaded_unstretched_adjustment_
-  ///   The adjustment to the unloaded unstretched length when the cable is
-  ///   reloaded.
-  /// \todo This needs to be implemented.
-  mutable double length_unloaded_unstretched_adjustment_;
 
   /// \var line_cable_
   ///   The line cable that is being reloaded.
