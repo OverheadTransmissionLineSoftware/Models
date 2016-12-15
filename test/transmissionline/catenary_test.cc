@@ -205,7 +205,7 @@ TEST_F(Catenary3dTest, Coordinate) {
 
   coord = c_.Coordinate(0.5);
   EXPECT_EQ(506.2, helper::Round(coord.x, 1));
-  EXPECT_EQ(44.8, helper::Round(coord.y, 1));
+  EXPECT_EQ(44.7, helper::Round(coord.y, 1));
   EXPECT_EQ(5.7, helper::Round(coord.z, 1));
 
   coord = c_.Coordinate(1);
@@ -227,9 +227,9 @@ TEST_F(Catenary3dTest, CoordinateChord) {
   EXPECT_EQ(0, helper::Round(coord.z, 1));
 
   coord = c_.CoordinateChord(0.5);
-  EXPECT_EQ(506.2, helper::Round(coord.x, 1));
+  EXPECT_EQ(504.4, helper::Round(coord.x, 1));
   EXPECT_EQ(0, helper::Round(coord.y, 1));
-  EXPECT_EQ(50.6, helper::Round(coord.z, 1));
+  EXPECT_EQ(50.4, helper::Round(coord.z, 1));
 
   coord = c_.CoordinateChord(1);
   EXPECT_EQ(1000, helper::Round(coord.x, 1));

@@ -651,7 +651,6 @@ Point3d Catenary3d::Coordinate(const double& position_fraction) const {
   }
 
   // initializes
-  Vector3d vector;
   double angle = -999999;
 
   // gets a 2D curve coordinate
@@ -662,11 +661,14 @@ Point3d Catenary3d::Coordinate(const double& position_fraction) const {
   Point2d coord_2d_chord = catenary_2d_.CoordinateChord(position_fraction,
                                                         true);
 
-  // translates coordinate components for the xz plane
-  // creates a vector between BOL coord (0,0) and curve coordinate
-  vector.set_x(coord_2d_curve.x - 0);
+  // gets a 3D chord coordinate
+  Point3d coord_3d_chord = CoordinateChord(position_fraction);
+
+  // creates a vector between 2d chord coordinate and 2d curve coordinate
+  Vector3d vector;
+  vector.set_x(coord_2d_curve.x - coord_2d_chord.x);
   vector.set_y(0);
-  vector.set_z(coord_2d_curve.y - 0);
+  vector.set_z(coord_2d_curve.y - coord_2d_chord.y);
 
   // rotates vector along xz axis
   const double kAngleXz2d = catenary_2d_.spacing_endpoints().Angle();
@@ -674,24 +676,14 @@ Point3d Catenary3d::Coordinate(const double& position_fraction) const {
   angle = kAngleXz3d - kAngleXz2d;
   vector.Rotate(Plane2dType::kXz, angle);
 
-  // updates coordinate components
-  coordinate.x = vector.x();
-  coordinate.z = vector.z();
-
-  // translates coordinate components for the yz plane
-  // creates a vector between chord point and curve coordinate
-  const double kSag = coord_2d_curve.y - coord_2d_chord.y;
-  vector.set_x(0);
-  vector.set_y(0);
-  vector.set_z(kSag);
-
   // rotates vector along yz axis
   angle = weight_unit_.Angle(Plane2dType::kZy);
   vector.Rotate(Plane2dType::kYz, angle);
 
-  // updates coordinate components
-  coordinate.y = vector.y();
-  coordinate.z = coordinate.z + std::abs(kSag - vector.z());
+  // adds rotated vector components to chord coordinate
+  coordinate.x = coord_3d_chord.x + vector.x();
+  coordinate.y = coord_3d_chord.y + vector.y();
+  coordinate.z = coord_3d_chord.z + vector.z();
 
   return coordinate;
 }
@@ -705,14 +697,29 @@ Point3d Catenary3d::CoordinateChord(const double& position_fraction) const {
     }
   }
 
-  // gets a catenary coordinate
-  Point3d coordinate_catenary = Coordinate(position_fraction);
+  // initializes
+  double angle = -999999;
 
-  // calculates a chord coordinate
-  coordinate.x = coordinate_catenary.x;
-  coordinate.y = 0;
-  coordinate.z =  coordinate.x
-                  * (spacing_endpoints_.z() / spacing_endpoints_.x());
+  // gets a 2D chord coordiante
+  Point2d coord_2d_chord = catenary_2d_.CoordinateChord(position_fraction,
+                                                        true);
+
+  // creates a vector between BOL coordinate (0,0) and 2d chord coordinate
+  Vector3d vector;
+  vector.set_x(coord_2d_chord.x - 0);
+  vector.set_y(0);
+  vector.set_z(coord_2d_chord.y - 0);
+
+  // rotates vector along xz axis
+  const double kAngleXz2d = catenary_2d_.spacing_endpoints().Angle();
+  const double kAngleXz3d = spacing_endpoints_.Angle(Plane2dType::kXz);
+  angle = kAngleXz3d - kAngleXz2d;
+  vector.Rotate(Plane2dType::kXz, angle);
+
+  // returns
+  coordinate.x = vector.x();
+  coordinate.y = vector.y();
+  coordinate.z = vector.z();
 
   return coordinate;
 }
