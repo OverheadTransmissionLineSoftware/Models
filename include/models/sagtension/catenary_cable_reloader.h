@@ -28,18 +28,12 @@
 /// These must be identical cables, but can be different states. This allows the
 /// cable to be reloaded to different temperatures and stretch amounts.
 ///
-/// \par UNLOADING
-///
-/// The catenary is unloaded using the reference cable model. The unloaded
-/// length is cached and used for reloading the catenary.
-///
 /// \par LOADING
 ///
-/// Using the unloaded length, the cable is strained from the reference cable
-/// model to the reloaded cable model. The horizontal tension of the reloaded
-/// catenary is numerically solved. The horizontal tension solution will have
-/// a catenary length and cable length (as predicted by the cable strainer)
-/// that match.
+/// The cable is strained from the reference cable model to the reloaded cable
+/// model. The horizontal tension of the reloaded catenary is numerically
+/// solved. The horizontal tension solution will have a catenary length and
+/// cable length (as predicted by the cable strainer) that match.
 class CatenaryCableReloader {
  public:
   /// \brief Default constructor.
@@ -139,17 +133,12 @@ class CatenaryCableReloader {
   /// \return A boolean indicating if class updates completed successfully.
   bool Update() const;
 
-  /// \brief Updates the unloaded length of cable using the reference cable
-  ///   model.
-  /// \return The success status of the update.
-  bool UpdateLengthUnloaded() const;
-
   /// \brief Updates the catenary horizontal tension and load of the cable
   ///   strainer.
   /// \param[in] tension_horizontal
   ///   The horizontal tension for the catenary.
   /// \return The success status of the update.
-  bool UpdatedReloadedCatenaryAndStrainer(
+  bool UpdateReloadedCatenaryAndStrainer(
       const double& tension_horizontal) const;
 
   /// \var catenary_
@@ -164,14 +153,6 @@ class CatenaryCableReloader {
   ///   An indicator that tells if the catenary has been reloaded.
   mutable bool is_updated_catenary_reloaded_;
 
-  /// \var is_updated_length_unloaded_
-  ///   An indicator that tells if the unloaded length is updated.
-  mutable bool is_updated_length_unloaded_;
-
-  /// \var length_unloaded_
-  ///   The length of cable when unloaded, using the reference cable model.
-  mutable double length_unloaded_;
-
   /// \var model_reference_
   ///   The reference (starting) cable model.
   const CableElongationModel* model_reference_;
@@ -182,7 +163,7 @@ class CatenaryCableReloader {
 
   /// \var strainer_
   ///   The strainer that uses cable elongation models to strain the cable from
-  ///   an unloaded to a loaded state.
+  ///   a reference state to a reloaded state.
   mutable CableStrainer strainer_;
 
   /// \var weight_unit_reloaded_

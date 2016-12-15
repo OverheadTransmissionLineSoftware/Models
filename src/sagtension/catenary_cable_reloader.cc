@@ -9,15 +9,11 @@
 
 CatenaryCableReloader::CatenaryCableReloader() {
   catenary_ = nullptr;
-
-  is_updated_catenary_reloaded_ = false;
-  is_updated_length_unloaded_ = false;
-
-  length_unloaded_ = -999999;
-
   model_reference_ = nullptr;
   model_reloaded_ = nullptr;
   weight_unit_reloaded_ = nullptr;
+
+  is_updated_catenary_reloaded_ = false;
 }
 
 CatenaryCableReloader::~CatenaryCableReloader() {
@@ -42,7 +38,13 @@ double CatenaryCableReloader::LengthUnloaded() const {
     }
   }
 
-  return length_unloaded_;
+  // creates an unloader using the reference cable models
+  CatenaryCableUnloader unloader;
+  unloader.set_catenary(catenary_);
+  unloader.set_model_reference(model_reference_);
+  unloader.set_model_unloaded(model_reference_);
+
+  return unloader.LengthUnloaded();
 }
 
 double CatenaryCableReloader::TensionHorizontal() const {
@@ -145,14 +147,8 @@ bool CatenaryCableReloader::Validate(
   if (Update() == false) {
     is_valid = false;
     if (messages != nullptr) {
-      message.description = "";
-      if (is_updated_length_unloaded_ == false) {
-        message.description = "Error updating class. Could not solve for "
-                              "unloaded unstretched length.";
-      } else if (is_updated_catenary_reloaded_ == false) {
-        message.description = "Error updating class. Could not solve for "
-                              "reloaded catenary cable.";
-      }
+      message.description = "Error updating class. Could not solve for "
+                            "reloaded catenary cable.";
       messages->push_back(message);
     }
   }
@@ -175,7 +171,6 @@ const CableElongationModel* CatenaryCableReloader::model_reloaded() const {
 void CatenaryCableReloader::set_catenary(const Catenary3d* catenary) {
   catenary_ = catenary;
 
-  is_updated_length_unloaded_ = false;
   is_updated_catenary_reloaded_ = false;
 }
 
@@ -183,7 +178,6 @@ void CatenaryCableReloader::set_model_reference(
     const CableElongationModel* model_reference) {
   model_reference_ = model_reference;
 
-  is_updated_length_unloaded_ = false;
   is_updated_catenary_reloaded_ = false;
 }
 
@@ -215,8 +209,8 @@ bool CatenaryCableReloader::InitializeReloadedCatenary() const {
 }
 
 bool CatenaryCableReloader::InitializeStrainer() const {
-  strainer_.set_length_start(length_unloaded_);
-  strainer_.set_load_start(0);
+  strainer_.set_length_start(catenary_->Length());
+  strainer_.set_load_start(catenary_->TensionAverage());
   strainer_.set_model_finish(model_reloaded_);
   strainer_.set_model_start(model_reference_);
 
@@ -233,7 +227,7 @@ bool CatenaryCableReloader::IsUpdated() const {
 
 double CatenaryCableReloader::LengthDifference(
     const double& tension_horizontal) const {
-  UpdatedReloadedCatenaryAndStrainer(tension_horizontal);
+  UpdateReloadedCatenaryAndStrainer(tension_horizontal);
 
   const double length_catenary = catenary_reloaded_.Length();
   const double length_cable = strainer_.LengthFinish();
@@ -241,9 +235,13 @@ double CatenaryCableReloader::LengthDifference(
   return length_catenary - length_cable;
 }
 
-/// This function solves for the loaded length of the catenary-cable by
-/// iterating the catenary horizontal tension and strainer average tension
-/// until the loaded length of both is within tolerance.
+/// This function solves for the reloaded catenary horizontal tension by
+/// comparing the loaded length of the catenary and the cable strainer. The
+/// reloaded catenary horizontal tension is iterated until a solution is found.
+/// The lengths aren't held to a specific precision due to convergence accuracy
+/// and consistency problems, so the range between horizontal tension boundary
+/// points is tracked instead and is assumed solved when the range is small
+/// enough.
 bool CatenaryCableReloader::SolveReloadedCatenaryTension() const {
   // x = horizontal tension
   // y = length difference  i.e.(catenary length - cable length)
@@ -252,7 +250,7 @@ bool CatenaryCableReloader::SolveReloadedCatenaryTension() const {
   InitializeStrainer();
 
   // uses an iterative routine to determine solution
-  // solution is reached when y = 0
+  // target y = 0, but is not tracked during iterations
   const double target_solution = 0;
 
   // declares and initializes left point
@@ -272,10 +270,12 @@ bool CatenaryCableReloader::SolveReloadedCatenaryTension() const {
   // declares and initializes current point
   Point2d point_current;
 
-  // iterates until target is reached
+  // iterates until range between x values is small enough
   int iter = 0;
   const int iter_max = 100;
-  while (0.01 < std::abs(point_left.x - point_right.x) && (iter < iter_max)) {
+  const double precision = 0.01;
+  while (precision < std::abs(point_left.x - point_right.x)
+         && (iter < iter_max)) {
 
     // gets current point horizontal tension using left and right points
     if ((point_left.y > target_solution)
@@ -332,21 +332,18 @@ bool CatenaryCableReloader::SolveReloadedCatenaryTension() const {
 
   // returns success status
   if (iter < iter_max) {
-    return true;
+    // does one last sanity check to see if lengths match
+    if (point_current.y < 0.1) {
+      return true;
+    } else {
+      return false;
+    }
   } else {
     return false;
   }
 }
 
 bool CatenaryCableReloader::Update() const {
-  // updates length-unloaded-unstretch
-  if (is_updated_length_unloaded_ == false) {
-    is_updated_length_unloaded_ = UpdateLengthUnloaded();
-    if (is_updated_length_unloaded_ == false) {
-      return false;
-    }
-  }
-
   // updates catenary-cable-reloaded
   if (is_updated_catenary_reloaded_ == false) {
     is_updated_catenary_reloaded_ = SolveReloadedCatenaryTension();
@@ -359,25 +356,7 @@ bool CatenaryCableReloader::Update() const {
   return true;
 }
 
-bool CatenaryCableReloader::UpdateLengthUnloaded() const {
-  length_unloaded_ = -999999;
-
-  // builds unloader that solves for unloaded cable length
-  CatenaryCableUnloader unloader;
-  unloader.set_catenary(catenary_);
-  unloader.set_model_reference(model_reference_);
-  unloader.set_model_unloaded(model_reference_);
-
-  // returns success status
-  if (unloader.Validate(false, nullptr) == false) {
-    return false;
-  } else {
-    length_unloaded_ = unloader.LengthUnloaded();
-    return true;
-  }
-}
-
-bool CatenaryCableReloader::UpdatedReloadedCatenaryAndStrainer(
+bool CatenaryCableReloader::UpdateReloadedCatenaryAndStrainer(
     const double& tension_horizontal) const {
   // updates the reloaded catenary and strainer
   catenary_reloaded_.set_tension_horizontal(tension_horizontal);

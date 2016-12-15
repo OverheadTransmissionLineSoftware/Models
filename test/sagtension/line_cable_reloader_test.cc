@@ -99,15 +99,15 @@ TEST_F(LineCableReloaderTest, TensionHorizontal) {
 
   l_.set_condition_reloaded(CableConditionType::kInitial);
   value = l_.TensionHorizontal();
-  EXPECT_EQ(4702, helper::Round(value, 0));
+  EXPECT_EQ(4701, helper::Round(value, 0));
 
   l_.set_condition_reloaded(CableConditionType::kLoad);
   value = l_.TensionHorizontal();
-  EXPECT_EQ(4528, helper::Round(value, 0));
+  EXPECT_EQ(4527, helper::Round(value, 0));
 
   l_.set_condition_reloaded(CableConditionType::kCreep);
   value = l_.TensionHorizontal();
-  EXPECT_EQ(4517, helper::Round(value, 0));
+  EXPECT_EQ(4516, helper::Round(value, 0));
 
   // reloads at high load case, checks all conditions
   weathercase_reloaded_->description = "1-8-0";
@@ -120,15 +120,15 @@ TEST_F(LineCableReloaderTest, TensionHorizontal) {
 
   l_.set_condition_reloaded(CableConditionType::kInitial);
   value = l_.TensionHorizontal();
-  EXPECT_EQ(17126, helper::Round(value, 0));
+  EXPECT_EQ(17123, helper::Round(value, 0));
 
   l_.set_condition_reloaded(CableConditionType::kLoad);
   value = l_.TensionHorizontal();
-  EXPECT_EQ(17126, helper::Round(value, 0));
+  EXPECT_EQ(17123, helper::Round(value, 0));
 
   l_.set_condition_reloaded(CableConditionType::kCreep);
   value = l_.TensionHorizontal();
-  EXPECT_EQ(17126, helper::Round(value, 0));
+  EXPECT_EQ(17123, helper::Round(value, 0));
 
   // changes the constraint type and limit to stretched load condition
   linecable_->constraint.condition = CableConditionType::kLoad;
@@ -174,7 +174,7 @@ TEST_F(LineCableReloaderTest, TensionHorizontal) {
 
   l_.set_condition_reloaded(CableConditionType::kLoad);
   value = l_.TensionHorizontal();
-  EXPECT_EQ(5561, helper::Round(value, 0));
+  EXPECT_EQ(5562, helper::Round(value, 0));
 
   l_.set_condition_reloaded(CableConditionType::kCreep);
   value = l_.TensionHorizontal();

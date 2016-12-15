@@ -114,7 +114,7 @@ TEST_F(CatenaryCableReloaderTest, CatenaryReloaded) {
   c_.set_model_reloaded(model_reloaded_);
   catenary = c_.CatenaryReloaded();
   value = catenary.tension_horizontal();
-  EXPECT_EQ(4702, helper::Round(value, 0));
+  EXPECT_EQ(4701, helper::Round(value, 0));
 
   // changes temperature to zero and tests unit weight changes
   state.temperature = 0;
@@ -126,19 +126,18 @@ TEST_F(CatenaryCableReloaderTest, CatenaryReloaded) {
   c_.set_weight_unit_reloaded(&weight_unit_reloaded_);
   catenary = c_.CatenaryReloaded();
   value = catenary.tension_horizontal();
-  EXPECT_EQ(17126, helper::Round(value, 0));
+  EXPECT_EQ(17123, helper::Round(value, 0));
 
   weight_unit_reloaded_.set_y(1.405);
   weight_unit_reloaded_.set_z(2.099);
   c_.set_weight_unit_reloaded(&weight_unit_reloaded_);
   catenary = c_.CatenaryReloaded();
   value = catenary.tension_horizontal();
-  EXPECT_EQ(12147, helper::Round(value, 0));
+  EXPECT_EQ(12146, helper::Round(value, 0));
 
   // sets stretch load and tests all above cases again
-  const double kLoadStretch =
-      helper::Round(catenary.TensionAverage(100), 0);
-  EXPECT_EQ(12179, kLoadStretch);
+  const double kLoadStretch = catenary.TensionAverage();
+  EXPECT_EQ(12178, helper::Round(kLoadStretch, 0));
   state_stretch.load = kLoadStretch;
   model_reloaded_->set_state_stretch(state_stretch);
   c_.set_model_reloaded(model_reloaded_);
@@ -158,14 +157,14 @@ TEST_F(CatenaryCableReloaderTest, CatenaryReloaded) {
   c_.set_model_reloaded(model_reloaded_);
   catenary = c_.CatenaryReloaded();
   value = catenary.tension_horizontal();
-  EXPECT_EQ(6320, helper::Round(value, 0));
+  EXPECT_EQ(6321, helper::Round(value, 0));
 
   state.temperature = 212;
   model_reloaded_->set_state(state);
   c_.set_model_reloaded(model_reloaded_);
   catenary = c_.CatenaryReloaded();
   value = catenary.tension_horizontal();
-  EXPECT_EQ(4528, helper::Round(value, 0));
+  EXPECT_EQ(4527, helper::Round(value, 0));
 
   state.temperature = 0;
   model_reloaded_->set_state(state);
@@ -175,14 +174,14 @@ TEST_F(CatenaryCableReloaderTest, CatenaryReloaded) {
   c_.set_weight_unit_reloaded(&weight_unit_reloaded_);
   catenary = c_.CatenaryReloaded();
   value = catenary.tension_horizontal();
-  EXPECT_EQ(17126, helper::Round(value, 0));
+  EXPECT_EQ(17123, helper::Round(value, 0));
 
   weight_unit_reloaded_.set_y(1.405);
   weight_unit_reloaded_.set_z(2.099);
   c_.set_weight_unit_reloaded(&weight_unit_reloaded_);
   catenary = c_.CatenaryReloaded();
   value = catenary.tension_horizontal();
-  EXPECT_EQ(12147, helper::Round(value, 0));
+  EXPECT_EQ(12146, helper::Round(value, 0));
 }
 
 TEST_F(CatenaryCableReloaderTest, Validate) {
