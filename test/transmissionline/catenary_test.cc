@@ -50,6 +50,22 @@ TEST_F(Catenary2dTest, Coordinate) {
   coord = c_.Coordinate(0, true);
   EXPECT_EQ(0, helper::Round(coord.x, 1));
   EXPECT_EQ(0, helper::Round(coord.y, 1));
+
+  // inclined geometry
+  Vector2d spacing(1000, 100);
+  c_.set_spacing_endpoints(spacing);
+
+  coord = c_.Coordinate(0, true);
+  EXPECT_EQ(0, helper::Round(coord.x, 1));
+  EXPECT_EQ(0, helper::Round(coord.y, 1));
+
+  coord = c_.Coordinate(0.5, true);
+  EXPECT_EQ(506.2, helper::Round(coord.x, 1));
+  EXPECT_EQ(-12.5, helper::Round(coord.y, 1));
+
+  coord = c_.Coordinate(1, true);
+  EXPECT_EQ(1000, helper::Round(coord.x, 1));
+  EXPECT_EQ(100, helper::Round(coord.y, 1));
 }
 
 TEST_F(Catenary2dTest, CoordinateChord) {
@@ -170,21 +186,40 @@ TEST_F(Catenary3dTest, Coordinate) {
 
   coord = c_.Coordinate(0.5);
   EXPECT_EQ(500, helper::Round(coord.x, 1));
-  EXPECT_EQ(-44.4, helper::Round(coord.y, 1));
+  EXPECT_EQ(44.4, helper::Round(coord.y, 1));
   EXPECT_EQ(-44.4, helper::Round(coord.z, 1));
 
   coord = c_.Coordinate(1);
   EXPECT_EQ(1000, helper::Round(coord.x, 1));
   EXPECT_EQ(0, helper::Round(coord.y, 1));
   EXPECT_EQ(0, helper::Round(coord.z, 1));
+
+  // inclined geometry
+  Vector3d spacing(1000, 0, 100);
+  c_.set_spacing_endpoints(spacing);
+
+  coord = c_.Coordinate(0);
+  EXPECT_EQ(0, helper::Round(coord.x, 1));
+  EXPECT_EQ(0, helper::Round(coord.y, 1));
+  EXPECT_EQ(0, helper::Round(coord.z, 1));
+
+  coord = c_.Coordinate(0.5);
+  EXPECT_EQ(506.2, helper::Round(coord.x, 1));
+  EXPECT_EQ(44.8, helper::Round(coord.y, 1));
+  EXPECT_EQ(5.7, helper::Round(coord.z, 1));
+
+  coord = c_.Coordinate(1);
+  EXPECT_EQ(1000, helper::Round(coord.x, 1));
+  EXPECT_EQ(0, helper::Round(coord.y, 1));
+  EXPECT_EQ(100, helper::Round(coord.z, 1));
 }
 
 TEST_F(Catenary3dTest, CoordinateChord) {
   Point3d coord;
 
-  // changes catenary spacing to inclined
-  Vector3d spacing(1000, 0, 100);
-  c_.set_spacing_endpoints(spacing);
+  // inclined geometry with transverse load
+  c_.set_spacing_endpoints(Vector3d(1000, 0, 100));
+  c_.set_weight_unit(Vector3d(0, 0.3535533, 0.3535533));
 
   coord = c_.CoordinateChord(0);
   EXPECT_EQ(0, helper::Round(coord.x, 1));
