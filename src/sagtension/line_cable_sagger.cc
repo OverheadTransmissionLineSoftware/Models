@@ -224,7 +224,6 @@ bool LineCableSagger::UpdateControllingConstraintIndex() const {
   LineCableReloader reloader;
   reloader.set_weathercase_reloaded(line_cable_->constraint.case_weather);
   reloader.set_condition_reloaded(line_cable_->constraint.condition);
-  reloader.set_length_unloaded_unstretched_adjustment(0);
 
   // reloads each constraint in the collection and looks for the lowest
   // reloaded horizontal tension
@@ -269,7 +268,6 @@ bool LineCableSagger::UpdateLineCableConstraintLimit() const {
   LineCableReloader reloader;
   reloader.set_weathercase_reloaded(line_cable_->constraint.case_weather);
   reloader.set_condition_reloaded(line_cable_->constraint.condition);
-  reloader.set_length_unloaded_unstretched_adjustment(0);
 
   // creates a line cable with the controlling design constraint and updates
   // reloader
@@ -304,7 +302,6 @@ bool LineCableSagger::UpdateCatenariesConstraintsActual() const {
   // builds a reloader with the reloaded case set to each design constraint
   // loading
   LineCableReloader reloader;
-  reloader.set_length_unloaded_unstretched_adjustment(0);
   reloader.set_line_cable(line_cable_);
 
   catenaries_constraints_actual_.clear();
