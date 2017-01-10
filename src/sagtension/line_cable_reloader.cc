@@ -32,6 +32,39 @@ Catenary3d LineCableReloader::CatenaryReloaded() const {
   return catenary_reloaded_;
 }
 
+CableState LineCableReloader::StateReloaded() const {
+  // updates class if necessary
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return CableStretchState();
+    }
+  }
+
+  return model_reloaded_.state();
+}
+
+CableStretchState LineCableReloader::StretchStateCreep() const {
+  // updates class if necessary
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return CableStretchState();
+    }
+  }
+
+  return state_stretch_creep_;
+}
+
+CableStretchState LineCableReloader::StretchStateLoad() const {
+  // updates class if necessary
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return CableStretchState();
+    }
+  }
+
+  return state_stretch_load_;
+}
+
 double LineCableReloader::TensionAverageComponent(
     const CableElongationModel::ComponentType& type_component) const {
   // updates class if necessary

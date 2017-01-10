@@ -44,6 +44,18 @@ class LineCableReloader {
   /// \return A catenary at the reloaded load case.
   Catenary3d CatenaryReloaded() const;
 
+  /// \brief Gets the reloaded cable state.
+  /// \return The reloaded cable state.
+  CableState StateReloaded() const;
+
+  /// \brief Gets the stretch state for the creep condition.
+  /// \return The stretch state for the creep condition.
+  CableStretchState StretchStateCreep() const;
+
+  /// \brief Gets the stretch state for the load condition.
+  /// \return The stretch state for the load condition.
+  CableStretchState StretchStateLoad() const;
+
   /// \brief Gets the average load of the cable component.
   /// \param[in] type_component
   ///   The model component type.
