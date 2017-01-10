@@ -49,6 +49,66 @@ TEST_F(LineCableReloaderTest, CatenaryReloaded) {
   // more reloading tests are done in the horizontal tension test
 }
 
+TEST_F(LineCableReloaderTest, LengthUnloadedConstraint) {
+  const double value = l_.LengthUnloadedConstraint();
+  EXPECT_EQ(1201.04, helper::Round(value, 2));
+}
+
+TEST_F(LineCableReloaderTest, LengthUnloadedReloaded) {
+  // updates reloader weathercase and condition
+  weathercase_reloaded_->description = "0-0-212";
+  weathercase_reloaded_->thickness_ice = 0;
+  weathercase_reloaded_->density_ice = 0;
+  weathercase_reloaded_->pressure_wind = 0;
+  weathercase_reloaded_->temperature_cable = 212;
+
+  l_.set_weathercase_reloaded(weathercase_reloaded_);
+  l_.set_condition_reloaded(CableConditionType::kLoad);
+
+  const double value = l_.LengthUnloadedReloaded();
+  EXPECT_EQ(1202.26, helper::Round(value, 2));
+}
+
+TEST_F(LineCableReloaderTest, StateReloaded) {
+  CableState state = l_.StateReloaded();
+
+  const double value = state.temperature;
+  EXPECT_EQ(60, helper::Round(value, 0));
+
+  EXPECT_EQ(SagTensionCableComponent::PolynomialType::kLoadStrain,
+            state.type_polynomial);
+}
+
+TEST_F(LineCableReloaderTest, StateStretchCreep) {
+  double value = -999999;
+
+  CableStretchState state = l_.StretchStateCreep();
+
+  value = state.temperature;
+  EXPECT_EQ(60, helper::Round(value, 0));
+
+  EXPECT_EQ(SagTensionCableComponent::PolynomialType::kCreep,
+            state.type_polynomial);
+
+  value = state.load;
+  EXPECT_EQ(5595, helper::Round(value, 0));
+}
+
+TEST_F(LineCableReloaderTest, StateStretchLoad) {
+  double value = -999999;
+
+  CableStretchState state = l_.StretchStateLoad();
+
+  value = state.temperature;
+  EXPECT_EQ(0, helper::Round(value, 0));
+
+  EXPECT_EQ(SagTensionCableComponent::PolynomialType::kLoadStrain,
+            state.type_polynomial);
+
+  value = state.load;
+  EXPECT_EQ(12179, helper::Round(value, 0));
+}
+
 TEST_F(LineCableReloaderTest, TensionAverageComponent) {
   double value = -999999;
 
