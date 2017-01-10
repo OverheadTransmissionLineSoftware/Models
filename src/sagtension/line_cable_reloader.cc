@@ -6,6 +6,7 @@
 #include <cmath>
 
 #include "models/sagtension/catenary_cable_reloader.h"
+#include "models/sagtension/catenary_cable_unloader.h"
 #include "models/transmissionline/catenary_solver.h"
 #include "models/transmissionline/cable_unit_load_calculator.h"
 
@@ -30,6 +31,40 @@ Catenary3d LineCableReloader::CatenaryReloaded() const {
   }
 
   return catenary_reloaded_;
+}
+
+double LineCableReloader::LengthUnloadedConstraint() const {
+  // updates class if necessary
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return -999999;
+    }
+  }
+
+  // creates a catenary cable unloader to solve for length
+  CatenaryCableUnloader unloader;
+  unloader.set_catenary(&catenary_constraint_);
+  unloader.set_model_reference(&model_constraint_);
+  unloader.set_model_unloaded(&model_constraint_);
+
+  return unloader.LengthUnloaded();
+}
+
+double LineCableReloader::LengthUnloadedReloaded() const {
+  // updates class if necessary
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return -999999;
+    }
+  }
+
+  // creates a catenary cable unloader to solve for length
+  CatenaryCableUnloader unloader;
+  unloader.set_catenary(&catenary_reloaded_);
+  unloader.set_model_reference(&model_reloaded_);
+  unloader.set_model_unloaded(&model_reloaded_);
+
+  return unloader.LengthUnloaded();
 }
 
 CableState LineCableReloader::StateReloaded() const {

@@ -44,6 +44,14 @@ class LineCableReloader {
   /// \return A catenary at the reloaded load case.
   Catenary3d CatenaryReloaded() const;
 
+  /// \brief Gets the unloaded length of the constraint catenary.
+  /// \return The unloaded length of the constraint catenary.
+  double LengthUnloadedConstraint() const;
+
+  /// \brief Gets the unloaded length of the reloaded catenary.
+  /// \return The unloaded length of the reloaded catenary.
+  double LengthUnloadedReloaded() const;
+
   /// \brief Gets the reloaded cable state.
   /// \return The reloaded cable state.
   CableState StateReloaded() const;
