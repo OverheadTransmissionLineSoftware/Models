@@ -17,13 +17,9 @@ make -C external/googletest/googletest/make/
 ### Windows
 Use Visual Studio to build the googletest libraries.
 * Go to the `external/googletest/googletest/msvc` directory.
-* Convert the Visual Studio project files to the latest version.
+* Open `gtest.sln`.
 * Create a x64 platform configuration by copying the Win32 settings. This is
   required because the Models libraries are built x64.
-* Change the runtime libraries for each project. This is required because the
-  Models libraries are built to be compatible with wxWidgets applications.
- * Debug - Multi-threaded Debug DLL (/MDd)
- * Release - Multi-threaded DLL (/MD)
 * Build the solution. There will be a handful of errors, but the important
   library will still be built.
 
