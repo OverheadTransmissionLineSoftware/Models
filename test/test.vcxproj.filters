@@ -1,17 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
     <Filter Include="Header Files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{43afa34d-ace4-460a-9278-f090a32a4407}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests Base">
+      <UniqueIdentifier>{c83235e2-4fdc-44c1-b7c3-5f00fcde02e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests SagTension">
+      <UniqueIdentifier>{45511b42-c25f-4c18-b1c2-357f59969245}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests TransmissionLine">
+      <UniqueIdentifier>{ae6d7e87-1950-4184-89fa-e9b1845503bd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -21,72 +25,72 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="base\geometric_shapes_test.cc">
-      <Filter>Source Files</Filter>
+      <Filter>Tests Base</Filter>
     </ClCompile>
     <ClCompile Include="base\helper_test.cc">
-      <Filter>Source Files</Filter>
+      <Filter>Tests Base</Filter>
     </ClCompile>
     <ClCompile Include="base\polynomial_test.cc">
-      <Filter>Source Files</Filter>
+      <Filter>Tests Base</Filter>
     </ClCompile>
     <ClCompile Include="base\units_test.cc">
-      <Filter>Source Files</Filter>
+      <Filter>Tests Base</Filter>
     </ClCompile>
     <ClCompile Include="base\vector_test.cc">
-      <Filter>Source Files</Filter>
+      <Filter>Tests Base</Filter>
     </ClCompile>
     <ClCompile Include="sagtension\cable_component_elongation_model_test.cc">
-      <Filter>Source Files</Filter>
+      <Filter>Tests SagTension</Filter>
     </ClCompile>
     <ClCompile Include="sagtension\cable_elongation_model_test.cc">
-      <Filter>Source Files</Filter>
+      <Filter>Tests SagTension</Filter>
     </ClCompile>
     <ClCompile Include="sagtension\cable_state_test.cc">
-      <Filter>Source Files</Filter>
+      <Filter>Tests SagTension</Filter>
     </ClCompile>
     <ClCompile Include="sagtension\cable_strainer_test.cc">
-      <Filter>Source Files</Filter>
+      <Filter>Tests SagTension</Filter>
     </ClCompile>
     <ClCompile Include="sagtension\catenary_cable_reloader_test.cc">
-      <Filter>Source Files</Filter>
+      <Filter>Tests SagTension</Filter>
     </ClCompile>
     <ClCompile Include="sagtension\catenary_cable_unloader_test.cc">
-      <Filter>Source Files</Filter>
+      <Filter>Tests SagTension</Filter>
     </ClCompile>
     <ClCompile Include="sagtension\line_cable_reloader_test.cc">
-      <Filter>Source Files</Filter>
+      <Filter>Tests SagTension</Filter>
     </ClCompile>
     <ClCompile Include="sagtension\line_cable_sagger_test.cc">
-      <Filter>Source Files</Filter>
+      <Filter>Tests SagTension</Filter>
+    </ClCompile>
+    <ClCompile Include="sagtension\sag_tension_cable_test.cc">
+      <Filter>Tests SagTension</Filter>
     </ClCompile>
     <ClCompile Include="transmissionline\cable_constraint_test.cc">
-      <Filter>Source Files</Filter>
+      <Filter>Tests TransmissionLine</Filter>
     </ClCompile>
     <ClCompile Include="transmissionline\cable_test.cc">
-      <Filter>Source Files</Filter>
+      <Filter>Tests TransmissionLine</Filter>
     </ClCompile>
     <ClCompile Include="transmissionline\cable_unit_load_calculator_test.cc">
-      <Filter>Source Files</Filter>
+      <Filter>Tests TransmissionLine</Filter>
     </ClCompile>
     <ClCompile Include="transmissionline\catenary_solver_test.cc">
-      <Filter>Source Files</Filter>
+      <Filter>Tests TransmissionLine</Filter>
     </ClCompile>
     <ClCompile Include="transmissionline\catenary_test.cc">
-      <Filter>Source Files</Filter>
+      <Filter>Tests TransmissionLine</Filter>
     </ClCompile>
     <ClCompile Include="transmissionline\line_cable_test.cc">
-      <Filter>Source Files</Filter>
+      <Filter>Tests TransmissionLine</Filter>
     </ClCompile>
     <ClCompile Include="transmissionline\weather_load_case_test.cc">
-      <Filter>Source Files</Filter>
+      <Filter>Tests TransmissionLine</Filter>
     </ClCompile>
     <ClCompile Include="factory.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="test.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="sagtension\sag_tension_cable_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
