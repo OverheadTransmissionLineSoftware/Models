@@ -211,6 +211,45 @@ SagTensionCable* BuildSagTensionCable() {
   return cable_sagtension;
 }
 
+TransmissionLine* BuildTransmissionLine() {
+  TransmissionLine* line = new TransmissionLine();
+
+  line->set_origin(Point3d(0, 0, 0));
+
+  // adds alignment points
+  AlignmentPoint point;
+  point.elevation = 0;
+  point.rotation = 0;
+  point.station = 0;
+  line->AddAlignmentPoint(point);
+
+  point = AlignmentPoint();
+  point.elevation = 0;
+  point.rotation = 90;
+  point.station = 1000;
+  line->AddAlignmentPoint(point);
+
+  point = AlignmentPoint();
+  point.elevation = 0;
+  point.rotation = -90;
+  point.station = 2000;
+  line->AddAlignmentPoint(point);
+
+  point = AlignmentPoint();
+  point.elevation = 100;
+  point.rotation = 0;
+  point.station = 3000;
+  line->AddAlignmentPoint(point);
+
+  point = AlignmentPoint();
+  point.elevation = 0;
+  point.rotation = 0;
+  point.station = 4000;
+  line->AddAlignmentPoint(point);
+
+  return line;
+}
+
 void DestroyLineCable(LineCable* linecable) {
   delete linecable->cable;
   delete linecable->constraint.case_weather;

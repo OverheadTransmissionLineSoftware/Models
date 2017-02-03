@@ -8,6 +8,7 @@
 #include "models/sagtension/sag_tension_cable.h"
 #include "models/transmissionline/cable.h"
 #include "models/transmissionline/line_cable.h"
+#include "models/transmissionline/transmission_line.h"
 
 /// \par OVERVIEW
 ///
@@ -29,6 +30,10 @@ namespace factory {
 
   /// \brief This function builds a sag-tension cable.
   SagTensionCable* BuildSagTensionCable();
+
+  /// \brief This function builds a transmission line.
+  /// \return A transmission line.
+  TransmissionLine* BuildTransmissionLine();
 
   /// \brief Destroys the linecable and any data referenced to it.
   void DestroyLineCable(LineCable* linecable);
