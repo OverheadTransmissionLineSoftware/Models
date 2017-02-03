@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_workspace_file>
 	<Workspace title="OTLS Models Test">
+		<Project filename="../build/codeblocks/otlsmodels_base.cbp" />
+		<Project filename="../build/codeblocks/otlsmodels_sagtension.cbp">
+			<Depends filename="../build/codeblocks/otlsmodels_base.cbp" />
+			<Depends filename="../build/codeblocks/otlsmodels_transmissionline.cbp" />
+		</Project>
+		<Project filename="../build/codeblocks/otlsmodels_transmissionline.cbp">
+			<Depends filename="../build/codeblocks/otlsmodels_base.cbp" />
+		</Project>
 		<Project filename="test.cbp">
-			<Depends filename="../build/codeblocks/tls_base.cbp" />
-			<Depends filename="../build/codeblocks/tls_sagtension.cbp" />
-			<Depends filename="../build/codeblocks/tls_transmissionline.cbp" />
+			<Depends filename="../build/codeblocks/otls_base.cbp" />
+			<Depends filename="../build/codeblocks/otls_sagtension.cbp" />
+			<Depends filename="../build/codeblocks/otls_transmissionline.cbp" />
 		</Project>
 	</Workspace>
 </CodeBlocks_workspace_file>
