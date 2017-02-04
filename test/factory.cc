@@ -242,16 +242,29 @@ SagTensionCable* BuildSagTensionCable() {
 }
 
 Structure* BuildStructure() {
-  // builds structure attachments
   StructureAttachment attachment;
-  attachment.offset_longitudinal = 0;
-  attachment.offset_transverse = 0;
-  attachment.offset_vertical_top = 0;
 
-  // finishes building structure
   Structure* structure = new Structure();
   structure->description = "POLE - EXAMPLE";
   structure->height = 100;
+
+  // adds attachment points
+  attachment = StructureAttachment();
+  attachment.offset_longitudinal = 0;
+  attachment.offset_transverse = 0;
+  attachment.offset_vertical_top = 0;
+  structure->attachments.push_back(attachment);
+
+  attachment = StructureAttachment();
+  attachment.offset_longitudinal = 0;
+  attachment.offset_transverse = 0;
+  attachment.offset_vertical_top = 10;
+  structure->attachments.push_back(attachment);
+
+  attachment = StructureAttachment();
+  attachment.offset_longitudinal = 0;
+  attachment.offset_transverse = 0;
+  attachment.offset_vertical_top = 20;
   structure->attachments.push_back(attachment);
 
   return structure;

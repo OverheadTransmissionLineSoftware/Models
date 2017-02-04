@@ -48,8 +48,10 @@ bool LineStructure::Validate(
   // validates assemblies
   for (auto iter = hardwares_.cbegin(); iter != hardwares_.cend(); iter++) {
     const Hardware* hardware = *iter;
-    if (hardware->Validate(is_included_warnings, messages) == false) {
-      is_valid = false;
+    if (hardware != nullptr) {
+      if (hardware->Validate(is_included_warnings, messages) == false) {
+        is_valid = false;
+      }
     }
   }
 
