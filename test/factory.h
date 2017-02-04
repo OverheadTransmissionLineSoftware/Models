@@ -9,6 +9,7 @@
 #include "models/transmissionline/cable.h"
 #include "models/transmissionline/hardware.h"
 #include "models/transmissionline/line_cable.h"
+#include "models/transmissionline/structure.h"
 #include "models/transmissionline/transmission_line.h"
 
 /// \par OVERVIEW
@@ -35,6 +36,10 @@ namespace factory {
 
   /// \brief This function builds a sag-tension cable.
   SagTensionCable* BuildSagTensionCable();
+
+  /// \brief This function builds a structure.
+  /// \return A structure.
+  Structure* BuildStructure();
 
   /// \brief This function builds a transmission line.
   /// \return A transmission line.

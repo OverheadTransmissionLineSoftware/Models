@@ -221,6 +221,22 @@ SagTensionCable* BuildSagTensionCable() {
   return cable_sagtension;
 }
 
+Structure* BuildStructure() {
+  // builds structure attachments
+  StructureAttachment attachment;
+  attachment.offset_longitudinal = 0;
+  attachment.offset_transverse = 0;
+  attachment.offset_vertical_top = 0;
+
+  // finishes building structure
+  Structure* structure = new Structure();
+  structure->description = "POLE - EXAMPLE";
+  structure->height = 100;
+  structure->attachments.push_back(attachment);
+
+  return structure;
+}
+
 TransmissionLine* BuildTransmissionLine() {
   TransmissionLine* line = new TransmissionLine();
   AlignmentPoint point;
