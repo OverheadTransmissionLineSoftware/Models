@@ -40,20 +40,23 @@ class TransmissionLine {
   /// \brief Adds an alignment point.
   /// \param[in] point
   ///   The alignment point.
-  /// \return The index of the alignment point.
+  /// \return The index of the alignment point. If adding the point to the
+  ///    alignment fails, -1 will be returned.
   int AddAlignmentPoint(const AlignmentPoint& point);
 
   /// \brief Deletes an alignment point.
   /// \param[in] index
   ///   The index of the alignment point.
-  void DeleteAlignmentPoint(const int& index);
+  /// \return If the alignment point is successfully deleted.
+  bool DeleteAlignmentPoint(const int& index);
 
   /// \brief Modifies an alignment point.
   /// \param[in] index
   ///   The list index.
   /// \param[in] point
   ///   The alignment point.
-  /// \return The index of the point after sorting.
+  /// \return The index of the point after sorting. If modifying the point
+  ///    fails, -1 will be returned.
   int ModifyAlignmentPoint(const int& index, const AlignmentPoint& point);
 
   /// \brief Gets the xyz coordinates for all alignment points.
@@ -94,7 +97,13 @@ class TransmissionLine {
   /// \return A boolean indicating if class is updated.
   bool IsUpdated() const;
 
-  /// \brief Gets the xyz point along the alignment.
+  /// \brief Gets the xyz point of the alignment path.
+  /// \param[in] station
+  ///   The position along the alignment.
+  /// \return The xyz point of the alignment path.
+  Point3d PointXyzAlignmentFromStation(const double& station) const;
+
+  /// \brief Solves for the xyz point along the alignment.
   /// \param[in] point_xyz
   ///   The xyz point to base from. Coincides with the alignment point.
   /// \param[in] distance_station
@@ -110,11 +119,11 @@ class TransmissionLine {
   ///   alignment path. This vector is rotated and scaled to determine the new
   ///   point.
   /// \return The xyz point along the alignment path.
-  Point3d PointXyzAlignment(const Point3d& point_xyz,
-                            const double& distance_station,
-                            const double& distance_elevation,
-                            const double& rotation_xy,
-                            Vector2d& vector_xy) const;
+  Point3d PointXyzAlignmentFromVector(const Point3d& point_xyz,
+                                      const double& distance_station,
+                                      const double& distance_elevation,
+                                      const double& rotation_xy,
+                                      Vector2d& vector_xy) const;
 
   /// \brief Updates cached member variables and modifies control variables if
   ///    update is required.

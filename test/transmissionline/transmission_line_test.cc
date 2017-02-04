@@ -30,19 +30,6 @@ TEST_F(TransmissionLineTest, AddAlignmentPoint) {
   EXPECT_EQ(100, point.station);
 }
 
-TEST_F(TransmissionLineTest, AddLineStructure) {
-  AlignmentPoint point;
-  point.elevation = 0;
-  point.rotation = 0;
-  point.station = 100;
-  t_.AddAlignmentPoint(point);
-
-  // checks to make sure point was sorted correctly
-  auto iter = std::next(t_.alignment()->points()->cbegin(), 1);
-  point = *iter;
-  EXPECT_EQ(100, point.station);
-}
-
 TEST_F(TransmissionLineTest, DeleteAlignmentPoint) {
   t_.DeleteAlignmentPoint(1);
 
@@ -53,22 +40,26 @@ TEST_F(TransmissionLineTest, DeleteAlignmentPoint) {
 }
 
 TEST_F(TransmissionLineTest, ModifyAlignmentPoint) {
+  int index = 0;
+
   AlignmentPoint point;
   point.elevation = 0;
   point.rotation = 0;
-  point.station = 4000;
+  point.station = 5000;
 
-  t_.ModifyAlignmentPoint(1, point);
+  // modifies the second alignment point and tests re-sort
+  index = t_.ModifyAlignmentPoint(1, point);
+  EXPECT_EQ(4, index);
 
   // checks second alignment point, which was originally the third
   auto iter = std::next(t_.alignment()->points()->cbegin(), 1);
   point = *iter;
   EXPECT_EQ(2000, point.station);
 
-  // checks fourth alignment point, which should be the re-sorted/modified one
-  iter = std::next(t_.alignment()->points()->cbegin(), 3);
+  // checks fifth alignment point, which should be the re-sorted/modified one
+  iter = std::next(t_.alignment()->points()->cbegin(), 4);
   point = *iter;
-  EXPECT_EQ(4000, point.station);
+  EXPECT_EQ(5000, point.station);
 }
 
 TEST_F(TransmissionLineTest, PointsXyzAlignment) {
