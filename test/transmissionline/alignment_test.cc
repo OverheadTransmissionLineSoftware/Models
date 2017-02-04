@@ -57,15 +57,17 @@ class AlignmentTest : public ::testing::Test {
 TEST_F(AlignmentTest, AddPoint) {
   AlignmentPoint point;
   auto points = a_.points();
+  int index = 0;
 
   // adds a point in the middle of the existing alignment
   point = AlignmentPoint();
   point.elevation = 0;
   point.rotation = 0;
   point.station = 150;
-  a_.AddPoint(point);
+  index = a_.AddPoint(point);
 
-  auto iter = std::next(points->cbegin(), 2);
+  EXPECT_EQ(2, index);
+  auto iter = std::next(points->cbegin(), index);
   point = *iter;
   EXPECT_EQ(150, point.station);
 
@@ -74,38 +76,72 @@ TEST_F(AlignmentTest, AddPoint) {
   point.elevation = 0;
   point.rotation = 0;
   point.station = 250;
-  a_.AddPoint(point);
+  index = a_.AddPoint(point);
 
-  iter = std::next(points->cbegin(), 4);
+  EXPECT_EQ(4, index);
+  iter = std::next(points->cbegin(), index);
   point = *iter;
   EXPECT_EQ(250, point.station);
+
+  // adds a duplicate point
+  index = a_.AddPoint(point);
+  EXPECT_EQ(-1, index);
 }
 
 TEST_F(AlignmentTest, DeletePoint) {
   AlignmentPoint point;
   auto points = a_.points();
+  bool status = false;
   
   // deletes the middle point
-  a_.DeletePoint(1);
+  status = a_.DeletePoint(1);
 
+  EXPECT_TRUE(status);
   auto iter = std::next(points->cbegin(), 1);
   point = *iter;
   EXPECT_EQ(200, point.station);
+
+  // attempts invalid index
+  status = a_.DeletePoint(2);
+  EXPECT_FALSE(status);
+}
+
+TEST_F(AlignmentTest, IsValidStation) {
+  double station;
+  bool is_valid = false;
+
+  station = -100;
+  is_valid = a_.IsValidStation(station);
+  EXPECT_FALSE(is_valid);
+
+  station = 100;
+  is_valid = a_.IsValidStation(station);
+  EXPECT_TRUE(is_valid);
+
+  station = 300;
+  is_valid = a_.IsValidStation(station);
+  EXPECT_FALSE(is_valid);
 }
 
 TEST_F(AlignmentTest, ModifyPoint) {
   AlignmentPoint point;
   auto points = a_.points();
+  int index = 0;
   
   // modifies the middle point
-  auto iter = std::next(points->cbegin(), 2);
+  auto iter = std::next(points->cbegin(), 1);
   point = *iter;
   point.station = 400;
-  const int index = a_.ModifyPoint(1, point);
+  index = a_.ModifyPoint(1, point);
 
+  EXPECT_EQ(2, index);
   iter = std::next(points->cbegin(), index);
   point = *iter;
   EXPECT_EQ(400, point.station);
+
+  // attempts invalid index
+  index = a_.ModifyPoint(3, point);
+  EXPECT_EQ(-1, index);
 }
 
 TEST_F(AlignmentTest, Validate) {

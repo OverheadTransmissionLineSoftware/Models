@@ -60,20 +60,29 @@ class Alignment {
   /// \param[in] point
   ///   The alignment point.
   /// The point will be sorted before adding to the list.
-  /// \return The index of the alignment point.
+  /// \return The index of the alignment point. If adding the point to the
+  ///    alignment fails, -1 will be returned.
   int AddPoint(const AlignmentPoint& point);
 
   /// \brief Deletes an alignment point.
   /// \param[in] index
   ///   The list index.
-  void DeletePoint(const int& index);
+  /// \return If the point is successfully deleted.
+  bool DeletePoint(const int& index);
+
+  /// \brief Determines if the station value is on the alignment (valid).
+  /// \param[in] station
+  ///   The station.
+  /// \return If the station is on the alignment.
+  bool IsValidStation(const double& station) const;
 
   /// \brief Modifies an alignment point.
   /// \param[in] index
   ///   The list index.
   /// \param[in] point
   ///   The alignment point.
-  /// \return The index of the alignment point.
+  /// \return The index of the alignment point. If modifying the point fails,
+  ///   -1 will be returned.
   int ModifyPoint(const int& index, const AlignmentPoint& point);
 
   /// \brief Validates member variables.
@@ -91,6 +100,10 @@ class Alignment {
   const std::list<AlignmentPoint>* points() const;
 
  private:
+  /// \brief Determines if the point index is valid.
+  /// \return If the point index is valid.
+  bool IsValidPointIndex(const int& index) const;
+
   /// \var points_
   ///   The sorted list of alignment points.
   std::list<AlignmentPoint> points_;
