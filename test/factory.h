@@ -9,6 +9,7 @@
 #include "models/transmissionline/cable.h"
 #include "models/transmissionline/hardware.h"
 #include "models/transmissionline/line_cable.h"
+#include "models/transmissionline/line_structure.h"
 #include "models/transmissionline/structure.h"
 #include "models/transmissionline/transmission_line.h"
 
@@ -34,6 +35,13 @@ namespace factory {
   /// \return A line cable.
   LineCable* BuildLineCable();
 
+  /// \brief This function builds a line structure.
+  /// \param[in] structure
+  ///   The structure to be used in the line structure. If left as nullptr,
+  ///    the factory will build its own structure.
+  /// \return A line structure.
+  LineStructure* BuildLineStructure(const Structure* structure = nullptr);
+
   /// \brief This function builds a sag-tension cable.
   SagTensionCable* BuildSagTensionCable();
 
@@ -47,6 +55,9 @@ namespace factory {
 
   /// \brief Destroys the linecable and any data referenced by it.
   void DestroyLineCable(LineCable* linecable);
+
+  /// \brief Destroys the line structure and any data referenced by it.
+  void DestroyLineStructure(LineStructure* linestructure);
 
   /// \brief Destroys the sag-tension cable and any data referenced by it.
   void DestroySagTensionCable(SagTensionCable* cable);

@@ -213,6 +213,26 @@ LineCable* BuildLineCable() {
   return line_cable;
 }
 
+LineStructure* BuildLineStructure(const Structure* structure) {
+  // builds structure if necessary
+  if (structure == nullptr) {
+    structure = factory::BuildStructure();
+  }
+
+  // sets line placement and orientation
+  LineStructure* line_structure = new LineStructure();
+  line_structure->set_height_adjustment(0);
+  line_structure->set_offset(0);
+  line_structure->set_rotation(0);
+  line_structure->set_station(0);
+  line_structure->set_structure(structure);
+
+  // adds hardware
+  line_structure->AttachHardware(0, factory::BuildHardware());
+
+  return line_structure;
+}
+
 SagTensionCable* BuildSagTensionCable() {
   Cable* cable = BuildCable();
   SagTensionCable* cable_sagtension = new SagTensionCable();
@@ -284,6 +304,12 @@ void DestroyLineCable(LineCable* linecable) {
   delete linecable->weathercase_stretch_load;
 
   delete linecable;
+}
+
+void DestroyLineStructure(LineStructure* linestructure) {
+  delete linestructure->structure();
+
+  delete linestructure;
 }
 
 void DestroySagTensionCable(SagTensionCable* cable) {
