@@ -7,6 +7,7 @@
 #include "models/sagtension/cable_elongation_model.h"
 #include "models/sagtension/sag_tension_cable.h"
 #include "models/transmissionline/cable.h"
+#include "models/transmissionline/hardware.h"
 #include "models/transmissionline/line_cable.h"
 #include "models/transmissionline/transmission_line.h"
 
@@ -24,6 +25,10 @@ namespace factory {
   /// \return A cable elongation model.
   CableElongationModel* BuildCableElongationModel(const SagTensionCable* cable);
 
+  /// \brief This function builds a hardware assembly.
+  /// \return A hardware assembly.
+  Hardware* BuildHardware();
+
   /// \brief This function builds a line cable.
   /// \return A line cable.
   LineCable* BuildLineCable();
@@ -35,10 +40,10 @@ namespace factory {
   /// \return A transmission line.
   TransmissionLine* BuildTransmissionLine();
 
-  /// \brief Destroys the linecable and any data referenced to it.
+  /// \brief Destroys the linecable and any data referenced by it.
   void DestroyLineCable(LineCable* linecable);
 
-  /// \brief Destroys the sag-tension cable and any data referenced to it.
+  /// \brief Destroys the sag-tension cable and any data referenced by it.
   void DestroySagTensionCable(SagTensionCable* cable);
 
 } // namespace factory

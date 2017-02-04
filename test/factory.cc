@@ -159,6 +159,16 @@ CableElongationModel* BuildCableElongationModel(const SagTensionCable* cable) {
   return model;
 }
 
+Hardware* BuildHardware() {
+  Hardware* hardware = new Hardware();
+  hardware->area_cross_section = 1.0;
+  hardware->length = 10;
+  hardware->type = Hardware::HardwareType::kDeadEnd;
+  hardware->weight = 100;
+
+  return hardware;
+}
+
 LineCable* BuildLineCable() {
   WeatherLoadCase* weathercase = nullptr;
 
@@ -213,11 +223,12 @@ SagTensionCable* BuildSagTensionCable() {
 
 TransmissionLine* BuildTransmissionLine() {
   TransmissionLine* line = new TransmissionLine();
+  AlignmentPoint point;
 
   line->set_origin(Point3d(0, 0, 0));
 
   // adds alignment points
-  AlignmentPoint point;
+  point = AlignmentPoint();
   point.elevation = 0;
   point.rotation = 0;
   point.station = 0;
