@@ -8,9 +8,9 @@
 #include "models/transmissionline/catenary_solver.h"
 
 LineCable::LineCable() {
-  cable = nullptr;
-  weathercase_stretch_creep = nullptr;
-  weathercase_stretch_load = nullptr;
+  cable_ = nullptr;
+  weathercase_stretch_creep_ = nullptr;
+  weathercase_stretch_load_ = nullptr;
 }
 
 LineCable::~LineCable() {
@@ -24,25 +24,25 @@ bool LineCable::Validate(const bool& is_included_warnings,
   message.title = "LINE CABLE";
 
   // validates cable
-  if (cable == nullptr) {
+  if (cable_ == nullptr) {
     is_valid = false;
     if (messages != nullptr) {
       message.description = "Invalid cable";
       messages->push_back(message);
     }
   } else {
-    if (cable->Validate(is_included_warnings, messages) == false) {
+    if (cable_->Validate(is_included_warnings, messages) == false) {
       is_valid = false;
     }
   }
 
   // validates constraint
-  if (constraint.Validate(is_included_warnings, messages) == false) {
+  if (constraint_.Validate(is_included_warnings, messages) == false) {
     is_valid = false;
   }
 
   // validates spacing-attachments-rulingspan
-  if (spacing_attachments_ruling_span.x() <= 0) {
+  if (spacing_attachments_ruling_span_.x() <= 0) {
     is_valid = false;
     if (messages != nullptr) {
       message.description = "Invalid horizontal ruling span attachment spacing";
@@ -50,7 +50,7 @@ bool LineCable::Validate(const bool& is_included_warnings,
     }
   }
 
-  if (spacing_attachments_ruling_span.y() != 0) {
+  if (spacing_attachments_ruling_span_.y() != 0) {
     is_valid = false;
     if (messages != nullptr) {
       message.description = "Invalid transverse ruling span attachment spacing";
@@ -58,7 +58,7 @@ bool LineCable::Validate(const bool& is_included_warnings,
     }
   }
 
-  if (2000 < std::abs(spacing_attachments_ruling_span.z())) {
+  if (2000 < std::abs(spacing_attachments_ruling_span_.z())) {
     is_valid = false;
     if (messages != nullptr) {
       message.description = "Invalid vertical ruling span attachment spacing";
@@ -67,29 +67,29 @@ bool LineCable::Validate(const bool& is_included_warnings,
   }
 
   // validates weathercase-stretch-creep
-  if (weathercase_stretch_creep == nullptr) {
+  if (weathercase_stretch_creep_ == nullptr) {
     is_valid = false;
     if (messages != nullptr) {
       message.description = "Invalid creep stretch weathercase";
       messages->push_back(message);
     }
   } else {
-    if (weathercase_stretch_creep->Validate(is_included_warnings,
-                                            messages) == false) {
+    if (weathercase_stretch_creep_->Validate(is_included_warnings,
+                                             messages) == false) {
       is_valid = false;
     }
   }
 
   // validates weathercase-stretch-load
-  if (weathercase_stretch_load == nullptr) {
+  if (weathercase_stretch_load_ == nullptr) {
     is_valid = false;
     if (messages != nullptr) {
       message.description = "Invalid load stretch weathercase";
       messages->push_back(message);
     }
   } else {
-    if (weathercase_stretch_load->Validate(is_included_warnings,
-                                           messages) == false) {
+    if (weathercase_stretch_load_->Validate(is_included_warnings,
+                                            messages) == false) {
       is_valid = false;
     }
   }
@@ -102,13 +102,56 @@ bool LineCable::Validate(const bool& is_included_warnings,
   // validates if catenary can be solved for with contraint and ruling
   // span geometry
   CatenarySolver solver;
-  solver.set_cable(cable);
-  solver.set_constraint(&constraint);
-  solver.set_spacing_attachments(&spacing_attachments_ruling_span);
+  solver.set_cable(cable_);
+  solver.set_constraint(&constraint_);
+  solver.set_spacing_attachments(&spacing_attachments_ruling_span_);
   if (solver.Validate(is_included_warnings, messages) == false) {
     is_valid = false;
   }
 
   // returns validation status
   return is_valid;
+}
+
+const Cable* LineCable::cable() const {
+  return cable_;
+}
+
+CableConstraint LineCable::constraint() const {
+  return constraint_;
+}
+
+void LineCable::set_cable(const Cable* cable) {
+  cable_ = cable;
+}
+
+void LineCable::set_constraint(const CableConstraint& constraint) {
+  constraint_ = constraint;
+}
+
+void LineCable::set_spacing_attachments_ruling_span(
+    const Vector3d& spacing_attachments_ruling_span) {
+  spacing_attachments_ruling_span_ = spacing_attachments_ruling_span;
+}
+
+void LineCable::set_weathercase_stretch_creep(
+    const WeatherLoadCase* weathercase) {
+  weathercase_stretch_creep_ = weathercase;
+}
+
+void LineCable::set_weathercase_stretch_load(
+    const WeatherLoadCase* weathercase) {
+  weathercase_stretch_load_ = weathercase;
+}
+
+const Vector3d LineCable::spacing_attachments_ruling_span() const {
+  return spacing_attachments_ruling_span_;
+}
+
+const WeatherLoadCase* LineCable::weathercase_stretch_creep() const {
+  return weathercase_stretch_creep_;
+}
+
+const WeatherLoadCase* LineCable::weathercase_stretch_load() const {
+  return weathercase_stretch_load_;
 }

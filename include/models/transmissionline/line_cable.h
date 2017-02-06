@@ -19,7 +19,7 @@
 /// \par CONSTRAINT
 ///
 /// This class is defined by the cable, and constraint that it is tensioned to.
-struct LineCable {
+class LineCable {
  public:
   /// \brief Default constructor.
   LineCable();
@@ -37,27 +37,74 @@ struct LineCable {
   bool Validate(const bool& is_included_warnings = true,
                 std::list<ErrorMessage>* messages = nullptr) const;
 
+  /// \brief Gets the cable.
+  /// \return The cable.
+  const Cable* cable() const;
+
+  /// \brief Gets the constraint.
+  /// \return The constraint.
+  CableConstraint constraint() const;
+
+  /// \brief Sets the cable.
+  /// \param[in] cable
+  ///   The cable.
+  void set_cable(const Cable* cable);
+
+  /// \brief Sets the constraint.
+  /// \param[in] constraint
+  ///   The constraint.
+  void set_constraint(const CableConstraint& constraint);
+
+  /// \brief Sets the ruling span attachment spacing.
+  /// \param[in] spacing_attachments_ruling_span
+  ///   The ruling span attachment spacing.
+  void set_spacing_attachments_ruling_span(
+      const Vector3d& spacing_attachments_ruling_span);
+
+  /// \brief Sets the creep stretch weathercase.
+  /// \param[in] weathercase
+  ///   The creep stretch weathercase.
+  void set_weathercase_stretch_creep(const WeatherLoadCase* weathercase);
+
+  /// \brief Sets the load stretch weathercase.
+  /// \param[in] weathercase
+  ///   The load stretch weathercase.
+  void set_weathercase_stretch_load(const WeatherLoadCase* weathercase);
+
+  /// \brief Gets the ruling span attachment spacing.
+  /// \return The ruling span attachment spacing.
+  const Vector3d spacing_attachments_ruling_span() const;
+
+  /// \brief Gets the creep stretch weathercase.
+  /// \return The creep stretch weathercase.
+  const WeatherLoadCase* weathercase_stretch_creep() const;
+
+  /// \brief Gets the load stretch weathercase.
+  /// \return The load stretch weathercase.
+  const WeatherLoadCase* weathercase_stretch_load() const;
+
+ private:
   /// \var cable
   ///   The cable.
-  const Cable* cable;
+  const Cable* cable_;
 
   /// \var constraint
   ///   The constraint the cable is tensioned to.
-  CableConstraint constraint;
+  CableConstraint constraint_;
 
   /// \var spacing_attachments_ruling_span
   ///   The attachment spacing for the ruling span geometry.
-  Vector3d spacing_attachments_ruling_span;
+  Vector3d spacing_attachments_ruling_span_;
 
   /// \var weathercase_stretch_creep
   ///   The weathercase that defines the amount of non-elastic stretch due to
   ///   creep.
-  const WeatherLoadCase* weathercase_stretch_creep;
+  const WeatherLoadCase* weathercase_stretch_creep_;
 
   /// \var weathercase_stretch_load
   ///   The weathercase that defines the amount of non-elastic stretch due to
   ///   load.
-  const WeatherLoadCase* weathercase_stretch_load;
+  const WeatherLoadCase* weathercase_stretch_load_;
 };
 
 #endif // OTLS_MODELS_TRANSMISSIONLINE_LINECABLE_H_

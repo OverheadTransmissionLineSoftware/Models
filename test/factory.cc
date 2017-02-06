@@ -187,9 +187,9 @@ LineCable* BuildLineCable() {
   constraint.type_limit = CableConstraint::LimitType::kHorizontalTension;
 
   LineCable* line_cable = new LineCable();
-  line_cable->cable = factory::BuildCable();
-  line_cable->constraint = constraint;
-  line_cable->spacing_attachments_ruling_span = Vector3d(1200, 0, 0);
+  line_cable->set_cable(factory::BuildCable());
+  line_cable->set_constraint(constraint);
+  line_cable->set_spacing_attachments_ruling_span(Vector3d(1200, 0, 0));
 
   // builds creep stretch weathercase
   weathercase = new WeatherLoadCase();
@@ -198,7 +198,7 @@ LineCable* BuildLineCable() {
   weathercase->density_ice = 0;
   weathercase->pressure_wind = 0;
   weathercase->temperature_cable = 60;
-  line_cable->weathercase_stretch_creep = weathercase;
+  line_cable->set_weathercase_stretch_creep(weathercase);
 
   // builds load stretch weathercase
   weathercase = new WeatherLoadCase();
@@ -208,7 +208,7 @@ LineCable* BuildLineCable() {
   weathercase->density_ice = 57.3;
   weathercase->pressure_wind = 8;
   weathercase->temperature_cable = 00;
-  line_cable->weathercase_stretch_load = weathercase;
+  line_cable->set_weathercase_stretch_load(weathercase);
 
   return line_cable;
 }
@@ -311,10 +311,10 @@ TransmissionLine* BuildTransmissionLine() {
 }
 
 void DestroyLineCable(LineCable* linecable) {
-  delete linecable->cable;
-  delete linecable->constraint.case_weather;
-  delete linecable->weathercase_stretch_creep;
-  delete linecable->weathercase_stretch_load;
+  delete linecable->cable();
+  delete linecable->constraint().case_weather;
+  delete linecable->weathercase_stretch_creep();
+  delete linecable->weathercase_stretch_load();
 
   delete linecable;
 }

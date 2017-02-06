@@ -73,7 +73,7 @@ double LineCableSagger::LimitConstraintSaggedLineCable() const {
     }
   }
 
-  return line_cable_->constraint.limit;
+  return line_cable_->constraint().limit;
 }
 
 double LineCableSagger::TensionHorizontalActual(const int& index) const {
@@ -222,8 +222,8 @@ bool LineCableSagger::UpdateControllingConstraintIndex() const {
   // reloads the design constraint at the line cable constraint weathercase and
   // condition
   LineCableReloader reloader;
-  reloader.set_weathercase_reloaded(line_cable_->constraint.case_weather);
-  reloader.set_condition_reloaded(line_cable_->constraint.condition);
+  reloader.set_weathercase_reloaded(line_cable_->constraint().case_weather);
+  reloader.set_condition_reloaded(line_cable_->constraint().condition);
 
   // reloads each constraint in the collection and looks for the lowest
   // reloaded horizontal tension
@@ -236,7 +236,7 @@ bool LineCableSagger::UpdateControllingConstraintIndex() const {
 
     // creates a line cable with the design constraint and updates reloader
     LineCable line_cable = LineCable(*line_cable_);
-    line_cable.constraint = constraint;
+    line_cable.set_constraint(constraint);
     reloader.set_line_cable(&line_cable);
 
     // solves for the reloaded horizontal tension, and compares to previous
@@ -266,13 +266,14 @@ bool LineCableSagger::UpdateLineCableConstraintLimit() const {
   // reloads controlling constraint at the line cable constraint weathercase and
   // condition
   LineCableReloader reloader;
-  reloader.set_weathercase_reloaded(line_cable_->constraint.case_weather);
-  reloader.set_condition_reloaded(line_cable_->constraint.condition);
+  reloader.set_weathercase_reloaded(line_cable_->constraint().case_weather);
+  reloader.set_condition_reloaded(line_cable_->constraint().condition);
 
   // creates a line cable with the controlling design constraint and updates
   // reloader
   LineCable line_cable = LineCable(*line_cable_);
-  line_cable.constraint = constraints_design_->at(index_constraint_controlling_);
+  line_cable.set_constraint(
+      constraints_design_->at(index_constraint_controlling_));
   reloader.set_line_cable(&line_cable);
 
   // updates line cable constraint limit
@@ -281,19 +282,19 @@ bool LineCableSagger::UpdateLineCableConstraintLimit() const {
   }
 
   const Catenary3d catenary = reloader.CatenaryReloaded();
-  CableConstraint constraint = line_cable_->constraint;
+  CableConstraint constraint = line_cable_->constraint();
 
-  if (line_cable_->constraint.type_limit
-      == CableConstraint::LimitType::kHorizontalTension) {
+  if (constraint.type_limit ==
+      CableConstraint::LimitType::kHorizontalTension) {
     constraint.limit = catenary.tension_horizontal();
-  } else if (line_cable_->constraint.type_limit
+  } else if (constraint.type_limit
       == CableConstraint::LimitType::kCatenaryConstant) {
     constraint.limit = catenary.Constant();
-  } else if (line_cable_->constraint.type_limit
+  } else if (constraint.type_limit
       == CableConstraint::LimitType::kSupportTension) {
     constraint.limit = catenary.TensionMax();
   }
-  line_cable_->constraint = constraint;
+  line_cable_->set_constraint(constraint);
 
   return true;
 }
