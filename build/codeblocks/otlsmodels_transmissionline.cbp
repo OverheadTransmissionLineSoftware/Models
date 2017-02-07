@@ -5,6 +5,7 @@
 		<Option title="otlsmodels_transmissionline" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
+		<Option virtualFolders="Source Files/;Header Files/;" />
 		<Build>
 			<Target title="debug">
 				<Option output="debug/otlsmodels_transmissionlined" prefix_auto="1" extension_auto="1" />
@@ -44,20 +45,51 @@
 		<Linker>
 			<Add directory="../../" />
 		</Linker>
-		<Unit filename="../../include/models/transmissionline/cable.h" />
-		<Unit filename="../../include/models/transmissionline/cable_constraint.h" />
-		<Unit filename="../../include/models/transmissionline/cable_unit_load_calculator.h" />
-		<Unit filename="../../include/models/transmissionline/catenary.h" />
-		<Unit filename="../../include/models/transmissionline/catenary_solver.h" />
-		<Unit filename="../../include/models/transmissionline/line_cable.h" />
-		<Unit filename="../../include/models/transmissionline/weather_load_case.h" />
-		<Unit filename="../../src/transmissionline/cable.cc" />
-		<Unit filename="../../src/transmissionline/cable_constraint.cc" />
-		<Unit filename="../../src/transmissionline/cable_unit_load_calculator.cc" />
-		<Unit filename="../../src/transmissionline/catenary.cc" />
-		<Unit filename="../../src/transmissionline/catenary_solver.cc" />
-		<Unit filename="../../src/transmissionline/line_cable.cc" />
-		<Unit filename="../../src/transmissionline/weather_load_case.cc" />
+		<Unit filename="../../include/models/transmissionline/alignment.h">
+			<Option virtualFolder="Header Files/" />
+		</Unit>
+		<Unit filename="../../include/models/transmissionline/cable.h">
+			<Option virtualFolder="Header Files/" />
+		</Unit>
+		<Unit filename="../../include/models/transmissionline/cable_constraint.h">
+			<Option virtualFolder="Header Files/" />
+		</Unit>
+		<Unit filename="../../include/models/transmissionline/cable_unit_load_calculator.h">
+			<Option virtualFolder="Header Files/" />
+		</Unit>
+		<Unit filename="../../include/models/transmissionline/catenary.h">
+			<Option virtualFolder="Header Files/" />
+		</Unit>
+		<Unit filename="../../include/models/transmissionline/catenary_solver.h">
+			<Option virtualFolder="Header Files/" />
+		</Unit>
+		<Unit filename="../../include/models/transmissionline/line_cable.h">
+			<Option virtualFolder="Header Files/" />
+		</Unit>
+		<Unit filename="../../include/models/transmissionline/weather_load_case.h">
+			<Option virtualFolder="Header Files/" />
+		</Unit>
+		<Unit filename="../../src/transmissionline/cable.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
+		<Unit filename="../../src/transmissionline/cable_constraint.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
+		<Unit filename="../../src/transmissionline/cable_unit_load_calculator.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
+		<Unit filename="../../src/transmissionline/catenary.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
+		<Unit filename="../../src/transmissionline/catenary_solver.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
+		<Unit filename="../../src/transmissionline/line_cable.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
+		<Unit filename="../../src/transmissionline/weather_load_case.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<debugger />

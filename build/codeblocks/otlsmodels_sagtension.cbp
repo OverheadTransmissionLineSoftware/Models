@@ -5,6 +5,7 @@
 		<Option title="otlsmodels_sagtension" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
+		<Option virtualFolders="Header Files/;Source Files/;" />
 		<Build>
 			<Target title="debug">
 				<Option output="debug/otlsmodels_sagtensiond" prefix_auto="1" extension_auto="1" />
@@ -46,24 +47,60 @@
 		<Linker>
 			<Add directory="../../" />
 		</Linker>
-		<Unit filename="../../include/models/sagtension/cable_component_elongation_model.h" />
-		<Unit filename="../../include/models/sagtension/cable_elongation_model.h" />
-		<Unit filename="../../include/models/sagtension/cable_state.h" />
-		<Unit filename="../../include/models/sagtension/cable_strainer.h" />
-		<Unit filename="../../include/models/sagtension/catenary_cable_reloader.h" />
-		<Unit filename="../../include/models/sagtension/catenary_cable_unloader.h" />
-		<Unit filename="../../include/models/sagtension/line_cable_reloader.h" />
-		<Unit filename="../../include/models/sagtension/line_cable_sagger.h" />
-		<Unit filename="../../include/models/sagtension/sag_tension_cable.h" />
-		<Unit filename="../../src/sagtension/cable_component_elongation_model.cc" />
-		<Unit filename="../../src/sagtension/cable_elongation_model.cc" />
-		<Unit filename="../../src/sagtension/cable_state.cc" />
-		<Unit filename="../../src/sagtension/cable_strainer.cc" />
-		<Unit filename="../../src/sagtension/catenary_cable_reloader.cc" />
-		<Unit filename="../../src/sagtension/catenary_cable_unloader.cc" />
-		<Unit filename="../../src/sagtension/line_cable_reloader.cc" />
-		<Unit filename="../../src/sagtension/line_cable_sagger.cc" />
-		<Unit filename="../../src/sagtension/sag_tension_cable.cc" />
+		<Unit filename="../../include/models/sagtension/cable_component_elongation_model.h">
+			<Option virtualFolder="Header Files/" />
+		</Unit>
+		<Unit filename="../../include/models/sagtension/cable_elongation_model.h">
+			<Option virtualFolder="Header Files/" />
+		</Unit>
+		<Unit filename="../../include/models/sagtension/cable_state.h">
+			<Option virtualFolder="Header Files/" />
+		</Unit>
+		<Unit filename="../../include/models/sagtension/cable_strainer.h">
+			<Option virtualFolder="Header Files/" />
+		</Unit>
+		<Unit filename="../../include/models/sagtension/catenary_cable_reloader.h">
+			<Option virtualFolder="Header Files/" />
+		</Unit>
+		<Unit filename="../../include/models/sagtension/catenary_cable_unloader.h">
+			<Option virtualFolder="Header Files/" />
+		</Unit>
+		<Unit filename="../../include/models/sagtension/line_cable_reloader.h">
+			<Option virtualFolder="Header Files/" />
+		</Unit>
+		<Unit filename="../../include/models/sagtension/line_cable_sagger.h">
+			<Option virtualFolder="Header Files/" />
+		</Unit>
+		<Unit filename="../../include/models/sagtension/sag_tension_cable.h">
+			<Option virtualFolder="Header Files/" />
+		</Unit>
+		<Unit filename="../../src/sagtension/cable_component_elongation_model.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
+		<Unit filename="../../src/sagtension/cable_elongation_model.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
+		<Unit filename="../../src/sagtension/cable_state.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
+		<Unit filename="../../src/sagtension/cable_strainer.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
+		<Unit filename="../../src/sagtension/catenary_cable_reloader.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
+		<Unit filename="../../src/sagtension/catenary_cable_unloader.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
+		<Unit filename="../../src/sagtension/line_cable_reloader.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
+		<Unit filename="../../src/sagtension/line_cable_sagger.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
+		<Unit filename="../../src/sagtension/sag_tension_cable.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<debugger />

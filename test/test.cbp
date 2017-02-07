@@ -5,6 +5,7 @@
 		<Option title="test" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
+		<Option virtualFolders="Header Files/;Source Files/;Tests - Base/;Tests - TransmissionLine/;Tests - SagTension/;" />
 		<Build>
 			<Target title="debug">
 				<Option output="debug/test" prefix_auto="1" extension_auto="1" />
@@ -51,30 +52,78 @@
 			<Add option="-pthread" />
 			<Add library="../external/googletest/googletest/make/gtest_main.a" />
 		</Linker>
-		<Unit filename="base/geometric_shapes_test.cc" />
-		<Unit filename="base/helper_test.cc" />
-		<Unit filename="base/polynomial_test.cc" />
-		<Unit filename="base/units_test.cc" />
-		<Unit filename="base/vector_test.cc" />
-		<Unit filename="factory.cc" />
-		<Unit filename="factory.h" />
-		<Unit filename="sagtension/cable_component_elongation_model_test.cc" />
-		<Unit filename="sagtension/cable_elongation_model_test.cc" />
-		<Unit filename="sagtension/cable_state_test.cc" />
-		<Unit filename="sagtension/cable_strainer_test.cc" />
-		<Unit filename="sagtension/catenary_cable_reloader_test.cc" />
-		<Unit filename="sagtension/catenary_cable_unloader_test.cc" />
-		<Unit filename="sagtension/line_cable_reloader_test.cc" />
-		<Unit filename="sagtension/line_cable_sagger_test.cc" />
-		<Unit filename="sagtension/sag_tension_cable_test.cc" />
-		<Unit filename="test.cc" />
-		<Unit filename="transmissionline/cable_constraint_test.cc" />
-		<Unit filename="transmissionline/cable_test.cc" />
-		<Unit filename="transmissionline/cable_unit_load_calculator_test.cc" />
-		<Unit filename="transmissionline/catenary_solver_test.cc" />
-		<Unit filename="transmissionline/catenary_test.cc" />
-		<Unit filename="transmissionline/line_cable_test.cc" />
-		<Unit filename="transmissionline/weather_load_case_test.cc" />
+		<Unit filename="base/geometric_shapes_test.cc">
+			<Option virtualFolder="Tests - Base/" />
+		</Unit>
+		<Unit filename="base/helper_test.cc">
+			<Option virtualFolder="Tests - Base/" />
+		</Unit>
+		<Unit filename="base/polynomial_test.cc">
+			<Option virtualFolder="Tests - Base/" />
+		</Unit>
+		<Unit filename="base/units_test.cc">
+			<Option virtualFolder="Tests - Base/" />
+		</Unit>
+		<Unit filename="base/vector_test.cc">
+			<Option virtualFolder="Tests - Base/" />
+		</Unit>
+		<Unit filename="factory.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
+		<Unit filename="factory.h">
+			<Option virtualFolder="Header Files/" />
+		</Unit>
+		<Unit filename="sagtension/cable_component_elongation_model_test.cc">
+			<Option virtualFolder="Tests - SagTension/" />
+		</Unit>
+		<Unit filename="sagtension/cable_elongation_model_test.cc">
+			<Option virtualFolder="Tests - SagTension/" />
+		</Unit>
+		<Unit filename="sagtension/cable_state_test.cc">
+			<Option virtualFolder="Tests - SagTension/" />
+		</Unit>
+		<Unit filename="sagtension/cable_strainer_test.cc">
+			<Option virtualFolder="Tests - SagTension/" />
+		</Unit>
+		<Unit filename="sagtension/catenary_cable_reloader_test.cc">
+			<Option virtualFolder="Tests - SagTension/" />
+		</Unit>
+		<Unit filename="sagtension/catenary_cable_unloader_test.cc">
+			<Option virtualFolder="Tests - SagTension/" />
+		</Unit>
+		<Unit filename="sagtension/line_cable_reloader_test.cc">
+			<Option virtualFolder="Tests - SagTension/" />
+		</Unit>
+		<Unit filename="sagtension/line_cable_sagger_test.cc">
+			<Option virtualFolder="Tests - SagTension/" />
+		</Unit>
+		<Unit filename="sagtension/sag_tension_cable_test.cc">
+			<Option virtualFolder="Tests - SagTension/" />
+		</Unit>
+		<Unit filename="test.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
+		<Unit filename="transmissionline/cable_constraint_test.cc">
+			<Option virtualFolder="Tests - TransmissionLine/" />
+		</Unit>
+		<Unit filename="transmissionline/cable_test.cc">
+			<Option virtualFolder="Tests - TransmissionLine/" />
+		</Unit>
+		<Unit filename="transmissionline/cable_unit_load_calculator_test.cc">
+			<Option virtualFolder="Tests - TransmissionLine/" />
+		</Unit>
+		<Unit filename="transmissionline/catenary_solver_test.cc">
+			<Option virtualFolder="Tests - TransmissionLine/" />
+		</Unit>
+		<Unit filename="transmissionline/catenary_test.cc">
+			<Option virtualFolder="Tests - TransmissionLine/" />
+		</Unit>
+		<Unit filename="transmissionline/line_cable_test.cc">
+			<Option virtualFolder="Tests - TransmissionLine/" />
+		</Unit>
+		<Unit filename="transmissionline/weather_load_case_test.cc">
+			<Option virtualFolder="Tests - TransmissionLine/" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<debugger />
