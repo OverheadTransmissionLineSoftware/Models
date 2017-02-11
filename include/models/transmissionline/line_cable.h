@@ -11,6 +11,26 @@
 #include "models/transmissionline/cable.h"
 #include "models/transmissionline/cable_constraint.h"
 
+class LineStructure;
+
+/// \par OVERVIEW
+///
+/// This struct contains line cable connection information.
+struct LineCableConnection {
+ public:
+  /// \brief Constructor.
+  LineCableConnection();
+
+  /// \var index_attachment
+  ///   The index of the line structure attachment.
+  int index_attachment;
+
+  /// \var line_structure
+  ///   The line structure.
+  const LineStructure* line_structure;
+};
+
+
 /// \par OVERVIEW
 ///
 /// This struct models a transmission cable line section (multiple spans), where
@@ -27,6 +47,28 @@ class LineCable {
   /// \brief Destructor.
   ~LineCable();
 
+  /// \brief Adds a line connection.
+  /// \param[in] connection
+  ///   The connection.
+  /// \return The index of the connection after sorting. If adding the
+  ///    connection to the line cable fails, -1 will be returned.
+  int AddConnection(const LineCableConnection& connection);
+
+  /// \brief Deletes a connection.
+  /// \param[in] index
+  ///   The connection index.
+  /// \return If the alignment point is successfully deleted.
+  bool DeleteConnection(const int& index);
+
+  /// \brief Modifies the connection.
+  /// \param[in] index
+  ///   The connection index.
+  /// \param[in] connection
+  ///   The connection.
+  /// \return The index of the connection after sorting. If modifying the
+  ///   connection fails, -1 will be returned.
+  int ModifyConnection(const int& index, const LineCableConnection& connection);
+
   /// \brief Validates member variables.
   /// \param[in] is_included_warnings
   ///   A flag that tightens the acceptable value range.
@@ -40,6 +82,10 @@ class LineCable {
   /// \brief Gets the cable.
   /// \return The cable.
   const Cable* cable() const;
+
+  /// \brief Gets the connections.
+  /// \return The connections.
+  const std::list<LineCableConnection>* connections() const;
 
   /// \brief Gets the constraint.
   /// \return The constraint.
@@ -84,24 +130,34 @@ class LineCable {
   const WeatherLoadCase* weathercase_stretch_load() const;
 
  private:
-  /// \var cable
+  /// \brief Determines if the connection index is valid.
+  /// \param[in] index
+  ///   The connection index.
+  /// \return If the connection index is valid.
+  bool IsValidConnectionIndex(const int& index) const;
+
+  /// \var cable_
   ///   The cable.
   const Cable* cable_;
 
-  /// \var constraint
+  /// \var connections_
+  ///   The connections, sorted by line structure station.
+  std::list<LineCableConnection> connections_;
+
+  /// \var constraint_
   ///   The constraint the cable is tensioned to.
   CableConstraint constraint_;
 
-  /// \var spacing_attachments_ruling_span
+  /// \var spacing_attachments_ruling_span_
   ///   The attachment spacing for the ruling span geometry.
   Vector3d spacing_attachments_ruling_span_;
 
-  /// \var weathercase_stretch_creep
+  /// \var weathercase_stretch_creep_
   ///   The weathercase that defines the amount of non-elastic stretch due to
   ///   creep.
   const WeatherLoadCase* weathercase_stretch_creep_;
 
-  /// \var weathercase_stretch_load
+  /// \var weathercase_stretch_load_
   ///   The weathercase that defines the amount of non-elastic stretch due to
   ///   load.
   const WeatherLoadCase* weathercase_stretch_load_;

@@ -6,6 +6,12 @@
 #include <cmath>
 
 #include "models/transmissionline/catenary_solver.h"
+#include "models/transmissionline/line_structure.h"
+
+LineCableConnection::LineCableConnection() {
+  index_attachment = -1;
+  line_structure = nullptr;
+}
 
 LineCable::LineCable() {
   cable_ = nullptr;
@@ -14,6 +20,73 @@ LineCable::LineCable() {
 }
 
 LineCable::~LineCable() {
+}
+
+int LineCable::AddConnection(const LineCableConnection& connection) {
+  if (connection.line_structure == nullptr) {
+    return -1;
+  }
+
+  const LineStructure* line_structure = connection.line_structure;
+
+  // searches list for the position to insert connection
+  auto iter = connections_.begin();
+  while (iter != connections_.end()) {
+    const LineCableConnection& connection_list = *iter;
+    const LineStructure* line_structure_list = connection_list.line_structure;
+    if (line_structure->station() < line_structure_list->station()) {
+      // position is found
+      break;
+    } else if (line_structure->station() == line_structure_list->station()) {
+      // exits due to duplicate station
+      return -1;
+    } else {
+      iter++;
+    }
+  }
+
+  // inserts connection into list
+  connections_.insert(iter, connection);
+
+  // gets index and returns
+  return std::distance(connections_.begin(), iter) - 1;
+}
+
+bool LineCable::DeleteConnection(const int& index) {
+  // checks if index is valid
+  if (IsValidConnectionIndex(index) == false) {
+    return false;
+  }
+
+  // gets iterator and erases point
+  auto iter = std::next(connections_.cbegin(), index);
+  connections_.erase(iter);
+
+  return true;
+}
+
+int LineCable::ModifyConnection(const int& index,
+                                const LineCableConnection& connection) {
+  // checks if index is valid
+  if (IsValidConnectionIndex(index) == false) {
+    return -1;
+  }
+
+  // caches specified connection in case something goes wrong
+  LineCableConnection connection_cache = *std::next(connections_.cbegin(),
+                                                    index);
+  if (DeleteConnection(index) == false) {
+    return -1;
+  }
+
+  const int status = AddConnection(connection);
+  if (status == -1) {
+    // resets cached connection
+    AddConnection(connection_cache);
+  }
+
+  // successfully modified connection
+  return status;
 }
 
 bool LineCable::Validate(const bool& is_included_warnings,
@@ -33,6 +106,44 @@ bool LineCable::Validate(const bool& is_included_warnings,
   } else {
     if (cable_->Validate(is_included_warnings, messages) == false) {
       is_valid = false;
+    }
+  }
+
+  // validates connections
+  const int kSizeConnections = connections_.size();
+  if (kSizeConnections < 2) {
+    is_valid = false;
+    message.description = "Not enough connections";
+    if (messages != nullptr) {
+      messages->push_back(message);
+    }
+  } else {
+    for (auto iter = connections_.cbegin(); iter != connections_.cend();
+         iter++) {
+      const LineCableConnection* connection = &(*iter);
+      const LineStructure* structure = connection->line_structure;
+      const Hardware* hardware =
+          structure->hardwares()->at(connection->index_attachment);
+      if ((connection == &connections_.front())
+          || (connection == &connections_.back())) {
+        // checks for dead-end hardware at start and end connections
+        if (hardware->type != Hardware::HardwareType::kDeadEnd) {
+          message.description = "Terminal line cable connection does not have "
+                                "dead-end type hardware";
+          if (messages != nullptr) {
+            messages->push_back(message);
+          }
+        }
+      } else {
+        // checks for suspension hardware at all middle connections
+        if (hardware->type != Hardware::HardwareType::kSuspension) {
+          message.description = "Interior line cable connection does not have "
+                                "suspension type hardware";
+          if (messages != nullptr) {
+            messages->push_back(message);
+          }
+        }
+      }
     }
   }
 
@@ -117,6 +228,10 @@ const Cable* LineCable::cable() const {
   return cable_;
 }
 
+const std::list<LineCableConnection>* LineCable::connections() const {
+  return &connections_;
+}
+
 CableConstraint LineCable::constraint() const {
   return constraint_;
 }
@@ -154,4 +269,13 @@ const WeatherLoadCase* LineCable::weathercase_stretch_creep() const {
 
 const WeatherLoadCase* LineCable::weathercase_stretch_load() const {
   return weathercase_stretch_load_;
+}
+
+bool LineCable::IsValidConnectionIndex(const int& index) const {
+  const int kSize = connections_.size();
+  if ((0 <= index) && (index < kSize)) {
+    return true;
+  } else {
+    return false;
+  }
 }

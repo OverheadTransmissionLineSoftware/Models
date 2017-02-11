@@ -170,6 +170,7 @@ Hardware* BuildHardware() {
 }
 
 LineCable* BuildLineCable() {
+  LineStructure* line_structure = nullptr;
   WeatherLoadCase* weathercase = nullptr;
 
   // builds constraint
@@ -209,6 +210,21 @@ LineCable* BuildLineCable() {
   weathercase->pressure_wind = 8;
   weathercase->temperature_cable = 00;
   line_cable->set_weathercase_stretch_load(weathercase);
+
+  // builds connections
+  LineCableConnection connection;
+  line_structure = factory::BuildLineStructure();
+  line_structure->set_station(0);
+  connection.line_structure = line_structure;
+  connection.index_attachment = 0;
+  line_cable->AddConnection(connection);
+
+  connection = LineCableConnection();
+  line_structure = factory::BuildLineStructure();
+  line_structure->set_station(1000);
+  connection.line_structure = line_structure;
+  connection.index_attachment = 0;
+  line_cable->AddConnection(connection);
 
   return line_cable;
 }
