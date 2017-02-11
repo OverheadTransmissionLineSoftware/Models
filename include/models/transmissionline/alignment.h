@@ -101,6 +101,8 @@ class Alignment {
 
  private:
   /// \brief Determines if the point index is valid.
+  /// \param[in] index
+  ///   The point index.
   /// \return If the point index is valid.
   bool IsValidPointIndex(const int& index) const;
 

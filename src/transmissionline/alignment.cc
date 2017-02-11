@@ -3,6 +3,8 @@
 
 #include "models/transmissionline/alignment.h"
 
+#include <cmath>
+
 AlignmentPoint::AlignmentPoint() {
   elevation = -999999;
   rotation = -999999;
