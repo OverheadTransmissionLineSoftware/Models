@@ -10,6 +10,7 @@
 #include "models/base/point.h"
 #include "models/base/vector.h"
 #include "models/transmissionline/alignment.h"
+#include "models/transmissionline/line_structure.h"
 
 /// \par OVERVIEW
 ///
@@ -44,11 +45,24 @@ class TransmissionLine {
   ///    alignment fails, -1 will be returned.
   int AddAlignmentPoint(const AlignmentPoint& point);
 
+  /// \brief Adds a line structure.
+  /// \param[in] structure
+  ///   The line structure.
+  /// \return The index of the line structure. If adding the structure to the
+  ///    alignment fails, -1 will be returned.
+  int AddLineStructure(const LineStructure& structure);
+
   /// \brief Deletes an alignment point.
   /// \param[in] index
   ///   The index of the alignment point.
   /// \return If the alignment point is successfully deleted.
   bool DeleteAlignmentPoint(const int& index);
+
+  /// \brief Deletes a line structure.
+  /// \param[in] index
+  ///   The index of the line structure.
+  /// \return If the line structure is successfully deleted.
+  bool DeleteLineStructure(const int& index);
 
   /// \brief Modifies an alignment point.
   /// \param[in] index
@@ -59,9 +73,22 @@ class TransmissionLine {
   ///    fails, -1 will be returned.
   int ModifyAlignmentPoint(const int& index, const AlignmentPoint& point);
 
+  /// \brief Modifies a line structure.
+  /// \param[in] index
+  ///   The list index.
+  /// \param[in] structure
+  ///   The line structure.
+  /// \return The index of the structure after sorting. If adding the structure
+  ///    to the alignment fails, -1 will be returned.
+  int ModifyLineStructure(const int& index, const LineStructure& structure);
+
   /// \brief Gets the xyz coordinates for all alignment points.
   /// \return The xyz coordinates for all alignment points.
   const std::vector<Point3d>* PointsXyzAlignment() const;
+
+  /// \brief Gets the xyz coordinates for all line structures on the alignment.
+  /// \return The xyz coordinate for all line structure alignment points.
+  const std::vector<Point3d>* PointsXyzLineStructures() const;
 
   /// \brief Gets the xyz point of the alignment path.
   /// \param[in] station
@@ -83,6 +110,10 @@ class TransmissionLine {
   /// \return The alignment.
   const Alignment* alignment() const;
 
+  /// \brief Gets the line structures.
+  /// \return The line structures, sorted by station.
+  const std::list<LineStructure>* line_structures() const;
+
   /// \brief Gets the origin.
   /// \return The origin.
   Point3d origin() const;
@@ -96,6 +127,12 @@ class TransmissionLine {
   /// \brief Determines if class is updated.
   /// \return A boolean indicating if class is updated.
   bool IsUpdated() const;
+
+  /// \brief Determines if the line structure index is valid.
+  /// \param[in] index
+  ///   The line structure index.
+  /// \return If the line structure index is valid.
+  bool IsValidLineStructureIndex(const int& index) const;
 
   /// \brief Gets the xyz point of the alignment path.
   /// \param[in] station
@@ -134,18 +171,34 @@ class TransmissionLine {
   /// \return A boolean indicating the success status of the update.
   bool UpdatePointsXyzAlignment() const;
 
+  /// \brief Updates the cached coordinate points for line structures.
+  /// \return A boolean indicating the success status of the update.
+  bool UpdatePointsXyzLineStructures() const;
+
   /// \var alignment_
   ///   The centerline path of the transmission line. The datum orientation for
   ///   the alignment (zero degree rotation) is along the x-axis.
   Alignment alignment_;
 
+  /// \var line_structures_
+  ///   The line structures.
+  std::list<LineStructure> line_structures_;
+
   /// \var points_xyz_alignment_
   ///   The xyz coordinates for the alignment points.
   mutable std::vector<Point3d> points_xyz_alignment_;
 
+  /// \var points_xyz_structures_
+  ///   The xyz coordinates for the structure position on the alignment.
+  mutable std::vector<Point3d> points_xyz_structures_;
+
   /// \var is_updated_points_xyz_alignment_
   ///   An indicator that tells if the cached alignment xyz points are updated.
   mutable bool is_updated_points_xyz_alignment_;
+
+  /// \var is_updated_points_xyz_structures_
+  ///   An indicator that tells if the cached structure xyz points are updated.
+  mutable bool is_updated_points_xyz_structures_;
 
   /// \var origin_
   ///   The xyz origin point. This coincides with the first alignment point.

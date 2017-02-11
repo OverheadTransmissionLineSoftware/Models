@@ -273,6 +273,7 @@ Structure* BuildStructure() {
 TransmissionLine* BuildTransmissionLine() {
   TransmissionLine* line = new TransmissionLine();
   AlignmentPoint point;
+  LineStructure line_structure;
 
   line->set_origin(Point3d(0, 0, 0));
 
@@ -306,6 +307,27 @@ TransmissionLine* BuildTransmissionLine() {
   point.rotation = 0;
   point.station = 4000;
   line->AddAlignmentPoint(point);
+
+  // adds line structures
+  line_structure = *factory::BuildLineStructure();
+  line_structure.set_station(0);
+  line->AddLineStructure(line_structure);
+
+  line_structure = *factory::BuildLineStructure();
+  line_structure.set_station(1000);
+  line->AddLineStructure(line_structure);
+
+  line_structure = *factory::BuildLineStructure();
+  line_structure.set_station(2000);
+  line->AddLineStructure(line_structure);
+
+  line_structure = *factory::BuildLineStructure();
+  line_structure.set_station(3000);
+  line->AddLineStructure(line_structure);
+
+  line_structure = *factory::BuildLineStructure();
+  line_structure.set_station(4000);
+  line->AddLineStructure(line_structure);
 
   return line;
 }
