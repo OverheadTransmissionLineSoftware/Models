@@ -30,6 +30,41 @@ TEST_F(TransmissionLineTest, AddAlignmentPoint) {
   EXPECT_EQ(100, point.station);
 }
 
+TEST_F(TransmissionLineTest, AddLineCable) {
+  Hardware* hardware_deadend = factory::BuildHardware();
+  hardware_deadend->type = Hardware::HardwareType::kDeadEnd;
+
+  const std::list<LineStructure>* line_structures = t_.line_structures();
+  LineStructure line_structure;
+
+  // modifies first and second line structures and adds dead-end hardware
+  line_structure = *std::next(line_structures->cbegin(), 0);
+  line_structure.AttachHardware(1, hardware_deadend);
+  t_.ModifyLineStructure(0, line_structure);
+
+  line_structure = *std::next(line_structures->cbegin(), 1);
+  line_structure.AttachHardware(1, hardware_deadend);
+  t_.ModifyLineStructure(1, line_structure);
+
+  // builds a line cable
+  LineCable line_cable = *factory::BuildLineCable();
+  LineCableConnection connection;
+
+  line_cable.ClearConnections();
+
+  connection.line_structure = &(*std::next(line_structures->cbegin(), 0));
+  connection.index_attachment = 1;
+  line_cable.AddConnection(connection);
+
+  connection.line_structure = &(*std::next(line_structures->cbegin(), 1));
+  connection.index_attachment = 1;
+  line_cable.AddConnection(connection);
+
+  // adds to transmission line and tests if it was sorted correctly
+  const int index = t_.AddLineCable(line_cable);
+  EXPECT_EQ(0, index);
+}
+
 TEST_F(TransmissionLineTest, AddLineStructure) {
   LineStructure line_structure = *factory::BuildLineStructure();
   int index = 0;
@@ -63,6 +98,18 @@ TEST_F(TransmissionLineTest, DeleteAlignmentPoint) {
   auto iter = std::next(t_.alignment()->points()->cbegin(), 1);
   const AlignmentPoint& point = *iter;
   EXPECT_EQ(2000, point.station);
+}
+
+TEST_F(TransmissionLineTest, DeleteLineCable) {
+  bool status = false;
+
+  // deletes the second line cable
+  status = t_.DeleteLineCable(1);
+  EXPECT_TRUE(status);
+
+  // attempts invalid index
+  status = t_.DeleteLineCable(5);
+  EXPECT_FALSE(status);
 }
 
 TEST_F(TransmissionLineTest, DeleteLineStructure) {
@@ -105,30 +152,53 @@ TEST_F(TransmissionLineTest, ModifyAlignmentPoint) {
   EXPECT_EQ(5000, point.station);
 }
 
+TEST_F(TransmissionLineTest, ModifyLineCable) {
+  Hardware* hardware_deadend = factory::BuildHardware();
+  hardware_deadend->type = Hardware::HardwareType::kDeadEnd;
+
+  const std::list<LineStructure>* line_structures = t_.line_structures();
+  LineStructure line_structure;
+
+  // modifies first line structures and adds dead-end hardware
+  line_structure = *std::next(line_structures->cbegin(), 0);
+  line_structure.AttachHardware(1, hardware_deadend);
+  t_.ModifyLineStructure(0, line_structure);
+
+  // modifies first line cable to use new attachment
+  LineCable line_cable = t_.line_cables()->front();
+  LineCableConnection connection = line_cable.connections()->front();
+  connection.index_attachment = 1;
+  line_cable.ModifyConnection(0, connection);
+
+  // adds to transmission line and tests if it was sorted correctly
+  const int index = t_.ModifyLineCable(0, line_cable);
+  EXPECT_EQ(0, index);
+}
+
 TEST_F(TransmissionLineTest, ModifyLineStructure) {
   LineStructure line_structure = *factory::BuildLineStructure();
-  int index = 0;
+  bool status = false;
 
   // modifies the second structure
-  line_structure.set_station(2500);
-  index = t_.ModifyLineStructure(1, line_structure);
+  line_structure.set_station(1500);
+  status = t_.ModifyLineStructure(1, line_structure);
 
-  EXPECT_EQ(2, index);
-  auto iter = std::next(t_.line_structures()->cbegin(), index);
+  EXPECT_TRUE(status);
+  auto iter = std::next(t_.line_structures()->cbegin(), 1);
   line_structure = *iter;
-  EXPECT_EQ(2500, line_structure.station());
+  EXPECT_EQ(1500, line_structure.station());
 
   // attempts to modify last structure station outside alignment
   line_structure.set_station(5000);
-  index = t_.ModifyLineStructure(4, line_structure);
+  status = t_.ModifyLineStructure(4, line_structure);
 
-  EXPECT_EQ(-1, index);
+  EXPECT_FALSE(status);
 
   // attempts to modify a structure to an existing station
   line_structure.set_station(3000);
-  index = t_.ModifyLineStructure(4, line_structure);
+  status = t_.ModifyLineStructure(4, line_structure);
 
-  EXPECT_EQ(-1, index);
+  EXPECT_FALSE(status);
 }
 
 TEST_F(TransmissionLineTest, PointsXyzAlignment) {

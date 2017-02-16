@@ -5,11 +5,11 @@
 #define OTLS_MODELS_TRANSMISSIONLINE_TRANSMISSIONLINE_H_
 
 #include <list>
-#include <vector>
 
 #include "models/base/point.h"
 #include "models/base/vector.h"
 #include "models/transmissionline/alignment.h"
+#include "models/transmissionline/line_cable.h"
 #include "models/transmissionline/line_structure.h"
 
 /// \par OVERVIEW
@@ -30,10 +30,36 @@
 ///
 /// The alignment defines the centerline path of the transmission line. The
 /// origin coordinate is used to map the turns/orientations to 3D coordinates.
+///
+/// \par LINE STRUCTURES
+///
+/// Line structures can be placed anywhere along the alignment. Coordinates for
+/// each line structure are cached to help determine 3D coordinates for any
+/// dependent items.
+///
+/// \par LINE CABLES
+///
+/// Line cables can be attached to the line structures. Line cables can only
+/// exist on the transmission line if the connections are, and remain, valid.
+/// If any of the terminating connections become invalid, the line cable is
+/// removed. Only one line cable is allowed for each line structure attachment.
 class TransmissionLine {
  public:
   /// \brief Default constructor.
   TransmissionLine();
+
+  /// \brief Copy constructor.
+  /// \param[in] that
+  ///   The transmission line to copy from.
+  /// This is needed to keep the references within the class valid when copying.
+  TransmissionLine(const TransmissionLine& that);
+
+  /// \brief Copy assignment operator.
+  /// \param[in] that
+  ///   The transmission line to copy from.
+  /// \return A reference to the transmission line.
+  /// This is needed to keep the references within the class valid when copying.
+  TransmissionLine& operator=(const TransmissionLine& that);
 
   /// \brief Destructor.
   ~TransmissionLine();
@@ -44,6 +70,13 @@ class TransmissionLine {
   /// \return The index of the alignment point. If adding the point to the
   ///    alignment fails, -1 will be returned.
   int AddAlignmentPoint(const AlignmentPoint& point);
+
+  /// \brief Adds a line cable.
+  /// \param[in] line_cable
+  ///   The line cable.
+  /// \return The index of the line cable. If adding the cable to the line
+  ///   fails, -1 will be returned.
+  int AddLineCable(const LineCable& line_cable);
 
   /// \brief Adds a line structure.
   /// \param[in] structure
@@ -58,11 +91,27 @@ class TransmissionLine {
   /// \return If the alignment point is successfully deleted.
   bool DeleteAlignmentPoint(const int& index);
 
+  /// \brief Deletes a line cable.
+  /// \param[in] index
+  ///   The index of the line cable.
+  /// \return If the line cable is successfully deleted.
+  bool DeleteLineCable(const int& index);
+
   /// \brief Deletes a line structure.
   /// \param[in] index
   ///   The index of the line structure.
   /// \return If the line structure is successfully deleted.
   bool DeleteLineStructure(const int& index);
+
+  /// \brief Determines if the line structure attachment has a line cable
+  ///   connection.
+  /// \param[in] index_structure
+  ///   The line structure index.
+  /// \param[in] index_attachment
+  ///   The attachment index.
+  /// \return If the line structure attachment has a line cable connection.
+  bool HasConnection(const int& index_structure,
+                     const int& index_attachment) const;
 
   /// \brief Modifies an alignment point.
   /// \param[in] index
@@ -70,17 +119,27 @@ class TransmissionLine {
   /// \param[in] point
   ///   The alignment point.
   /// \return The index of the point after sorting. If modifying the point
-  ///    fails, -1 will be returned.
+  ///   fails, -1 will be returned.
   int ModifyAlignmentPoint(const int& index, const AlignmentPoint& point);
+
+  /// \brief Modifies a line cable.
+  /// \param[in] index
+  ///   The list index.
+  /// \param[in] line_cable
+  ///   The line cable.
+  /// \return The index of the line cable after sorting. If modifying the line
+  ///   cable fails, -1 will be returned.
+  int ModifyLineCable(const int& index, const LineCable& line_cable);
 
   /// \brief Modifies a line structure.
   /// \param[in] index
   ///   The list index.
   /// \param[in] structure
   ///   The line structure.
-  /// \return The index of the structure after sorting. If adding the structure
-  ///    to the alignment fails, -1 will be returned.
-  int ModifyLineStructure(const int& index, const LineStructure& structure);
+  /// \return If the line structure is successfully modified.
+  /// Line structures cannot be moved back or ahead of the adjacent structures
+  /// to it, so the index will remain constant.
+  bool ModifyLineStructure(const int& index, const LineStructure& structure);
 
   /// \brief Gets the xyz coordinates for all alignment points.
   /// \return The xyz coordinates for all alignment points.
@@ -110,6 +169,11 @@ class TransmissionLine {
   /// \return The alignment.
   const Alignment* alignment() const;
 
+  /// \brief Gets the line cables.
+  /// \return The line cables, sorted by starting structure and attachment
+  ///   index.
+  const std::list<LineCable>* line_cables() const;
+
   /// \brief Gets the line structures.
   /// \return The line structures, sorted by station.
   const std::list<LineStructure>* line_structures() const;
@@ -124,9 +188,45 @@ class TransmissionLine {
   void set_origin(const Point3d& origin);
 
  private:
+  /// \brief Deletes all connections from the line structure.
+  /// \param[in] index_structure
+  ///   The line structure index.
+  /// This function will modify the line cables to delete all connections to
+  /// the structure.
+  void DeleteConnectionsFromStructure(const int& index_structure);
+
+  /// \brief Deletes invalid connections from the line structure.
+  /// \param[in] index_structure
+  ///   The line structure index.
+  /// This function will modify the line cables to delete invalid connections to
+  /// the structure.
+  void DeleteInvalidConnectionsFromStructure(const int& index_structure);
+
+  /// \brief Deletes invalid line cables.
+  /// Invalid cables are commonly caused by deleted connections.
+  void DeleteInvalidLineCables();
+
+  /// \brief Clears invalid line structures.
+  /// Line structures that are beyond the alignment bounds are also considered
+  /// invalid.
+  void DeleteInvalidLineStructures();
+
+  /// \brief Gets the line structure index.
+  /// \param[in] line_structure
+  ///   The line structure.
+  /// \return The index of the line structure. If no line structure is found,
+  ///   -1 is returned.
+  int IndexLineStructure(const LineStructure* line_structure) const;
+
   /// \brief Determines if class is updated.
   /// \return A boolean indicating if class is updated.
   bool IsUpdated() const;
+
+  /// \brief Determines if the line cable index is valid.
+  /// \param[in] index
+  ///   The line cable index.
+  /// \return If the line cable index is valid.
+  bool IsValidLineCableIndex(const int& index) const;
 
   /// \brief Determines if the line structure index is valid.
   /// \param[in] index
@@ -180,18 +280,6 @@ class TransmissionLine {
   ///   the alignment (zero degree rotation) is along the x-axis.
   Alignment alignment_;
 
-  /// \var line_structures_
-  ///   The line structures.
-  std::list<LineStructure> line_structures_;
-
-  /// \var points_xyz_alignment_
-  ///   The xyz coordinates for the alignment points.
-  mutable std::vector<Point3d> points_xyz_alignment_;
-
-  /// \var points_xyz_structures_
-  ///   The xyz coordinates for the structure position on the alignment.
-  mutable std::vector<Point3d> points_xyz_structures_;
-
   /// \var is_updated_points_xyz_alignment_
   ///   An indicator that tells if the cached alignment xyz points are updated.
   mutable bool is_updated_points_xyz_alignment_;
@@ -200,9 +288,25 @@ class TransmissionLine {
   ///   An indicator that tells if the cached structure xyz points are updated.
   mutable bool is_updated_points_xyz_structures_;
 
+  /// \var line_cables_
+  ///   The line cables, sorted by starting structure and then attachment index.
+  std::list<LineCable> line_cables_;
+
+  /// \var line_structures_
+  ///   The line structures, sorted by increasing station.
+  std::list<LineStructure> line_structures_;
+
   /// \var origin_
   ///   The xyz origin point. This coincides with the first alignment point.
   Point3d origin_;
+
+  /// \var points_xyz_alignment_
+  ///   The xyz coordinates for the alignment points.
+  mutable std::vector<Point3d> points_xyz_alignment_;
+
+  /// \var points_xyz_structures_
+  ///   The xyz coordinates for the structure position on the alignment.
+  mutable std::vector<Point3d> points_xyz_structures_;
 };
 
 #endif  // OTLS_MODELS_TRANSMISSIONLINE_TRANSMISSIONLINE_H_

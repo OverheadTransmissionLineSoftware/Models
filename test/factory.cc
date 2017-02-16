@@ -245,6 +245,7 @@ LineStructure* BuildLineStructure(const Structure* structure) {
 
   // adds hardware
   line_structure->AttachHardware(0, factory::BuildHardware());
+  line_structure->AttachHardware(2, factory::BuildHardware());
 
   return line_structure;
 }
@@ -266,7 +267,7 @@ Structure* BuildStructure() {
 
   // adds attachment points
   attachment = StructureAttachment();
-  attachment.offset_longitudinal = 0;
+  attachment.offset_longitudinal = -1;
   attachment.offset_transverse = 0;
   attachment.offset_vertical_top = 0;
   structure->attachments.push_back(attachment);
@@ -274,13 +275,13 @@ Structure* BuildStructure() {
   attachment = StructureAttachment();
   attachment.offset_longitudinal = 0;
   attachment.offset_transverse = 0;
-  attachment.offset_vertical_top = 10;
+  attachment.offset_vertical_top = 0;
   structure->attachments.push_back(attachment);
 
   attachment = StructureAttachment();
-  attachment.offset_longitudinal = 0;
+  attachment.offset_longitudinal = 1;
   attachment.offset_transverse = 0;
-  attachment.offset_vertical_top = 20;
+  attachment.offset_vertical_top = 0;
   structure->attachments.push_back(attachment);
 
   return structure;
@@ -288,12 +289,11 @@ Structure* BuildStructure() {
 
 TransmissionLine* BuildTransmissionLine() {
   TransmissionLine* line = new TransmissionLine();
-  AlignmentPoint point;
-  LineStructure line_structure;
-
   line->set_origin(Point3d(0, 0, 0));
 
   // adds alignment points
+  AlignmentPoint point;
+
   point = AlignmentPoint();
   point.elevation = 0;
   point.rotation = 0;
@@ -325,25 +325,93 @@ TransmissionLine* BuildTransmissionLine() {
   line->AddAlignmentPoint(point);
 
   // adds line structures
+  Hardware* hardware_deadend = factory::BuildHardware();
+  hardware_deadend->type = Hardware::HardwareType::kDeadEnd;
+
+  Hardware* hardware_suspension = factory::BuildHardware();
+  hardware_suspension->type = Hardware::HardwareType::kSuspension;
+
+  LineStructure line_structure;
+
   line_structure = *factory::BuildLineStructure();
   line_structure.set_station(0);
+  line_structure.DetachHardware(0);
+  line_structure.DetachHardware(1);
+  line_structure.DetachHardware(2);
+  line_structure.AttachHardware(2, hardware_deadend);
   line->AddLineStructure(line_structure);
 
   line_structure = *factory::BuildLineStructure();
   line_structure.set_station(1000);
+  line_structure.DetachHardware(0);
+  line_structure.DetachHardware(1);
+  line_structure.DetachHardware(2);
+  line_structure.AttachHardware(0, hardware_deadend);
+  line_structure.AttachHardware(2, hardware_deadend);
   line->AddLineStructure(line_structure);
 
   line_structure = *factory::BuildLineStructure();
   line_structure.set_station(2000);
+  line_structure.DetachHardware(0);
+  line_structure.DetachHardware(1);
+  line_structure.DetachHardware(2);
+  line_structure.AttachHardware(0, hardware_deadend);
+  line_structure.AttachHardware(2, hardware_deadend);
   line->AddLineStructure(line_structure);
 
   line_structure = *factory::BuildLineStructure();
   line_structure.set_station(3000);
+  line_structure.DetachHardware(0);
+  line_structure.DetachHardware(1);
+  line_structure.DetachHardware(2);
+  line_structure.AttachHardware(1, hardware_suspension);
   line->AddLineStructure(line_structure);
 
   line_structure = *factory::BuildLineStructure();
   line_structure.set_station(4000);
+  line_structure.DetachHardware(0);
+  line_structure.DetachHardware(1);
+  line_structure.DetachHardware(2);
+  line_structure.AttachHardware(0, hardware_deadend);
   line->AddLineStructure(line_structure);
+
+  // adds line cables
+  LineCable line_cable;
+  LineCableConnection connection;
+  const std::list<LineStructure>* line_structures = line->line_structures();
+
+  line_cable = *factory::BuildLineCable();
+  line_cable.ClearConnections();
+  connection.line_structure = &(*std::next(line_structures->cbegin(), 0));
+  connection.index_attachment = 2;
+  line_cable.AddConnection(connection);
+  connection.line_structure = &(*std::next(line_structures->cbegin(), 1));
+  connection.index_attachment = 0;
+  line_cable.AddConnection(connection);
+  line->AddLineCable(line_cable);
+
+  line_cable = *factory::BuildLineCable();
+  line_cable.ClearConnections();
+  connection.line_structure = &(*std::next(line_structures->cbegin(), 1));
+  connection.index_attachment = 2;
+  line_cable.AddConnection(connection);
+  connection.line_structure = &(*std::next(line_structures->cbegin(), 2));
+  connection.index_attachment = 0;
+  line_cable.AddConnection(connection);
+  line->AddLineCable(line_cable);
+
+  line_cable = *factory::BuildLineCable();
+  line_cable.ClearConnections();
+  connection.line_structure = &(*std::next(line_structures->cbegin(), 2));
+  connection.index_attachment = 2;
+  line_cable.AddConnection(connection);
+  connection.line_structure = &(*std::next(line_structures->cbegin(), 3));
+  connection.index_attachment = 1;
+  line_cable.AddConnection(connection);
+  connection.line_structure = &(*std::next(line_structures->cbegin(), 4));
+  connection.index_attachment = 0;
+  line_cable.AddConnection(connection);
+  line->AddLineCable(line_cable);
 
   return line;
 }

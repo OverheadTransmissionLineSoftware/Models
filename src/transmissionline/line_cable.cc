@@ -52,6 +52,10 @@ int LineCable::AddConnection(const LineCableConnection& connection) {
   return std::distance(connections_.begin(), iter) - 1;
 }
 
+void LineCable::ClearConnections() {
+  connections_.clear();
+}
+
 bool LineCable::DeleteConnection(const int& index) {
   // checks if index is valid
   if (IsValidConnectionIndex(index) == false) {

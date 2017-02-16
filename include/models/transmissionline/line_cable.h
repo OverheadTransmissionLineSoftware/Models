@@ -54,6 +54,9 @@ class LineCable {
   ///    connection to the line cable fails, -1 will be returned.
   int AddConnection(const LineCableConnection& connection);
 
+  /// \brief Clears all connections.
+  void ClearConnections();
+
   /// \brief Deletes a connection.
   /// \param[in] index
   ///   The connection index.
