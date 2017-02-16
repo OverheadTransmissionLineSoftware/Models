@@ -58,7 +58,7 @@ bool CatenarySolver::Validate(
       messages->push_back(message);
     }
   } else {
-    if (cable_->Validate(is_included_warnings, messages) == false) {
+    if (constraint_->Validate(is_included_warnings, messages) == false) {
       is_valid = false;
     }
   }
