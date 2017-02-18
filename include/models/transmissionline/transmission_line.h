@@ -33,9 +33,12 @@
 ///
 /// \par LINE STRUCTURES
 ///
-/// Line structures can be placed anywhere along the alignment. Coordinates for
-/// each line structure are cached to help determine 3D coordinates for any
-/// dependent items.
+/// Line structures can be placed anywhere along the alignment. The line
+/// structure longitudinal direction is parallel to the alignment, while the
+/// transverse is perpendicular. If the line structure is located on an
+/// alignment point, the structure is rotated to bisect the alignment angle.
+/// Xyz coordinates can be determined for the alignment intersection, as well
+/// as attachment points.
 ///
 /// \par LINE CABLES
 ///
@@ -162,6 +165,21 @@ class TransmissionLine {
   /// \return The xyz point of the alignment path.
   Point3d PointXyzAlignment(const double& station) const;
 
+  /// \brief Gets the xyz point for the line structure on the alignment.
+  /// \param[in] index
+  ///   The line structure index.
+  /// \return The xyz point of the line structure on the alignment.
+  Point3d PointXyzLineStructure(const int& index) const;
+
+  /// \brief Gets the xyz point for the line structure attachment.
+  /// \param[in] index_structure
+  ///   The line structure index.
+  /// \param[in] index_attachment
+  ///   The attachment index.
+  /// \return The xyz point of the line structure attachment.
+  Point3d PointXyzLineStructureAttachment(const int& index_structure,
+                                          const int& index_attachment) const;
+
   /// \brief Validates member variables.
   /// \param[in] is_included_warnings
   ///   A flag that tightens the acceptable value range.
@@ -280,6 +298,16 @@ class TransmissionLine {
   ///   The alignment segment index.
   /// \return An xy unit vector that is parallel to the alignment segment.
   Vector2d VectorXyAlignmentSegment(const int& index) const;
+
+  /// \brief Gets an xy line structure alignment orientation vector.
+  /// \param[in] index
+  ///   The line structure index.
+  /// \return An xy unit vector for the longitudinal orientation of the line
+  ///   structure. If the line structure is not on an alignment point, this
+  ///   vector will match the alignment segment vector. If the line structure
+  ///   is on an alignment point, it will average the unit vectors of the
+  ///   back and ahead alignment segments (bisect the angle).
+  Vector2d VectorXyAlignmentStructure(const int& index) const;
 
   /// \var alignment_
   ///   The centerline path of the transmission line. The datum orientation for

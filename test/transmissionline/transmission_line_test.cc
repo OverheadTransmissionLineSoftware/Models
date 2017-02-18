@@ -288,6 +288,75 @@ TEST_F(TransmissionLineTest, PointXyzAlignment) {
   EXPECT_EQ(50, helper::Round(point.z, 2));
 }
 
+TEST_F(TransmissionLineTest, PointXyzLineStructure) {
+  Point3d point;
+
+  // checks some points, most are checked in another test
+  point = t_.PointXyzLineStructure(0);
+  EXPECT_EQ(0, helper::Round(point.x, 2));
+  EXPECT_EQ(0, helper::Round(point.y, 2));
+  EXPECT_EQ(0, helper::Round(point.z, 2));
+
+  point = t_.PointXyzLineStructure(1);
+  EXPECT_EQ(1000, helper::Round(point.x, 2));
+  EXPECT_EQ(0, helper::Round(point.y, 2));
+  EXPECT_EQ(0, helper::Round(point.z, 2));
+}
+
+TEST_F(TransmissionLineTest, PointXyzLineStructureAttachment) {
+  Point3d point;
+  LineStructure line_structure;
+
+  // builds a structure with a complicated attachment
+  Structure* structure = factory::BuildStructure();
+  StructureAttachment& attachment = structure->attachments.at(0);
+  attachment.offset_longitudinal = 10;
+  attachment.offset_transverse = 10;
+  attachment.offset_vertical_top = 10;
+
+  // modifies first structure with new base structure and checks coordinates
+  // this structure is at the origin and is not rotated
+  line_structure = *std::next(t_.line_structures()->cbegin(), 0);
+  line_structure.set_structure(structure);
+  t_.ModifyLineStructure(0, line_structure);
+
+  point = t_.PointXyzLineStructureAttachment(0, 0);
+  EXPECT_EQ(10, helper::Round(point.x, 2));
+  EXPECT_EQ(-10, helper::Round(point.y, 2));
+  EXPECT_EQ(110, helper::Round(point.z, 2));
+
+  /// modifes first structure to also have an offset
+  line_structure.set_offset(10);
+  line_structure.set_structure(structure);
+  t_.ModifyLineStructure(0, line_structure);
+
+  point = t_.PointXyzLineStructureAttachment(0, 0);
+  EXPECT_EQ(10, helper::Round(point.x, 2));
+  EXPECT_EQ(-20, helper::Round(point.y, 2));
+  EXPECT_EQ(110, helper::Round(point.z, 2));
+
+  // modifies first structure to also have a rotation
+  line_structure.set_rotation(90);
+  line_structure.set_structure(structure);
+  t_.ModifyLineStructure(0, line_structure);
+
+  point = t_.PointXyzLineStructureAttachment(0, 0);
+  EXPECT_EQ(10, helper::Round(point.x, 2));
+  EXPECT_EQ(0, helper::Round(point.y, 2));
+  EXPECT_EQ(110, helper::Round(point.z, 2));
+
+  // modifies second structure and checks coordinates
+  // this structure is on an angled alignment point, and should auto rotate
+  line_structure = *std::next(t_.line_structures()->cbegin(), 1);
+  line_structure.set_structure(structure);
+  t_.ModifyLineStructure(1, line_structure);
+
+  point = t_.PointXyzLineStructureAttachment(1, 0);
+  EXPECT_EQ(1014.14, helper::Round(point.x, 2));
+  EXPECT_EQ(0, helper::Round(point.y, 2));
+  EXPECT_EQ(110, helper::Round(point.z, 2));
+}
+
 TEST_F(TransmissionLineTest, Validate) {
   EXPECT_TRUE(t_.Validate(true, nullptr));
 }

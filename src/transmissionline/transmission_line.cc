@@ -379,6 +379,91 @@ Point3d TransmissionLine::PointXyzAlignment(const double& station) const {
   return PointXyzAlignmentFromStation(station);
 }
 
+Point3d TransmissionLine::PointXyzLineStructure(
+    const int& index) const {
+  // updates class if necessary
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return Point3d();
+    }
+  }
+
+  // checks if index is valid
+  if (IsValidLineStructureIndex(index) == false) {
+    return Point3d();
+  }
+
+  return points_xyz_structures_.at(index);
+}
+
+Point3d TransmissionLine::PointXyzLineStructureAttachment(
+    const int& index_structure,
+    const int& index_attachment) const {
+  // updates class if necessary
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return Point3d();
+    }
+  }
+
+  // checks if structure index is valid
+  if (IsValidLineStructureIndex(index_structure) == false) {
+    return Point3d();
+  }
+
+  // gets line structure
+  const LineStructure& line_structure = *std::next(line_structures_.cbegin(),
+                                                   index_structure);
+
+  // checks if attachment index is valid
+  const int kSizeAttachments = line_structure.structure()->attachments.size();
+  if ((index_attachment < 0) || (kSizeAttachments <= index_attachment)) {
+    return Point3d();
+  }
+
+  // gets base structure and attachment
+  const Structure* structure = line_structure.structure();
+  const StructureAttachment& attachment =
+      structure->attachments.at(index_attachment);
+
+  // creates an xy vector to rotate the attachment points
+  Vector2d vector;
+
+  // solves for an attachment point that only considers line structure
+  // modifiers
+  Point3d point_attachment(0, 0, 0);;
+
+  vector.set_x(attachment.offset_longitudinal);
+  vector.set_y(-attachment.offset_transverse);
+  vector.Rotate(line_structure.rotation());
+
+  point_attachment.x += vector.x();
+  point_attachment.y += vector.y() - line_structure.offset();
+  point_attachment.z += line_structure.height_adjustment()
+                        + structure->height
+                        + attachment.offset_vertical_top;
+
+  // gets an xy orientation unit vector for the line structure alignment
+  // rotates the attachment point to alignment
+  const double kAngleAlignment =
+      VectorXyAlignmentStructure(index_structure).Angle();
+
+  vector.set_x(point_attachment.x);
+  vector.set_y(point_attachment.y);
+  vector.Rotate(kAngleAlignment);
+
+  point_attachment.x = vector.x();
+  point_attachment.y = vector.y();
+
+  // adds base alignment point and returns
+  Point3d point_xyz = points_xyz_structures_.at(index_structure);
+  point_attachment.x += point_xyz.x;
+  point_attachment.y += point_xyz.y;
+  point_attachment.z += point_xyz.z;
+
+  return point_attachment;
+}
+
 bool TransmissionLine::Validate(const bool& is_included_warnings,
                                 std::list<ErrorMessage>* messages) const {
   // initializes
@@ -719,4 +804,49 @@ Vector2d TransmissionLine::VectorXyAlignmentSegment(const int& index) const {
   vector_xy.Scale(1 / vector_xy.Magnitude());
 
   return vector_xy;
+}
+
+Vector2d TransmissionLine::VectorXyAlignmentStructure(const int& index) const {
+  // gets the line structure
+  const LineStructure& line_structure = *std::next(line_structures_.cbegin(),
+                                                   index);
+
+  // gets alignment data
+  const std::list<AlignmentPoint>* points = alignment_.points();
+  const int index_segment = alignment_.IndexSegment(line_structure.station());
+
+  // checks if line structure station matches first or last alignment point
+  // these are the only points where there isn't two alignment vectors to
+  // average
+  if ((line_structure.station() == points->front().station)
+      || (line_structure.station() == points->back().station)) {
+    return VectorXyAlignmentSegment(index_segment);
+  }
+
+  // determines if the line structure is on an alignment point
+  auto iter = points->cbegin();
+  while (iter != points->cend()) {
+    const AlignmentPoint& point = *iter;
+    if (line_structure.station() == point.station) {
+      break;
+    } else {
+      iter++;
+    }
+  }
+
+  // line structure is not on alignment point, returns alignment segment vector
+  if (iter == points->cend()) {
+    return VectorXyAlignmentSegment(index_segment);
+  }
+
+  // gets the back and ahead alignment vectors and averages
+  const Vector2d& vector_back = VectorXyAlignmentSegment(index_segment);
+  const Vector2d& vector_ahead = VectorXyAlignmentSegment(index_segment + 1);
+
+  Vector2d vector_combined;
+  vector_combined.set_x(vector_back.x() + vector_ahead.x());
+  vector_combined.set_y(vector_back.y() + vector_ahead.y());
+  vector_combined.Scale(1 / vector_combined.Magnitude());
+
+  return vector_combined;
 }
