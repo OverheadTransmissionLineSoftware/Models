@@ -106,6 +106,27 @@ TEST_F(AlignmentTest, DeletePoint) {
   EXPECT_FALSE(status);
 }
 
+TEST_F(AlignmentTest, IndexSegment) {
+  double station;
+  int index;
+
+  station = -50;
+  index = a_.IndexSegment(station);
+  EXPECT_EQ(-1, index);
+
+  station = 50;
+  index = a_.IndexSegment(station);
+  EXPECT_EQ(0, index);
+
+  station = 100;
+  index = a_.IndexSegment(station);
+  EXPECT_EQ(0, index);
+
+  station = 150;
+  index = a_.IndexSegment(station);
+  EXPECT_EQ(1, index);
+}
+
 TEST_F(AlignmentTest, IsValidStation) {
   double station;
   bool is_valid = false;

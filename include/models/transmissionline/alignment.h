@@ -70,6 +70,14 @@ class Alignment {
   /// \return If the point is successfully deleted.
   bool DeletePoint(const int& index);
 
+  /// \brief Gets the segment index.
+  /// \param[in] station
+  ///   The station.
+  /// \return The segment index. If the station coincides with an alignment
+  ///   point, it will return the back segment. If the station is not valid,
+  ///   -1 is returned.
+  int IndexSegment(const double& station) const;
+
   /// \brief Determines if the station value is on the alignment (valid).
   /// \param[in] station
   ///   The station.

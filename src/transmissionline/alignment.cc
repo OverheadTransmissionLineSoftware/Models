@@ -95,6 +95,32 @@ bool Alignment::DeletePoint(const int& index) {
   return true;
 }
 
+int Alignment::IndexSegment(const double& station) const {
+  // checks station
+  if (IsValidStation(station) == false) {
+    return -1;
+  }
+
+  // checks for front point match
+  if (station == points_.front().station) {
+    return 0;
+  }
+
+  // searches points for a position
+  auto iter = points_.cbegin();
+  while (iter != points_.cend()) {
+    const AlignmentPoint& point = *iter;
+    if (station <= point.station) {
+      break;
+    } else {
+      iter++;
+    }
+  }
+
+  // returns index
+  return std::distance(points_.cbegin(), iter) - 1;
+}
+
 bool Alignment::IsValidStation(const double& station) const {
   // gets the first and last alignment points
   const AlignmentPoint& point_front = points_.front();
