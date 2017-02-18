@@ -229,6 +229,27 @@ bool TransmissionLine::HasConnection(const int& index_structure,
   return false;
 }
 
+int TransmissionLine::IndexLineStructure(
+    const LineStructure* line_structure) const {
+  // searches list for a memory address match
+  auto iter = line_structures_.cbegin();
+  while (iter != line_structures_.cend()) {
+    const LineStructure* line_structure_list = &(*iter);
+    if (line_structure == line_structure_list) {
+      break;
+    } else {
+      iter++;
+    }
+  }
+
+  // checks iterator and returns
+  if (iter == line_structures_.cend()) {
+    return -1;
+  } else {
+    return std::distance(line_structures_.cbegin(), iter);
+  }
+}
+
 int TransmissionLine::ModifyAlignmentPoint(const int& index,
                                            const AlignmentPoint& point) {
   is_updated_points_xyz_alignment_ = false;
@@ -519,27 +540,6 @@ void TransmissionLine::DeleteInvalidLineStructures() {
   }
 }
 
-int TransmissionLine::IndexLineStructure(
-    const LineStructure* line_structure) const {
-  // searches list for a memory address match
-  auto iter = line_structures_.cbegin();
-  while (iter != line_structures_.cend()) {
-    const LineStructure* line_structure_list = &(*iter);
-    if (line_structure == line_structure_list) {
-      break;
-    } else {
-      iter++;
-    }
-  }
-
-  // checks iterator and returns
-  if (iter == line_structures_.cend()) {
-    return -1;
-  } else {
-    return std::distance(line_structures_.cbegin(), iter);
-  }
-}
-
 bool TransmissionLine::IsUpdated() const {
   if ((is_updated_points_xyz_alignment_ == true)
       || (is_updated_points_xyz_structures_ == true)) {
@@ -569,28 +569,28 @@ bool TransmissionLine::IsValidLineStructureIndex(const int& index) const {
 
 Point3d TransmissionLine::PointXyzAlignmentFromStation(
     const double& station) const {
-  // searches alignment boundary points for current alignment path
-  std::list<AlignmentPoint>::const_iterator iter;
-  for (iter = alignment_.points()->cbegin();
-       iter != alignment_.points()->cend(); iter++) {
-    const AlignmentPoint& point = *iter;
-    if (station < point.station) {
-      // alignment point exceeds station
-      break;
-    } else if (station == point.station) {
-      // station coincides with existing alignment point
-      const int index = std::distance(alignment_.points()->cbegin(), iter);
-      return points_xyz_alignment_.at(index);
-    }
-  }
-
-  if (iter == alignment_.points()->cend()) {
+  // gets segment index
+  const int index_segment = alignment_.IndexSegment(station);
+  if (index_segment == -1) {
     return Point3d();
   }
 
-  const AlignmentPoint& point_align_ahead = *iter;
-  iter--;
-  const AlignmentPoint& point_align_back = *iter;
+  // gets the back and ahead xyz points
+  const Point3d& point_xyz_back = points_xyz_alignment_.at(index_segment);
+  const Point3d& point_xyz_ahead = points_xyz_alignment_.at(index_segment + 1);
+
+  // gets back and ahead alignment points
+  const AlignmentPoint& point_align_back =
+      *std::next(alignment_.points()->cbegin(), index_segment);
+  if (station == point_align_back.station) {
+    return point_xyz_back;
+  }
+
+  const AlignmentPoint& point_align_ahead =
+      *std::next(alignment_.points()->cbegin(), index_segment + 1);
+  if (station == point_align_ahead.station) {
+    return point_xyz_ahead;
+  }
 
   // calculates station and elevation distances
   const double distance_station = station - point_align_back.station;
@@ -598,27 +598,20 @@ Point3d TransmissionLine::PointXyzAlignmentFromStation(
                        / (point_align_ahead.station - point_align_back.station);
   const double distance_elevation = slope * distance_station;
 
-  // gets the back xyz point
-  const int index = std::distance(alignment_.points()->cbegin(), iter);
-  const Point3d& point_xyz_back = points_xyz_alignment_.at(index);
-
-  // creates an xy vector along the previous alignment path
-  // if the back position is the start of the xyz coordinates, sets to the
-  // default direction
-  Vector2d vector;
-  if (index == 0) {
-    vector.set_x(1);
-    vector.set_y(0);
+  // gets an xy vector along the previous alignment path
+  Vector2d vector_alignment;
+  if (index_segment == 0) {
+    vector_alignment.set_x(1);
+    vector_alignment.set_y(0);
   } else {
-    const Point3d& point_xyz_back_back = points_xyz_alignment_.at(index -1);
-    vector.set_x(point_xyz_back.x - point_xyz_back_back.x);
-    vector.set_y(point_xyz_back.y - point_xyz_back_back.y);
+    vector_alignment = VectorXyAlignmentSegment(index_segment - 1);
   }
 
   // gets point
   return PointXyzAlignmentFromVector(point_xyz_back, distance_station,
                                      distance_elevation,
-                                     point_align_back.rotation, vector);
+                                     point_align_back.rotation,
+                                     vector_alignment);
 }
 
 Point3d TransmissionLine::PointXyzAlignmentFromVector(
@@ -714,4 +707,16 @@ bool TransmissionLine::UpdatePointsXyzLineStructures() const {
   }
 
   return true;
+}
+
+Vector2d TransmissionLine::VectorXyAlignmentSegment(const int& index) const {
+  const Point3d& point_back = points_xyz_alignment_.at(index);
+  const Point3d& point_ahead = points_xyz_alignment_.at(index + 1);
+
+  Vector2d vector_xy;
+  vector_xy.set_x(point_ahead.x - point_back.x);
+  vector_xy.set_y(point_ahead.y - point_back.y);
+  vector_xy.Scale(1 / vector_xy.Magnitude());
+
+  return vector_xy;
 }

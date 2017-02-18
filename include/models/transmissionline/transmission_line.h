@@ -113,6 +113,13 @@ class TransmissionLine {
   bool HasConnection(const int& index_structure,
                      const int& index_attachment) const;
 
+  /// \brief Gets the line structure index.
+  /// \param[in] line_structure
+  ///   The line structure.
+  /// \return The index of the line structure. If no line structure is found,
+  ///   -1 is returned.
+  int IndexLineStructure(const LineStructure* line_structure) const;
+
   /// \brief Modifies an alignment point.
   /// \param[in] index
   ///   The list index.
@@ -211,13 +218,6 @@ class TransmissionLine {
   /// invalid.
   void DeleteInvalidLineStructures();
 
-  /// \brief Gets the line structure index.
-  /// \param[in] line_structure
-  ///   The line structure.
-  /// \return The index of the line structure. If no line structure is found,
-  ///   -1 is returned.
-  int IndexLineStructure(const LineStructure* line_structure) const;
-
   /// \brief Determines if class is updated.
   /// \return A boolean indicating if class is updated.
   bool IsUpdated() const;
@@ -274,6 +274,12 @@ class TransmissionLine {
   /// \brief Updates the cached coordinate points for line structures.
   /// \return A boolean indicating the success status of the update.
   bool UpdatePointsXyzLineStructures() const;
+
+  /// \brief Gets an xy alignment segment orientation vector.
+  /// \param[in] index
+  ///   The alignment segment index.
+  /// \return An xy unit vector that is parallel to the alignment segment.
+  Vector2d VectorXyAlignmentSegment(const int& index) const;
 
   /// \var alignment_
   ///   The centerline path of the transmission line. The datum orientation for
