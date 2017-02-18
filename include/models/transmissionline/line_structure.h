@@ -13,6 +13,11 @@
 /// \par OVERVIEW
 ///
 /// This class models a structure that is used in a transmission line.
+///
+/// \par POSITIONING
+///
+/// This class allows a structure to be uniquely modified at its position
+/// along the alignment.
 class LineStructure {
  public:
   /// \brief Default constructor.
