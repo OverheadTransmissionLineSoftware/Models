@@ -26,3 +26,16 @@ Point3d::Point3d(const double& x_value, const double& y_value,
   z = z_value;
 }
 
+SphericalPoint3d::SphericalPoint3d() {
+  angle_x = -999999;
+  angle_z = -999999;
+  radius = -999999;
+}
+
+SphericalPoint3d::SphericalPoint3d(const double& radius_value,
+                                   const double& angle_x_value,
+                                   const double& angle_z_value) {
+  angle_x = angle_x_value;
+  angle_z = angle_z_value;
+  radius = radius_value;
+}
