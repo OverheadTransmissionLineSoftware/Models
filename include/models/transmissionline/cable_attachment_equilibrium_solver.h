@@ -19,7 +19,9 @@
 ///
 /// This class uses three vectors to model static equilibrium:
 /// - Cable: The combined (back and ahead) force of the cable, modeled using
-///   catenaries. The orientation of this vector is defined by the catenaries.
+///   catenaries. The orientation of this vector is defined by the catenary
+///   tensions. The horizontal tension of the back and ahead catenaries must
+///   be equal.
 /// - Hardware: The reactive force of the hardware string. The orientation of
 ///   this is vector is defined by the angle of the hardware assembly.
 /// - Imbalance: The difference between the cable and hardware force vectors.
@@ -28,13 +30,19 @@
 /// 
 /// \par COORDINATE SYSTEM
 ///
-/// This class uses its own coordinate system as follows:
-///  - x = longitudinal, ahead=positive
-///  - y = transverse, right=positive
-///  - z = vertical, up=positive
-/// The x axis has restricted movement, so the final attachment position
-/// will lie in the y-z plane. The y-axis is defined by the bisect angle between
-/// the back and ahead catenary angles (x-y) plane.
+/// The origin coincides with the cable attachment, which is where static
+/// equilibrium is determined. The coordinate system xy plane is oriented such
+/// that the forces along the x-axis sum to zero. The x-axis bisects the xy
+/// angle between the back and and ahead catenaries. For a tangent xy angle
+/// (180 degrees), the coordinate system would be as follows:
+///  - x = longitudinal
+///  - y = transverse
+///  - z = vertical
+///
+/// \par CATENARY DIRECTION
+///
+/// The catenary direction defines how the back and ahead catenaries extend from
+/// the origin, relative to the y-axis.
 class CableAttachmentEquilibriumSolver {
  public:
   /// \brief Default constructor.
@@ -45,6 +53,10 @@ class CableAttachmentEquilibriumSolver {
 
   /// \brief Gets the hardware equilibrium angle (in the y-z plane).
   /// \return The hardware equilibrium angle (in the y-z plane).
+  /// This angle is measured from the positive z-axis, and will be in the range
+  /// of 90-270. If the angle is between 90-180, the equilibrium angle is in the
+  /// same side of the y-axis as the catenaries. If between 180-270, the angle
+  /// is in the opposite side of the y-axis.
   double AngleEquilibrium() const;
 
   /// \brief Gets the tension imbalance.
@@ -77,6 +89,10 @@ class CableAttachmentEquilibriumSolver {
   /// \return The back-on-line catenary.
   const Catenary3d* catenary_back() const;
 
+  /// \brief Gets the y-axis direction of the catenaries.
+  /// \return The y-axis direction of the catenaries.
+  AxisDirectionType direction_catenaries() const;
+
   /// \brief Sets the angle between catenaries.
   /// \param[in] angle
   ///   The angle between the catenaries.
@@ -96,6 +112,11 @@ class CableAttachmentEquilibriumSolver {
   /// \param[in] catenary
   ///   The catenary.
   void set_catenary_back(const Catenary3d* catenary);
+
+  /// \brief Sets the y-axis direction of the catenaries.
+  /// \param[in] direction_catenaries
+  ///   The y-axis direction of the catenaries.
+  void set_direction_catenaries(const AxisDirectionType& direction_catenaries);
 
  private:
   /// \brief Determines if class is updated.
@@ -131,6 +152,10 @@ class CableAttachmentEquilibriumSolver {
   ///   The back-on-line catenary. This catenary produces a tension that has a
   ///   negative x component.
   const Catenary3d* catenary_back_;
+
+  /// \var direction_catenaries_
+  ///   The y-axis direction of the catenaries, as they extend from the origin.
+  AxisDirectionType direction_catenaries_;
 
   /// \var is_updated_
   ///   An indicator that tells if the class is updated.

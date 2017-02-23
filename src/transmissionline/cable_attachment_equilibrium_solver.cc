@@ -11,6 +11,7 @@ CableAttachmentEquilibriumSolver::CableAttachmentEquilibriumSolver() {
   angle_hardware_equilibrium_ = -999999;
   catenary_ahead_ = nullptr;
   catenary_back_ = nullptr;
+  direction_catenaries_ = AxisDirectionType::kPositive;
 
   is_updated_ = false;
 }
@@ -120,6 +121,11 @@ const Catenary3d* CableAttachmentEquilibriumSolver::catenary_back() const {
   return catenary_back_;
 }
 
+AxisDirectionType CableAttachmentEquilibriumSolver::direction_catenaries()
+    const {
+  return direction_catenaries_;
+}
+
 void CableAttachmentEquilibriumSolver::set_angle_catenaries(
     const double& angle) {
   angle_catenaries_ = angle;
@@ -141,6 +147,12 @@ void CableAttachmentEquilibriumSolver::set_catenary_ahead(
 void CableAttachmentEquilibriumSolver::set_catenary_back(
     const Catenary3d* catenary) {
   catenary_back_ = catenary;
+  is_updated_ = false;
+}
+
+void CableAttachmentEquilibriumSolver::set_direction_catenaries(
+    const AxisDirectionType& direction_catenaries) {
+  direction_catenaries_ = direction_catenaries;
   is_updated_ = false;
 }
 
@@ -168,14 +180,22 @@ bool CableAttachmentEquilibriumSolver::Update() const {
   // system
   // sums the catenary tension vectors to get the cable tension vector
   tension = catenary_back_->Tension(1, AxisDirectionType::kNegative);
-  tension.Rotate(Plane2dType::kXy, angle_rotate_xy * -1);
+  if (direction_catenaries_ == AxisDirectionType::kPositive) {
+    tension.Rotate(Plane2dType::kXy, angle_rotate_xy * -1);
+  } else {
+    tension.Rotate(Plane2dType::kXy, angle_rotate_xy);
+  }
 
   tension_cable_.set_x(tension.x());
   tension_cable_.set_y(tension.y());
   tension_cable_.set_z(tension.z());
 
   tension = catenary_ahead_->Tension(0, AxisDirectionType::kPositive);
-  tension.Rotate(Plane2dType::kXy, angle_rotate_xy);
+  if (direction_catenaries_ == AxisDirectionType::kPositive) {
+    tension.Rotate(Plane2dType::kXy, angle_rotate_xy);
+  } else {
+    tension.Rotate(Plane2dType::kXy, angle_rotate_xy * -1);
+  }
 
   tension_cable_.set_x(tension_cable_.x() + tension.x());
   tension_cable_.set_y(tension_cable_.y() + tension.y());
@@ -183,21 +203,32 @@ bool CableAttachmentEquilibriumSolver::Update() const {
 
   // solves hardware tension vector by projecting cable tension vector onto
   // hardware angle unit vector, and then rotating to oppose cable vector
-  tension_hardware_.set_y(1);
-  tension_hardware_.Rotate(Plane2dType::kYz, 90 + angle_hardware_);
-  tension_hardware_.set_x(tension_hardware_.x() * std::abs(tension_cable_.x()));
-  tension_hardware_.set_y(tension_hardware_.y() * std::abs(tension_cable_.y()));
-  tension_hardware_.set_z(tension_hardware_.z() * std::abs(tension_cable_.z()));
-  tension_hardware_.Rotate(Plane2dType::kYz, 180);
+  const double tension_cable = tension_cable_.Magnitude();
+
+  tension_hardware_.set_z(1);
+  if (direction_catenaries_ == AxisDirectionType::kPositive) {
+    tension_hardware_.Rotate(Plane2dType::kZy, angle_hardware_);
+  } else {
+    tension_hardware_.Rotate(Plane2dType::kZy, 360 - angle_hardware_);
+  }
+  tension_hardware_.set_x(tension_hardware_.x() * tension_cable);
+  tension_hardware_.set_y(tension_hardware_.y() * tension_cable);
+  tension_hardware_.set_z(tension_hardware_.z() * tension_cable);
+  tension_hardware_.Rotate(Plane2dType::kZy, 180);
 
   // solves imbalance tension vector
-  tension_imbalance_.set_x(tension_hardware_.x() + tension_cable_.x());
-  tension_imbalance_.set_y(tension_hardware_.y() + tension_cable_.y());
-  tension_imbalance_.set_z(tension_hardware_.z() + tension_cable_.z());
+  tension_imbalance_.set_x(-1 * (tension_hardware_.x() + tension_cable_.x()));
+  tension_imbalance_.set_y(-1 * (tension_hardware_.y() + tension_cable_.y()));
+  tension_imbalance_.set_z(-1 * (tension_hardware_.z() + tension_cable_.z()));
 
   // calculates the equilibrium angle using the cable tension vector
-  angle_hardware_equilibrium_ = 360 -
-                               (tension_cable_.Angle(Plane2dType::kYz) - 90);
+  if (direction_catenaries_ == AxisDirectionType::kPositive) {
+    angle_hardware_equilibrium_ = tension_cable_.Angle(Plane2dType::kZy);
+  } else {
+    angle_hardware_equilibrium_ = 360 - tension_cable_.Angle(Plane2dType::kZy);
+  }
 
-  return true;
+  // updates class status
+  is_updated_ = true;
+  return is_updated_;
 }
