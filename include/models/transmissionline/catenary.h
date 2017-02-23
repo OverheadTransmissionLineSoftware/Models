@@ -38,7 +38,7 @@ class Catenary2d {
   double Constant() const;
 
   /// \brief Gets the minimum allowable constant for the provided endpoint
-  ///        spacing.
+  ///   spacing.
   /// \param[in] spacing_endpoints
   ///   The vector magnitude of the endpoint spacing.
   /// \return The minimum allowable constant.
@@ -277,11 +277,16 @@ class Catenary2d {
 ///
 /// \par COORDINATE SYSTEM
 ///
-/// The coordinate system origin (0,0) is the catenary lowpoint, unless
-/// shifted. A shifted system uses the left endpoint as the origin.
+/// The coordinate system origin (0,0) is the the left endpoint.
 ///  x = horizontal
 ///  y = transverse
 ///  z = vertical
+///
+/// \par TRANSVERSE LOAD
+///
+/// Transverse load is specified in the unit weight vector, and the direction
+/// is specified separately. The transverse load direction will determine if
+/// the catenary will be negative/positive of the y-axis.
 class Catenary3d {
  public:
   /// \brief Constructor.
@@ -417,6 +422,15 @@ class Catenary3d {
   bool Validate(const bool& is_included_warnings = true,
                 std::list<ErrorMessage>* messages = nullptr) const;
 
+  /// \brief Gets the direction of the transverse load.
+  /// \return The direction of the transverse load.
+  AxisDirectionType direction_transverse() const;
+
+  /// \brief Sets the direction of the transverse load.
+  /// \param[in] direction
+  ///   The direction of the transverse load.
+  void set_direction_transverse(const AxisDirectionType& direction);
+
   /// \brief Sets the endpoint spacing.
   /// \param[in] spacing_endpoints
   ///   The vector spacing.
@@ -461,6 +475,12 @@ class Catenary3d {
   /// \var catenary_2d_
   ///   A 2D catenary, with only vertical and horizontal axes.
   mutable Catenary2d  catenary_2d_;
+
+  /// \var direction_transverse_
+  ///   The direction of the transverse load. This determines if the catenary
+  ///   will be located negative/positive of the y-axis when transverse load
+  ///   is specified.
+  AxisDirectionType direction_transverse_;
 
   /// \var is_updated_catenary_2d_
   ///   An indicator that tells if the 2D catenary is updated.

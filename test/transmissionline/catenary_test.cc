@@ -148,6 +148,7 @@ class Catenary3dTest : public ::testing::Test {
   Catenary3dTest() {
     Vector3d spacing_endpoints(1000, 0, 0);
 
+    c_.set_direction_transverse(AxisDirectionType::kPositive);
     c_.set_spacing_endpoints(spacing_endpoints);
     c_.set_tension_horizontal(1000);
     c_.set_weight_unit(Vector3d(0, 0, 0.5));
@@ -212,6 +213,24 @@ TEST_F(Catenary3dTest, Coordinate) {
   EXPECT_EQ(1000, helper::Round(coord.x, 1));
   EXPECT_EQ(0, helper::Round(coord.y, 1));
   EXPECT_EQ(100, helper::Round(coord.z, 1));
+
+  // reverses transverse loading direction
+  c_.set_direction_transverse(AxisDirectionType::kNegative);
+
+  coord = c_.Coordinate(0);
+  EXPECT_EQ(0, helper::Round(coord.x, 1));
+  EXPECT_EQ(0, helper::Round(coord.y, 1));
+  EXPECT_EQ(0, helper::Round(coord.z, 1));
+
+  coord = c_.Coordinate(0.5);
+  EXPECT_EQ(506.2, helper::Round(coord.x, 1));
+  EXPECT_EQ(-44.7, helper::Round(coord.y, 1));
+  EXPECT_EQ(5.7, helper::Round(coord.z, 1));
+
+  coord = c_.Coordinate(1);
+  EXPECT_EQ(1000, helper::Round(coord.x, 1));
+  EXPECT_EQ(0, helper::Round(coord.y, 1));
+  EXPECT_EQ(100, helper::Round(coord.z, 1));
 }
 
 TEST_F(Catenary3dTest, CoordinateChord) {
@@ -235,6 +254,37 @@ TEST_F(Catenary3dTest, CoordinateChord) {
   EXPECT_EQ(1000, helper::Round(coord.x, 1));
   EXPECT_EQ(0, helper::Round(coord.y, 1));
   EXPECT_EQ(100, helper::Round(coord.z, 1));
+}
+
+TEST_F(Catenary3dTest, SwingAngle) {
+  double value;
+
+  // checks with no transverse wind
+  value = c_.SwingAngle();
+  EXPECT_EQ(0, helper::Round(value, 0));
+
+  // adds transverse load
+  c_.set_weight_unit(Vector3d(0, 0.3535533, 0.3535533));
+  value = c_.SwingAngle();
+  EXPECT_EQ(45, helper::Round(value, 0));
+}
+
+TEST_F(Catenary3dTest, Tension) {
+  Vector3d tension;
+
+  // checks with no transverse wind
+  tension = c_.Tension(0, AxisDirectionType::kPositive);
+  EXPECT_EQ(1000, helper::Round(tension.x(), 2));
+  EXPECT_EQ(0, helper::Round(tension.y(), 2));
+  EXPECT_EQ(-252.61, helper::Round(tension.z(), 2));
+
+  // adds transverse load and checks
+  c_.set_weight_unit(Vector3d(0, 0.3535533, 0.3535533));
+
+  tension = c_.Tension(0, AxisDirectionType::kPositive);
+  EXPECT_EQ(1000, helper::Round(tension.x(), 2));
+  EXPECT_EQ(178.62, helper::Round(tension.y(), 2));
+  EXPECT_EQ(-178.62, helper::Round(tension.z(), 2));
 }
 
 TEST_F(Catenary3dTest, Validate) {
