@@ -314,7 +314,7 @@ TransmissionLine* BuildTransmissionLine() {
 
   point = AlignmentPoint();
   point.elevation = 100;
-  point.rotation = 0;
+  point.rotation = 90;
   point.station = 3000;
   line->AddAlignmentPoint(point);
 

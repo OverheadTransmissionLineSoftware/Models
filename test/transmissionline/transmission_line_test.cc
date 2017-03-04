@@ -227,8 +227,8 @@ TEST_F(TransmissionLineTest, PointsXyzAlignment) {
   EXPECT_EQ(100, helper::Round(point.z, 2));
 
   point = points_xyz->at(4);
-  EXPECT_EQ(3000, helper::Round(point.x, 2));
-  EXPECT_EQ(1000, helper::Round(point.y, 2));
+  EXPECT_EQ(2000, helper::Round(point.x, 2));
+  EXPECT_EQ(2000, helper::Round(point.y, 2));
   EXPECT_EQ(0, helper::Round(point.z, 2));
 }
 
@@ -258,8 +258,8 @@ TEST_F(TransmissionLineTest, PointsXyzLineStructures) {
   EXPECT_EQ(100, helper::Round(point.z, 2));
 
   point = points_xyz->at(4);
-  EXPECT_EQ(3000, helper::Round(point.x, 2));
-  EXPECT_EQ(1000, helper::Round(point.y, 2));
+  EXPECT_EQ(2000, helper::Round(point.x, 2));
+  EXPECT_EQ(2000, helper::Round(point.y, 2));
   EXPECT_EQ(0, helper::Round(point.z, 2));
 }
 
@@ -283,8 +283,8 @@ TEST_F(TransmissionLineTest, PointXyzAlignment) {
   EXPECT_EQ(50, helper::Round(point.z, 2));
 
   point = t_.PointXyzAlignment(3500);
-  EXPECT_EQ(2500, helper::Round(point.x, 2));
-  EXPECT_EQ(1000, helper::Round(point.y, 2));
+  EXPECT_EQ(2000, helper::Round(point.x, 2));
+  EXPECT_EQ(1500, helper::Round(point.y, 2));
   EXPECT_EQ(50, helper::Round(point.z, 2));
 }
 
