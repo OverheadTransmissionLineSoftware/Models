@@ -51,7 +51,13 @@
 		<Unit filename="../../include/models/transmissionline/cable.h">
 			<Option virtualFolder="Header Files/" />
 		</Unit>
+		<Unit filename="../../include/models/transmissionline/cable_attachment_equilibrium_solver.h">
+			<Option virtualFolder="Header Files/" />
+		</Unit>
 		<Unit filename="../../include/models/transmissionline/cable_constraint.h">
+			<Option virtualFolder="Header Files/" />
+		</Unit>
+		<Unit filename="../../include/models/transmissionline/cable_position_locator.h">
 			<Option virtualFolder="Header Files/" />
 		</Unit>
 		<Unit filename="../../include/models/transmissionline/cable_unit_load_calculator.h">
@@ -63,16 +69,37 @@
 		<Unit filename="../../include/models/transmissionline/catenary_solver.h">
 			<Option virtualFolder="Header Files/" />
 		</Unit>
+		<Unit filename="../../include/models/transmissionline/hardware.h">
+			<Option virtualFolder="Header Files/" />
+		</Unit>
 		<Unit filename="../../include/models/transmissionline/line_cable.h">
+			<Option virtualFolder="Header Files/" />
+		</Unit>
+		<Unit filename="../../include/models/transmissionline/line_structure.h">
+			<Option virtualFolder="Header Files/" />
+		</Unit>
+		<Unit filename="../../include/models/transmissionline/structure.h">
+			<Option virtualFolder="Header Files/" />
+		</Unit>
+		<Unit filename="../../include/models/transmissionline/transmission_line.h">
 			<Option virtualFolder="Header Files/" />
 		</Unit>
 		<Unit filename="../../include/models/transmissionline/weather_load_case.h">
 			<Option virtualFolder="Header Files/" />
 		</Unit>
+		<Unit filename="../../src/transmissionline/alignment.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
 		<Unit filename="../../src/transmissionline/cable.cc">
 			<Option virtualFolder="Source Files/" />
 		</Unit>
+		<Unit filename="../../src/transmissionline/cable_attachment_equilibrium_solver.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
 		<Unit filename="../../src/transmissionline/cable_constraint.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
+		<Unit filename="../../src/transmissionline/cable_position_locator.cc">
 			<Option virtualFolder="Source Files/" />
 		</Unit>
 		<Unit filename="../../src/transmissionline/cable_unit_load_calculator.cc">
@@ -84,7 +111,19 @@
 		<Unit filename="../../src/transmissionline/catenary_solver.cc">
 			<Option virtualFolder="Source Files/" />
 		</Unit>
+		<Unit filename="../../src/transmissionline/hardware.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
 		<Unit filename="../../src/transmissionline/line_cable.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
+		<Unit filename="../../src/transmissionline/line_structure.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
+		<Unit filename="../../src/transmissionline/structure.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
+		<Unit filename="../../src/transmissionline/transmission_line.cc">
 			<Option virtualFolder="Source Files/" />
 		</Unit>
 		<Unit filename="../../src/transmissionline/weather_load_case.cc">

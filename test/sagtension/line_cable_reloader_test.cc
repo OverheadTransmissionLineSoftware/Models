@@ -123,10 +123,12 @@ TEST_F(LineCableReloaderTest, TensionAverageComponent) {
 
 TEST_F(LineCableReloaderTest, TensionHorizontal) {
   double value = -999999;
+  CableConstraint constraint = linecable_->constraint();
 
   // changes the constraint type and limit to initial condition
-  linecable_->constraint.condition = CableConditionType::kInitial;
-  linecable_->constraint.limit = 6000;
+  constraint.condition = CableConditionType::kInitial;
+  constraint.limit = 6000;
+  linecable_->set_constraint(constraint);
   l_.set_line_cable(linecable_);
 
   weathercase_reloaded_->description = "0-0-60";
@@ -191,8 +193,9 @@ TEST_F(LineCableReloaderTest, TensionHorizontal) {
   EXPECT_EQ(17123, helper::Round(value, 0));
 
   // changes the constraint type and limit to stretched load condition
-  linecable_->constraint.condition = CableConditionType::kLoad;
-  linecable_->constraint.limit = 5561.5;
+  constraint.condition = CableConditionType::kLoad;
+  constraint.limit = 5561.5;
+  linecable_->set_constraint(constraint);
   l_.set_line_cable(linecable_);
 
   // reloads at same case as constraint, checks all conditions
@@ -216,8 +219,9 @@ TEST_F(LineCableReloaderTest, TensionHorizontal) {
   EXPECT_EQ(5582, helper::Round(value, 0));
 
   // changes the constraint type and limit to stretched creep condition
-  linecable_->constraint.condition = CableConditionType::kCreep;
-  linecable_->constraint.limit = 5582.25;
+  constraint.condition = CableConditionType::kCreep;
+  constraint.limit = 5582.25;
+  linecable_->set_constraint(constraint);
   l_.set_line_cable(linecable_);
 
   // reloads at same case as constraint, checks all conditions

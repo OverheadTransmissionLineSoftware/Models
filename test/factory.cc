@@ -159,7 +159,18 @@ CableElongationModel* BuildCableElongationModel(const SagTensionCable* cable) {
   return model;
 }
 
+Hardware* BuildHardware() {
+  Hardware* hardware = new Hardware();
+  hardware->area_cross_section = 1.0;
+  hardware->length = 10;
+  hardware->type = Hardware::HardwareType::kDeadEnd;
+  hardware->weight = 100;
+
+  return hardware;
+}
+
 LineCable* BuildLineCable() {
+  LineStructure* line_structure = nullptr;
   WeatherLoadCase* weathercase = nullptr;
 
   // builds constraint
@@ -177,9 +188,9 @@ LineCable* BuildLineCable() {
   constraint.type_limit = CableConstraint::LimitType::kHorizontalTension;
 
   LineCable* line_cable = new LineCable();
-  line_cable->cable = factory::BuildCable();
-  line_cable->constraint = constraint;
-  line_cable->spacing_attachments_ruling_span = Vector3d(1200, 0, 0);
+  line_cable->set_cable(factory::BuildCable());
+  line_cable->set_constraint(constraint);
+  line_cable->set_spacing_attachments_ruling_span(Vector3d(1200, 0, 0));
 
   // builds creep stretch weathercase
   weathercase = new WeatherLoadCase();
@@ -188,7 +199,7 @@ LineCable* BuildLineCable() {
   weathercase->density_ice = 0;
   weathercase->pressure_wind = 0;
   weathercase->temperature_cable = 60;
-  line_cable->weathercase_stretch_creep = weathercase;
+  line_cable->set_weathercase_stretch_creep(weathercase);
 
   // builds load stretch weathercase
   weathercase = new WeatherLoadCase();
@@ -198,9 +209,45 @@ LineCable* BuildLineCable() {
   weathercase->density_ice = 57.3;
   weathercase->pressure_wind = 8;
   weathercase->temperature_cable = 00;
-  line_cable->weathercase_stretch_load = weathercase;
+  line_cable->set_weathercase_stretch_load(weathercase);
+
+  // builds connections
+  LineCableConnection connection;
+  line_structure = factory::BuildLineStructure();
+  line_structure->set_station(0);
+  connection.line_structure = line_structure;
+  connection.index_attachment = 0;
+  line_cable->AddConnection(connection);
+
+  connection = LineCableConnection();
+  line_structure = factory::BuildLineStructure();
+  line_structure->set_station(1000);
+  connection.line_structure = line_structure;
+  connection.index_attachment = 0;
+  line_cable->AddConnection(connection);
 
   return line_cable;
+}
+
+LineStructure* BuildLineStructure(const Structure* structure) {
+  // builds structure if necessary
+  if (structure == nullptr) {
+    structure = factory::BuildStructure();
+  }
+
+  // sets line placement and orientation
+  LineStructure* line_structure = new LineStructure();
+  line_structure->set_height_adjustment(0);
+  line_structure->set_offset(0);
+  line_structure->set_rotation(0);
+  line_structure->set_station(0);
+  line_structure->set_structure(structure);
+
+  // adds hardware
+  line_structure->AttachHardware(0, factory::BuildHardware());
+  line_structure->AttachHardware(2, factory::BuildHardware());
+
+  return line_structure;
 }
 
 SagTensionCable* BuildSagTensionCable() {
@@ -211,13 +258,177 @@ SagTensionCable* BuildSagTensionCable() {
   return cable_sagtension;
 }
 
+Structure* BuildStructure() {
+  StructureAttachment attachment;
+
+  Structure* structure = new Structure();
+  structure->description = "POLE - EXAMPLE";
+  structure->height = 100;
+
+  // adds attachment points
+  attachment = StructureAttachment();
+  attachment.offset_longitudinal = -1;
+  attachment.offset_transverse = 0;
+  attachment.offset_vertical_top = 0;
+  structure->attachments.push_back(attachment);
+
+  attachment = StructureAttachment();
+  attachment.offset_longitudinal = 0;
+  attachment.offset_transverse = 0;
+  attachment.offset_vertical_top = 0;
+  structure->attachments.push_back(attachment);
+
+  attachment = StructureAttachment();
+  attachment.offset_longitudinal = 1;
+  attachment.offset_transverse = 0;
+  attachment.offset_vertical_top = 0;
+  structure->attachments.push_back(attachment);
+
+  return structure;
+}
+
+TransmissionLine* BuildTransmissionLine() {
+  TransmissionLine* line = new TransmissionLine();
+  line->set_origin(Point3d(0, 0, 0));
+
+  // adds alignment points
+  AlignmentPoint point;
+
+  point = AlignmentPoint();
+  point.elevation = 0;
+  point.rotation = 0;
+  point.station = 0;
+  line->AddAlignmentPoint(point);
+
+  point = AlignmentPoint();
+  point.elevation = 0;
+  point.rotation = 90;
+  point.station = 1000;
+  line->AddAlignmentPoint(point);
+
+  point = AlignmentPoint();
+  point.elevation = 0;
+  point.rotation = -90;
+  point.station = 2000;
+  line->AddAlignmentPoint(point);
+
+  point = AlignmentPoint();
+  point.elevation = 100;
+  point.rotation = 90;
+  point.station = 3000;
+  line->AddAlignmentPoint(point);
+
+  point = AlignmentPoint();
+  point.elevation = 0;
+  point.rotation = 0;
+  point.station = 4000;
+  line->AddAlignmentPoint(point);
+
+  // adds line structures
+  Hardware* hardware_deadend = factory::BuildHardware();
+  hardware_deadend->type = Hardware::HardwareType::kDeadEnd;
+
+  Hardware* hardware_suspension = factory::BuildHardware();
+  hardware_suspension->type = Hardware::HardwareType::kSuspension;
+
+  LineStructure line_structure;
+
+  line_structure = *factory::BuildLineStructure();
+  line_structure.set_station(0);
+  line_structure.DetachHardware(0);
+  line_structure.DetachHardware(1);
+  line_structure.DetachHardware(2);
+  line_structure.AttachHardware(2, hardware_deadend);
+  line->AddLineStructure(line_structure);
+
+  line_structure = *factory::BuildLineStructure();
+  line_structure.set_station(1000);
+  line_structure.DetachHardware(0);
+  line_structure.DetachHardware(1);
+  line_structure.DetachHardware(2);
+  line_structure.AttachHardware(0, hardware_deadend);
+  line_structure.AttachHardware(2, hardware_deadend);
+  line->AddLineStructure(line_structure);
+
+  line_structure = *factory::BuildLineStructure();
+  line_structure.set_station(2000);
+  line_structure.DetachHardware(0);
+  line_structure.DetachHardware(1);
+  line_structure.DetachHardware(2);
+  line_structure.AttachHardware(0, hardware_deadend);
+  line_structure.AttachHardware(2, hardware_deadend);
+  line->AddLineStructure(line_structure);
+
+  line_structure = *factory::BuildLineStructure();
+  line_structure.set_station(3000);
+  line_structure.DetachHardware(0);
+  line_structure.DetachHardware(1);
+  line_structure.DetachHardware(2);
+  line_structure.AttachHardware(1, hardware_suspension);
+  line->AddLineStructure(line_structure);
+
+  line_structure = *factory::BuildLineStructure();
+  line_structure.set_station(4000);
+  line_structure.DetachHardware(0);
+  line_structure.DetachHardware(1);
+  line_structure.DetachHardware(2);
+  line_structure.AttachHardware(0, hardware_deadend);
+  line->AddLineStructure(line_structure);
+
+  // adds line cables
+  LineCable line_cable;
+  LineCableConnection connection;
+  const std::list<LineStructure>* line_structures = line->line_structures();
+
+  line_cable = *factory::BuildLineCable();
+  line_cable.ClearConnections();
+  connection.line_structure = &(*std::next(line_structures->cbegin(), 0));
+  connection.index_attachment = 2;
+  line_cable.AddConnection(connection);
+  connection.line_structure = &(*std::next(line_structures->cbegin(), 1));
+  connection.index_attachment = 0;
+  line_cable.AddConnection(connection);
+  line->AddLineCable(line_cable);
+
+  line_cable = *factory::BuildLineCable();
+  line_cable.ClearConnections();
+  connection.line_structure = &(*std::next(line_structures->cbegin(), 1));
+  connection.index_attachment = 2;
+  line_cable.AddConnection(connection);
+  connection.line_structure = &(*std::next(line_structures->cbegin(), 2));
+  connection.index_attachment = 0;
+  line_cable.AddConnection(connection);
+  line->AddLineCable(line_cable);
+
+  line_cable = *factory::BuildLineCable();
+  line_cable.ClearConnections();
+  connection.line_structure = &(*std::next(line_structures->cbegin(), 2));
+  connection.index_attachment = 2;
+  line_cable.AddConnection(connection);
+  connection.line_structure = &(*std::next(line_structures->cbegin(), 3));
+  connection.index_attachment = 1;
+  line_cable.AddConnection(connection);
+  connection.line_structure = &(*std::next(line_structures->cbegin(), 4));
+  connection.index_attachment = 0;
+  line_cable.AddConnection(connection);
+  line->AddLineCable(line_cable);
+
+  return line;
+}
+
 void DestroyLineCable(LineCable* linecable) {
-  delete linecable->cable;
-  delete linecable->constraint.case_weather;
-  delete linecable->weathercase_stretch_creep;
-  delete linecable->weathercase_stretch_load;
+  delete linecable->cable();
+  delete linecable->constraint().case_weather;
+  delete linecable->weathercase_stretch_creep();
+  delete linecable->weathercase_stretch_load();
 
   delete linecable;
+}
+
+void DestroyLineStructure(LineStructure* linestructure) {
+  delete linestructure->structure();
+
+  delete linestructure;
 }
 
 void DestroySagTensionCable(SagTensionCable* cable) {

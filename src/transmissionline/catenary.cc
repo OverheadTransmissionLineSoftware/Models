@@ -620,6 +620,7 @@ bool Catenary2d::ValidateCurveAndSpacing(
 }
 
 Catenary3d::Catenary3d() {
+  direction_transverse_ = AxisDirectionType::kPositive;
   is_updated_catenary_2d_ = false;
 }
 
@@ -678,6 +679,9 @@ Point3d Catenary3d::Coordinate(const double& position_fraction) const {
 
   // rotates vector along yz axis
   angle = weight_unit_.Angle(Plane2dType::kZy);
+  if (direction_transverse_ == AxisDirectionType::kNegative) {
+    angle = angle * -1;
+  }
   vector.Rotate(Plane2dType::kYz, angle);
 
   // adds rotated vector components to chord coordinate
@@ -786,7 +790,7 @@ double Catenary3d::SwingAngle() const {
   }
 
   angle_swing = units::ConvertAngle(
-      atan(weight_unit_.y() / weight_unit_.z()),
+      std::atan(weight_unit_.y() / weight_unit_.z()),
       units::AngleConversionType::kRadiansToDegrees);
   return angle_swing;
 }
@@ -842,7 +846,7 @@ Vector3d Catenary3d::TangentVector(const double& position_fraction,
 
   // gets 2D tangent vector
   Vector2d tangent_vector_2d = catenary_2d_.TangentVector(position_fraction,
-                               direction);
+                                                          direction);
 
   // sets initial 3D vector values
   tangent_vector.set_x(tangent_vector_2d.x());
@@ -864,17 +868,12 @@ Vector3d Catenary3d::TangentVector(const double& position_fraction,
 
   // rotates 3D vector due to transverse loading
   if (weight_unit_.y() != 0) {
-
-    double angle_rotation = units::ConvertAngle(
-        atan(weight_unit_.y() / weight_unit_.z()),
-        units::AngleConversionType::kRadiansToDegrees);
-
-    if (0 < weight_unit_.y()) {
+    double angle_rotation = SwingAngle();
+    if (direction_transverse_ == AxisDirectionType::kNegative) {
       angle_rotation = angle_rotation * -1;
     }
 
-    tangent_vector.Rotate(Plane2dType::kYz,
-                          angle_rotation);
+    tangent_vector.Rotate(Plane2dType::kYz, angle_rotation);
   }
 
   return tangent_vector;
@@ -1018,6 +1017,14 @@ bool Catenary3d::Validate(const bool& is_included_warnings,
   }
 
   return is_valid;
+}
+
+AxisDirectionType Catenary3d::direction_transverse() const {
+  return direction_transverse_;
+}
+
+void Catenary3d::set_direction_transverse(const AxisDirectionType& direction) {
+  direction_transverse_ = direction;
 }
 
 void Catenary3d::set_spacing_endpoints(const Vector3d& spacing_endpoints) {

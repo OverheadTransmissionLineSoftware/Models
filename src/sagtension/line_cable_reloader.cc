@@ -262,7 +262,7 @@ void LineCableReloader::set_line_cable(const LineCable* line_cable) {
   if (line_cable == nullptr) {
     cable_sagtension_.set_cable_base(nullptr);
   } else {
-    cable_sagtension_.set_cable_base(line_cable_->cable);
+    cable_sagtension_.set_cable_base(line_cable_->cable());
   }
 
   is_updated_catenary_constraint_ = false;
@@ -283,27 +283,25 @@ bool LineCableReloader::InitializeLineCableModels() const {
   state_stretch.load = 0;
 
   // initializes the constraint cable model
-  state.temperature = line_cable_->constraint.case_weather->temperature_cable;
+  CableConstraint constraint = line_cable_->constraint();
+  state.temperature = constraint.case_weather->temperature_cable;
   state.type_polynomial = SagTensionCableComponent::PolynomialType::kLoadStrain;
 
-  if (line_cable_->constraint.condition == CableConditionType::kInitial) {
+  if (constraint.condition == CableConditionType::kInitial) {
     state_stretch.temperature = 0;  // doesn't matter, model is never stretched
     state_stretch.type_polynomial =
       SagTensionCableComponent::PolynomialType::kLoadStrain;
-  }
-  else if (line_cable_->constraint.condition == CableConditionType::kCreep) {
+  } else if (constraint.condition == CableConditionType::kCreep) {
     state_stretch.temperature =
-      line_cable_->weathercase_stretch_creep->temperature_cable;
+      line_cable_->weathercase_stretch_creep()->temperature_cable;
     state_stretch.type_polynomial =
       SagTensionCableComponent::PolynomialType::kCreep;
-  }
-  else if (line_cable_->constraint.condition == CableConditionType::kLoad) {
+  } else if (constraint.condition == CableConditionType::kLoad) {
     state_stretch.temperature =
-      line_cable_->weathercase_stretch_load->temperature_cable;
+      line_cable_->weathercase_stretch_load()->temperature_cable;
     state_stretch.type_polynomial =
       SagTensionCableComponent::PolynomialType::kLoadStrain;
-  }
-  else {
+  } else {
     return false;
   }
 
@@ -312,7 +310,8 @@ bool LineCableReloader::InitializeLineCableModels() const {
   model_constraint_.set_state_stretch(state_stretch);
 
   // updates the creep stretch model
-  state.temperature = line_cable_->weathercase_stretch_creep->temperature_cable;
+  state.temperature =
+      line_cable_->weathercase_stretch_creep()->temperature_cable;
   state.type_polynomial = SagTensionCableComponent::PolynomialType::kCreep;
 
   state_stretch.temperature = state.temperature;
@@ -324,7 +323,8 @@ bool LineCableReloader::InitializeLineCableModels() const {
   model_creep_.set_state_stretch(state_stretch);
 
   // updates the load stretch model
-  state.temperature = line_cable_->weathercase_stretch_load->temperature_cable;
+  state.temperature =
+      line_cable_->weathercase_stretch_load()->temperature_cable;
   state.type_polynomial = SagTensionCableComponent::PolynomialType::kLoadStrain;
 
   state_stretch.temperature = state.temperature;
@@ -351,8 +351,8 @@ bool LineCableReloader::IsUpdated() const {
 Vector3d LineCableReloader::UnitLoad(
     const WeatherLoadCase& weathercase) const {
   CableUnitLoadCalculator calculator;
-  calculator.set_diameter_cable(&line_cable_->cable->diameter);
-  calculator.set_weight_unit_cable(&line_cable_->cable->weight_unit);
+  calculator.set_diameter_cable(&line_cable_->cable()->diameter);
+  calculator.set_weight_unit_cable(&line_cable_->cable()->weight_unit);
 
   return calculator.UnitCableLoad(weathercase);
 }
@@ -408,7 +408,7 @@ bool LineCableReloader::Update() const {
 bool LineCableReloader::UpdateConstraintCableModel() const {
   // checks if no stretch is defined (initial modulus)
   // constraint cable model was already initialized with zero stretch
-  if (line_cable_->constraint.condition == CableConditionType::kInitial) {
+  if (line_cable_->constraint().condition == CableConditionType::kInitial) {
     return true;
   }
 
@@ -429,13 +429,13 @@ bool LineCableReloader::UpdateConstraintCableModel() const {
   reloader.set_catenary(&catenary_constraint_);
   reloader.set_model_reference(&model_constraint_);
 
-  if (line_cable_->constraint.condition == CableConditionType::kCreep) {
-    weight_unit_reloaded = UnitLoad(*line_cable_->weathercase_stretch_creep);
+  if (line_cable_->constraint().condition == CableConditionType::kCreep) {
+    weight_unit_reloaded = UnitLoad(*line_cable_->weathercase_stretch_creep());
 
     reloader.set_model_reloaded(&model_creep_);
     reloader.set_weight_unit_reloaded(&weight_unit_reloaded);
-  } else if (line_cable_->constraint.condition == CableConditionType::kLoad) {
-    weight_unit_reloaded = UnitLoad(*line_cable_->weathercase_stretch_load);
+  } else if (line_cable_->constraint().condition == CableConditionType::kLoad) {
+    weight_unit_reloaded = UnitLoad(*line_cable_->weathercase_stretch_load());
 
     reloader.set_model_reloaded(&model_load_);
     reloader.set_weight_unit_reloaded(&weight_unit_reloaded);
@@ -532,11 +532,14 @@ bool LineCableReloader::UpdateConstraintCableModel() const {
 }
 
 bool LineCableReloader::UpdateConstraintCatenary() const {
+  CableConstraint constraint = line_cable_->constraint();
+  Vector3d spacing = line_cable_->spacing_attachments_ruling_span();
+
   // builds a catenary solver
   CatenarySolver solver;
   solver.set_cable(cable_sagtension_.cable_base());
-  solver.set_constraint(&line_cable_->constraint);
-  solver.set_spacing_attachments(&line_cable_->spacing_attachments_ruling_span);
+  solver.set_constraint(&constraint);
+  solver.set_spacing_attachments(&spacing);
 
   if (solver.Validate() == false) {
     return false;
@@ -556,12 +559,12 @@ bool LineCableReloader::UpdateLoadStretch() const {
   const WeatherLoadCase* weathercase_stretch = nullptr;
 
   // solves the stretch due to creep
-  if (line_cable_->constraint.condition == CableConditionType::kCreep) {
+  if (line_cable_->constraint().condition == CableConditionType::kCreep) {
     // stretch has already been solved for during constraint model update
     state_stretch_creep_ = model_constraint_.state_stretch();
   } else {
     // solves for the unit load at the creep stretch case
-    weathercase_stretch = line_cable_->weathercase_stretch_creep;
+    weathercase_stretch = line_cable_->weathercase_stretch_creep();
     weight_unit_stretch = UnitLoad(*weathercase_stretch);
 
     // reloads the constraint catenary to the creep stretch case
@@ -578,12 +581,12 @@ bool LineCableReloader::UpdateLoadStretch() const {
   }
 
   // solves the stretch due to load
-  if (line_cable_->constraint.condition == CableConditionType::kLoad) {
+  if (line_cable_->constraint().condition == CableConditionType::kLoad) {
     // stretch has already been solved for during constraint model update
     state_stretch_load_ = model_constraint_.state_stretch();
   } else {
     // solves for the unit load at the load stretch case
-    weathercase_stretch = line_cable_->weathercase_stretch_load;
+    weathercase_stretch = line_cable_->weathercase_stretch_load();
     weight_unit_stretch = UnitLoad(*weathercase_stretch);
 
     // reloads the constraint catenary to the load stretch case

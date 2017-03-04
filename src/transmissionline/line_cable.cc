@@ -6,14 +6,91 @@
 #include <cmath>
 
 #include "models/transmissionline/catenary_solver.h"
+#include "models/transmissionline/line_structure.h"
+
+LineCableConnection::LineCableConnection() {
+  index_attachment = -1;
+  line_structure = nullptr;
+}
 
 LineCable::LineCable() {
-  cable = nullptr;
-  weathercase_stretch_creep = nullptr;
-  weathercase_stretch_load = nullptr;
+  cable_ = nullptr;
+  weathercase_stretch_creep_ = nullptr;
+  weathercase_stretch_load_ = nullptr;
 }
 
 LineCable::~LineCable() {
+}
+
+int LineCable::AddConnection(const LineCableConnection& connection) {
+  if (connection.line_structure == nullptr) {
+    return -1;
+  }
+
+  const LineStructure* line_structure = connection.line_structure;
+
+  // searches list for the position to insert connection
+  auto iter = connections_.begin();
+  while (iter != connections_.end()) {
+    const LineCableConnection& connection_list = *iter;
+    const LineStructure* line_structure_list = connection_list.line_structure;
+    if (line_structure->station() < line_structure_list->station()) {
+      // position is found
+      break;
+    } else if (line_structure->station() == line_structure_list->station()) {
+      // exits due to duplicate station
+      return -1;
+    } else {
+      iter++;
+    }
+  }
+
+  // inserts connection into list
+  connections_.insert(iter, connection);
+
+  // gets index and returns
+  return std::distance(connections_.begin(), iter) - 1;
+}
+
+void LineCable::ClearConnections() {
+  connections_.clear();
+}
+
+bool LineCable::DeleteConnection(const int& index) {
+  // checks if index is valid
+  if (IsValidConnectionIndex(index) == false) {
+    return false;
+  }
+
+  // gets iterator and erases point
+  auto iter = std::next(connections_.cbegin(), index);
+  connections_.erase(iter);
+
+  return true;
+}
+
+int LineCable::ModifyConnection(const int& index,
+                                const LineCableConnection& connection) {
+  // checks if index is valid
+  if (IsValidConnectionIndex(index) == false) {
+    return -1;
+  }
+
+  // caches specified connection in case something goes wrong
+  LineCableConnection connection_cache = *std::next(connections_.cbegin(),
+                                                    index);
+  if (DeleteConnection(index) == false) {
+    return -1;
+  }
+
+  const int status = AddConnection(connection);
+  if (status == -1) {
+    // resets cached connection
+    AddConnection(connection_cache);
+  }
+
+  // successfully modified connection
+  return status;
 }
 
 bool LineCable::Validate(const bool& is_included_warnings,
@@ -24,25 +101,63 @@ bool LineCable::Validate(const bool& is_included_warnings,
   message.title = "LINE CABLE";
 
   // validates cable
-  if (cable == nullptr) {
+  if (cable_ == nullptr) {
     is_valid = false;
     if (messages != nullptr) {
       message.description = "Invalid cable";
       messages->push_back(message);
     }
   } else {
-    if (cable->Validate(is_included_warnings, messages) == false) {
+    if (cable_->Validate(is_included_warnings, messages) == false) {
       is_valid = false;
     }
   }
 
+  // validates connections
+  const int kSizeConnections = connections_.size();
+  if (kSizeConnections < 2) {
+    is_valid = false;
+    message.description = "Not enough connections";
+    if (messages != nullptr) {
+      messages->push_back(message);
+    }
+  } else {
+    for (auto iter = connections_.cbegin(); iter != connections_.cend();
+         iter++) {
+      const LineCableConnection* connection = &(*iter);
+      const LineStructure* structure = connection->line_structure;
+      const Hardware* hardware =
+          structure->hardwares()->at(connection->index_attachment);
+      if ((connection == &connections_.front())
+          || (connection == &connections_.back())) {
+        // checks for dead-end hardware at start and end connections
+        if (hardware->type != Hardware::HardwareType::kDeadEnd) {
+          message.description = "Terminal line cable connection does not have "
+                                "dead-end type hardware";
+          if (messages != nullptr) {
+            messages->push_back(message);
+          }
+        }
+      } else {
+        // checks for suspension hardware at all middle connections
+        if (hardware->type != Hardware::HardwareType::kSuspension) {
+          message.description = "Interior line cable connection does not have "
+                                "suspension type hardware";
+          if (messages != nullptr) {
+            messages->push_back(message);
+          }
+        }
+      }
+    }
+  }
+
   // validates constraint
-  if (constraint.Validate(is_included_warnings, messages) == false) {
+  if (constraint_.Validate(is_included_warnings, messages) == false) {
     is_valid = false;
   }
 
   // validates spacing-attachments-rulingspan
-  if (spacing_attachments_ruling_span.x() <= 0) {
+  if (spacing_attachments_ruling_span_.x() <= 0) {
     is_valid = false;
     if (messages != nullptr) {
       message.description = "Invalid horizontal ruling span attachment spacing";
@@ -50,7 +165,7 @@ bool LineCable::Validate(const bool& is_included_warnings,
     }
   }
 
-  if (spacing_attachments_ruling_span.y() != 0) {
+  if (spacing_attachments_ruling_span_.y() != 0) {
     is_valid = false;
     if (messages != nullptr) {
       message.description = "Invalid transverse ruling span attachment spacing";
@@ -58,7 +173,7 @@ bool LineCable::Validate(const bool& is_included_warnings,
     }
   }
 
-  if (2000 < std::abs(spacing_attachments_ruling_span.z())) {
+  if (2000 < std::abs(spacing_attachments_ruling_span_.z())) {
     is_valid = false;
     if (messages != nullptr) {
       message.description = "Invalid vertical ruling span attachment spacing";
@@ -67,29 +182,29 @@ bool LineCable::Validate(const bool& is_included_warnings,
   }
 
   // validates weathercase-stretch-creep
-  if (weathercase_stretch_creep == nullptr) {
+  if (weathercase_stretch_creep_ == nullptr) {
     is_valid = false;
     if (messages != nullptr) {
       message.description = "Invalid creep stretch weathercase";
       messages->push_back(message);
     }
   } else {
-    if (weathercase_stretch_creep->Validate(is_included_warnings,
-                                            messages) == false) {
+    if (weathercase_stretch_creep_->Validate(is_included_warnings,
+                                             messages) == false) {
       is_valid = false;
     }
   }
 
   // validates weathercase-stretch-load
-  if (weathercase_stretch_load == nullptr) {
+  if (weathercase_stretch_load_ == nullptr) {
     is_valid = false;
     if (messages != nullptr) {
       message.description = "Invalid load stretch weathercase";
       messages->push_back(message);
     }
   } else {
-    if (weathercase_stretch_load->Validate(is_included_warnings,
-                                           messages) == false) {
+    if (weathercase_stretch_load_->Validate(is_included_warnings,
+                                            messages) == false) {
       is_valid = false;
     }
   }
@@ -102,13 +217,69 @@ bool LineCable::Validate(const bool& is_included_warnings,
   // validates if catenary can be solved for with contraint and ruling
   // span geometry
   CatenarySolver solver;
-  solver.set_cable(cable);
-  solver.set_constraint(&constraint);
-  solver.set_spacing_attachments(&spacing_attachments_ruling_span);
+  solver.set_cable(cable_);
+  solver.set_constraint(&constraint_);
+  solver.set_spacing_attachments(&spacing_attachments_ruling_span_);
   if (solver.Validate(is_included_warnings, messages) == false) {
     is_valid = false;
   }
 
   // returns validation status
   return is_valid;
+}
+
+const Cable* LineCable::cable() const {
+  return cable_;
+}
+
+const std::list<LineCableConnection>* LineCable::connections() const {
+  return &connections_;
+}
+
+CableConstraint LineCable::constraint() const {
+  return constraint_;
+}
+
+void LineCable::set_cable(const Cable* cable) {
+  cable_ = cable;
+}
+
+void LineCable::set_constraint(const CableConstraint& constraint) {
+  constraint_ = constraint;
+}
+
+void LineCable::set_spacing_attachments_ruling_span(
+    const Vector3d& spacing_attachments_ruling_span) {
+  spacing_attachments_ruling_span_ = spacing_attachments_ruling_span;
+}
+
+void LineCable::set_weathercase_stretch_creep(
+    const WeatherLoadCase* weathercase) {
+  weathercase_stretch_creep_ = weathercase;
+}
+
+void LineCable::set_weathercase_stretch_load(
+    const WeatherLoadCase* weathercase) {
+  weathercase_stretch_load_ = weathercase;
+}
+
+const Vector3d LineCable::spacing_attachments_ruling_span() const {
+  return spacing_attachments_ruling_span_;
+}
+
+const WeatherLoadCase* LineCable::weathercase_stretch_creep() const {
+  return weathercase_stretch_creep_;
+}
+
+const WeatherLoadCase* LineCable::weathercase_stretch_load() const {
+  return weathercase_stretch_load_;
+}
+
+bool LineCable::IsValidConnectionIndex(const int& index) const {
+  const int kSize = connections_.size();
+  if ((0 <= index) && (index < kSize)) {
+    return true;
+  } else {
+    return false;
+  }
 }
