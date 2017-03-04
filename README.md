@@ -10,9 +10,16 @@ This library provides base functionality needed for most libraries.
 * Geometric shapes
 
 ## TransmissionLine
-This library contains classes/methods that model a transmission line.
+This library contains classes/methods that model a transmission line in 3D.
+* Alignments
+  * Station
+  * Line angles
+* Structures
+  * Rotation, offset, height
+  * Multiple attachments
+  * Hardware assemblies
 * Cables
-  * Catenary position/tension (3D)
+  * Catenary position/tension
   * Weathercases
 
 ## SagTension
