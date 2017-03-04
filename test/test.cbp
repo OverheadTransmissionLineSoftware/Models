@@ -103,7 +103,16 @@
 		<Unit filename="test.cc">
 			<Option virtualFolder="Source Files/" />
 		</Unit>
+		<Unit filename="transmissionline/alignment_test.cc">
+			<Option virtualFolder="Tests - TransmissionLine/" />
+		</Unit>
+		<Unit filename="transmissionline/cable_attachment_equilibrium_solver_test.cc">
+			<Option virtualFolder="Tests - TransmissionLine/" />
+		</Unit>
 		<Unit filename="transmissionline/cable_constraint_test.cc">
+			<Option virtualFolder="Tests - TransmissionLine/" />
+		</Unit>
+		<Unit filename="transmissionline/cable_position_locator_test.cc">
 			<Option virtualFolder="Tests - TransmissionLine/" />
 		</Unit>
 		<Unit filename="transmissionline/cable_test.cc">
@@ -118,7 +127,19 @@
 		<Unit filename="transmissionline/catenary_test.cc">
 			<Option virtualFolder="Tests - TransmissionLine/" />
 		</Unit>
+		<Unit filename="transmissionline/hardware_test.cc">
+			<Option virtualFolder="Tests - TransmissionLine/" />
+		</Unit>
 		<Unit filename="transmissionline/line_cable_test.cc">
+			<Option virtualFolder="Tests - TransmissionLine/" />
+		</Unit>
+		<Unit filename="transmissionline/line_structure_test.cc">
+			<Option virtualFolder="Tests - TransmissionLine/" />
+		</Unit>
+		<Unit filename="transmissionline/structure_test.cc">
+			<Option virtualFolder="Tests - TransmissionLine/" />
+		</Unit>
+		<Unit filename="transmissionline/transmission_line_test.cc">
 			<Option virtualFolder="Tests - TransmissionLine/" />
 		</Unit>
 		<Unit filename="transmissionline/weather_load_case_test.cc">

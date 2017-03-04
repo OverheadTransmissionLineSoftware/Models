@@ -93,5 +93,26 @@
     <ClCompile Include="test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="transmissionline\alignment_test.cc">
+      <Filter>Tests TransmissionLine</Filter>
+    </ClCompile>
+    <ClCompile Include="transmissionline\cable_attachment_equilibrium_solver_test.cc">
+      <Filter>Tests TransmissionLine</Filter>
+    </ClCompile>
+    <ClCompile Include="transmissionline\cable_position_locator_test.cc">
+      <Filter>Tests TransmissionLine</Filter>
+    </ClCompile>
+    <ClCompile Include="transmissionline\hardware_test.cc">
+      <Filter>Tests TransmissionLine</Filter>
+    </ClCompile>
+    <ClCompile Include="transmissionline\line_structure_test.cc">
+      <Filter>Tests TransmissionLine</Filter>
+    </ClCompile>
+    <ClCompile Include="transmissionline\structure_test.cc">
+      <Filter>Tests TransmissionLine</Filter>
+    </ClCompile>
+    <ClCompile Include="transmissionline\transmission_line_test.cc">
+      <Filter>Tests TransmissionLine</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

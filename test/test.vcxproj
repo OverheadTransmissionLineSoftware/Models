@@ -113,12 +113,19 @@
     <ClCompile Include="sagtension\line_cable_sagger_test.cc" />
     <ClCompile Include="sagtension\sag_tension_cable_test.cc" />
     <ClCompile Include="test.cc" />
+    <ClCompile Include="transmissionline\alignment_test.cc" />
+    <ClCompile Include="transmissionline\cable_attachment_equilibrium_solver_test.cc" />
     <ClCompile Include="transmissionline\cable_constraint_test.cc" />
+    <ClCompile Include="transmissionline\cable_position_locator_test.cc" />
     <ClCompile Include="transmissionline\cable_test.cc" />
     <ClCompile Include="transmissionline\cable_unit_load_calculator_test.cc" />
     <ClCompile Include="transmissionline\catenary_solver_test.cc" />
     <ClCompile Include="transmissionline\catenary_test.cc" />
+    <ClCompile Include="transmissionline\hardware_test.cc" />
     <ClCompile Include="transmissionline\line_cable_test.cc" />
+    <ClCompile Include="transmissionline\line_structure_test.cc" />
+    <ClCompile Include="transmissionline\structure_test.cc" />
+    <ClCompile Include="transmissionline\transmission_line_test.cc" />
     <ClCompile Include="transmissionline\weather_load_case_test.cc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
