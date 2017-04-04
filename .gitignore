@@ -16,6 +16,8 @@
 # Visual Studio temp files #
 ############################
 *.db
+*.db-shm
+*.db-wal
 *.idb
 *.ilk
 *.iobj
