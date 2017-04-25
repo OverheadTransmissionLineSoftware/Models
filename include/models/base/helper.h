@@ -4,6 +4,7 @@
 #ifndef OTLS_MODELS_BASE_HELPER_H_
 #define OTLS_MODELS_BASE_HELPER_H_
 
+#include <list>
 #include <string>
 
 namespace helper {
@@ -35,6 +36,15 @@ std::string DoubleToFormattedString(const double& value,
 /// \return If the string is numeric.
 bool IsNumeric(const std::string& str);
 
+/// \brief Parses a string.
+/// \param[in] str
+///   The string.
+/// \param[in] delimiter
+///   The delimiter character.
+/// \return The parsed strings.
+std::list<std::string> Parse(const std::string& str,
+                             const char& delimiter);
+
 /// \brief Rounds the number to the specified precision.
 /// \param[in] number
 ///   The number to be rounded.
@@ -43,6 +53,6 @@ bool IsNumeric(const std::string& str);
 /// \return The rounded number.
 double Round(const double& number, const int& precision);
 
-} // namespace support
+}  // namespace helper
 
 #endif // OTLS_MODELS_BASE_HELPER_H_

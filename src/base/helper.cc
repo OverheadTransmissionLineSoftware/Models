@@ -47,6 +47,21 @@ bool IsNumeric(const std::string& str) {
   return stream >> d && !(stream >> c);
 }
 
+std::list<std::string> Parse(const std::string& str,
+                             const char& delimiter) {
+  std::list<std::string> strs;
+
+  // creates a stringstream to convert each substring
+  std::stringstream ss;
+  ss.str(str);
+  std::string item;
+  while (std::getline(ss, item, delimiter)) {
+    strs.push_back(item);
+  }
+
+  return strs;
+}
+
 double Round(const double& number, const int& precision) {
   return std::round(number * pow(10, precision)) / pow(10, precision);
 }

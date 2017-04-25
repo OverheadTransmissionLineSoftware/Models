@@ -35,6 +35,25 @@ TEST(Helper, IsNumeric) {
   EXPECT_FALSE(helper::IsNumeric(str));
 }
 
+TEST(Helper, Parse) {
+  std::string str = "0,1,2,3";
+
+  std::list<std::string> strs = helper::Parse(str, ',');
+  std::string str_parsed;
+
+  str_parsed = *std::next(strs.cbegin(), 0);
+  EXPECT_EQ("0", str_parsed);
+
+  str_parsed = *std::next(strs.cbegin(), 1);
+  EXPECT_EQ("1", str_parsed);
+
+  str_parsed = *std::next(strs.cbegin(), 2);
+  EXPECT_EQ("2", str_parsed);
+
+  str_parsed = *std::next(strs.cbegin(), 3);
+  EXPECT_EQ("3", str_parsed);
+}
+
 TEST(Helper, Round) {
   const double value = 123.45;
 
