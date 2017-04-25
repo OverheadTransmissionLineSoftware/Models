@@ -68,13 +68,13 @@ struct Structure {
   ///   The attachments.
   std::vector<StructureAttachment> attachments;
 
-  /// \var description
-  ///   The description.
-  std::string description;
-
   /// \var height
   ///   The height.
   double height;
+
+  /// \var name
+  ///   The name.
+  std::string name;
 };
 
 #endif  // OTLS_MODELS_TRANSMISSIONLINE_STRUCTURE_H_

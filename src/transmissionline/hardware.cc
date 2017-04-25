@@ -6,6 +6,7 @@
 Hardware::Hardware() {
   area_cross_section = -999999;
   length = -999999;
+  name = "";
   weight = -999999;
 }
 

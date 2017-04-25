@@ -46,6 +46,10 @@ struct Hardware {
   ///   The length.
   double length;
 
+  /// \var name
+  ///   The name.
+  std::string name;
+
   /// \var type
   ///   The type of assembly.
   HardwareType type;

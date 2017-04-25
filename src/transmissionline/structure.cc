@@ -35,6 +35,7 @@ bool StructureAttachment::Validate(
 
 Structure::Structure() {
   height = -999999;
+  name = "";
 }
 
 Structure::~Structure() {
