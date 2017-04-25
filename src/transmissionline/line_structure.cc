@@ -133,9 +133,13 @@ void LineStructure::set_station(const double& station) {
 void LineStructure::set_structure(const Structure* structure) {
   structure_ = structure;
 
-  // resizes hardware vector to match new attachment vector
-  // any additions to the vector are set to null pointers
-  hardwares_.resize(structure->attachments.size(), nullptr);
+  if (structure_ == nullptr) {
+    hardwares_.clear();
+  } else {
+    // resizes hardware vector to match new attachment vector
+    // any additions to the vector are set to null pointers
+    hardwares_.resize(structure->attachments.size(), nullptr);
+  }
 }
 
 double LineStructure::station() const {
@@ -147,6 +151,10 @@ const Structure* LineStructure::structure() const {
 }
 
 bool LineStructure::IsValidIndex(const int& index) const {
+  if (structure_ == nullptr) {
+    return false;
+  }
+
   // checks for valid structure attachment index
   const int kSize = structure_->attachments.size();
   if ((0 <= index) && (index < kSize)) {
