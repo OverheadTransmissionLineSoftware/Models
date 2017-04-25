@@ -25,6 +25,17 @@ TEST(Helper, CompareStrings) {
   EXPECT_EQ(1, helper::CompareStrings(str1, str2));
 }
 
+TEST(Helper, DoubleToFormattedString) {
+  std::string str;
+  const double value = 3.14159;
+
+  str = helper::DoubleToFormattedString(value, 0);
+  EXPECT_EQ("3", str);
+
+  str = helper::DoubleToFormattedString(value, 2);
+  EXPECT_EQ("3.14", str);
+}
+
 TEST(Helper, IsNumeric) {
   std::string str;
 
