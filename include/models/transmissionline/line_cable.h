@@ -82,6 +82,16 @@ class LineCable {
   bool Validate(const bool& is_included_warnings = true,
                 std::list<ErrorMessage>* messages = nullptr) const;
 
+  /// \brief Validates the connections.
+  /// \param[in] is_included_warnings
+  ///   A flag that tightens the acceptable value range.
+  /// \param[in,out] messages
+  ///   A list of detailed error messages. If this is provided, any validation
+  ///   errors will be appended to the list.
+  /// \return A boolean value indicating status of member variables.
+  bool ValidateConnections(const bool& is_included_warnings = true,
+                           std::list<ErrorMessage>* messages = nullptr) const;
+
   /// \brief Gets the cable.
   /// \return The cable.
   const Cable* cable() const;

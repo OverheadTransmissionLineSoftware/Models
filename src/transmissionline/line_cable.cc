@@ -113,44 +113,6 @@ bool LineCable::Validate(const bool& is_included_warnings,
     }
   }
 
-  // validates connections
-  const int kSizeConnections = connections_.size();
-  if (kSizeConnections < 2) {
-    is_valid = false;
-    message.description = "Not enough connections";
-    if (messages != nullptr) {
-      messages->push_back(message);
-    }
-  } else {
-    for (auto iter = connections_.cbegin(); iter != connections_.cend();
-         iter++) {
-      const LineCableConnection* connection = &(*iter);
-      const LineStructure* structure = connection->line_structure;
-      const Hardware* hardware =
-          structure->hardwares()->at(connection->index_attachment);
-      if ((connection == &connections_.front())
-          || (connection == &connections_.back())) {
-        // checks for dead-end hardware at start and end connections
-        if (hardware->type != Hardware::HardwareType::kDeadEnd) {
-          message.description = "Terminal line cable connection does not have "
-                                "dead-end type hardware";
-          if (messages != nullptr) {
-            messages->push_back(message);
-          }
-        }
-      } else {
-        // checks for suspension hardware at all middle connections
-        if (hardware->type != Hardware::HardwareType::kSuspension) {
-          message.description = "Interior line cable connection does not have "
-                                "suspension type hardware";
-          if (messages != nullptr) {
-            messages->push_back(message);
-          }
-        }
-      }
-    }
-  }
-
   // validates constraint
   if (constraint_.Validate(is_included_warnings, messages) == false) {
     is_valid = false;
@@ -224,7 +186,58 @@ bool LineCable::Validate(const bool& is_included_warnings,
     is_valid = false;
   }
 
+  // validates connections
+  ValidateConnections(is_included_warnings, messages);
+
   // returns validation status
+  return is_valid;
+}
+
+bool LineCable::ValidateConnections(const bool& is_included_warnings,
+                                    std::list<ErrorMessage>* messages) const {
+  // initializes
+  bool is_valid = true;
+  ErrorMessage message;
+  message.title = "LINE CABLE";
+
+  // validates all connections
+  const int kSizeConnections = connections_.size();
+  if (kSizeConnections < 2) {
+    is_valid = false;
+    message.description = "Not enough connections";
+    if (messages != nullptr) {
+      messages->push_back(message);
+    }
+  } else {
+    for (auto iter = connections_.cbegin(); iter != connections_.cend();
+         iter++) {
+      const LineCableConnection* connection = &(*iter);
+      const LineStructure* structure = connection->line_structure;
+      const Hardware* hardware =
+          structure->hardwares()->at(connection->index_attachment);
+      if ((connection == &connections_.front())
+          || (connection == &connections_.back())) {
+        // checks for dead-end hardware at start and end connections
+        if (hardware->type != Hardware::HardwareType::kDeadEnd) {
+          message.description = "Terminal line cable connection does not have "
+                                "dead-end type hardware";
+          if (messages != nullptr) {
+            messages->push_back(message);
+          }
+        }
+      } else {
+        // checks for suspension hardware at all middle connections
+        if (hardware->type != Hardware::HardwareType::kSuspension) {
+          message.description = "Interior line cable connection does not have "
+                                "suspension type hardware";
+          if (messages != nullptr) {
+            messages->push_back(message);
+          }
+        }
+      }
+    }
+  }
+
   return is_valid;
 }
 

@@ -62,7 +62,7 @@ int TransmissionLine::AddAlignmentPoint(const AlignmentPoint& point) {
 
 int TransmissionLine::AddLineCable(const LineCable& line_cable) {
   // does preliminary check if linecable connections are valid
-  if (line_cable.Validate(false, nullptr) == false) {
+  if (line_cable.ValidateConnections(false, nullptr) == false) {
     return -1;
   }
 
@@ -596,7 +596,7 @@ void TransmissionLine::DeleteInvalidLineCables() {
   auto iter = line_cables_.cbegin();
   while (iter != line_cables_.cend()) {
     const LineCable& line_cable = *iter;
-    if (line_cable.Validate(false, nullptr) == false) {
+    if (line_cable.ValidateConnections(false, nullptr) == false) {
       iter = line_cables_.erase(iter);
     } else {
       iter++;
