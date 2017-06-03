@@ -11,6 +11,7 @@
 #include "models/transmissionline/cable_unit_load_calculator.h"
 
 LineCableReloader::LineCableReloader() {
+  condition_reloaded_ = CableConditionType::kNull;
   line_cable_ = nullptr;
   weathercase_reloaded_ = nullptr;
 

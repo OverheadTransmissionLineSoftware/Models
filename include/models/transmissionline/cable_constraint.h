@@ -13,6 +13,7 @@
 ///
 /// This enum contains types of cable conditions.
 enum class CableConditionType {
+  kNull,
   kCreep,
   kInitial,
   kLoad
@@ -27,6 +28,7 @@ struct CableConstraint {
   ///
   /// This enum contains types of constraint limits.
   enum class LimitType {
+    kNull,
     kHorizontalTension,
     kCatenaryConstant,
     kSag,

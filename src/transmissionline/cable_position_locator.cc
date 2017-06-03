@@ -9,6 +9,7 @@
 #include "models/transmissionline/cable_attachment_equilibrium_solver.h"
 
 CablePositionLocator::CablePositionLocator() {
+  direction_wind_ = AxisDirectionType::kNull;
   index_cable_ = -9999;
   line_ = nullptr;
   size_connections_ = -9999;
@@ -101,6 +102,24 @@ bool CablePositionLocator::Validate(const bool& is_included_warnings,
   ErrorMessage message;
   message.title = "CABLE POSITION LOCATOR";
 
+  // validates direction-wind
+  if (direction_wind_ == AxisDirectionType::kNull) {
+    is_valid = false;
+    if (messages != nullptr) {
+      message.description = "Invalid wind direction";
+      messages->push_back(message);
+    }
+  }
+
+  // validates index-cable
+  if (index_cable_ < 0) {
+    is_valid = false;
+    if (messages != nullptr) {
+      message.description = "Invalid line cable index";
+      messages->push_back(message);
+    }
+  }
+
   // validates line
   if (line_ == nullptr) {
     is_valid = false;
@@ -112,15 +131,6 @@ bool CablePositionLocator::Validate(const bool& is_included_warnings,
     if (line_->Validate(is_included_warnings,
                         messages) == false) {
       is_valid = false;
-    }
-  }
-
-  // validates index-cable
-  if (index_cable_ < 0) {
-    is_valid = false;
-    if (messages != nullptr) {
-      message.description = "Invalid line cable index";
-      messages->push_back(message);
     }
   }
 

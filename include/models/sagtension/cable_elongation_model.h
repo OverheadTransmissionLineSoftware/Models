@@ -64,6 +64,7 @@ class CableElongationModel {
   ///
   /// This enum contains types of cable elongation model components.
   enum class ComponentType {
+    kNull,
     kCombined,
     kCore,
     kShell

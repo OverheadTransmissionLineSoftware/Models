@@ -8,6 +8,7 @@
 ///
 /// This enum contains types of 2D planes.
 enum class Plane2dType {
+  kNull,
   kXy,  // XY plane
   kXz,  // XZ plane
   kYx,  // YX plane
@@ -20,6 +21,7 @@ enum class Plane2dType {
 ///
 /// This enum contains types of axis directions.
 enum class AxisDirectionType {
+  kNull,
   kNegative,
   kPositive,
 };
