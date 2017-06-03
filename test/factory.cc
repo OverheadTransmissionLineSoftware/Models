@@ -161,7 +161,7 @@ CableElongationModel* BuildCableElongationModel(const SagTensionCable* cable) {
 
 Hardware* BuildHardware() {
   Hardware* hardware = new Hardware();
-  hardware->name = "DeadEnd"
+  hardware->name = "DeadEnd";
   hardware->area_cross_section = 1.0;
   hardware->length = 10;
   hardware->type = Hardware::HardwareType::kDeadEnd;
