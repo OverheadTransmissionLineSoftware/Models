@@ -163,7 +163,7 @@ bool CatenarySolver::SolveHorizontalTensionFromSag() const {
 
   // declares and initializes left point
   // lowest acceptable value for catenary
-  Point2d point_left;
+  Point2d<double> point_left;
   point_left.x = Catenary2d::ConstantMinimum(
       catenary_.spacing_endpoints().Magnitude())
       * catenary_.weight_unit().Magnitude();
@@ -175,12 +175,12 @@ bool CatenarySolver::SolveHorizontalTensionFromSag() const {
   }
 
   // declares and initializes right point to 10,000 H/w
-  Point2d point_right;
+  Point2d<double> point_right;
   point_right.x = point_left.x * 1.10;
   point_right.y = UpdateCatenarySag(point_right.x);
 
   // declares and initializes current point
-  Point2d point_current;
+  Point2d<double> point_current;
 
   // iterates
   unsigned int iter = 0;
@@ -248,7 +248,7 @@ bool CatenarySolver::SolveHorizontalTensionFromSupportTension() const {
 
   // declares and initializes left point
   // lowest acceptable value for catenary
-  Point2d point_left;
+  Point2d<double> point_left;
   point_left.x = Catenary2d::ConstantMinimum(
       catenary_.spacing_endpoints().Magnitude())
       * catenary_.weight_unit().Magnitude();
@@ -261,12 +261,12 @@ bool CatenarySolver::SolveHorizontalTensionFromSupportTension() const {
 
   // declares and initializes right point
   // highest value (horizontal tension cannot exceed support tension)
-  Point2d point_right;
+  Point2d<double> point_right;
   point_right.x = constraint_->limit;
   point_right.y = UpdateCatenaryMaxTension(point_right.x);
 
   // declares and initializes current point
-  Point2d point_current;
+  Point2d<double> point_current;
 
   // iterates
   unsigned int iter = 0;

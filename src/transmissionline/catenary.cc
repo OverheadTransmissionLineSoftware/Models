@@ -28,9 +28,9 @@ double Catenary2d::ConstantMinimum(const double& spacing_endpoints) {
 
 /// Solves for length and direction from origin, and then converts to
 /// coordinates.
-Point2d Catenary2d::Coordinate(const double& position_fraction,
-                               const bool& is_shifted_origin) const {
-  Point2d coordinate;
+Point2d<double> Catenary2d::Coordinate(const double& position_fraction,
+                                       const bool& is_shifted_origin) const {
+  Point2d<double> coordinate;
 
   if (IsUpdated() == false) {
     if (Update() == false) {
@@ -100,9 +100,10 @@ Point2d Catenary2d::Coordinate(const double& position_fraction,
   return coordinate;
 }
 
-Point2d Catenary2d::CoordinateChord(const double& position_fraction,
-                                    const bool& is_shifted_origin) const {
-  Point2d coordinate_chord;
+Point2d<double> Catenary2d::CoordinateChord(
+    const double& position_fraction,
+    const bool& is_shifted_origin) const {
+  Point2d<double> coordinate_chord;
 
   if (IsUpdated() == false) {
     if (Update() == false) {
@@ -111,7 +112,7 @@ Point2d Catenary2d::CoordinateChord(const double& position_fraction,
   }
 
   // gets a catenary coordinate to compare to left end point
-  Point2d coordinate_catenary = Coordinate(position_fraction, false);
+  Point2d<double> coordinate_catenary = Coordinate(position_fraction, false);
 
   // calculates a chord coordinate
   coordinate_chord.x = coordinate_catenary.x;
@@ -207,10 +208,12 @@ double Catenary2d::Sag() const {
   const double position_fraction_sagpoint = PositionFractionSagPoint();
 
   // gets catenary coordinate at sag position
-  const Point2d coordinate_catenary = Coordinate(position_fraction_sagpoint);
+  const Point2d<double> coordinate_catenary =
+      Coordinate(position_fraction_sagpoint);
 
   // gets a chord coordinate at sag position
-  const Point2d coordinate_chord = CoordinateChord(position_fraction_sagpoint);
+  const Point2d<double> coordinate_chord =
+      CoordinateChord(position_fraction_sagpoint);
 
   // gets height difference between chord and catenary
   return coordinate_chord.y - coordinate_catenary.y;
@@ -225,7 +228,7 @@ double Catenary2d::TangentAngle(const double& position_fraction,
   }
 
   // gets coordinate at position
-  const Point2d coordinate = Coordinate(position_fraction);
+  const Point2d<double> coordinate = Coordinate(position_fraction);
 
   // calculates slope at position
   const double slope = sinh(coordinate.x / (tension_horizontal_/weight_unit_));
@@ -283,7 +286,7 @@ double Catenary2d::Tension(const double& position_fraction) const {
   }
 
   // gets coordinate
-  Point2d coordinate = Coordinate(position_fraction);
+  Point2d<double> coordinate = Coordinate(position_fraction);
 
   return tension_horizontal_
          * cosh( coordinate.x / (tension_horizontal_/weight_unit_));
@@ -507,7 +510,7 @@ bool Catenary2d::IsUpdated() const {
 }
 
 /// \f[ CurveLength = \left| \frac{H}{w} sinh^{-1} \left(\frac{x}{\frac{H}{w}}\right) \right| \f]
-double Catenary2d::LengthFromOrigin(const Point2d& coordinate) const {
+double Catenary2d::LengthFromOrigin(const Point2d<double>& coordinate) const {
   const double x = coordinate.x;
   const double h = tension_horizontal_;
   const double w = weight_unit_;
@@ -642,8 +645,8 @@ double Catenary3d::ConstantMinimum(const double& spacing_endpoints) {
   return Catenary2d::ConstantMinimum(spacing_endpoints);
 }
 
-Point3d Catenary3d::Coordinate(const double& position_fraction) const {
-  Point3d coordinate;
+Point3d<double> Catenary3d::Coordinate(const double& position_fraction) const {
+  Point3d<double> coordinate;
 
   if (IsUpdated() == false) {
     if (Update() == false) {
@@ -655,15 +658,16 @@ Point3d Catenary3d::Coordinate(const double& position_fraction) const {
   double angle = -999999;
 
   // gets a 2D curve coordinate
-  Point2d coord_2d_curve = catenary_2d_.Coordinate(position_fraction,
-                                                   true);
+  Point2d<double> coord_2d_curve = catenary_2d_.Coordinate(position_fraction,
+                                                           true);
 
   // gets a 2D chord coordiante
-  Point2d coord_2d_chord = catenary_2d_.CoordinateChord(position_fraction,
-                                                        true);
+  Point2d<double> coord_2d_chord = catenary_2d_.CoordinateChord(
+                                                    position_fraction,
+                                                    true);
 
   // gets a 3D chord coordinate
-  Point3d coord_3d_chord = CoordinateChord(position_fraction);
+  Point3d<double> coord_3d_chord = CoordinateChord(position_fraction);
 
   // creates a vector between 2d chord coordinate and 2d curve coordinate
   Vector3d vector;
@@ -692,8 +696,9 @@ Point3d Catenary3d::Coordinate(const double& position_fraction) const {
   return coordinate;
 }
 
-Point3d Catenary3d::CoordinateChord(const double& position_fraction) const {
-  Point3d coordinate;
+Point3d<double> Catenary3d::CoordinateChord(
+    const double& position_fraction) const {
+  Point3d<double> coordinate;
 
   if (IsUpdated() == false) {
     if (Update() == false) {
@@ -705,8 +710,9 @@ Point3d Catenary3d::CoordinateChord(const double& position_fraction) const {
   double angle = -999999;
 
   // gets a 2D chord coordiante
-  Point2d coord_2d_chord = catenary_2d_.CoordinateChord(position_fraction,
-                                                        true);
+  Point2d<double> coord_2d_chord = catenary_2d_.CoordinateChord(
+                                                    position_fraction,
+                                                    true);
 
   // creates a vector between BOL coordinate (0,0) and 2d chord coordinate
   Vector3d vector;

@@ -66,9 +66,6 @@
 		<Unit filename="../../src/base/helper.cc">
 			<Option virtualFolder="Source Files/" />
 		</Unit>
-		<Unit filename="../../src/base/point.cc">
-			<Option virtualFolder="Source Files/" />
-		</Unit>
 		<Unit filename="../../src/base/polynomial.cc">
 			<Option virtualFolder="Source Files/" />
 		</Unit>

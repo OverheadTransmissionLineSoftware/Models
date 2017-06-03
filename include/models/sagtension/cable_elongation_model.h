@@ -279,7 +279,7 @@ class CableElongationModel {
   /// \var points_regions_
   ///   The cached points from the component elongation models that show where
   ///   elongation behavior may be abrupt.
-  mutable std::vector<Point2d> points_regions_;
+  mutable std::vector<Point2d<double>> points_regions_;
 
   /// \var state_
   ///   The cable state parameters that are used for calculating load/strain

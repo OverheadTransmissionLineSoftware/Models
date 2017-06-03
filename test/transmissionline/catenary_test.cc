@@ -31,7 +31,7 @@ TEST_F(Catenary2dTest, ConstantMinimum) {
 }
 
 TEST_F(Catenary2dTest, Coordinate) {
-  Point2d coord;
+  Point2d<double> coord;
 
   // unshfted points
   coord = c_.Coordinate(0, false);
@@ -69,7 +69,7 @@ TEST_F(Catenary2dTest, Coordinate) {
 }
 
 TEST_F(Catenary2dTest, CoordinateChord) {
-  Point2d coord;
+  Point2d<double> coord;
 
   // changes catenary spacing to inclined
   Vector2d spacing(1000, 100);
@@ -159,7 +159,7 @@ class Catenary3dTest : public ::testing::Test {
 };
 
 TEST_F(Catenary3dTest, Coordinate) {
-  Point3d coord;
+  Point3d<double> coord;
 
   // no transverse unit load
   coord = c_.Coordinate(0);
@@ -234,7 +234,7 @@ TEST_F(Catenary3dTest, Coordinate) {
 }
 
 TEST_F(Catenary3dTest, CoordinateChord) {
-  Point3d coord;
+  Point3d<double> coord;
 
   // inclined geometry with transverse load
   c_.set_spacing_endpoints(Vector3d(1000, 0, 100));

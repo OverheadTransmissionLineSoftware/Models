@@ -66,7 +66,6 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\base\geometric_shapes.cc" />
     <ClCompile Include="..\..\src\base\helper.cc" />
-    <ClCompile Include="..\..\src\base\point.cc" />
     <ClCompile Include="..\..\src\base\polynomial.cc" />
     <ClCompile Include="..\..\src\base\units.cc" />
     <ClCompile Include="..\..\src\base\vector.cc" />

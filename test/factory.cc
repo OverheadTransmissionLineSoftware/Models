@@ -290,7 +290,7 @@ Structure* BuildStructure() {
 
 TransmissionLine* BuildTransmissionLine() {
   TransmissionLine* line = new TransmissionLine();
-  line->set_origin(Point3d(0, 0, 0));
+  line->set_origin(Point3d<double>(0, 0, 0));
 
   // adds alignment points
   AlignmentPoint point;

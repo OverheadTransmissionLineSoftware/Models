@@ -40,9 +40,6 @@
     <ClCompile Include="..\..\src\base\helper.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\base\point.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\base\polynomial.cc">
       <Filter>Source Files</Filter>
     </ClCompile>

@@ -22,9 +22,10 @@ CablePositionLocator::CablePositionLocator() {
 CablePositionLocator::~CablePositionLocator() {
 }
 
-std::list<Point3d> CablePositionLocator::PointsCable(const int& index_span,
-                                                     const int& num) const {
-  std::list<Point3d> points;
+std::list<Point3d<double>> CablePositionLocator::PointsCable(
+    const int& index_span,
+    const int& num) const {
+  std::list<Point3d<double>> points;
 
   // updates class if necessary
   if (IsUpdated() == false) {
@@ -39,8 +40,8 @@ std::list<Point3d> CablePositionLocator::PointsCable(const int& index_span,
   }
   
   // gets cable attachment points
-  const Point3d& point_back = points_cable_[index_span];
-  const Point3d& point_ahead = points_cable_[index_span + 1];
+  const Point3d<double>& point_back = points_cable_[index_span];
+  const Point3d<double>& point_ahead = points_cable_[index_span + 1];
   
   // creates a catenary
   Vector2d spacing_xy(point_ahead.x - point_back.x,
@@ -60,7 +61,7 @@ std::list<Point3d> CablePositionLocator::PointsCable(const int& index_span,
   const double kAngleXy = spacing_xy.Angle();
   for (int i = 0; i < num; i++) {
     // gets point from catenary
-    Point3d point_catenary = catenary.Coordinate(position_fraction);
+    Point3d<double> point_catenary = catenary.Coordinate(position_fraction);
 
     // converts to global coordinate system
     Vector2d vector;
@@ -68,7 +69,7 @@ std::list<Point3d> CablePositionLocator::PointsCable(const int& index_span,
     vector.set_y(point_catenary.y);
     vector.Rotate(kAngleXy);
 
-    Point3d point_global = point_back;
+    Point3d<double> point_global = point_back;
     point_global.x += vector.x();
     point_global.y += vector.y();
     point_global.z += point_catenary.z;
@@ -83,7 +84,7 @@ std::list<Point3d> CablePositionLocator::PointsCable(const int& index_span,
   return points;
 }
 
-const std::vector<Point3d>* CablePositionLocator::PointsCableAttachment()
+const std::vector<Point3d<double>>* CablePositionLocator::PointsCableAttachment()
     const {
   // updates class if necessary
   if (IsUpdated() == false) {
@@ -258,7 +259,7 @@ bool CablePositionLocator::InitializeConnectionData() const {
     const int& index_attachment = connection.index_attachment;
 
     // calculates structure attachment point and caches
-    const Point3d& point = line_->PointXyzLineStructureAttachment(
+    const Point3d<double>& point = line_->PointXyzLineStructureAttachment(
         index_structure,
         connection.index_attachment);    
     if (point.x == -999999) {
@@ -313,15 +314,15 @@ bool CablePositionLocator::InitializePointsHardware() const {
     // the cable attachment has no movement relative to the structure attachment
     // skips these to avoid runtime errors
     if ((index == 0) || (index == size_connections_ - 1)) {
-      SphericalPoint3d point(0, 0, 0);
+      SphericalPoint3d<double> point(0, 0, 0);
       points_hardware_[index] = point;
       continue;
     }
     
     // gets structure attachment points for back, current, and ahead structure
-    const Point3d& point_back = points_structure_[index - 1];
-    const Point3d& point_current = points_structure_[index];
-    const Point3d& point_ahead = points_structure_[index + 1];
+    const Point3d<double>& point_back = points_structure_[index - 1];
+    const Point3d<double>& point_current = points_structure_[index];
+    const Point3d<double>& point_ahead = points_structure_[index + 1];
 
     // creates unit vectors from current point to back and ahead points
     // adds the unit vectors together to get the bisect orientation
@@ -344,7 +345,7 @@ bool CablePositionLocator::InitializePointsHardware() const {
 
     // creates the starting spherical coordinate that is oriented in the
     // vertical plane
-    SphericalPoint3d point;
+    SphericalPoint3d<double> point;
     point.radius = hardware->length;
     point.angle_x = vector_combined.Angle();
     point.angle_z = 180;
@@ -420,8 +421,8 @@ bool CablePositionLocator::Update() const {
 bool CablePositionLocator::UpdatePointsCable() const {
   // updates all cable attachment points
   for (int index = 0; index < size_connections_; index++) {
-    const Point3d& point_structure = points_structure_[index];
-    const SphericalPoint3d& point_hardware = points_hardware_[index];
+    const Point3d<double>& point_structure = points_structure_[index];
+    const SphericalPoint3d<double>& point_hardware = points_hardware_[index];
     
     // converts hardware spherical point to cartesian point
     // adds to structure xyz point to solve
@@ -433,7 +434,7 @@ bool CablePositionLocator::UpdatePointsCable() const {
         units::ConvertAngle(point_hardware.angle_z,
                             units::AngleConversionType::kDegreesToRadians);
 
-    Point3d point_cable;
+    Point3d<double> point_cable;
     point_cable.x = point_hardware.radius * std::cos(angle_x_rad)
                     * std::sin(angle_z_rad);
     point_cable.y = point_hardware.radius * std::sin(angle_x_rad)
@@ -477,9 +478,9 @@ double CablePositionLocator::UpdatePointsHardware() const {
     }
     
     // gets cable attachment points for back, current, and ahead attachments
-    const Point3d& point_back = points_cable_[index - 1];
-    const Point3d& point_current = points_cable_[index];
-    const Point3d& point_ahead = points_cable_[index + 1];
+    const Point3d<double>& point_back = points_cable_[index - 1];
+    const Point3d<double>& point_current = points_cable_[index];
+    const Point3d<double>& point_ahead = points_cable_[index + 1];
 
     // updates back catenary
     spacing_horizontal.set_x(point_current.x - point_back.x);
@@ -525,7 +526,7 @@ double CablePositionLocator::UpdatePointsHardware() const {
     }
 
     // gets the hardware point
-    SphericalPoint3d& point_hardware = points_hardware_[index];
+    SphericalPoint3d<double>& point_hardware = points_hardware_[index];
 
     // updates the equilibrium solver
     solver_equilibrium.set_angle_catenaries(angle_catenaries);

@@ -255,7 +255,7 @@ bool CatenaryCableReloader::SolveReloadedCatenaryTension() const {
 
   // declares and initializes left point
   // lowest acceptable value for catenary
-  Point2d point_left;
+  Point2d<double> point_left;
   point_left.x = catenary_reloaded_.ConstantMinimum(
       catenary_reloaded_.spacing_endpoints().Magnitude())
       * catenary_reloaded_.weight_unit().Magnitude();
@@ -263,12 +263,12 @@ bool CatenaryCableReloader::SolveReloadedCatenaryTension() const {
 
   // declares and initializes right point
   // 2x value of lowest point
-  Point2d point_right;
+  Point2d<double> point_right;
   point_right.x = 2 * point_left.x;
   point_right.y = LengthDifference(point_right.x);
 
   // declares and initializes current point
-  Point2d point_current;
+  Point2d<double> point_current;
 
   // iterates until range between x values is small enough
   int iter = 0;

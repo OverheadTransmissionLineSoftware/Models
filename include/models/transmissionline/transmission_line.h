@@ -153,23 +153,23 @@ class TransmissionLine {
 
   /// \brief Gets the xyz coordinates for all alignment points.
   /// \return The xyz coordinates for all alignment points.
-  const std::vector<Point3d>* PointsXyzAlignment() const;
+  const std::vector<Point3d<double>>* PointsXyzAlignment() const;
 
   /// \brief Gets the xyz coordinates for all line structures on the alignment.
   /// \return The xyz coordinate for all line structure alignment points.
-  const std::vector<Point3d>* PointsXyzLineStructures() const;
+  const std::vector<Point3d<double>>* PointsXyzLineStructures() const;
 
   /// \brief Gets the xyz point of the alignment path.
   /// \param[in] station
   ///   The position along the alignment.
   /// \return The xyz point of the alignment path.
-  Point3d PointXyzAlignment(const double& station) const;
+  Point3d<double> PointXyzAlignment(const double& station) const;
 
   /// \brief Gets the xyz point for the line structure on the alignment.
   /// \param[in] index
   ///   The line structure index.
   /// \return The xyz point of the line structure on the alignment.
-  Point3d PointXyzLineStructure(const int& index) const;
+  Point3d<double> PointXyzLineStructure(const int& index) const;
 
   /// \brief Gets the xyz point for the line structure attachment.
   /// \param[in] index_structure
@@ -177,8 +177,9 @@ class TransmissionLine {
   /// \param[in] index_attachment
   ///   The attachment index.
   /// \return The xyz point of the line structure attachment.
-  Point3d PointXyzLineStructureAttachment(const int& index_structure,
-                                          const int& index_attachment) const;
+  Point3d<double> PointXyzLineStructureAttachment(
+      const int& index_structure,
+      const int& index_attachment) const;
 
   /// \brief Validates member variables.
   /// \param[in] is_included_warnings
@@ -205,12 +206,12 @@ class TransmissionLine {
 
   /// \brief Gets the origin.
   /// \return The origin.
-  Point3d origin() const;
+  Point3d<double> origin() const;
 
   /// \brief Sets the xyz origin.
   /// \param[in] origin
   ///   The xyz origin point.
-  void set_origin(const Point3d& origin);
+  void set_origin(const Point3d<double>& origin);
 
  private:
   /// \brief Deletes all connections from the line structure.
@@ -256,7 +257,7 @@ class TransmissionLine {
   /// \param[in] station
   ///   The position along the alignment.
   /// \return The xyz point of the alignment path.
-  Point3d PointXyzAlignmentFromStation(const double& station) const;
+  Point3d<double> PointXyzAlignmentFromStation(const double& station) const;
 
   /// \brief Solves for the xyz point along the alignment.
   /// \param[in] point_xyz
@@ -274,11 +275,11 @@ class TransmissionLine {
   ///   alignment path. This vector is rotated and scaled to determine the new
   ///   point.
   /// \return The xyz point along the alignment path.
-  Point3d PointXyzAlignmentFromVector(const Point3d& point_xyz,
-                                      const double& distance_station,
-                                      const double& distance_elevation,
-                                      const double& rotation_xy,
-                                      Vector2d& vector_xy) const;
+  Point3d<double> PointXyzAlignmentFromVector(const Point3d<double>& point_xyz,
+                                              const double& distance_station,
+                                              const double& distance_elevation,
+                                              const double& rotation_xy,
+                                              Vector2d& vector_xy) const;
 
   /// \brief Updates cached member variables and modifies control variables if
   ///    update is required.
@@ -332,15 +333,15 @@ class TransmissionLine {
 
   /// \var origin_
   ///   The xyz origin point. This coincides with the first alignment point.
-  Point3d origin_;
+  Point3d<double> origin_;
 
   /// \var points_xyz_alignment_
   ///   The xyz coordinates for the alignment points.
-  mutable std::vector<Point3d> points_xyz_alignment_;
+  mutable std::vector<Point3d<double>> points_xyz_alignment_;
 
   /// \var points_xyz_structures_
   ///   The xyz coordinates for the structure position on the alignment.
-  mutable std::vector<Point3d> points_xyz_structures_;
+  mutable std::vector<Point3d<double>> points_xyz_structures_;
 };
 
 #endif  // OTLS_MODELS_TRANSMISSIONLINE_TRANSMISSIONLINE_H_

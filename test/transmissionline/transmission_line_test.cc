@@ -202,8 +202,8 @@ TEST_F(TransmissionLineTest, ModifyLineStructure) {
 }
 
 TEST_F(TransmissionLineTest, PointsXyzAlignment) {
-  const std::vector<Point3d>* points_xyz = t_.PointsXyzAlignment();
-  Point3d point;
+  const std::vector<Point3d<double>>* points_xyz = t_.PointsXyzAlignment();
+  Point3d<double> point;
 
   // checks all xyz alignment points
   point = points_xyz->at(0);
@@ -233,8 +233,8 @@ TEST_F(TransmissionLineTest, PointsXyzAlignment) {
 }
 
 TEST_F(TransmissionLineTest, PointsXyzLineStructures) {
-  const std::vector<Point3d>* points_xyz = t_.PointsXyzLineStructures();
-  Point3d point;
+  const std::vector<Point3d<double>>* points_xyz = t_.PointsXyzLineStructures();
+  Point3d<double> point;
 
   // checks all xyz alignment points
   point = points_xyz->at(0);
@@ -264,7 +264,7 @@ TEST_F(TransmissionLineTest, PointsXyzLineStructures) {
 }
 
 TEST_F(TransmissionLineTest, PointXyzAlignment) {
-  Point3d point;
+  Point3d<double> point;
 
   // tests points in the middle of an alignment
   point = t_.PointXyzAlignment(500);
@@ -289,7 +289,7 @@ TEST_F(TransmissionLineTest, PointXyzAlignment) {
 }
 
 TEST_F(TransmissionLineTest, PointXyzLineStructure) {
-  Point3d point;
+  Point3d<double> point;
 
   // checks some points, most are checked in another test
   point = t_.PointXyzLineStructure(0);
@@ -304,7 +304,7 @@ TEST_F(TransmissionLineTest, PointXyzLineStructure) {
 }
 
 TEST_F(TransmissionLineTest, PointXyzLineStructureAttachment) {
-  Point3d point;
+  Point3d<double> point;
   LineStructure line_structure;
 
   // builds a structure with a complicated attachment
