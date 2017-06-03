@@ -80,6 +80,13 @@ TEST_F(CatenarySolverTest, Catenary) {
   catenary = c_.Catenary();
   EXPECT_EQ(10104.3, helper::Round(catenary.tension_horizontal(), 1));
 
+  // horizontal tension - from length type constraint
+  constraint_->limit = 1204.5051;
+  constraint_->type_limit = CableConstraint::LimitType::kLength;
+  c_.set_constraint(constraint_);
+  catenary = c_.Catenary();
+  EXPECT_EQ(10104.3, helper::Round(catenary.tension_horizontal(), 1));
+
   // horizontal tension - from sag type constraint
   constraint_->limit = 45.0844;
   constraint_->type_limit = CableConstraint::LimitType::kSag;

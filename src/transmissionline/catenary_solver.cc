@@ -153,6 +153,96 @@ bool CatenarySolver::SolveHorizontalTensionFromConstant() const {
 }
 
 /// This is done iteratively by adjusting the horizontal tension until the
+/// length is matched.
+bool CatenarySolver::SolveHorizontalTensionFromLength() const {
+  // x = tension-horizontal
+  // y = length
+
+  // initializes target
+  double target_solution = constraint_->limit;
+
+  // declares and initializes left point
+  // lowest acceptable value for catenary
+  Point2d<double> point_left;
+  point_left.x = Catenary2d::ConstantMinimum(
+      catenary_.spacing_endpoints().Magnitude())
+      * catenary_.weight_unit().Magnitude();
+  point_left.y = UpdateCatenaryLength(point_left.x);
+
+  // checks if target length is less than straight line distance
+  if (target_solution <= spacing_attachments_->Magnitude()) {
+    return false;
+  }
+
+  // checks if target length is greater than lowest acceptable catenary value
+  if (point_left.y < target_solution) {
+    return false;
+  }
+
+  // declares and initializes right point to 10,000 H/w
+  Point2d<double> point_right;
+  point_right.x = point_left.x * 1.10;
+  point_right.y = UpdateCatenaryLength(point_right.x);
+
+  // declares and initializes current point
+  Point2d<double> point_current;
+
+  // iterates
+  unsigned int iter = 0;
+  const int iter_max = 100;
+  while (0.01 < std::abs(point_left.x - point_right.x) && (iter <= iter_max)) {
+
+    // gets current point x value using left and right points
+    // calculates tangent line between points, extrapolates using line
+    double slope_line = (point_right.y - point_left.y)
+                        / (point_right.x - point_left.x);
+
+    point_current.x = point_left.x
+                      + ((target_solution - point_left.y) / slope_line);
+
+    // gets current point y value
+    point_current.y = UpdateCatenaryLength(point_current.x);
+
+    // updates either left or right point based on current point
+    if (point_current.x < point_left.x) {
+
+      point_right.x = point_left.x;
+      point_right.y = point_left.y;
+      point_left.x = point_current.x;
+      point_left.y = point_current.y;
+
+    } else if ((point_left.x < point_current.x)
+        && (point_current.x < point_right.x)) {
+
+      if (point_current.y < target_solution) {
+        point_right.x = point_current.x;
+        point_right.y = point_current.y;
+      } else if (target_solution < point_current.y) {
+        point_left.x = point_current.x;
+        point_left.y = point_current.y;
+      }
+
+    } else if (point_right.x < point_current.x) {
+
+      point_left.x = point_right.x;
+      point_left.y = point_right.y;
+      point_right.x = point_current.x;
+      point_right.y = point_current.y;
+    }
+    iter++;
+  }
+
+  // returns success status
+  if (iter < iter_max) {
+    catenary_.set_tension_horizontal(point_current.x);
+    return true;
+  } else {
+    catenary_.set_tension_horizontal(-999999);
+    return false;
+  }
+}
+
+/// This is done iteratively by adjusting the horizontal tension until the
 /// sag is matched.
 bool CatenarySolver::SolveHorizontalTensionFromSag() const {
   // x = tension-horizontal
@@ -363,6 +453,14 @@ bool CatenarySolver::Update() const {
 
       catenary_.set_tension_horizontal(constraint_->limit);
 
+    } else if (constraint_->type_limit
+        == CableConstraint::LimitType::kLength) {
+
+      is_updated_catenary_ = SolveHorizontalTensionFromLength();
+      if (is_updated_catenary_ == false) {
+        return false;
+      }
+
     } else if (constraint_->type_limit == CableConstraint::LimitType::kSag) {
 
       is_updated_catenary_ = SolveHorizontalTensionFromSag();
@@ -390,6 +488,15 @@ bool CatenarySolver::Update() const {
 
   // if it reaches this point, update was successful
   return true;
+}
+
+double CatenarySolver::UpdateCatenaryLength(
+    const double& tension_horizontal) const {
+  // updates catenary
+  catenary_.set_tension_horizontal(tension_horizontal);
+
+  // returns length
+  return catenary_.Length();
 }
 
 double CatenarySolver::UpdateCatenaryMaxTension(

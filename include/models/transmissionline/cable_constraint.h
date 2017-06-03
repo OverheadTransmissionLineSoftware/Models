@@ -31,6 +31,7 @@ struct CableConstraint {
     kNull,
     kHorizontalTension,
     kCatenaryConstant,
+    kLength,
     kSag,
     kSupportTension
   };

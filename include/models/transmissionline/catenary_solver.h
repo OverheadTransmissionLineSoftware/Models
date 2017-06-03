@@ -77,6 +77,11 @@ class CatenarySolver {
   bool SolveHorizontalTensionFromConstant() const;
 
   /// \brief Solves and updates catenary horizontal tension by converting from
+  ///   a length.
+  /// \return A boolean indicating the success status of the update.
+  bool SolveHorizontalTensionFromLength() const;
+
+  /// \brief Solves and updates catenary horizontal tension by converting from
   ///   sag.
   /// \return A boolean indicating the success status of the update.
   bool SolveHorizontalTensionFromSag() const;
@@ -89,6 +94,13 @@ class CatenarySolver {
   /// \brief Solves and updates the catenary unit weight.
   /// \return A boolean indicating the success status of the update.
   bool SolveWeightUnit() const;
+
+  /// \brief Updates catenary horizontal tension and calculates new length.
+  /// \param[in] tension_horizontal
+  ///   The new horizontal tension for the catenary.
+  /// \return The length correlating to the new horizontal tension of the
+  ///   catenary.
+  double UpdateCatenaryLength(const double& tension_horizontal) const;
 
   /// \brief Updates catenary tension and calculates new support tension.
   /// \param[in] tension_horizontal
