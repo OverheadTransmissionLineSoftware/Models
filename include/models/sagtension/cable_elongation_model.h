@@ -299,4 +299,4 @@ class CableElongationModel {
   mutable CableStretchState state_stretch_shell_;
 };
 
-#endif // OTLS_MODELS_SAGTENSION_CABLEELONGATIONMODEL_H_
+#endif  // OTLS_MODELS_SAGTENSION_CABLEELONGATIONMODEL_H_

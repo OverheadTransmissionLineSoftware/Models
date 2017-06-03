@@ -171,4 +171,4 @@ class CatenaryCableReloader {
   const Vector3d* weight_unit_reloaded_;
 };
 
-#endif // OTLS_MODELS_SAGTENSION_CATENARYCABLERELOADER_H_
+#endif  // OTLS_MODELS_SAGTENSION_CATENARYCABLERELOADER_H_

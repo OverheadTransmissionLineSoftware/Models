@@ -91,4 +91,4 @@ struct SphericalPoint3d {
   double angle_z;
 };
 
-#endif // OTLS_MODELS_BASE_POINT_H_
+#endif  // OTLS_MODELS_BASE_POINT_H_

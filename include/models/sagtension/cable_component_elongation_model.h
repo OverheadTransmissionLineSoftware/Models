@@ -451,4 +451,4 @@ class CableComponentElongationModel {
   const double* temperature_reference_;
 };
 
-#endif // OTLS_MODELS_SAGTENSION_CABLECOMPONENTELONGATIONMODEL_H_
+#endif  // OTLS_MODELS_SAGTENSION_CABLECOMPONENTELONGATIONMODEL_H_

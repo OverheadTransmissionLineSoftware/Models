@@ -500,4 +500,4 @@ class Catenary3d {
   Vector3d weight_unit_;
 };
 
-#endif // OTLS_MODELS_TRANSMISSIONLINE_CATENARY_H_
+#endif  // OTLS_MODELS_TRANSMISSIONLINE_CATENARY_H_

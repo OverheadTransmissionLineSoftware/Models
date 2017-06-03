@@ -119,4 +119,4 @@ class Alignment {
   std::list<AlignmentPoint> points_;
 };
 
-#endif // OTLS_MODELS_TRANSMISSIONLINE_ALIGNMENT_H_
+#endif  // OTLS_MODELS_TRANSMISSIONLINE_ALIGNMENT_H_

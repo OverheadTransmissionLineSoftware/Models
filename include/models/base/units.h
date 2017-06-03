@@ -173,6 +173,7 @@ double ConvertTemperature(const double& value,
                           const TemperatureConversionType& type,
                           const int& exponent = 1,
                           const bool& is_numerator = true);
-} // namespace units
 
-#endif // OTLS_MODELS_BASE_UNITS_H_
+}  // namespace units
+
+#endif  // OTLS_MODELS_BASE_UNITS_H_

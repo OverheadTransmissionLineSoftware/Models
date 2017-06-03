@@ -51,4 +51,4 @@ struct WeatherLoadCase {
   double thickness_ice;
 };
 
-#endif // OTLS_MODELS_TRANSMISSIONLINE_WEATHERLOADCASE_H_
+#endif  // OTLS_MODELS_TRANSMISSIONLINE_WEATHERLOADCASE_H_

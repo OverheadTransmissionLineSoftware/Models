@@ -194,4 +194,4 @@ class Vector3d {
   double z_;
 };
 
-#endif // OTLS_MODELS_BASE_VECTOR_H_
+#endif  // OTLS_MODELS_BASE_VECTOR_H_

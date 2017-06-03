@@ -124,4 +124,4 @@ class CatenarySolver {
   const Vector3d* spacing_attachments_;
 };
 
-#endif // OTLS_MODELS_TRANSMISSIONLINE_CATENARYSOLVER_H_
+#endif  // OTLS_MODELS_TRANSMISSIONLINE_CATENARYSOLVER_H_

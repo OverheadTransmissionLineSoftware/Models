@@ -67,4 +67,4 @@ struct CableConstraint {
   CableConstraint::LimitType type_limit;
 };
 
-#endif // OTLS_MODELS_TRANSMISSIONLINE_CABLECONSTRAINT_H_
+#endif  // OTLS_MODELS_TRANSMISSIONLINE_CABLECONSTRAINT_H_

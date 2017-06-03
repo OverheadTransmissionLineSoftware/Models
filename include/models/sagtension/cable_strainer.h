@@ -112,4 +112,4 @@ class CableStrainer {
   const CableElongationModel* model_elongation_start_;
 };
 
-#endif // OTLS_MODELS_SAGTENSION_CABLESTRAINER_H_
+#endif  // OTLS_MODELS_SAGTENSION_CABLESTRAINER_H_

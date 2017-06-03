@@ -176,4 +176,4 @@ class LineCable {
   const WeatherLoadCase* weathercase_stretch_load_;
 };
 
-#endif // OTLS_MODELS_TRANSMISSIONLINE_LINECABLE_H_
+#endif  // OTLS_MODELS_TRANSMISSIONLINE_LINECABLE_H_
