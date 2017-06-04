@@ -86,4 +86,4 @@ class CatenaryCableUnloader {
   mutable CableStrainer strainer_;
 };
 
-#endif // OTLS_MODELS_SAGTENSION_CATENARYCABLEUNLOADER_H_
+#endif  // OTLS_MODELS_SAGTENSION_CATENARYCABLEUNLOADER_H_

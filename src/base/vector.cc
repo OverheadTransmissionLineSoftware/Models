@@ -177,6 +177,8 @@ double Vector3d::Angle(const Plane2dType& plane,
   } else if (plane == Plane2dType::kZy) {
     vector_2d.set_x(z_);
     vector_2d.set_y(y_);
+  } else {
+    return -999999;
   }
 
   return vector_2d.Angle(is_enabled_negative_angles);
@@ -217,6 +219,8 @@ void Vector3d::Rotate(const Plane2dType& plane, const double& angle_rotation) {
   } else if (plane == Plane2dType::kZy) {
     vector_2d.set_x(z_);
     vector_2d.set_y(y_);
+  } else {
+    return;
   }
 
   // rotates the plane
@@ -241,6 +245,8 @@ void Vector3d::Rotate(const Plane2dType& plane, const double& angle_rotation) {
   } else if (plane == Plane2dType::kZy) {
     z_ = vector_2d.x();
     y_ = vector_2d.y();
+  } else {
+    return;
   }
 }
 

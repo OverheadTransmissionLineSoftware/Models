@@ -19,7 +19,7 @@ struct Point2dSortXInreasing {
   ///   The second point.
   /// \return A boolean indicating if the first point x value is less than
   ///    the second point x value.
-  bool operator() (const Point2d& p1, const Point2d& p2) const {
+  bool operator() (const Point2d<double>& p1, const Point2d<double>& p2) const {
     return p1.x < p2.x;
   }
 };
@@ -299,10 +299,10 @@ double CableElongationModel::StrainCombined(
 
   // determines which region the target load is in, and sets left and right
   // points
-  const Point2d& point_regions_min = *points_regions_.cbegin();
-  const Point2d& point_regions_max = *(points_regions_.cend() - 1);
-  Point2d point_left;
-  Point2d point_right;
+  const Point2d<double>& point_regions_min = *points_regions_.cbegin();
+  const Point2d<double>& point_regions_max = *(points_regions_.cend() - 1);
+  Point2d<double> point_left;
+  Point2d<double> point_right;
 
   // load is less than all points in the sorted collection
   if (load <= point_regions_min.y) {
@@ -348,7 +348,7 @@ double CableElongationModel::StrainCombined(
   }
 
   // declares and initialize current point
-  Point2d point_current;
+  Point2d<double> point_current;
 
   // declares iteration variables
   // iterates until current point load matches target load
@@ -494,7 +494,7 @@ bool CableElongationModel::UpdateComponentsStretch() const {
   UpdateComponentsState(state);
 
   // gets the stretch point of the entire cable
-  Point2d point_stretch;
+  Point2d<double> point_stretch;
   point_stretch.y = state_stretch_.load;
   point_stretch.x = StrainCombined(point_stretch.y);
 
@@ -518,19 +518,19 @@ bool CableElongationModel::UpdatePointsRegions() const {
 
   // gets region boundary points for core and adds to container
   if (cable_->IsEnabled(SagTensionCable::ComponentType::kCore) == true) {
-    std::vector<Point2d> points_core = model_core_.PointsRegions();
+    std::vector<Point2d<double>> points_core = model_core_.PointsRegions();
     for (auto iter = points_core.cbegin(); iter != points_core.cend(); iter++) {
-      const Point2d& point = *iter;
+      const Point2d<double>& point = *iter;
       points_regions_.push_back(point);
     }
   }
 
   // gets region boundary points for shell and adds to vector
   if (cable_->IsEnabled(SagTensionCable::ComponentType::kShell) == true) {
-    std::vector<Point2d> points_shell = model_shell_.PointsRegions();
+    std::vector<Point2d<double>> points_shell = model_shell_.PointsRegions();
     for (auto iter = points_shell.cbegin(); iter != points_shell.cend();
         iter++) {
-      const Point2d& point = *iter;
+      const Point2d<double>& point = *iter;
       points_regions_.push_back(point);
     }
   }
@@ -542,7 +542,7 @@ bool CableElongationModel::UpdatePointsRegions() const {
   // re-calculates loads using total load function
   for (auto iter = points_regions_.begin(); iter != points_regions_.end();
        iter++) {
-    Point2d& point = *iter;
+    Point2d<double>& point = *iter;
     point.y = LoadCombined(point.x);
   }
 

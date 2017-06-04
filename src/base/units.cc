@@ -155,4 +155,4 @@ double ConvertTemperature(const double& value,
   }
 }
 
-} // namespace units
+}  // namespace units

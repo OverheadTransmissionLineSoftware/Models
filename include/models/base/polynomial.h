@@ -115,4 +115,4 @@ class Polynomial {
   mutable bool is_updated_derivative_;
 };
 
-#endif // OTLS_MODELS_BASE_POLYNOMIAL_H_
+#endif  // OTLS_MODELS_BASE_POLYNOMIAL_H_

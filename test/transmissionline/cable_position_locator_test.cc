@@ -38,13 +38,13 @@ class CablePositionLocatorTest : public ::testing::Test {
 };
 
 TEST_F(CablePositionLocatorTest, PointsCable) {
-  Point3d point;
+  Point3d<double> point;
 
   // checks second span of line cable
   // calculates 3 points - start, middle, and end
 
   // checks with no wind
-  std::list<Point3d> points = c_.PointsCable(1, 3);
+  std::list<Point3d<double>> points = c_.PointsCable(1, 3);
 
   point = *std::next(points.cbegin(), 0);
   EXPECT_EQ(1993.20, helper::Round(point.x, 2));
@@ -102,8 +102,8 @@ TEST_F(CablePositionLocatorTest, PointsCable) {
 }
 
 TEST_F(CablePositionLocatorTest, PointsCableAttachment) {
-  const std::vector<Point3d>* points = c_.PointsCableAttachment();
-  Point3d point;
+  const std::vector<Point3d<double>>* points = c_.PointsCableAttachment();
+  Point3d<double> point;
 
   // checks with no wind
   point = points->at(0);

@@ -64,6 +64,7 @@ class CableElongationModel {
   ///
   /// This enum contains types of cable elongation model components.
   enum class ComponentType {
+    kNull,
     kCombined,
     kCore,
     kShell
@@ -278,7 +279,7 @@ class CableElongationModel {
   /// \var points_regions_
   ///   The cached points from the component elongation models that show where
   ///   elongation behavior may be abrupt.
-  mutable std::vector<Point2d> points_regions_;
+  mutable std::vector<Point2d<double>> points_regions_;
 
   /// \var state_
   ///   The cable state parameters that are used for calculating load/strain
@@ -299,4 +300,4 @@ class CableElongationModel {
   mutable CableStretchState state_stretch_shell_;
 };
 
-#endif // OTLS_MODELS_SAGTENSION_CABLEELONGATIONMODEL_H_
+#endif  // OTLS_MODELS_SAGTENSION_CABLEELONGATIONMODEL_H_

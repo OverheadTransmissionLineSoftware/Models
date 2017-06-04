@@ -52,8 +52,8 @@ class Catenary2d {
   ///   A flag that shifts the coordinate system origin to the left end point.
   /// \return A 2D coordinate point containing the x and y position of the
   ///   catenary curve.
-  Point2d Coordinate(const double& position_fraction,
-                     const bool& is_shifted_origin = false) const;
+  Point2d<double> Coordinate(const double& position_fraction,
+                             const bool& is_shifted_origin = false) const;
 
   /// \brief Gets a coordinate point at a location on the straight line
   ///   connecting the end points.
@@ -64,8 +64,8 @@ class Catenary2d {
   ///   A flag that shifts the coordinate system origin to the left end point.
   /// \return A 2D coordinate point containing the x and y position of the
   ///   straight line connecting the end points.
-  Point2d CoordinateChord(const double& position_fraction,
-                          const bool& is_shifted_origin = false) const;
+  Point2d<double> CoordinateChord(const double& position_fraction,
+                                  const bool& is_shifted_origin = false) const;
 
   /// \brief Gets the curve length.
   /// \return The curve length between endpoints.
@@ -216,7 +216,7 @@ class Catenary2d {
   /// \param[in] coordinate
   ///   The coordinate for the specified position.
   /// \return The curve length from the catenary origin to the coordinate.
-  double LengthFromOrigin(const Point2d& coordinate) const;
+  double LengthFromOrigin(const Point2d<double>& coordinate) const;
 
   /// \brief Updates cached member variables and modifies control variables if
   ///   update is required.
@@ -245,11 +245,11 @@ class Catenary2d {
 
   /// \var point_end_left_
   ///   The coordinate point for the left end of the catenary.
-  mutable Point2d point_end_left_;
+  mutable Point2d<double> point_end_left_;
 
   /// \var point_end_right_
   ///   The coordinate point for the right end of the catenary.
-  mutable Point2d point_end_right_;
+  mutable Point2d<double> point_end_right_;
 
   /// \var spacing_endpoints_
   ///   The vector spacing between end points of the catenary. The vector
@@ -312,7 +312,7 @@ class Catenary3d {
   ///   the fraction of curve length from the left end point.
   /// \return A 3D coordinate point containing the x, y, and z position of the
   ///   catenary curve relative to the left end point (which is the origin).
-  Point3d Coordinate(const double& position_fraction) const;
+  Point3d<double> Coordinate(const double& position_fraction) const;
 
   /// \brief Gets a coordinate point at a location on the straight line
   ///   connecting the end points.
@@ -322,7 +322,7 @@ class Catenary3d {
   /// \return A 3D coordinate point containing the x, y, and z position of the
   ///   straight line connecting the end points, relative to the left end point
   ///   (which is the origin).
-  Point3d CoordinateChord(const double& position_fraction) const;
+  Point3d<double> CoordinateChord(const double& position_fraction) const;
 
   /// \brief Gets the curve length.
   /// \return The curve length between endpoints.
@@ -500,4 +500,4 @@ class Catenary3d {
   Vector3d weight_unit_;
 };
 
-#endif // OTLS_MODELS_TRANSMISSIONLINE_CATENARY_H_
+#endif  // OTLS_MODELS_TRANSMISSIONLINE_CATENARY_H_

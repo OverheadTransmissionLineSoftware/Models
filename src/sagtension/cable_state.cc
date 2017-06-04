@@ -5,6 +5,7 @@
 
 CableState::CableState() {
   temperature = -999999;
+  type_polynomial = SagTensionCableComponent::PolynomialType::kNull;
 }
 
 CableState::~CableState() {
@@ -27,9 +28,7 @@ bool CableState::Validate(const bool& is_included_warnings,
   }
 
   // validates type-polynomial
-  if ((type_polynomial != SagTensionCableComponent::PolynomialType::kCreep)
-      && (type_polynomial !=
-          SagTensionCableComponent::PolynomialType::kLoadStrain)) {
+  if (type_polynomial == SagTensionCableComponent::PolynomialType::kNull) {
     is_valid = false;
     if (messages != nullptr) {
       message.description = "Invalid polynomial type";

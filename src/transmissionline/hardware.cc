@@ -7,6 +7,7 @@ Hardware::Hardware() {
   area_cross_section = -999999;
   length = -999999;
   name = "";
+  type = Hardware::HardwareType::kNull;
   weight = -999999;
 }
 
@@ -40,8 +41,7 @@ bool Hardware::Validate(
   }
 
   // validates type
-  if ((type != Hardware::HardwareType::kDeadEnd)
-      && (type != Hardware::HardwareType::kSuspension)) {
+  if (type == Hardware::HardwareType::kNull) {
     is_valid = false;
     if (messages != nullptr) {
       message.description = "Invalid type";

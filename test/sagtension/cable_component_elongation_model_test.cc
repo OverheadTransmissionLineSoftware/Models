@@ -102,8 +102,8 @@ TEST_F(CableComponentElongationModelTest, Load) {
 }
 
 TEST_F(CableComponentElongationModelTest, PointsRegions) {
-  std::vector<Point2d> points = c_.PointsRegions();
-  Point2d p;
+  std::vector<Point2d<double>> points = c_.PointsRegions();
+  Point2d<double> p;
 
   p = points.at(0);
   EXPECT_EQ(0.000938, helper::Round(p.x, 6));

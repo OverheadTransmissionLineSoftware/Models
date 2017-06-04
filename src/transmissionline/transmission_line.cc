@@ -346,7 +346,8 @@ bool TransmissionLine::ModifyLineStructure(const int& index,
   return true;
 }
 
-const std::vector<Point3d>* TransmissionLine::PointsXyzAlignment() const {
+const std::vector<Point3d<double>>* TransmissionLine::PointsXyzAlignment()
+    const {
   // updates class if necessary
   if (IsUpdated() == false) {
     if (Update() == false) {
@@ -357,7 +358,8 @@ const std::vector<Point3d>* TransmissionLine::PointsXyzAlignment() const {
   return &points_xyz_alignment_;
 }
 
-const std::vector<Point3d>* TransmissionLine::PointsXyzLineStructures() const {
+const std::vector<Point3d<double>>* TransmissionLine::PointsXyzLineStructures()
+    const {
   // updates class if necessary
   if (IsUpdated() == false) {
     if (Update() == false) {
@@ -368,47 +370,48 @@ const std::vector<Point3d>* TransmissionLine::PointsXyzLineStructures() const {
   return &points_xyz_structures_;
 }
 
-Point3d TransmissionLine::PointXyzAlignment(const double& station) const {
+Point3d<double> TransmissionLine::PointXyzAlignment(const double& station)
+    const {
   // updates class if necessary
   if (IsUpdated() == false) {
     if (Update() == false) {
-      return Point3d();
+      return Point3d<double>();
     }
   }
 
   return PointXyzAlignmentFromStation(station);
 }
 
-Point3d TransmissionLine::PointXyzLineStructure(
+Point3d<double> TransmissionLine::PointXyzLineStructure(
     const int& index) const {
   // updates class if necessary
   if (IsUpdated() == false) {
     if (Update() == false) {
-      return Point3d();
+      return Point3d<double>();
     }
   }
 
   // checks if index is valid
   if (IsValidLineStructureIndex(index) == false) {
-    return Point3d();
+    return Point3d<double>();
   }
 
   return points_xyz_structures_.at(index);
 }
 
-Point3d TransmissionLine::PointXyzLineStructureAttachment(
+Point3d<double> TransmissionLine::PointXyzLineStructureAttachment(
     const int& index_structure,
     const int& index_attachment) const {
   // updates class if necessary
   if (IsUpdated() == false) {
     if (Update() == false) {
-      return Point3d();
+      return Point3d<double>();
     }
   }
 
   // checks if structure index is valid
   if (IsValidLineStructureIndex(index_structure) == false) {
-    return Point3d();
+    return Point3d<double>();
   }
 
   // gets line structure
@@ -418,7 +421,7 @@ Point3d TransmissionLine::PointXyzLineStructureAttachment(
   // checks if attachment index is valid
   const int kSizeAttachments = line_structure.structure()->attachments.size();
   if ((index_attachment < 0) || (kSizeAttachments <= index_attachment)) {
-    return Point3d();
+    return Point3d<double>();
   }
 
   // gets base structure and attachment
@@ -431,7 +434,7 @@ Point3d TransmissionLine::PointXyzLineStructureAttachment(
 
   // solves for an attachment point that only considers line structure
   // modifiers
-  Point3d point_attachment(0, 0, 0);;
+  Point3d<double> point_attachment(0, 0, 0);;
 
   vector.set_x(attachment.offset_longitudinal);
   vector.set_y(-attachment.offset_transverse);
@@ -456,7 +459,7 @@ Point3d TransmissionLine::PointXyzLineStructureAttachment(
   point_attachment.y = vector.y();
 
   // adds base alignment point and returns
-  Point3d point_xyz = points_xyz_structures_.at(index_structure);
+  Point3d<double> point_xyz = points_xyz_structures_.at(index_structure);
   point_attachment.x += point_xyz.x;
   point_attachment.y += point_xyz.y;
   point_attachment.z += point_xyz.z;
@@ -518,11 +521,11 @@ const std::list<LineStructure>* TransmissionLine::line_structures() const {
   return &line_structures_;
 }
 
-Point3d TransmissionLine::origin() const {
+Point3d<double> TransmissionLine::origin() const {
   return origin_;
 }
 
-void TransmissionLine::set_origin(const Point3d& origin) {
+void TransmissionLine::set_origin(const Point3d<double>& origin) {
   origin_ = origin;
   is_updated_points_xyz_alignment_ = false;
   is_updated_points_xyz_structures_ = false;
@@ -652,17 +655,19 @@ bool TransmissionLine::IsValidLineStructureIndex(const int& index) const {
   }
 }
 
-Point3d TransmissionLine::PointXyzAlignmentFromStation(
+Point3d<double> TransmissionLine::PointXyzAlignmentFromStation(
     const double& station) const {
   // gets segment index
   const int index_segment = alignment_.IndexSegment(station);
   if (index_segment == -1) {
-    return Point3d();
+    return Point3d<double>();
   }
 
   // gets the back and ahead xyz points
-  const Point3d& point_xyz_back = points_xyz_alignment_.at(index_segment);
-  const Point3d& point_xyz_ahead = points_xyz_alignment_.at(index_segment + 1);
+  const Point3d<double>& point_xyz_back =
+      points_xyz_alignment_.at(index_segment);
+  const Point3d<double>& point_xyz_ahead =
+      points_xyz_alignment_.at(index_segment + 1);
 
   // gets back and ahead alignment points
   const AlignmentPoint& point_align_back =
@@ -699,8 +704,8 @@ Point3d TransmissionLine::PointXyzAlignmentFromStation(
                                      vector_alignment);
 }
 
-Point3d TransmissionLine::PointXyzAlignmentFromVector(
-    const Point3d& point_xyz, const double& distance_station,
+Point3d<double> TransmissionLine::PointXyzAlignmentFromVector(
+    const Point3d<double>& point_xyz, const double& distance_station,
     const double& distance_elevation, const double& rotation_xy,
     Vector2d& vector_xy) const {
   // rotates and scales xy vector to new position
@@ -708,7 +713,7 @@ Point3d TransmissionLine::PointXyzAlignmentFromVector(
   vector_xy.Scale(distance_station / vector_xy.Magnitude());
 
   // calculates new point
-  Point3d point;
+  Point3d<double> point;
   point.x = point_xyz.x + vector_xy.x();
   point.y = point_xyz.y + vector_xy.y();
   point.z = point_xyz.z + distance_elevation;
@@ -740,7 +745,7 @@ bool TransmissionLine::Update() const {
 bool TransmissionLine::UpdatePointsXyzAlignment() const {
   // initializes
   points_xyz_alignment_.clear();
-  const Point3d* point_xyz_prev = nullptr;
+  const Point3d<double>* point_xyz_prev = nullptr;
   const AlignmentPoint* point_align_prev = nullptr;
   Vector2d vector(0, 0);
 
@@ -761,11 +766,12 @@ bool TransmissionLine::UpdatePointsXyzAlignment() const {
                                         - point_align_prev->elevation;
 
       // gets point and caches
-      Point3d point = PointXyzAlignmentFromVector(*point_xyz_prev,
-                                                  distance_station,
-                                                  distance_elevation,
-                                                  point_align_prev->rotation,
-                                                  vector);
+      Point3d<double> point = PointXyzAlignmentFromVector(
+          *point_xyz_prev,
+          distance_station,
+          distance_elevation,
+          point_align_prev->rotation,
+          vector);
 
       points_xyz_alignment_.push_back(point);
     }
@@ -787,7 +793,8 @@ bool TransmissionLine::UpdatePointsXyzLineStructures() const {
   for (auto iter = line_structures_.cbegin(); iter != line_structures_.cend();
        iter++) {
     const LineStructure& line_structure = *iter;
-    Point3d point = PointXyzAlignmentFromStation(line_structure.station());
+    Point3d<double> point = PointXyzAlignmentFromStation(
+                                line_structure.station());
     points_xyz_structures_.push_back(point);
   }
 
@@ -795,8 +802,8 @@ bool TransmissionLine::UpdatePointsXyzLineStructures() const {
 }
 
 Vector2d TransmissionLine::VectorXyAlignmentSegment(const int& index) const {
-  const Point3d& point_back = points_xyz_alignment_.at(index);
-  const Point3d& point_ahead = points_xyz_alignment_.at(index + 1);
+  const Point3d<double>& point_back = points_xyz_alignment_.at(index);
+  const Point3d<double>& point_ahead = points_xyz_alignment_.at(index + 1);
 
   Vector2d vector_xy;
   vector_xy.set_x(point_ahead.x - point_back.x);

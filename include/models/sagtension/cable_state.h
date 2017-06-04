@@ -66,4 +66,4 @@ struct CableStretchState : public CableState {
   double load;
 };
 
-#endif // OTLS_MODELS_SAGTENSION_CABLESTATE_H_
+#endif  // OTLS_MODELS_SAGTENSION_CABLESTATE_H_

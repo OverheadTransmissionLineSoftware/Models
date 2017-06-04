@@ -103,7 +103,7 @@ class CableComponentElongationModel {
   ///  - unloaded
   ///  - polynomial start
   ///  - polynomial end
-  std::vector<Point2d> PointsRegions() const;
+  std::vector<Point2d<double>> PointsRegions() const;
 
   /// \brief Gets the slope of a tangent line.
   /// \param[in] strain
@@ -203,7 +203,7 @@ class CableComponentElongationModel {
   ///   The strain.
   /// \return The load.
   double Load(const SagTensionCableComponent::PolynomialType& type_polynomial,
-              const std::vector<Point2d>& points,
+              const std::vector<Point2d<double>>& points,
               const double& strain_thermal,
               const double& strain) const;
 
@@ -215,7 +215,7 @@ class CableComponentElongationModel {
   /// \param[in] strain
   ///   The strain value (x-axis).
   /// \return The load (y-axis) on the line.
-  double LoadLinearExtension(const Point2d& point,
+  double LoadLinearExtension(const Point2d<double>& point,
                              const double& slope,
                              const double& strain) const;
 
@@ -252,7 +252,7 @@ class CableComponentElongationModel {
                      const double& temperature,
                      const double& load_limit_polynomial,
                      const double& load_stretch,
-                     std::vector<Point2d>& points) const;
+                     std::vector<Point2d<double>>& points) const;
 
   /// \brief Gets the slope for the specified parameters.
   /// \param[in] type_polynomial
@@ -265,7 +265,7 @@ class CableComponentElongationModel {
   ///   The strain value (x-axis).
   /// \return The slope.
   double Slope(const SagTensionCableComponent::PolynomialType& type_polynomial,
-               const std::vector<Point2d>& points,
+               const std::vector<Point2d<double>>& points,
                const double& strain_thermal,
                const double& strain) const;
 
@@ -295,7 +295,7 @@ class CableComponentElongationModel {
   ///   The load.
   /// \return The strain.
   double Strain(const SagTensionCableComponent::PolynomialType& type_polynomial,
-                const std::vector<Point2d>& points,
+                const std::vector<Point2d<double>>& points,
                 const double& strain_thermal,
                 const double& load) const;
 
@@ -307,7 +307,7 @@ class CableComponentElongationModel {
   /// \param[in] load
   ///   The load value (y-axis).
   /// \return The strain (x-axis) on the line.
-  double StrainLinearExtension(const Point2d& point,
+  double StrainLinearExtension(const Point2d<double>& point,
                                const double& slope,
                                const double& load) const;
 
@@ -404,19 +404,19 @@ class CableComponentElongationModel {
   /// \var points_state_
   ///   The region points for the state model. These points are in increasing
   ///   order.
-  mutable std::vector<Point2d> points_state_;
+  mutable std::vector<Point2d<double>> points_state_;
 
   /// \var points_stretch_creep_
   ///   The region points for the creep stretch model. These points are only
   ///   solved for if the stretch polynomial is different than the state
   ///   polynomial. These points are in increasing order.
-  mutable std::vector<Point2d> points_stretch_creep_;
+  mutable std::vector<Point2d<double>> points_stretch_creep_;
 
   /// \var points_stretch_load_
   ///   The region points for the loadstrain stretch model. These points are
   ///   only solved for if the stretch polynomial is different than the state
   ///   polynomial. These points are in increasing order.
-  mutable std::vector<Point2d> points_stretch_load_;
+  mutable std::vector<Point2d<double>> points_stretch_load_;
 
   /// \var polynomial_creep_
   ///   The polynomial that describes how the component stretches after an
@@ -451,4 +451,4 @@ class CableComponentElongationModel {
   const double* temperature_reference_;
 };
 
-#endif // OTLS_MODELS_SAGTENSION_CABLECOMPONENTELONGATIONMODEL_H_
+#endif  // OTLS_MODELS_SAGTENSION_CABLECOMPONENTELONGATIONMODEL_H_

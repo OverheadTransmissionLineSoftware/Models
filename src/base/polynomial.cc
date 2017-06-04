@@ -103,10 +103,10 @@ double Polynomial::X(const double& y, const int& decimal_precision_y,
   Polynomial polynomial_shifted(&coefficients_shifted);
 
   // function point
-  Point2d point_function = Point2d(x_guess, -999999);
+  Point2d<double> point_function(x_guess, -999999);
 
   // derivative point
-  Point2d point_derivative = Point2d(x_guess, -999999);
+  Point2d<double> point_derivative(x_guess, -999999);
 
   // iterates until the value is within tolerance
   int iter = 0;

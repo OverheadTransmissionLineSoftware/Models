@@ -18,6 +18,7 @@ struct Hardware {
   ///
   /// This enum contains types of hardware assemblies.
   enum class HardwareType {
+    kNull,
     kDeadEnd,
     kSuspension,
   };

@@ -19,6 +19,7 @@ class SagTensionCableComponent {
   ///
   /// This enum contains types of cable component polynomials.
   enum class PolynomialType {
+    kNull,
     kCreep,
     kLoadStrain
   };
@@ -101,6 +102,7 @@ class SagTensionCable {
   ///
   /// This enum contains types of cable elongation model components.
   enum class ComponentType {
+    kNull,
     kCombined,
     kCore,
     kShell

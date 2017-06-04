@@ -66,4 +66,4 @@ double Round(const double& number, const int& precision) {
   return std::round(number * pow(10, precision)) / pow(10, precision);
 }
 
-}  // namespace support
+}  // namespace helper

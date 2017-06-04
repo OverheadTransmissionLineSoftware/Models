@@ -11,7 +11,7 @@ CableAttachmentEquilibriumSolver::CableAttachmentEquilibriumSolver() {
   angle_hardware_equilibrium_ = -999999;
   catenary_ahead_ = nullptr;
   catenary_back_ = nullptr;
-  direction_catenaries_ = AxisDirectionType::kPositive;
+  direction_catenaries_ = AxisDirectionType::kNull;
 
   is_updated_ = false;
 }
@@ -90,6 +90,15 @@ bool CableAttachmentEquilibriumSolver::Validate(
   } else {
     if (catenary_back_->Validate(is_included_warnings, messages) == false) {
       is_valid = false;
+    }
+  }
+
+  // validates direction-catenaries
+  if (direction_catenaries_ == AxisDirectionType::kNull) {
+    is_valid = false;
+    if (messages != nullptr) {
+      message.description = "Invalid catenary direction";
+      messages->push_back(message);
     }
   }
 

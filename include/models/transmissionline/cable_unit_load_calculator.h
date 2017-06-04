@@ -77,4 +77,4 @@ class CableUnitLoadCalculator {
   const double* weight_unit_cable_;
 };
 
-#endif // OTLS_MODELS_TRANSMISSIONLINE_CABLEUNITLOADCALCULATOR_H_
+#endif  // OTLS_MODELS_TRANSMISSIONLINE_CABLEUNITLOADCALCULATOR_H_

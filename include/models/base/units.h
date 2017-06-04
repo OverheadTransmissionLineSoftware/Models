@@ -14,6 +14,7 @@ namespace units {
 ///
 /// This enum contains types of angle unit conversions.
 enum class AngleConversionType {
+  kNull,
   kDegreesToRadians,
   kRadiansToDegrees
 };
@@ -22,6 +23,7 @@ enum class AngleConversionType {
 ///
 /// This enum contains types of force unit conversions.
 enum class ForceConversionType {
+  kNull,
   kNewtonsToPounds,
   kPoundsToNewtons
 };
@@ -30,6 +32,7 @@ enum class ForceConversionType {
 ///
 /// This enum contains types of length unit conversions.
 enum class LengthConversionType {
+  kNull,
   kCentimetersToMeters,
   kFeetToInches,
   kFeetToMeters,
@@ -44,6 +47,7 @@ enum class LengthConversionType {
 ///
 /// This enum contains types of stress unit conversions.
 enum class StressConversionType {
+  kNull,
   kMegaPascalToPascal,
   kPascalToMegaPascal,
   kPascalToPsf,
@@ -56,6 +60,7 @@ enum class StressConversionType {
 ///
 /// This enum contains types of temperature unit conversions.
 enum class TemperatureConversionType {
+  kNull,
   kCelsiusToFahrenheit,
   kFahrenheitToCelsius
 };
@@ -80,6 +85,7 @@ enum class TemperatureConversionType {
 /// The different style units vary for every struct, depending on how the user
 /// typically prefers to see the information represented.
 enum class UnitStyle {
+  kNull,
   kConsistent,
   kDifferent
 };
@@ -88,6 +94,7 @@ enum class UnitStyle {
 ///
 /// This enum contains unit systems.
 enum class UnitSystem {
+  kNull,
   kImperial,
   kMetric
 };
@@ -173,6 +180,7 @@ double ConvertTemperature(const double& value,
                           const TemperatureConversionType& type,
                           const int& exponent = 1,
                           const bool& is_numerator = true);
-} // namespace units
 
-#endif // OTLS_MODELS_BASE_UNITS_H_
+}  // namespace units
+
+#endif  // OTLS_MODELS_BASE_UNITS_H_

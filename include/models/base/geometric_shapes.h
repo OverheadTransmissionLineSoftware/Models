@@ -83,4 +83,4 @@ class Cylinder : public Shape {
   double length_;
 };
 
-#endif // OTLS_MODELS_BASE_GEOMETRICSHAPES_H_
+#endif  // OTLS_MODELS_BASE_GEOMETRICSHAPES_H_

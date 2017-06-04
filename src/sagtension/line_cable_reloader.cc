@@ -11,6 +11,7 @@
 #include "models/transmissionline/cable_unit_load_calculator.h"
 
 LineCableReloader::LineCableReloader() {
+  condition_reloaded_ = CableConditionType::kNull;
   line_cable_ = nullptr;
   weathercase_reloaded_ = nullptr;
 
@@ -445,13 +446,13 @@ bool LineCableReloader::UpdateConstraintCableModel() const {
   }
 
   // initializes left point
-  Point2d point_left;
+  Point2d<double> point_left;
   point_left.x = 0;
   point_left.y = reloader.CatenaryReloaded().TensionAverage()
                  - state_stretch.load;
 
   // initializes right point
-  Point2d point_right;
+  Point2d<double> point_right;
   point_right.x = *cable_sagtension_.strength_rated();
 
   state_stretch.load = point_right.x;
@@ -462,7 +463,7 @@ bool LineCableReloader::UpdateConstraintCableModel() const {
                   - state_stretch.load;
 
   // initializes current point
-  Point2d point_current;
+  Point2d<double> point_current;
 
   // iterates until target solution is reached
   unsigned int iter = 1;

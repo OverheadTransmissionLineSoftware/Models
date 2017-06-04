@@ -55,4 +55,4 @@ double Round(const double& number, const int& precision);
 
 }  // namespace helper
 
-#endif // OTLS_MODELS_BASE_HELPER_H_
+#endif  // OTLS_MODELS_BASE_HELPER_H_

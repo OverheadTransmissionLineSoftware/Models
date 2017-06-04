@@ -161,7 +161,7 @@ CableElongationModel* BuildCableElongationModel(const SagTensionCable* cable) {
 
 Hardware* BuildHardware() {
   Hardware* hardware = new Hardware();
-  hardware->name = "DeadEnd"
+  hardware->name = "DeadEnd";
   hardware->area_cross_section = 1.0;
   hardware->length = 10;
   hardware->type = Hardware::HardwareType::kDeadEnd;
@@ -290,7 +290,7 @@ Structure* BuildStructure() {
 
 TransmissionLine* BuildTransmissionLine() {
   TransmissionLine* line = new TransmissionLine();
-  line->set_origin(Point3d(0, 0, 0));
+  line->set_origin(Point3d<double>(0, 0, 0));
 
   // adds alignment points
   AlignmentPoint point;

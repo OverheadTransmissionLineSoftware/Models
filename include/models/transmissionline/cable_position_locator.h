@@ -53,12 +53,13 @@ class CablePositionLocator {
   /// \param[in] num
   ///   The number of points to calculate.
   /// \return A list of xyz points at the cable position.
-  std::list<Point3d> PointsCable(const int& index_span, const int& num) const;
+  std::list<Point3d<double>> PointsCable(const int& index_span,
+                                         const int& num) const;
 
   /// \brief Gets the cable attachment xyz points.
   /// \return The cable attachment points. If the class does not update, a
   ///   nullptr is returned.
-  const std::vector<Point3d>* PointsCableAttachment() const;
+  const std::vector<Point3d<double>>* PointsCableAttachment() const;
 
   /// \brief Validates member variables.
   /// \param[in] is_included_warnings
@@ -152,14 +153,14 @@ class CablePositionLocator {
   /// \return The maximum imbalance tension.
   double UpdatePointsHardware() const;
 
-  /// \var hardwares_
-  ///   The hardware assemblies at each attachment/connection.
-  mutable std::vector<const Hardware*> hardwares_;
-
   /// \var direction_wind_
   ///   The wind axis direction, relative to the ahead alignment path. Positive
   ///   indicates from right to left, while negative is the opposite.
   AxisDirectionType direction_wind_;
+
+  /// \var hardwares_
+  ///   The hardware assemblies at each attachment/connection.
+  mutable std::vector<const Hardware*> hardwares_;
 
   /// \var index_cable_
   ///   The index of the line cable. The line cable is owned by the transmission
@@ -176,7 +177,7 @@ class CablePositionLocator {
 
   /// \var points_cable_
   ///   The cable attachment points, in xyz coordinates.
-  mutable std::vector<Point3d> points_cable_;
+  mutable std::vector<Point3d<double>> points_cable_;
 
   /// \var points_hardware_
   ///   The hardware points that define orientation, in spherical coordinates.
@@ -187,11 +188,11 @@ class CablePositionLocator {
   ///   by the static equilibrium solution. The first and last points for the
   ///   dead-end hardware contain all zeroes, but are kept in to align with
   ///   indexes from other containers.
-  mutable std::vector<SphericalPoint3d> points_hardware_;
+  mutable std::vector<SphericalPoint3d<double>> points_hardware_;
 
   /// \var points_structure_
   ///   The structure attachment points, in xyz coordinates.
-  mutable std::vector<Point3d> points_structure_;
+  mutable std::vector<Point3d<double>> points_structure_;
 
   /// \var size_connections_
   ///   The number of connections on the line cable.
@@ -207,4 +208,4 @@ class CablePositionLocator {
   const Vector3d* weight_unit_;
 };
 
-#endif // OTLS_MODELS_TRANSMISSIONLINE_CABLEPOSITIONLOCATOR_H_
+#endif  // OTLS_MODELS_TRANSMISSIONLINE_CABLEPOSITIONLOCATOR_H_

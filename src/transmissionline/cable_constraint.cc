@@ -5,7 +5,9 @@
 
 CableConstraint::CableConstraint() {
   case_weather = nullptr;
+  condition = CableConditionType::kNull;
   limit = -999999;
+  type_limit = CableConstraint::LimitType::kNull;
 }
 
 CableConstraint::~CableConstraint() {}
@@ -32,9 +34,7 @@ bool CableConstraint::Validate(
   }
 
   // validates condition
-  if ((condition != CableConditionType::kCreep)
-      && (condition != CableConditionType::kInitial)
-      && (condition != CableConditionType::kLoad)) {
+  if (condition == CableConditionType::kNull) {
     is_valid = false;
     if (messages != nullptr) {
       message.description = "Invalid condition";
@@ -52,10 +52,7 @@ bool CableConstraint::Validate(
   }
 
   // validates type-limit
-  if ((type_limit != CableConstraint::LimitType::kCatenaryConstant)
-      && (type_limit != CableConstraint::LimitType::kHorizontalTension)
-      && (type_limit != CableConstraint::LimitType::kSag)
-      && (type_limit != CableConstraint::LimitType::kSupportTension)) {
+  if (type_limit == CableConstraint::LimitType::kNull) {
     is_valid = false;
     if (messages != nullptr) {
       message.description = "Invalid limit type";
