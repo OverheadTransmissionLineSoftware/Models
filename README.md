@@ -3,13 +3,14 @@ This repository contains multiple libraries that model a transmission line and
 provide engineering calculations. Each library has its own subfolder to
 separate it from others.
 
-## Base
+## Libraries
+### Base
 This library provides base functionality needed for most libraries.
 * Unit conversions
 * Polynomials
 * Geometric shapes
 
-## TransmissionLine
+### TransmissionLine
 This library contains classes/methods that model a transmission line in 3D.
 * Alignments
   * Station
@@ -22,13 +23,18 @@ This library contains classes/methods that model a transmission line in 3D.
   * Catenary position/tension
   * Weathercases
 
-## SagTension
+### SagTension
 This library contains classes/methods that model cable sag-tension behavior.
 * Experimental Plastic Elongation (EPE) Cable Model
   * Individual shell/core components
   * Tension/compression extrapolation
 * Load and creep stretch
 * Resolving multiple tension constraints
+
+## Branches
+The master branch contains stable code most of the time, but it's best to use
+specific [releases](https://github.com/OverheadTransmissionLineSoftware/Models/releases)
+ of the master branch whenever possible.
 
 ## Get Involved!
 This is an open source effort to create transmission line design software. This
