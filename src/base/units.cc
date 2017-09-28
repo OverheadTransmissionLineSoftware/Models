@@ -153,13 +153,24 @@ double ConvertStress(const double& value,
 double ConvertTemperature(const double& value,
                           const TemperatureConversionType& type,
                           const int& exponent,
-                          const bool& is_numerator) {
+                          const bool& is_numerator,
+                          const bool& include_shift) {
   if (type == TemperatureConversionType::kCelsiusToFahrenheit) {
     double value_adj = Convert(value, kTemperatureCelsiusToFahrenheit, exponent,
                                is_numerator);
-    return value_adj + 32;
+
+    if (include_shift == true) {
+      return value_adj + 32;
+    } else {
+      return value_adj;
+    }
   } else if (type == TemperatureConversionType::kFahrenheitToCelsius) {
-    double value_adj = value - 32;
+    double value_adj = -999999;
+    if (include_shift == true) {
+      value_adj = value - 32;
+    } else {
+      value_adj = value;
+    }
     return Convert(value_adj, kTemperatureFahrenheitToCelsius, exponent,
                    is_numerator);
   } else {
