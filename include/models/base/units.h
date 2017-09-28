@@ -36,10 +36,14 @@ enum class LengthConversionType {
   kCentimetersToMeters,
   kFeetToInches,
   kFeetToMeters,
+  kFeetToMiles,
   kInchesToFeet,
+  kKilometersToMeters,
   kMetersToCentimeters,
   kMetersToFeet,
+  kMetersToKilometers,
   kMetersToMillimeters,
+  kMilesToFeet,
   kMillimetersToMeters
 };
 
