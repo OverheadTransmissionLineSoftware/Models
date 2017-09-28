@@ -46,6 +46,18 @@ TEST(Helper, IsNumeric) {
   EXPECT_FALSE(helper::IsNumeric(str));
 }
 
+TEST(Helper, LinearY) {
+  const double x1 = 0;
+  const double y1 = 0;
+
+  const double x2 = 10;
+  const double y2 = 10;
+
+  const double x = 5;
+  const double y = helper::LinearY(x1, y1, x2, y2, x);
+  EXPECT_EQ(5, helper::Round(y, 0));
+}
+
 TEST(Helper, Parse) {
   std::string str = "0,1,2,3";
 
