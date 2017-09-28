@@ -74,8 +74,7 @@ bool CatenaryCableReloader::Validate(
       messages->push_back(message);
     }
   } else {
-    if (catenary_->Validate(is_included_warnings,
-                            messages) == false) {
+    if (catenary_->Validate(is_included_warnings, messages) == false) {
       is_valid = false;
     }
   }
@@ -88,8 +87,7 @@ bool CatenaryCableReloader::Validate(
       messages->push_back(message);
     }
   } else {
-    if (model_reference_->Validate(is_included_warnings,
-                                   messages) == false) {
+    if (model_reference_->Validate(is_included_warnings, messages) == false) {
       is_valid = false;
     }
   }
@@ -102,16 +100,18 @@ bool CatenaryCableReloader::Validate(
       messages->push_back(message);
     }
   } else {
-    if (model_reloaded_->Validate(is_included_warnings,
-                                  messages) == false) {
+    if (model_reloaded_->Validate(is_included_warnings, messages) == false) {
       is_valid = false;
     }
   }
 
   // validates reloaded unit weight
   if (weight_unit_reloaded_ == nullptr) {
-
-
+    is_valid = false;
+    if (messages != nullptr) {
+      message.description = "Invalid reloaded unit weight";
+      messages->push_back(message);
+    }
   } else {
     if (weight_unit_reloaded_->x() != 0) {
       is_valid = false;

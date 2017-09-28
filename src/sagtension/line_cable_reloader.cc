@@ -160,8 +160,7 @@ bool LineCableReloader::Validate(
   message.title = "LINE CABLE RELOADER";
 
   // validates cable-sagtension
-  if (cable_sagtension_.Validate(is_included_warnings,
-                                 messages) == false) {
+  if (cable_sagtension_.Validate(is_included_warnings, messages) == false) {
     is_valid = false;
     if (messages != nullptr) {
       message.description = "Invalid sag-tension cable";
@@ -170,9 +169,7 @@ bool LineCableReloader::Validate(
   }
 
   // validates condition-reloaded
-  if ((condition_reloaded_ != CableConditionType::kCreep)
-      && (condition_reloaded_ != CableConditionType::kInitial)
-      && (condition_reloaded_ != CableConditionType::kLoad)) {
+  if (condition_reloaded_ == CableConditionType::kNull) {
     is_valid = false;
     if (messages != nullptr) {
       message.description = "Invalid reloaded condition";
@@ -202,7 +199,7 @@ bool LineCableReloader::Validate(
     }
   } else {
     if (weathercase_reloaded_->Validate(is_included_warnings,
-                                 messages) == false) {
+                                        messages) == false) {
       is_valid = false;
     }
   }

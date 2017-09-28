@@ -57,8 +57,8 @@ bool Structure::Validate(
       messages->push_back(message);
     }
   } else {
-    for (auto iter = attachments.begin(); iter != attachments.end(); iter++) {
-      StructureAttachment attachment = *iter;
+    for (auto iter = attachments.cbegin(); iter != attachments.cend(); iter++) {
+      const StructureAttachment& attachment = *iter;
       attachment.Validate(is_included_warnings, messages);
     }
   }
@@ -73,8 +73,8 @@ bool Structure::Validate(
   }
 
   if (attachments.size() != 0) {
-    for (auto iter = attachments.begin(); iter != attachments.end(); iter++) {
-      StructureAttachment attachment = *iter;
+    for (auto iter = attachments.cbegin(); iter != attachments.cend(); iter++) {
+      const StructureAttachment& attachment = *iter;
       if (height < attachment.offset_vertical_top) {
         is_valid = false;
         if (messages != nullptr) {
