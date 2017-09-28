@@ -6,6 +6,7 @@
 
 #include "models/sagtension/cable_elongation_model.h"
 #include "models/sagtension/sag_tension_cable.h"
+#include "models/thermalrating/thermal_rating_cable.h"
 #include "models/transmissionline/cable.h"
 #include "models/transmissionline/hardware.h"
 #include "models/transmissionline/line_cable.h"
@@ -48,6 +49,9 @@ namespace factory {
   /// \brief This function builds a structure.
   /// \return A structure.
   Structure* BuildStructure();
+
+  /// \brief This function builds a thermal rating cable.
+  ThermalRatingCable* BuildThermalRatingCable();
 
   /// \brief This function builds a transmission line.
   /// \return A transmission line.

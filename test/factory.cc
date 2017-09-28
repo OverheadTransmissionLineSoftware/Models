@@ -313,6 +313,14 @@ Structure* BuildStructure() {
   return structure;
 }
 
+ThermalRatingCable* BuildThermalRatingCable() {
+  Cable* cable = BuildCable();
+  ThermalRatingCable* cable_thermalrating = new ThermalRatingCable();
+  cable_thermalrating->set_cable_base(cable);
+
+  return cable_thermalrating;
+}
+
 TransmissionLine* BuildTransmissionLine() {
   TransmissionLine* line = new TransmissionLine();
   line->set_origin(Point3d<double>(0, 0, 0));
