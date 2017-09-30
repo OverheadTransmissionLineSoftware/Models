@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.14
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "otlsmodels_base", "otlsmodels_base.vcxproj", "{8A3681DE-D718-4B86-8820-FA5074B58934}"
 EndProject
@@ -17,6 +17,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "otlsmodels_sagtension", "ot
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "otlsmodels_thermalrating", "otlsmodels_thermalrating.vcxproj", "{55742003-5DC6-4C75-B732-AE0B7A2C5114}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EC902B82-BEAF-4F88-8A05-2675850D5B74} = {EC902B82-BEAF-4F88-8A05-2675850D5B74}
+		{8A3681DE-D718-4B86-8820-FA5074B58934} = {8A3681DE-D718-4B86-8820-FA5074B58934}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,5 +47,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {034D8927-BE1F-442E-B3AA-878A197C862E}
 	EndGlobalSection
 EndGlobal
