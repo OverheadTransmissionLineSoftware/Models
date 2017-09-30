@@ -47,6 +47,11 @@ bool IsNumeric(const std::string& str) {
   return stream >> d && !(stream >> c);
 }
 
+double LinearY(const double& x1, const double& y1,
+               const double& x2, const double& y2, const double& x) {
+  return y1 + (x - x1) * ((y2 - y1) / (x2 - x1));
+}
+
 std::list<std::string> Parse(const std::string& str,
                              const char& delimiter) {
   std::list<std::string> strs;

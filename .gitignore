@@ -21,6 +21,7 @@
 *.idb
 *.ilk
 *.iobj
+*.ipch
 *.ipdb
 *.lastbuildstate
 *.opendb

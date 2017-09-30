@@ -18,6 +18,33 @@ Cable* BuildCable() {
   std::vector<double> coefficients_loadstrain;
   double c0, c1, c2, c3, c4;
 
+  // sets entire cable mechanical properties
+  cable->area_physical = kAreaPhysical;
+  cable->diameter = units::ConvertLength(
+      1.108, units::LengthConversionType::kInchesToFeet);
+  cable->name = "DRAKE";
+  cable->strength_rated = 31500;
+  cable->temperature_properties_components = 70;
+  cable->type_construction = "ASCR";
+  cable->weight_unit = 1.094;
+
+  // sets entire cable thermal properties
+  cable->absorptivity = 0.8;
+  cable->emissivity = 0.8;
+
+  Cable::ResistancePoint point;
+  point.temperature = units::ConvertTemperature(
+      77, units::TemperatureConversionType::kFahrenheitToCelsius);
+  point.resistance = units::ConvertLength(
+      0.1166, units::LengthConversionType::kMilesToFeet, 1, false);
+  cable->resistances_ac.push_back(point);
+
+  point.temperature = units::ConvertTemperature(
+      167, units::TemperatureConversionType::kFahrenheitToCelsius);
+  point.resistance = units::ConvertLength(
+      0.1390, units::LengthConversionType::kMilesToFeet, 1, false);
+  cable->resistances_ac.push_back(point);
+
   // builds core component
   // converts lb/in^2 to lbs
   coefficients_creep.clear();
@@ -54,6 +81,10 @@ Cable* BuildCable() {
   coefficients_loadstrain.push_back(c3);
   coefficients_loadstrain.push_back(c4);
 
+  component.capacity_heat = units::ConvertTemperature(
+      41.316,
+      units::TemperatureConversionType::kFahrenheitToCelsius,
+      1, false, false);
   component.coefficient_expansion_linear_thermal = 0.0000064;
   component.coefficients_polynomial_creep = coefficients_creep;
   component.coefficients_polynomial_loadstrain = coefficients_loadstrain;
@@ -108,6 +139,10 @@ Cable* BuildCable() {
   coefficients_loadstrain.push_back(c3);
   coefficients_loadstrain.push_back(c4);
 
+  component.capacity_heat = units::ConvertTemperature(
+      180.203,
+      units::TemperatureConversionType::kFahrenheitToCelsius,
+      1, false, false);
   component.coefficient_expansion_linear_thermal = 0.0000128;
   component.coefficients_polynomial_creep = coefficients_creep;
   component.coefficients_polynomial_loadstrain = coefficients_loadstrain;
@@ -125,16 +160,6 @@ Cable* BuildCable() {
            * kAreaPhysical;
 
   cable->component_shell = component;
-
-  // finishes building cable
-  cable->area_physical = kAreaPhysical;
-  cable->diameter = units::ConvertLength(
-      1.108, units::LengthConversionType::kInchesToFeet);
-  cable->name = "DRAKE";
-  cable->strength_rated = 31500;
-  cable->temperature_properties_components = 70;
-  cable->type_construction = "ASCR";
-  cable->weight_unit = 1.094;
 
   return cable;
 }
@@ -286,6 +311,14 @@ Structure* BuildStructure() {
   structure->attachments.push_back(attachment);
 
   return structure;
+}
+
+ThermalRatingCable* BuildThermalRatingCable() {
+  Cable* cable = BuildCable();
+  ThermalRatingCable* cable_thermalrating = new ThermalRatingCable();
+  cable_thermalrating->set_cable_base(cable);
+
+  return cable_thermalrating;
 }
 
 TransmissionLine* BuildTransmissionLine() {

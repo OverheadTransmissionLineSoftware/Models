@@ -68,7 +68,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\build\msvc\Debug\;..\external\googletest\googletest\msvc\x64\Debug\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>otlsmodels_sagtensiond.lib;otlsmodels_transmissionlined.lib;otlsmodels_based.lib;gtestd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>otlsmodels_sagtensiond.lib;otlsmodels_thermalratingd.lib;otlsmodels_transmissionlined.lib;otlsmodels_based.lib;gtestd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -90,7 +90,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\build\msvc\Release\;..\external\googletest\googletest\msvc\x64\Release\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>otlsmodels_sagtension.lib;otlsmodels_transmissionline.lib;otlsmodels_base.lib;gtest.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>otlsmodels_sagtension.lib;otlsmodels_thermalrating.lib;otlsmodels_transmissionline.lib;otlsmodels_base.lib;gtest.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -113,6 +113,14 @@
     <ClCompile Include="sagtension\line_cable_sagger_test.cc" />
     <ClCompile Include="sagtension\sag_tension_cable_test.cc" />
     <ClCompile Include="test.cc" />
+    <ClCompile Include="thermalrating\cable_heat_transfer_solver_test.cc" />
+    <ClCompile Include="thermalrating\cable_heat_transfer_state_test.cc" />
+    <ClCompile Include="thermalrating\solar_radiation_solver_test.cc" />
+    <ClCompile Include="thermalrating\steady_cable_current_solver_test.cc" />
+    <ClCompile Include="thermalrating\steady_cable_temperature_solver_test.cc" />
+    <ClCompile Include="thermalrating\thermal_rating_cable_test.cc" />
+    <ClCompile Include="thermalrating\thermal_rating_weather_test.cc" />
+    <ClCompile Include="thermalrating\transient_cable_temperature_solver_test.cc" />
     <ClCompile Include="transmissionline\alignment_test.cc" />
     <ClCompile Include="transmissionline\cable_attachment_equilibrium_solver_test.cc" />
     <ClCompile Include="transmissionline\cable_constraint_test.cc" />

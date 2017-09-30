@@ -129,8 +129,7 @@ bool CablePositionLocator::Validate(const bool& is_included_warnings,
       messages->push_back(message);
     }
   } else {
-    if (line_->Validate(is_included_warnings,
-                        messages) == false) {
+    if (line_->Validate(is_included_warnings, messages) == false) {
       is_valid = false;
     }
   }

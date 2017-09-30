@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="otlsmodels_thermalrating" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Option virtualFolders="Header Files/;Source Files/;" />
+		<Build>
+			<Target title="debug">
+				<Option output="debug/otlsmodels_thermalratingd" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="debug/otlsmodels_thermalrating/" />
+				<Option external_deps="debug/libotlsmodels_transmissionlined.a" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add library="debug/libotlsmodels_based.a" />
+					<Add library="debug/libotlsmodels_transmissionlined.a" />
+				</Linker>
+			</Target>
+			<Target title="release">
+				<Option output="release/otlsmodels_thermalrating" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="release/otlsmodels_thermalrating/" />
+				<Option external_deps="release/libotlsmodels_transmissionline.a" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="release/libotlsmodels_base.a" />
+					<Add library="release/libotlsmodels_transmissionline.a" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-std=c++11" />
+			<Add option="-Wall" />
+			<Add directory="../../include" />
+		</Compiler>
+		<Linker>
+			<Add directory="../../" />
+		</Linker>
+		<Unit filename="../../include/models/thermalrating/cable_heat_transfer_solver.h">
+			<Option virtualFolder="Header Files/" />
+		</Unit>
+		<Unit filename="../../include/models/thermalrating/cable_heat_transfer_state.h">
+			<Option virtualFolder="Header Files/" />
+		</Unit>
+		<Unit filename="../../include/models/thermalrating/solar_radiation_solver.h">
+			<Option virtualFolder="Header Files/" />
+		</Unit>
+		<Unit filename="../../include/models/thermalrating/steady_cable_current_solver.h">
+			<Option virtualFolder="Header Files/" />
+		</Unit>
+		<Unit filename="../../include/models/thermalrating/steady_cable_temperature_solver.h">
+			<Option virtualFolder="Header Files/" />
+		</Unit>
+		<Unit filename="../../include/models/thermalrating/thermal_rating_cable.h">
+			<Option virtualFolder="Header Files/" />
+		</Unit>
+		<Unit filename="../../include/models/thermalrating/thermal_rating_weather.h">
+			<Option virtualFolder="Header Files/" />
+		</Unit>
+		<Unit filename="../../include/models/thermalrating/transient_cable_temperature_solver.h">
+			<Option virtualFolder="Header Files/" />
+		</Unit>
+		<Unit filename="../../src/thermalrating/cable_heat_transfer_solver.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
+		<Unit filename="../../src/thermalrating/cable_heat_transfer_state.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
+		<Unit filename="../../src/thermalrating/solar_radiation_solver.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
+		<Unit filename="../../src/thermalrating/steady_cable_current_solver.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
+		<Unit filename="../../src/thermalrating/steady_cable_temperature_solver.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
+		<Unit filename="../../src/thermalrating/thermal_rating_cable.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
+		<Unit filename="../../src/thermalrating/thermal_rating_weather.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
+		<Unit filename="../../src/thermalrating/transient_cable_temperature_solver.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

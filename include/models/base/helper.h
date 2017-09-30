@@ -36,6 +36,21 @@ std::string DoubleToFormattedString(const double& value,
 /// \return If the string is numeric.
 bool IsNumeric(const std::string& str);
 
+/// \brief Linearly interpolates/extrapolates a y value.
+/// \param[in] x1
+///   The x value for the first line point.
+/// \param[in] y1
+///   The y value for the first line point.
+/// \param[in] x2
+///   The x value for the second line point.
+/// \param[in] y2
+///   The y value for the second line point.
+/// \param[in] x
+///   The x value.
+/// \return The y value.
+double LinearY(const double& x1, const double& y1,
+               const double& x2, const double& y2, const double& x);
+
 /// \brief Parses a string.
 /// \param[in] str
 ///   The string.

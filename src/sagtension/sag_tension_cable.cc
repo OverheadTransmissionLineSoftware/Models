@@ -234,7 +234,9 @@ bool SagTensionCable::Validate(const bool& is_included_warnings,
     }
     return is_valid;
   } else {
-    cable_base_->Validate(is_included_warnings, messages);
+    if (cable_base_->Validate(is_included_warnings, messages) == false) {
+      is_valid = false;
+    }
   }
 
   // validates strength-rated

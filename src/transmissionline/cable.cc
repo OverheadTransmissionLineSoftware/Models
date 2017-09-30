@@ -4,6 +4,7 @@
 #include "models/transmissionline/cable.h"
 
 CableComponent::CableComponent() {
+  capacity_heat = -999999;
   coefficient_expansion_linear_thermal = -999999;
   load_limit_polynomial_creep = -999999;
   load_limit_polynomial_loadstrain = -999999;
@@ -29,8 +30,10 @@ bool CableComponent::Validate(const bool& is_included_warnings,
 }
 
 Cable::Cable() {
+  absorptivity = -999999;
   area_physical = -999999;
   diameter = -999999;
+  emissivity = -999999;
   name = "";
   strength_rated = -999999;
   temperature_properties_components = -999999;

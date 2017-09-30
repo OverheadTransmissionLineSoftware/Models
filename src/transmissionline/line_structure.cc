@@ -86,7 +86,7 @@ bool LineStructure::Validate(
   if (structure_ == nullptr) {
     is_valid = false;
     if (messages != nullptr) {
-      message.description = "Invalid station";
+      message.description = "Invalid structure";
       messages->push_back(message);
     }
   } else {

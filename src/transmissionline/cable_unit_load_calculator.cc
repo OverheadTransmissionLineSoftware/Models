@@ -22,8 +22,7 @@ bool CableUnitLoadCalculator::Validate(
   message.title = "CABLE UNIT LOAD CALCULATOR";
 
   // validates diameter-cable
-  if ((diameter_cable_ == nullptr)
-      ||  (*diameter_cable_ <= 0)) {
+  if ((diameter_cable_ == nullptr) ||  (*diameter_cable_ <= 0)) {
     is_valid = false;
     if (messages != nullptr) {
       message.description = "Invalid cable diameter";
@@ -32,8 +31,7 @@ bool CableUnitLoadCalculator::Validate(
   }
 
   // validates weight-unit-cable
-  if ((weight_unit_cable_ == nullptr)
-      || (*weight_unit_cable_ <= 0)) {
+  if ((weight_unit_cable_ == nullptr) || (*weight_unit_cable_ <= 0)) {
     is_valid = false;
     if (messages != nullptr) {
       message.description = "Invalid cable unit weight";

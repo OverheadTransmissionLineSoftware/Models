@@ -6,13 +6,18 @@
 			<Depends filename="../build/codeblocks/otlsmodels_base.cbp" />
 			<Depends filename="../build/codeblocks/otlsmodels_transmissionline.cbp" />
 		</Project>
+		<Project filename="../build/codeblocks/otlsmodels_thermalrating.cbp">
+			<Depends filename="otlsmodels_base.cbp" />
+			<Depends filename="otlsmodels_transmissionline.cbp" />
+		</Project>
 		<Project filename="../build/codeblocks/otlsmodels_transmissionline.cbp">
 			<Depends filename="../build/codeblocks/otlsmodels_base.cbp" />
 		</Project>
 		<Project filename="test.cbp">
-			<Depends filename="../build/codeblocks/otls_base.cbp" />
-			<Depends filename="../build/codeblocks/otls_sagtension.cbp" />
-			<Depends filename="../build/codeblocks/otls_transmissionline.cbp" />
+			<Depends filename="../build/codeblocks/otlsmodels_base.cbp" />
+			<Depends filename="../build/codeblocks/otlsmodels_sagtension.cbp" />
+			<Depends filename="../build/codeblocks/otlsmodels_thermalrating.cbp" />
+			<Depends filename="../build/codeblocks/otlsmodels_transmissionline.cbp" />
 		</Project>
 	</Workspace>
 </CodeBlocks_workspace_file>

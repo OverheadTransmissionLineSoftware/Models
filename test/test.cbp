@@ -5,12 +5,12 @@
 		<Option title="test" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
-		<Option virtualFolders="Header Files/;Source Files/;Tests - Base/;Tests - TransmissionLine/;Tests - SagTension/;" />
+		<Option virtualFolders="Header Files/;Source Files/;Tests - Base/;Tests - ThermalRating/;Tests - TransmissionLine/;Tests - SagTension/;" />
 		<Build>
 			<Target title="debug">
 				<Option output="debug/test" prefix_auto="1" extension_auto="1" />
 				<Option object_output="debug/obj/" />
-				<Option external_deps="../build/codeblocks/debug/libotlsmodels_based.a;../build/codeblocks/debug/libotlsmodels_sagtensiond.a;../build/codeblocks/debug/libotlsmodels_transmissionlined.a;" />
+				<Option external_deps="../build/codeblocks/debug/libotlsmodels_based.a;../build/codeblocks/debug/libotlsmodels_sagtensiond.a;../build/codeblocks/debug/libotlsmodels_thermalratingd.a;../build/codeblocks/debug/libotlsmodels_transmissionlined.a;" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Option projectLinkerOptionsRelation="2" />
@@ -19,6 +19,7 @@
 				</Compiler>
 				<Linker>
 					<Add library="../build/codeblocks/debug/libotlsmodels_sagtensiond.a" />
+					<Add library="../build/codeblocks/debug/libotlsmodels_thermalratingd.a" />
 					<Add library="../build/codeblocks/debug/libotlsmodels_transmissionlined.a" />
 					<Add library="../build/codeblocks/debug/libotlsmodels_based.a" />
 				</Linker>
@@ -26,7 +27,7 @@
 			<Target title="release">
 				<Option output="release/test" prefix_auto="1" extension_auto="1" />
 				<Option object_output="release/obj/" />
-				<Option external_deps="../build/codeblocks/release/libotlsmodels_base.a;../build/codeblocks/release/libotlsmodels_sagtension.a;../build/codeblocks/release/libotlsmodels_transmissionline.a;" />
+				<Option external_deps="../build/codeblocks/release/libotlsmodels_base.a;../build/codeblocks/release/libotlsmodels_sagtension.a;../build/codeblocks/release/libotlsmodels_thermalrating.a;../build/codeblocks/release/libotlsmodels_transmissionline.a;" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Option projectLinkerOptionsRelation="2" />
@@ -36,6 +37,7 @@
 				<Linker>
 					<Add option="-s" />
 					<Add library="../build/codeblocks/release/libotlsmodels_sagtension.a" />
+					<Add library="../build/codeblocks/release/libotlsmodels_thermalrating.a" />
 					<Add library="../build/codeblocks/release/libotlsmodels_transmissionline.a" />
 					<Add library="../build/codeblocks/release/libotlsmodels_base.a" />
 				</Linker>
@@ -102,6 +104,30 @@
 		</Unit>
 		<Unit filename="test.cc">
 			<Option virtualFolder="Source Files/" />
+		</Unit>
+		<Unit filename="thermalrating/cable_heat_transfer_solver_test.cc">
+			<Option virtualFolder="Tests - ThermalRating/" />
+		</Unit>
+		<Unit filename="thermalrating/cable_heat_transfer_state_test.cc">
+			<Option virtualFolder="Tests - ThermalRating/" />
+		</Unit>
+		<Unit filename="thermalrating/solar_radiation_solver_test.cc">
+			<Option virtualFolder="Tests - ThermalRating/" />
+		</Unit>
+		<Unit filename="thermalrating/steady_cable_current_solver_test.cc">
+			<Option virtualFolder="Tests - ThermalRating/" />
+		</Unit>
+		<Unit filename="thermalrating/steady_cable_temperature_solver_test.cc">
+			<Option virtualFolder="Tests - ThermalRating/" />
+		</Unit>
+		<Unit filename="thermalrating/thermal_rating_cable_test.cc">
+			<Option virtualFolder="Tests - ThermalRating/" />
+		</Unit>
+		<Unit filename="thermalrating/thermal_rating_weather_test.cc">
+			<Option virtualFolder="Tests - ThermalRating/" />
+		</Unit>
+		<Unit filename="thermalrating/transient_cable_temperature_solver_test.cc">
+			<Option virtualFolder="Tests - ThermalRating/" />
 		</Unit>
 		<Unit filename="transmissionline/alignment_test.cc">
 			<Option virtualFolder="Tests - TransmissionLine/" />

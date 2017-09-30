@@ -1016,8 +1016,7 @@ bool Catenary3d::Validate(const bool& is_included_warnings,
     }
   } else {
     // validates 2D catenary
-    if (catenary_2d_.Validate(is_included_warnings,
-                              messages) == false) {
+    if (catenary_2d_.Validate(is_included_warnings, messages) == false) {
       is_valid = false;
     }
   }

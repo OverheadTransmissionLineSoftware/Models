@@ -8,34 +8,38 @@
 namespace units {
 
 // angle conversion factors
-const double kAngleDegreesToRadians = (kPi / 180);
-const double kAngleRadiansToDegrees = 180 / kPi;
+const double kAngleDegreesToRadians = (kPi / 180.0);
+const double kAngleRadiansToDegrees = 180.0 / kPi;
 
 // force conversion factors
-const double kForceNewtonsToPounds = 1 / 4.4482216152605;
+const double kForceNewtonsToPounds = 1.0 / 4.4482216152605;
 const double kForcePoundsToNewtons = 4.4482216152605;
 
 // length conversion factors
-const double kLengthCentimetersToMeters = 0.01;
-const double kLengthFeetToInches = 12;
+const double kLengthCentimetersToMeters = 1.0 / 100;
+const double kLengthFeetToInches = 12.0;
 const double kLengthFeetToMeters = 0.3048;
-const double kLengthInchesToFeet = 0.083333333333333;
-const double kLengthMetersToCentimeters = 100;
-const double kLengthMetersToFeet = 1 / 0.3048;
-const double kLengthMetersToMillimeters = 1000;
-const double kLengthMillimetersToMeters = 0.001;
+const double kLengthFeetToMiles = 1.0 / 5280.0;
+const double kLengthInchesToFeet = 1.0 / 12.0;
+const double kLengthKilometersToMeters = 1000.0;
+const double kLengthMetersToCentimeters = 100.0;
+const double kLengthMetersToFeet = 1.0 / 0.3048;
+const double kLengthMetersToKilometers = 1.0 / 1000.0;
+const double kLengthMetersToMillimeters = 1000.0;
+const double kLengthMilesToFeet = 5280.0;
+const double kLengthMillimetersToMeters = 1.0 / 1000.0;
 
 // pressure conversion factors
-const double kStressMegaPascalToPascal = 0.000001;
+const double kStressMegaPascalToPascal = 1.0 / 1000000;
 const double kStressPascalToMegaPascal = 1000000;
-const double kStressPascalToPsf = 1 / 47.88026;
+const double kStressPascalToPsf = 1.0 / 47.88026;
 const double kStressPsfToPascal = 47.88026;
-const double kStressPsfToPsi = 0.00694444444;
-const double kStressPsiToPsf = 144;
+const double kStressPsfToPsi = 1.0 / 144.0;
+const double kStressPsiToPsf = 144.0;
 
 // temperature conversion factors
 const double kTemperatureCelsiusToFahrenheit = 1.8;
-const double kTemperatureFahrenheitToCelsius = 1 / 1.8;
+const double kTemperatureFahrenheitToCelsius = 1.0 / 1.8;
 
 /// \brief This is a generic function that converts a value by multiplication.
 /// \param[in] value
@@ -102,14 +106,22 @@ double ConvertLength(const double& value,
     return Convert(value, kLengthFeetToInches, exponent, is_numerator);
   } else if (type == LengthConversionType::kFeetToMeters) {
     return Convert(value, kLengthFeetToMeters, exponent, is_numerator);
+  } else if (type == LengthConversionType::kFeetToMiles) {
+    return Convert(value, kLengthFeetToMiles, exponent, is_numerator);
   } else if (type == LengthConversionType::kInchesToFeet) {
     return Convert(value, kLengthInchesToFeet, exponent, is_numerator);
+  } else if (type == LengthConversionType::kKilometersToMeters) {
+    return Convert(value, kLengthKilometersToMeters, exponent, is_numerator);
   } else if (type == LengthConversionType::kMetersToCentimeters) {
     return Convert(value, kLengthMetersToCentimeters, exponent, is_numerator);
   } else if (type == LengthConversionType::kMetersToFeet) {
     return Convert(value, kLengthMetersToFeet, exponent, is_numerator);
+  } else if (type == LengthConversionType::kMetersToKilometers) {
+    return Convert(value, kLengthMetersToKilometers, exponent, is_numerator);
   } else if (type == LengthConversionType::kMetersToMillimeters) {
     return Convert(value, kLengthMetersToMillimeters, exponent, is_numerator);
+  } else if (type == LengthConversionType::kMilesToFeet) {
+    return Convert(value, kLengthMilesToFeet, exponent, is_numerator);
   } else if (type == LengthConversionType::kMillimetersToMeters) {
     return Convert(value, kLengthMillimetersToMeters, exponent, is_numerator);
   } else {
@@ -141,13 +153,24 @@ double ConvertStress(const double& value,
 double ConvertTemperature(const double& value,
                           const TemperatureConversionType& type,
                           const int& exponent,
-                          const bool& is_numerator) {
+                          const bool& is_numerator,
+                          const bool& include_shift) {
   if (type == TemperatureConversionType::kCelsiusToFahrenheit) {
     double value_adj = Convert(value, kTemperatureCelsiusToFahrenheit, exponent,
                                is_numerator);
-    return value_adj + 32;
+
+    if (include_shift == true) {
+      return value_adj + 32;
+    } else {
+      return value_adj;
+    }
   } else if (type == TemperatureConversionType::kFahrenheitToCelsius) {
-    double value_adj = value - 32;
+    double value_adj = -999999;
+    if (include_shift == true) {
+      value_adj = value - 32;
+    } else {
+      value_adj = value;
+    }
     return Convert(value_adj, kTemperatureFahrenheitToCelsius, exponent,
                    is_numerator);
   } else {

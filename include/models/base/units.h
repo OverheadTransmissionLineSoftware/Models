@@ -36,10 +36,14 @@ enum class LengthConversionType {
   kCentimetersToMeters,
   kFeetToInches,
   kFeetToMeters,
+  kFeetToMiles,
   kInchesToFeet,
+  kKilometersToMeters,
   kMetersToCentimeters,
   kMetersToFeet,
+  kMetersToKilometers,
   kMetersToMillimeters,
+  kMilesToFeet,
   kMillimetersToMeters
 };
 
@@ -175,11 +179,16 @@ double ConvertStress(const double& value,
 /// \param[in] is_numerator
 ///   A boolean indicating if the unit being converted from is in the
 ///   numerator.
+/// \param[in] include_shift
+///   A flag that indicates if the value is to be shifted to the new scale
+///   datum during the conversion. This flag does not affect how the value is
+///   scaled.
 /// \return The converted value.
 double ConvertTemperature(const double& value,
                           const TemperatureConversionType& type,
                           const int& exponent = 1,
-                          const bool& is_numerator = true);
+                          const bool& is_numerator = true,
+                          const bool& include_shift = true);
 
 }  // namespace units
 

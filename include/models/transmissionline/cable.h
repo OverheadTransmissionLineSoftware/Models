@@ -31,6 +31,10 @@ struct CableComponent {
   bool Validate(const bool& is_included_warnings = true,
                 std::list<ErrorMessage>* messages = nullptr) const;
 
+  /// \var capacity_heat
+  ///   The ability for the component to store heat energy.
+  double capacity_heat;
+
   /// \var coefficient_expansion_linear_thermal
   ///   The coefficient that determines how the component linearly elongates
   ///   with changes in temperature.
@@ -72,6 +76,19 @@ struct CableComponent {
 /// shell.
 struct Cable {
  public:
+  /// \par OVERVIEW
+  ///
+  /// This struct contains a resistance value datumed at a specific temperature.
+  struct ResistancePoint {
+    /// \var resistance
+    ///   The difficulty to pass electric current through the cable.
+    double resistance;
+
+    /// \var temperature
+    ///   The reference temperature.
+    double temperature;
+  };
+
   /// \brief Default constructor.
   Cable();
 
@@ -87,6 +104,11 @@ struct Cable {
   /// \return A boolean value indicating status of member variables.
   bool Validate(const bool& is_included_warnings = true,
                 std::list<ErrorMessage>* messages = nullptr) const;
+
+  /// \var absorptivity
+  ///   A coefficient that tells how effective the cable surface is at absorbing
+  ///   radiant energy.
+  double absorptivity;
 
   /// \var area_physical
   ///   The physical cross section area of the entire cable.
@@ -106,10 +128,21 @@ struct Cable {
   ///   The nominal diameter of the entire cable.
   double diameter;
 
+  /// \var emissivity
+  ///   A fraction that tells how effective the cable surface is at emitting
+  ///   radiant energy.
+  double emissivity;
+
   /// \var name
   ///   The shorthand name for the cable, often determined by the cable
   ///   construction type.
   std::string name;
+
+  /// \var resistances_ac
+  ///   The set of AC resistance points for the cable. This parameter is
+  ///   temperature-sensitive, so more than one point should be used. These
+  ///   should be ordered with increasing temperature.
+  std::list<ResistancePoint> resistances_ac;
 
   /// \var strength_rated
   ///   The maximum load the cable can withstand.

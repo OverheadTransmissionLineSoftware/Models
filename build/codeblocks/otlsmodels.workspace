@@ -6,6 +6,10 @@
 			<Depends filename="otlsmodels_base.cbp" />
 			<Depends filename="otlsmodels_transmissionline.cbp" />
 		</Project>
+		<Project filename="otlsmodels_thermalrating.cbp">
+			<Depends filename="otlsmodels_base.cbp" />
+			<Depends filename="otlsmodels_transmissionline.cbp" />
+		</Project>
 		<Project filename="otlsmodels_transmissionline.cbp">
 			<Depends filename="otlsmodels_base.cbp" />
 		</Project>

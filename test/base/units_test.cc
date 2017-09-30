@@ -53,6 +53,16 @@ TEST(Units, ConvertLength) {
                           units::LengthConversionType::kInchesToFeet);
   EXPECT_EQ(2, helper::Round(value1, 0));
 
+  // converts feet to miles and back again
+  value1 = 2;
+  value2 = units::ConvertLength(value1,
+                          units::LengthConversionType::kFeetToMiles);
+  EXPECT_EQ(0.000379, helper::Round(value2, 6));
+
+  value1 = units::ConvertLength(value2,
+                          units::LengthConversionType::kMilesToFeet);
+  EXPECT_EQ(2, helper::Round(value1, 0));
+
   // converts meters to centimeters and back again
   value1 = 10;
   value2 = units::ConvertLength(value1,
@@ -72,6 +82,16 @@ TEST(Units, ConvertLength) {
   value1 = units::ConvertLength(value2,
                           units::LengthConversionType::kFeetToMeters);
   EXPECT_EQ(10, helper::Round(value1, 1));
+
+  // converts meters to kilometers and back again
+  value1 = 10;
+  value2 = units::ConvertLength(value1,
+                          units::LengthConversionType::kMetersToKilometers);
+  EXPECT_EQ(0.01, helper::Round(value2, 2));
+
+  value1 = units::ConvertLength(value2,
+                          units::LengthConversionType::kKilometersToMeters);
+  EXPECT_EQ(10, helper::Round(value1, 0));
 
   // converts meters to millimeters and back again
   value1 = 10;

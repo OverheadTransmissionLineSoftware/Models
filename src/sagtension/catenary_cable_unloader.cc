@@ -32,15 +32,13 @@ bool CatenaryCableUnloader::Validate(
       messages->push_back(message);
     }
   } else {
-    if (catenary_->Validate(is_included_warnings,
-                            messages) == false) {
+    if (catenary_->Validate(is_included_warnings, messages) == false) {
       is_valid = false;
     }
   }
 
   // validates strainer
-  if (strainer_.Validate(is_included_warnings,
-                         messages) == false) {
+  if (strainer_.Validate(is_included_warnings, messages) == false) {
     is_valid = false;
   }
 

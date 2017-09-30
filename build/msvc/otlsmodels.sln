@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "otlsmodels_base", "otlsmodels_base.vcxproj", "{8A3681DE-D718-4B86-8820-FA5074B58934}"
 EndProject
@@ -11,6 +11,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "otlsmodels_transmissionline
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "otlsmodels_sagtension", "otlsmodels_sagtension.vcxproj", "{DFAEC1D3-FFF8-4817-92B7-B3767AE0DCF1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EC902B82-BEAF-4F88-8A05-2675850D5B74} = {EC902B82-BEAF-4F88-8A05-2675850D5B74}
+		{8A3681DE-D718-4B86-8820-FA5074B58934} = {8A3681DE-D718-4B86-8820-FA5074B58934}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "otlsmodels_thermalrating", "otlsmodels_thermalrating.vcxproj", "{55742003-5DC6-4C75-B732-AE0B7A2C5114}"
 	ProjectSection(ProjectDependencies) = postProject
 		{EC902B82-BEAF-4F88-8A05-2675850D5B74} = {EC902B82-BEAF-4F88-8A05-2675850D5B74}
 		{8A3681DE-D718-4B86-8820-FA5074B58934} = {8A3681DE-D718-4B86-8820-FA5074B58934}
@@ -34,8 +40,15 @@ Global
 		{DFAEC1D3-FFF8-4817-92B7-B3767AE0DCF1}.Debug|x64.Build.0 = Debug|x64
 		{DFAEC1D3-FFF8-4817-92B7-B3767AE0DCF1}.Release|x64.ActiveCfg = Release|x64
 		{DFAEC1D3-FFF8-4817-92B7-B3767AE0DCF1}.Release|x64.Build.0 = Release|x64
+		{55742003-5DC6-4C75-B732-AE0B7A2C5114}.Debug|x64.ActiveCfg = Debug|x64
+		{55742003-5DC6-4C75-B732-AE0B7A2C5114}.Debug|x64.Build.0 = Debug|x64
+		{55742003-5DC6-4C75-B732-AE0B7A2C5114}.Release|x64.ActiveCfg = Release|x64
+		{55742003-5DC6-4C75-B732-AE0B7A2C5114}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {034D8927-BE1F-442E-B3AA-878A197C862E}
 	EndGlobalSection
 EndGlobal

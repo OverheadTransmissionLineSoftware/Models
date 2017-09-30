@@ -31,6 +31,11 @@ This library contains classes/methods that model cable sag-tension behavior.
 * Load and creep stretch
 * Resolving multiple tension constraints
 
+### ThermalRating
+This library contains classes/methods that model cable thermal behavior.
+* Steady-state current and temperature
+* Transient temperature
+
 ## Branches
 The master branch contains stable code most of the time, but it's best to use
 specific [releases](https://github.com/OverheadTransmissionLineSoftware/Models/releases)

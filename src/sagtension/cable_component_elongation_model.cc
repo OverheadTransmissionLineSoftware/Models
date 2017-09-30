@@ -104,8 +104,7 @@ bool CableComponentElongationModel::Validate(
       messages->push_back(message);
     }
   } else {
-    if (component_->Validate(is_included_warnings,
-                             messages) == false) {
+    if (component_->Validate(is_included_warnings, messages) == false) {
       is_valid = false;
     }
   }

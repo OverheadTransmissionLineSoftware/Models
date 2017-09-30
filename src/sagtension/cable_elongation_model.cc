@@ -160,16 +160,14 @@ bool CableElongationModel::Validate(
 
   // validates component-core
   if (cable_->IsEnabled(SagTensionCable::ComponentType::kCore) == true) {
-    if (model_core_.Validate(is_included_warnings,
-                             messages) == false) {
+    if (model_core_.Validate(is_included_warnings, messages) == false) {
       is_valid = false;
     }
   }
 
   // validates component-shell
   if (cable_->IsEnabled(SagTensionCable::ComponentType::kShell)) {
-    if (model_shell_.Validate(is_included_warnings,
-                              messages) == false) {
+    if (model_shell_.Validate(is_included_warnings, messages) == false) {
       is_valid = false;
     }
   }
