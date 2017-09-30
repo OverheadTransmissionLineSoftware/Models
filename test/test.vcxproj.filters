@@ -17,6 +17,9 @@
     <Filter Include="Tests TransmissionLine">
       <UniqueIdentifier>{ae6d7e87-1950-4184-89fa-e9b1845503bd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests ThermalRating">
+      <UniqueIdentifier>{20e8a7a4-a940-48ba-998b-6f23230c463c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="factory.h">
@@ -113,6 +116,30 @@
     </ClCompile>
     <ClCompile Include="transmissionline\transmission_line_test.cc">
       <Filter>Tests TransmissionLine</Filter>
+    </ClCompile>
+    <ClCompile Include="thermalrating\cable_heat_transfer_solver_test.cc">
+      <Filter>Tests ThermalRating</Filter>
+    </ClCompile>
+    <ClCompile Include="thermalrating\cable_heat_transfer_state_test.cc">
+      <Filter>Tests ThermalRating</Filter>
+    </ClCompile>
+    <ClCompile Include="thermalrating\solar_radiation_solver_test.cc">
+      <Filter>Tests ThermalRating</Filter>
+    </ClCompile>
+    <ClCompile Include="thermalrating\steady_cable_current_solver_test.cc">
+      <Filter>Tests ThermalRating</Filter>
+    </ClCompile>
+    <ClCompile Include="thermalrating\steady_cable_temperature_solver_test.cc">
+      <Filter>Tests ThermalRating</Filter>
+    </ClCompile>
+    <ClCompile Include="thermalrating\thermal_rating_cable_test.cc">
+      <Filter>Tests ThermalRating</Filter>
+    </ClCompile>
+    <ClCompile Include="thermalrating\thermal_rating_weather_test.cc">
+      <Filter>Tests ThermalRating</Filter>
+    </ClCompile>
+    <ClCompile Include="thermalrating\transient_cable_temperature_solver_test.cc">
+      <Filter>Tests ThermalRating</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
