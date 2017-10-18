@@ -1,19 +1,19 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "models/transmissionline/cable_unit_load_calculator.h"
+#include "models/transmissionline/cable_unit_load_solver.h"
 
 #include "models/base/geometric_shapes.h"
 
-CableUnitLoadCalculator::CableUnitLoadCalculator() {
+CableUnitLoadSolver::CableUnitLoadSolver() {
   diameter_cable_ = nullptr;
   weight_unit_cable_ = nullptr;
 }
 
-CableUnitLoadCalculator::~CableUnitLoadCalculator() {
+CableUnitLoadSolver::~CableUnitLoadSolver() {
 }
 
-bool CableUnitLoadCalculator::Validate(
+bool CableUnitLoadSolver::Validate(
     const bool& is_included_warnings,
     std::list<ErrorMessage>* messages) const {
   // initializes
@@ -47,7 +47,7 @@ bool CableUnitLoadCalculator::Validate(
 ///
 /// The transverse load on the cable is solved using the following formula:
 /// \f[ T = AP \f]
-Vector3d CableUnitLoadCalculator::UnitCableLoad(
+Vector3d CableUnitLoadSolver::UnitCableLoad(
     const WeatherLoadCase& case_load_weather) const {
   // creates bare and iced cylinders
   Cylinder cylinder_bare;
@@ -73,19 +73,19 @@ Vector3d CableUnitLoadCalculator::UnitCableLoad(
   return load_unit_cable;
 }
 
-const double* CableUnitLoadCalculator::diameter_cable() const {
+const double* CableUnitLoadSolver::diameter_cable() const {
   return diameter_cable_;
 }
 
-const double* CableUnitLoadCalculator::weight_unit_cable() const {
+const double* CableUnitLoadSolver::weight_unit_cable() const {
   return weight_unit_cable_;
 }
 
-void CableUnitLoadCalculator::set_diameter_cable(const double* diameter_cable) {
+void CableUnitLoadSolver::set_diameter_cable(const double* diameter_cable) {
   diameter_cable_ = diameter_cable;
 }
 
-void CableUnitLoadCalculator::set_weight_unit_cable(
+void CableUnitLoadSolver::set_weight_unit_cable(
   const double* weight_unit_cable) {
   weight_unit_cable_ = weight_unit_cable;
 }

@@ -1,7 +1,7 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#include "models/transmissionline/cable_unit_load_calculator.h"
+#include "models/transmissionline/cable_unit_load_solver.h"
 
 #include "gtest/gtest.h"
 
@@ -9,16 +9,16 @@
 #include "models/base/helper.h"
 #include "models/base/units.h"
 
-class CableUnitLoadCalculatorTest : public ::testing::Test {
+class CableUnitLoadSolverTest : public ::testing::Test {
  protected:
-  CableUnitLoadCalculatorTest() {
+  CableUnitLoadSolverTest() {
     cable_ = factory::BuildCable();
 
     c_.set_diameter_cable(&cable_->diameter);
     c_.set_weight_unit_cable(&cable_->weight_unit);
   }
 
-  ~CableUnitLoadCalculatorTest() {
+  ~CableUnitLoadSolverTest() {
     delete cable_;
   }
 
@@ -26,10 +26,10 @@ class CableUnitLoadCalculatorTest : public ::testing::Test {
   const Cable* cable_;
 
   // test object
-  CableUnitLoadCalculator c_;
+  CableUnitLoadSolver c_;
 };
 
-TEST_F(CableUnitLoadCalculatorTest, UnitCableLoad) {
+TEST_F(CableUnitLoadSolverTest, UnitCableLoad) {
   Vector3d load_unit;
 
   // ice only
@@ -71,6 +71,6 @@ TEST_F(CableUnitLoadCalculatorTest, UnitCableLoad) {
   EXPECT_EQ(2.099, helper::Round(load_unit.z(), 3));
 }
 
-TEST_F(CableUnitLoadCalculatorTest, Validate) {
+TEST_F(CableUnitLoadSolverTest, Validate) {
   EXPECT_TRUE(c_.Validate(true, nullptr));
 }

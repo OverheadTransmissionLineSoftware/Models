@@ -8,7 +8,7 @@
 #include "models/sagtension/catenary_cable_reloader.h"
 #include "models/sagtension/catenary_cable_unloader.h"
 #include "models/transmissionline/catenary_solver.h"
-#include "models/transmissionline/cable_unit_load_calculator.h"
+#include "models/transmissionline/cable_unit_load_solver.h"
 
 LineCableReloader::LineCableReloader() {
   condition_reloaded_ = CableConditionType::kNull;
@@ -348,11 +348,11 @@ bool LineCableReloader::IsUpdated() const {
 
 Vector3d LineCableReloader::UnitLoad(
     const WeatherLoadCase& weathercase) const {
-  CableUnitLoadCalculator calculator;
-  calculator.set_diameter_cable(&line_cable_->cable()->diameter);
-  calculator.set_weight_unit_cable(&line_cable_->cable()->weight_unit);
+  CableUnitLoadSolver solver;
+  solver.set_diameter_cable(&line_cable_->cable()->diameter);
+  solver.set_weight_unit_cable(&line_cable_->cable()->weight_unit);
 
-  return calculator.UnitCableLoad(weathercase);
+  return solver.UnitCableLoad(weathercase);
 }
 
 bool LineCableReloader::Update() const {

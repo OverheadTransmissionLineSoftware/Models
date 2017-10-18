@@ -1,8 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef OTLS_MODELS_TRANSMISSIONLINE_CABLEUNITLOADCALCULATOR_H_
-#define OTLS_MODELS_TRANSMISSIONLINE_CABLEUNITLOADCALCULATOR_H_
+#ifndef OTLS_MODELS_TRANSMISSIONLINE_CABLEUNITLOADSOLVER_H_
+#define OTLS_MODELS_TRANSMISSIONLINE_CABLEUNITLOADSOLVER_H_
 
 #include <list>
 
@@ -22,13 +22,13 @@
 ///
 /// - uniform loading (constat wind speed, equal ice accumulation)
 /// - drag coefficient is 1.0 (no aerodynamic effects)
-class CableUnitLoadCalculator {
+class CableUnitLoadSolver {
  public:
   /// \brief Default constructor.
-  CableUnitLoadCalculator();
+  CableUnitLoadSolver();
 
   /// \brief Destructor.
-  ~CableUnitLoadCalculator();
+  ~CableUnitLoadSolver();
 
   /// \brief Gets the load per unit length of cable.
   /// \param[in] case_load_weather
@@ -77,4 +77,4 @@ class CableUnitLoadCalculator {
   const double* weight_unit_cable_;
 };
 
-#endif  // OTLS_MODELS_TRANSMISSIONLINE_CABLEUNITLOADCALCULATOR_H_
+#endif  // OTLS_MODELS_TRANSMISSIONLINE_CABLEUNITLOADSOLVER_H_

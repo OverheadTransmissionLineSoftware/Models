@@ -5,7 +5,7 @@
 
 #include <cmath>
 
-#include "models/transmissionline/cable_unit_load_calculator.h"
+#include "models/transmissionline/cable_unit_load_solver.h"
 
 CatenarySolver::CatenarySolver() {
   cable_ = nullptr;
@@ -415,12 +415,12 @@ bool CatenarySolver::SolveHorizontalTensionFromSupportTension() const {
 
 bool CatenarySolver::SolveWeightUnit() const {
   // creates a calculator based on the line cable
-  CableUnitLoadCalculator calculator;
-  calculator.set_diameter_cable(&cable_->diameter);
-  calculator.set_weight_unit_cable(&cable_->weight_unit);
+  CableUnitLoadSolver solver;
+  solver.set_diameter_cable(&cable_->diameter);
+  solver.set_weight_unit_cable(&cable_->weight_unit);
 
   // calculates the unit load and updates catenary
-  Vector3d load_unit = calculator.UnitCableLoad(*constraint_->case_weather);
+  Vector3d load_unit = solver.UnitCableLoad(*constraint_->case_weather);
   catenary_.set_weight_unit(load_unit);
 
   return true;
