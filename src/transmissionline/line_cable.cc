@@ -5,6 +5,7 @@
 
 #include <cmath>
 
+#include "models/transmissionline/cable_unit_load_solver.h"
 #include "models/transmissionline/catenary_solver.h"
 #include "models/transmissionline/line_structure.h"
 
@@ -50,6 +51,56 @@ int LineCable::AddConnection(const LineCableConnection& connection) {
 
   // gets index and returns
   return std::distance(connections_.begin(), iter) - 1;
+}
+
+Catenary3d LineCable::CatenaryRulingSpan() const {
+  // initializes
+  Catenary3d catenary;
+  catenary.set_spacing_endpoints(spacing_attachments_ruling_span_);
+
+  // solves for the unit loads
+  CableUnitLoadSolver solver_unit_loads;
+  solver_unit_loads.set_diameter_cable(&cable_->diameter);
+  solver_unit_loads.set_weight_unit_cable(&cable_->weight_unit);
+
+  Vector3d load_unit = solver_unit_loads.UnitCableLoad(
+      *constraint_.case_weather);
+  catenary.set_weight_unit(load_unit);
+
+  // solves for the horizontal tension
+  CatenarySolver solver_tension;
+  solver_tension.set_spacing_endpoints(catenary.spacing_endpoints());
+  solver_tension.set_value_target(constraint_.limit);
+  solver_tension.set_weight_unit(load_unit);
+
+  if (constraint_.type_limit == CableConstraint::LimitType::kCatenaryConstant) {
+    // sets up solver for an analysis target type
+    solver_tension.set_type_target(CatenarySolver::TargetType::kConstant);
+  } else if (constraint_.type_limit
+      == CableConstraint::LimitType::kHorizontalTension) {
+    // horizontal tension is already known
+    catenary.set_tension_horizontal(constraint_.limit);
+    return catenary;
+  } else if (constraint_.type_limit == CableConstraint::LimitType::kLength) {
+    // sets up the solver for a length target type
+    solver_tension.set_type_target(CatenarySolver::TargetType::kLength);
+  } else if (constraint_.type_limit == CableConstraint::LimitType::kSag) {
+    // sets up the solver for a sag target type
+    solver_tension.set_type_target(CatenarySolver::TargetType::kSag);
+  } else if (constraint_.type_limit
+      == CableConstraint::LimitType::kSupportTension) {
+    // sets up the solver for a tension target type
+    solver_tension.set_type_target(CatenarySolver::TargetType::kTension);
+
+    if (spacing_attachments_ruling_span_.z() <= 0) {
+      solver_tension.set_position_target(0);
+    } else {
+      solver_tension.set_position_target(1);
+    }
+  }
+
+  catenary.set_tension_horizontal(solver_tension.TensionHorizontal());
+  return catenary;
 }
 
 void LineCable::ClearConnections() {
@@ -176,13 +227,10 @@ bool LineCable::Validate(const bool& is_included_warnings,
     return is_valid;
   }
 
-  // validates if catenary can be solved for with contraint and ruling
+  // validates if catenary can be solved for with constraint and ruling
   // span geometry
-  CatenarySolver solver;
-  solver.set_cable(cable_);
-  solver.set_constraint(&constraint_);
-  solver.set_spacing_attachments(&spacing_attachments_ruling_span_);
-  if (solver.Validate(is_included_warnings, messages) == false) {
+  Catenary3d catenary = CatenaryRulingSpan();
+  if (catenary.Validate(is_included_warnings, messages) == false) {
     is_valid = false;
   }
 

@@ -14,8 +14,26 @@
 /// \par OVERVIEW
 ///
 /// This class solves for a catenary.
+///
+/// \par HORIZONTAL TENSION
+///
+/// This is the typical value that is solved for. The remaining catenary parameters
+/// must be known, as well as a specific target type.
+///
+/// The horizontal tension is often solved numerically.
 class CatenarySolver {
  public:
+  /// \par OVERVIEW
+  ///
+  /// This enum contains types of CatenarySolver targets.
+  enum class TargetType {
+    kConstant,
+    kLength,
+    kNull,
+    kSag,
+    kTension
+  };
+
   /// \brief Default constructor.
   CatenarySolver();
 
@@ -23,7 +41,12 @@ class CatenarySolver {
   ~CatenarySolver();
 
   /// \brief Gets the catenary.
+  /// \return The catenary.
   Catenary3d Catenary() const;
+
+  /// \brief Gets the catenary horizontal tension.
+  /// \return The catenary horizontal tension.
+  double TensionHorizontal() const;
 
   /// \brief Validates member variables.
   /// \param[in] is_included_warnings
@@ -35,41 +58,56 @@ class CatenarySolver {
   bool Validate(const bool& is_included_warnings = true,
                 std::list<ErrorMessage>* messages = nullptr) const;
 
-  /// \brief Gets the cable.
-  /// \return The cable.
-  const Cable* cable() const;
+  /// \brief Gets the target position.
+  /// \return The target position.
+  double position_target() const;
 
-  /// \brief Gets the constraint.
-  /// \return The constraint.
-  const CableConstraint* constraint() const;
+  /// \brief Sets the target position.
+  /// \param[in] position
+  ///   The catenary position. If the target type applies to the entire curve,
+  ///   and not just a specific point, leave this to the default value.
+  void set_position_target(const double& position = -1);
 
-  /// \brief Sets the cable.
-  /// \param[in] cable
-  ///   The cable.
-  void set_cable(const Cable* cable);
+  /// \brief Sets the end point spacing.
+  /// \param[in] spacing_endpoints
+  ///   The endpoint spacing.
+  void set_spacing_endpoints(const Vector3d& spacing_endpoints);
 
-  /// \brief Gets the constraint.
-  /// \param[in] constraint
-  ///   The constraint.
-  void set_constraint(const CableConstraint* constraint);
+  /// \brief Sets the target type.
+  /// \param[in] type
+  ///   The target type.
+  void set_type_target(const TargetType& type);
 
-  /// \brief Sets the attachment spacing.
-  /// \param[in] spacing_attachments
-  void set_spacing_attachments(const Vector3d* spacing_attachments);
+  /// \brief Sets the target value.
+  /// \param[in] value
+  ///   The target value.
+  void set_value_target(const double& value);
 
-  /// \brief Gets the attachment spacing.
-  /// \return The attachment spacing.
-  const Vector3d* spacing_attachments() const;
+  /// \brief Sets the unit weight.
+  /// \param[in] weight_unit
+  ///   The unit weight.
+  void set_weight_unit(const Vector3d& weight_unit);
+
+  /// \brief Gets the end point spacing.
+  /// \return The end point spacing.
+  const Vector3d spacing_endpoints() const;
+
+  /// \brief Gets the target type.
+  /// \return The target type.
+  TargetType type_target() const;
+
+  /// \brief Gets the target value.
+  /// \return The target value.
+  double value_target() const;
+
+  /// \brief Gets the unit weight.
+  /// \return The unit weight.
+  const Vector3d weight_unit() const;
 
  private:
   /// \brief Determines if class is updated.
   /// \return A boolean indicating if class is updated.
   bool IsUpdated() const;
-
-  /// \brief Updates cached member variables and modifies control variables if
-  ///    update is required.
-  /// \return A boolean indicating if class updates completed successfully.
-  bool Update() const;
 
   /// \brief Solves and updates catenary horizontal tension by converting from
   ///   the catenary constant.
@@ -82,18 +120,19 @@ class CatenarySolver {
   bool SolveHorizontalTensionFromLength() const;
 
   /// \brief Solves and updates catenary horizontal tension by converting from
-  ///   sag.
+  ///   sag at a specific position on the catenary.
   /// \return A boolean indicating the success status of the update.
   bool SolveHorizontalTensionFromSag() const;
 
   /// \brief Solves and updates catenary horizontal tension by converting from
-  ///   support tension.
+  ///   a tension at a specific position on the catenary.
   /// \return A boolean indicating the success status of the update.
-  bool SolveHorizontalTensionFromSupportTension() const;
+  bool SolveHorizontalTensionFromTension() const;
 
-  /// \brief Solves and updates the catenary unit weight.
-  /// \return A boolean indicating the success status of the update.
-  bool SolveWeightUnit() const;
+  /// \brief Updates cached member variables and modifies control variables if
+  ///   update is required.
+  /// \return A boolean indicating if class updates completed successfully.
+  bool Update() const;
 
   /// \brief Updates catenary horizontal tension and calculates new length.
   /// \param[in] tension_horizontal
@@ -102,38 +141,47 @@ class CatenarySolver {
   ///   catenary.
   double UpdateCatenaryLength(const double& tension_horizontal) const;
 
-  /// \brief Updates catenary tension and calculates new support tension.
+  /// \brief Updates catenary horizontal tension and calculates new sag at the
+  ///   specified position.
   /// \param[in] tension_horizontal
   ///   The new horizontal tension for the catenary.
-  /// \return The support tension correlating to the new horizontal tension of
-  ///   the catenary.
-  double UpdateCatenaryMaxTension(const double& tension_horizontal) const;
-
-  /// \brief Updates catenary horizontal tension and calculates new sag.
-  /// \param[in] tension_horizontal
-  ///   The new horizontal tension for the catenary.
+  /// \param[in] position_fraction
+  ///   The position fraction to calculate the catenary tension at.
   /// \return The sag correlating to the new horizontal tension of the catenary.
-  double UpdateCatenarySag(const double& tension_horizontal) const;
+  double UpdateCatenarySag(const double& tension_horizontal,
+                           const double& position_fraction) const;
 
-  /// \var cable_
-  ///   The cable.
-  const Cable* cable_;
+  /// \brief Updates catenary horizontal tension and calculates new tension at
+  ///   the specified position.
+  /// \param[in] tension_horizontal
+  ///   The new horizontal tension for the catenary.
+  /// \param[in] position_fraction
+  ///   The position fraction to calculate the catenary tension at.
+  /// \return The tension correlating to the new horizontal tension of the
+  ///   catenary.
+  double UpdateCatenaryTension(const double& tension_horizontal,
+                               const double& position_fraction) const;
 
   /// \var catenary_
   ///   The catenary being solved for.
   mutable Catenary3d catenary_;
 
-  /// \var constraint_
-  ///   The constraint.
-  const CableConstraint* constraint_;
+  /// \var is_updated_
+  ///   An indicator that tells if the class is updated.
+  mutable bool is_updated_;
 
-  /// \var is_updated_catenary_
-  ///   An indicator that tells if the catenary is updated.
-  mutable bool is_updated_catenary_;
+  /// \var position_target_
+  ///   The target position fraction along the catenary curve. If the position
+  ///   isn't needed, set to -1.
+  double position_target_;
 
-  /// \var spacing_attachments_
-  ///   The attachment spacing for the catenary.
-  const Vector3d* spacing_attachments_;
+  /// \var type_target_
+  ///   The target type.
+  TargetType type_target_;
+
+  /// \var value_target_
+  ///   The target value.
+  double value_target_;
 };
 
 #endif  // OTLS_MODELS_TRANSMISSIONLINE_CATENARYSOLVER_H_

@@ -7,7 +7,6 @@
 
 #include "models/sagtension/catenary_cable_reloader.h"
 #include "models/sagtension/catenary_cable_unloader.h"
-#include "models/transmissionline/catenary_solver.h"
 #include "models/transmissionline/cable_unit_load_solver.h"
 
 LineCableReloader::LineCableReloader() {
@@ -530,20 +529,12 @@ bool LineCableReloader::UpdateConstraintCableModel() const {
 }
 
 bool LineCableReloader::UpdateConstraintCatenary() const {
-  CableConstraint constraint = line_cable_->constraint();
-  Vector3d spacing = line_cable_->spacing_attachments_ruling_span();
-
-  // builds a catenary solver
-  CatenarySolver solver;
-  solver.set_cable(cable_sagtension_.cable_base());
-  solver.set_constraint(&constraint);
-  solver.set_spacing_attachments(&spacing);
-
-  if (solver.Validate() == false) {
-    return false;
-  } else {
-    catenary_constraint_ = solver.Catenary();
+  Catenary3d catenary = line_cable_->CatenaryRulingSpan();
+  if (catenary.Validate() == true) {
+    catenary_constraint_ = catenary;
     return true;
+  } else {
+    return false;
   }
 }
 
