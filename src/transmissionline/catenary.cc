@@ -207,13 +207,16 @@ double Catenary2d::Sag() const {
   // gets sag position
   const double position_fraction_sagpoint = PositionFractionSagPoint();
 
-  // gets catenary coordinate at sag position
-  const Point2d<double> coordinate_catenary =
-      Coordinate(position_fraction_sagpoint);
+  // calculates and returns
+  return Sag(position_fraction_sagpoint);
+}
 
-  // gets a chord coordinate at sag position
-  const Point2d<double> coordinate_chord =
-      CoordinateChord(position_fraction_sagpoint);
+double Catenary2d::Sag(const double& position_fraction) const {
+  // gets catenary coordinate at the position
+  const Point2d<double> coordinate_catenary = Coordinate(position_fraction);
+
+  // gets a chord coordinate at the position
+  const Point2d<double> coordinate_chord = CoordinateChord(position_fraction);
 
   // gets height difference between chord and catenary
   return coordinate_chord.y - coordinate_catenary.y;
@@ -784,6 +787,16 @@ double Catenary3d::Sag() const {
   }
 
   return catenary_2d_.Sag();
+}
+
+double Catenary3d::Sag(const double& position_fraction) const {
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return -999999;
+    }
+  }
+
+  return catenary_2d_.Sag(position_fraction);
 }
 
 double Catenary3d::SwingAngle() const {

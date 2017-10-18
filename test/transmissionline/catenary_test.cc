@@ -114,6 +114,21 @@ TEST_F(Catenary2dTest, LengthSlack) {
   EXPECT_EQ(9.36, helper::Round(c_.LengthSlack(), 2));
 }
 
+TEST_F(Catenary2dTest, Sag) {
+  double value = -999999;
+
+  // checks max sag
+  value = c_.Sag();
+  EXPECT_EQ(62.83, helper::Round(value, 2));
+
+  // checks sag at various position fractions
+  value = c_.Sag(0.25);
+  EXPECT_EQ(46.94, helper::Round(value, 2));
+
+  value = c_.Sag(0.75);
+  EXPECT_EQ(46.94, helper::Round(value, 2));
+}
+
 TEST_F(Catenary2dTest, Tension) {
   EXPECT_EQ(1031.41, helper::Round(c_.Tension(0), 2));
   EXPECT_EQ(1000.00, helper::Round(c_.Tension(0.5), 2));
@@ -254,6 +269,21 @@ TEST_F(Catenary3dTest, CoordinateChord) {
   EXPECT_EQ(1000, helper::Round(coord.x, 1));
   EXPECT_EQ(0, helper::Round(coord.y, 1));
   EXPECT_EQ(100, helper::Round(coord.z, 1));
+}
+
+TEST_F(Catenary3dTest, Sag) {
+  double value = -999999;
+
+  // checks max sag
+  value = c_.Sag();
+  EXPECT_EQ(62.83, helper::Round(value, 2));
+
+  // checks sag at various position fractions
+  value = c_.Sag(0.25);
+  EXPECT_EQ(46.94, helper::Round(value, 2));
+
+  value = c_.Sag(0.75);
+  EXPECT_EQ(46.94, helper::Round(value, 2));
 }
 
 TEST_F(Catenary3dTest, SwingAngle) {
