@@ -231,11 +231,12 @@ double Catenary2d::TangentAngle(const double& position_fraction,
   const Point2d<double> coordinate = Coordinate(position_fraction);
 
   // calculates slope at position
-  const double slope = sinh(coordinate.x / (tension_horizontal_/weight_unit_));
+  const double slope = std::sinh(coordinate.x
+                                 / (tension_horizontal_/weight_unit_));
 
   // converts to degrees
   double tangent_angle = units::ConvertAngle(
-      atan(slope),
+      std::atan(slope),
       units::AngleConversionType::kRadiansToDegrees);
 
   // adjusts if direction is negative
@@ -268,11 +269,11 @@ Vector2d Catenary2d::TangentVector(const double& position_fraction,
       angle_tangent,
       units::AngleConversionType::kDegreesToRadians);
   if (direction == AxisDirectionType::kNegative) {
-    tangent_vector.set_x( -(1 * cos(angle_radians)) );
-    tangent_vector.set_y( sin(angle_radians) );
+    tangent_vector.set_x( -(1 * std::cos(angle_radians)) );
+    tangent_vector.set_y( std::sin(angle_radians) );
   } else if (direction == AxisDirectionType::kPositive) {
-    tangent_vector.set_x( cos(angle_radians) );
-    tangent_vector.set_y( sin(angle_radians) );
+    tangent_vector.set_x( std::cos(angle_radians) );
+    tangent_vector.set_y( std::sin(angle_radians) );
   }
 
   return tangent_vector;
@@ -289,7 +290,7 @@ double Catenary2d::Tension(const double& position_fraction) const {
   Point2d<double> coordinate = Coordinate(position_fraction);
 
   return tension_horizontal_
-         * cosh( coordinate.x / (tension_horizontal_/weight_unit_));
+         * std::cosh( coordinate.x / (tension_horizontal_/weight_unit_));
 }
 
 /// A tangent unit vector is calculated and then multiplied by the tension magnitude.
@@ -330,15 +331,14 @@ double Catenary2d::TensionAverage(const int& num_points) const {
     const double w = weight_unit_;
     const double l = Length();
 
-    const double term_1 = (pow(h, 2) / (2 * w * l));
-    const double term_2 = sinh(point_end_right_.x / (h / w))
-                          * cosh(point_end_right_.x / (h / w));
-    const double term_3 = sinh(point_end_left_.x / (h / w))
-                          * cosh(point_end_left_.x / (h / w));
-    const double term_4 = (point_end_right_.x - point_end_left_.x)
-                          / (h / w);
+    const double k1 = (std::pow(h, 2) / (2 * w * l));
+    const double k2 = std::sinh(point_end_right_.x / (h / w))
+                      * std::cosh(point_end_right_.x / (h / w));
+    const double k3 = std::sinh(point_end_left_.x / (h / w))
+                      * std::cosh(point_end_left_.x / (h / w));
+    const double k4 = (point_end_right_.x - point_end_left_.x) / (h / w);
 
-    tension_average = term_1 * (term_2 - term_3 + term_4);
+    tension_average = k1 * (k2 - k3 + k4);
 
   } else if (0 < num_points) {
 
@@ -478,11 +478,11 @@ double Catenary2d::CoordinateX(
 
   // BOL from origin - negative x coordinate
   if (direction_origin_to_position == AxisDirectionType::kNegative) {
-    coordinate_x = -(h/w) * (asinh(l / (h/w)));
+    coordinate_x = -(h/w) * (std::asinh(l / (h/w)));
   }
   // AOL from origin - positive x coordinate
   else if (direction_origin_to_position == AxisDirectionType::kPositive) {
-    coordinate_x = (h/w) * (asinh(l / (h/w)));
+    coordinate_x = (h/w) * (std::asinh(l / (h/w)));
   }
 
   return coordinate_x;
@@ -497,7 +497,7 @@ double Catenary2d::CoordinateY(
   const double h = tension_horizontal_;
   const double w = weight_unit_;
 
-  return (h/w) * (cosh(x / (h/w)) - 1);
+  return (h/w) * (std::cosh(x / (h/w)) - 1);
 }
 
 bool Catenary2d::IsUpdated() const {
@@ -515,7 +515,7 @@ double Catenary2d::LengthFromOrigin(const Point2d<double>& coordinate) const {
   const double h = tension_horizontal_;
   const double w = weight_unit_;
 
-  return std::abs((h/w) * sinh(x / (h/w)));
+  return std::abs((h/w) * std::sinh(x / (h/w)));
 }
 
 double Catenary2d::PositionFraction(const double& tangent_angle) const {
@@ -586,12 +586,12 @@ bool Catenary2d::UpdateEndPoints() const {
   const double z = (a/2) / (h/w);
 
   // solves for left endpoint coordinate
-  point_end_left_.x = (h/w) * (asinh((b * z) / (a * sinh(z))) - z);
+  point_end_left_.x = (h/w) * (std::asinh((b * z) / (a * std::sinh(z))) - z);
   point_end_left_.y = CoordinateY(LengthFromOrigin(point_end_left_),
                                   AxisDirectionType::kNegative);
 
   // solves for right endpoint coordinate
-  point_end_right_.x = (h/w) * (asinh((b * z) / (a * sinh(z))) + z);
+  point_end_right_.x = (h/w) * (std::asinh((b * z) / (a * std::sinh(z))) + z);
   point_end_right_.y = CoordinateY(LengthFromOrigin(point_end_right_),
                                    AxisDirectionType::kPositive);
 
