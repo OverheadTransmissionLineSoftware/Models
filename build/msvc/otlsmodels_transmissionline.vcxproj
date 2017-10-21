@@ -60,7 +60,7 @@
     <ClInclude Include="..\..\include\models\transmissionline\cable_attachment_equilibrium_solver.h" />
     <ClInclude Include="..\..\include\models\transmissionline\cable_constraint.h" />
     <ClInclude Include="..\..\include\models\transmissionline\cable_position_locator.h" />
-    <ClInclude Include="..\..\include\models\transmissionline\cable_unit_load_calculator.h" />
+    <ClInclude Include="..\..\include\models\transmissionline\cable_unit_load_solver.h" />
     <ClInclude Include="..\..\include\models\transmissionline\catenary.h" />
     <ClInclude Include="..\..\include\models\transmissionline\catenary_solver.h" />
     <ClInclude Include="..\..\include\models\transmissionline\hardware.h" />
@@ -76,7 +76,7 @@
     <ClCompile Include="..\..\src\transmissionline\cable_attachment_equilibrium_solver.cc" />
     <ClCompile Include="..\..\src\transmissionline\cable_constraint.cc" />
     <ClCompile Include="..\..\src\transmissionline\cable_position_locator.cc" />
-    <ClCompile Include="..\..\src\transmissionline\cable_unit_load_calculator.cc" />
+    <ClCompile Include="..\..\src\transmissionline\cable_unit_load_solver.cc" />
     <ClCompile Include="..\..\src\transmissionline\catenary.cc" />
     <ClCompile Include="..\..\src\transmissionline\catenary_solver.cc" />
     <ClCompile Include="..\..\src\transmissionline\hardware.cc" />

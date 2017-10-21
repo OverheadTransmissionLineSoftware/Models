@@ -61,8 +61,10 @@
     <ClInclude Include="..\..\include\models\sagtension\cable_strainer.h" />
     <ClInclude Include="..\..\include\models\sagtension\catenary_cable_reloader.h" />
     <ClInclude Include="..\..\include\models\sagtension\catenary_cable_unloader.h" />
+    <ClInclude Include="..\..\include\models\sagtension\line_cable_loader_base.h" />
     <ClInclude Include="..\..\include\models\sagtension\line_cable_reloader.h" />
     <ClInclude Include="..\..\include\models\sagtension\line_cable_sagger.h" />
+    <ClInclude Include="..\..\include\models\sagtension\line_cable_unloader.h" />
     <ClInclude Include="..\..\include\models\sagtension\sag_tension_cable.h" />
   </ItemGroup>
   <ItemGroup>
@@ -72,8 +74,10 @@
     <ClCompile Include="..\..\src\sagtension\cable_strainer.cc" />
     <ClCompile Include="..\..\src\sagtension\catenary_cable_reloader.cc" />
     <ClCompile Include="..\..\src\sagtension\catenary_cable_unloader.cc" />
+    <ClCompile Include="..\..\src\sagtension\line_cable_loader_base.cc" />
     <ClCompile Include="..\..\src\sagtension\line_cable_reloader.cc" />
     <ClCompile Include="..\..\src\sagtension\line_cable_sagger.cc" />
+    <ClCompile Include="..\..\src\sagtension\line_cable_unloader.cc" />
     <ClCompile Include="..\..\src\sagtension\sag_tension_cable.cc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
