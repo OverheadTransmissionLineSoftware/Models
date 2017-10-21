@@ -217,7 +217,7 @@ class SolarRadiationSolver {
   ///   x = solar altitude, y = solar radiation
   mutable std::vector<double> coefficients_atmosphere_;
 
-  /// \var coefficients_altitude_
+  /// \var coefficients_elevation_
   ///   The polynomial coefficients used to correct radiation based on
   ///   elevation.
   ///   x = elevation, y = solar radiation correction factor

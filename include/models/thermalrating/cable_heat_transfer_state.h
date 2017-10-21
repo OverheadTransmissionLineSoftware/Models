@@ -51,7 +51,7 @@ struct CableHeatTransferState {
   ///   The heat transfer due to solar. This should always be positive.
   double heat_solar;
 
-  /// \var heat_stored
+  /// \var heat_storage
   ///   The heat transfer rate to/from the cable material (thermal storage).
   ///   This can either be positive or negative.
   double heat_storage;

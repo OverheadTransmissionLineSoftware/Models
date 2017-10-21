@@ -102,13 +102,13 @@ class TransientCableTemperatureSolver {
   void set_cable(const ThermalRatingCable* cable);
 
   /// \brief Sets the steady-state current.
-  /// \param[in] current
-  ///   The electrical current.
+  /// \param[in] current_steady
+  ///   The steady-state electrical current.
   void set_current_steady(const double& current_steady);
 
   /// \brief Sets the step current.
-  /// \param[in] current
-  ///   The electrical current.
+  /// \param[in] current_step
+  ///   The electrical current to step to.
   void set_current_step(const double& current_step);
 
   /// \brief Sets the time duration.
@@ -187,7 +187,7 @@ class TransientCableTemperatureSolver {
   ///   The current to step to.
   double current_step_;
 
-  /// \var duration
+  /// \var duration_
   ///   The time duration.
   int duration_;
 
@@ -199,7 +199,7 @@ class TransientCableTemperatureSolver {
   ///   The calculated temperature points.
   mutable std::list<TemperaturePoint> points_temperature_;
 
-  /// \var solver_heat_
+  /// \var solver_
   ///   The heat transfer solver.
   mutable CableHeatTransferSolver solver_;
 
