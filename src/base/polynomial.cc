@@ -94,7 +94,7 @@ double Polynomial::X(const double& y, const int& decimal_precision_y,
   }
 
   // converts to decimal precision
-  const double precision_y = 1 / pow(10, decimal_precision_y);
+  const double precision_y = 1 / std::pow(10, decimal_precision_y);
 
   // gets a shifted polynomial so that y value is on x-axis
   std::vector<double> coefficients = *coefficients_;
@@ -135,7 +135,7 @@ double Polynomial::Y(const double& x) const {
   for (int order = 0; order <= order_max; order++) {
 
     const double& coefficient =  coefficients_->at(order);
-    y = y + (coefficient * pow(x, order));
+    y = y + (coefficient * std::pow(x, order));
   }
 
   return y;

@@ -17,9 +17,6 @@
     <ClInclude Include="..\..\include\models\transmissionline\cable_constraint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\models\transmissionline\cable_unit_load_calculator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\models\transmissionline\catenary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -53,15 +50,15 @@
     <ClInclude Include="..\..\include\models\transmissionline\transmission_line.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\models\transmissionline\cable_unit_load_solver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\transmissionline\cable.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\transmissionline\cable_constraint.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\transmissionline\cable_unit_load_calculator.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\transmissionline\catenary.cc">
@@ -95,6 +92,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\transmissionline\transmission_line.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\transmissionline\cable_unit_load_solver.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

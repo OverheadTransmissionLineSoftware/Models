@@ -98,6 +98,14 @@ class Catenary2d {
   ///   the sag point.
   double Sag() const;
 
+  /// \brief Gets the sag at a specific point.
+  /// \param[in] position_fraction
+  ///   A decimal ranging from 0 and 1 that describes position on the curve by
+  ///   the fraction of curve length from the left end point.
+  /// \return The vertical distance between the straight line and the catenary
+  ///   the position.
+  double Sag(const double& position_fraction) const;
+
   /// \brief Gets a tangent angle from the horizontal axis to the curve tangent
   ///   line.
   /// \param[in] position_fraction
@@ -346,6 +354,14 @@ class Catenary3d {
   /// \return The vertical distance bewteen the straight line and the catenary
   ///   the sag point.
   double Sag() const;
+
+  /// \brief Gets the sag at a specific point.
+  /// \param[in] position_fraction
+  ///   A decimal ranging from 0 and 1 that describes position on the curve by
+  ///   the fraction of curve length from the left end point.
+  /// \return The distance between the straight line and the catenary the
+  ///   position.
+  double Sag(const double& position_fraction) const;
 
   /// \brief Gets the swing angle of the catenary due to transverse loading.
   /// \return The swing angle, which is referenced from the vertical plane.

@@ -60,7 +60,7 @@
 		<Unit filename="../../include/models/transmissionline/cable_position_locator.h">
 			<Option virtualFolder="Header Files/" />
 		</Unit>
-		<Unit filename="../../include/models/transmissionline/cable_unit_load_calculator.h">
+		<Unit filename="../../include/models/transmissionline/cable_unit_load_solver.h">
 			<Option virtualFolder="Header Files/" />
 		</Unit>
 		<Unit filename="../../include/models/transmissionline/catenary.h">
@@ -102,7 +102,7 @@
 		<Unit filename="../../src/transmissionline/cable_position_locator.cc">
 			<Option virtualFolder="Source Files/" />
 		</Unit>
-		<Unit filename="../../src/transmissionline/cable_unit_load_calculator.cc">
+		<Unit filename="../../src/transmissionline/cable_unit_load_solver.cc">
 			<Option virtualFolder="Source Files/" />
 		</Unit>
 		<Unit filename="../../src/transmissionline/catenary.cc">

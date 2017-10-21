@@ -427,6 +427,14 @@ class CableComponentElongationModel {
   ///   The polynomial that describes the cable component elongation.
   Polynomial polynomial_loadstrain_;
 
+  /// \var state_
+  ///   The state of the component.
+  const CableState* state_;
+
+  /// \var state_stretch_
+  ///   The state used to stretch the component.
+  const CableStretchState* state_stretch_;
+
   /// \var strain_thermal_state_
   ///   The amount of strain due to shifting from reference temperature to the
   ///   state temperature.
@@ -436,14 +444,6 @@ class CableComponentElongationModel {
   ///   The amount of strain due to shifting from reference temperature to the
   ///   stretch temperature.
   mutable double strain_thermal_stretch_;
-
-  /// \var state_
-  ///   The state of the component.
-  const CableState* state_;
-
-  /// \var state_stretch_
-  ///   The state used to stretch the component.
-  const CableStretchState* state_stretch_;
 
   /// \var temperature_reference_
   ///   The base reference temperature for the cable component. The polynomial

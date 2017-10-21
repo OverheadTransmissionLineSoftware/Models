@@ -15,7 +15,7 @@ Cylinder::Cylinder() {
 Cylinder::~Cylinder() {}
 
 double Cylinder::AreaCrossSection() const {
-  return (units::kPi / 4) * pow(diameter_, 2);
+  return (units::kPi / 4) * std::pow(diameter_, 2);
 }
 
 bool Cylinder::Validate(const bool& is_included_warnings,

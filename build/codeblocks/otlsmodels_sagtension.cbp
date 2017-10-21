@@ -65,10 +65,16 @@
 		<Unit filename="../../include/models/sagtension/catenary_cable_unloader.h">
 			<Option virtualFolder="Header Files/" />
 		</Unit>
+		<Unit filename="../../include/models/sagtension/line_cable_loader_base.h">
+			<Option virtualFolder="Header Files/" />
+		</Unit>
 		<Unit filename="../../include/models/sagtension/line_cable_reloader.h">
 			<Option virtualFolder="Header Files/" />
 		</Unit>
 		<Unit filename="../../include/models/sagtension/line_cable_sagger.h">
+			<Option virtualFolder="Header Files/" />
+		</Unit>
+		<Unit filename="../../include/models/sagtension/line_cable_unloader.h">
 			<Option virtualFolder="Header Files/" />
 		</Unit>
 		<Unit filename="../../include/models/sagtension/sag_tension_cable.h">
@@ -92,10 +98,16 @@
 		<Unit filename="../../src/sagtension/catenary_cable_unloader.cc">
 			<Option virtualFolder="Source Files/" />
 		</Unit>
+		<Unit filename="../../src/sagtension/line_cable_loader_base.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
 		<Unit filename="../../src/sagtension/line_cable_reloader.cc">
 			<Option virtualFolder="Source Files/" />
 		</Unit>
 		<Unit filename="../../src/sagtension/line_cable_sagger.cc">
+			<Option virtualFolder="Source Files/" />
+		</Unit>
+		<Unit filename="../../src/sagtension/line_cable_unloader.cc">
 			<Option virtualFolder="Source Files/" />
 		</Unit>
 		<Unit filename="../../src/sagtension/sag_tension_cable.cc">

@@ -351,7 +351,7 @@ double CableElongationModel::StrainCombined(
   // declares iteration variables
   // iterates until current point load matches target load
   int iter = 1;
-  double precision = 1 / pow(10, precision_decimal_load);
+  double precision = 1 / std::pow(10, precision_decimal_load);
   double slope_line =-999999;
 
   while ((precision < std::abs(point_current.y - load)) && (iter < 100)) {

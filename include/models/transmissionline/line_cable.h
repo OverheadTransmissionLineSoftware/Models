@@ -10,6 +10,7 @@
 #include "models/base/vector.h"
 #include "models/transmissionline/cable.h"
 #include "models/transmissionline/cable_constraint.h"
+#include "models/transmissionline/catenary.h"
 
 class LineStructure;
 
@@ -53,6 +54,10 @@ class LineCable {
   /// \return The index of the connection after sorting. If adding the
   ///    connection to the line cable fails, -1 will be returned.
   int AddConnection(const LineCableConnection& connection);
+
+  /// \brief Gets a catenary based on the constraint and ruling span geometry.
+  /// \return A catenary based on the constraint and ruling span geometry.
+  Catenary3d CatenaryRulingSpan() const;
 
   /// \brief Clears all connections.
   void ClearConnections();

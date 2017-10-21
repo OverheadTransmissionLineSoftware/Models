@@ -93,10 +93,16 @@
 		<Unit filename="sagtension/catenary_cable_unloader_test.cc">
 			<Option virtualFolder="Tests - SagTension/" />
 		</Unit>
+		<Unit filename="sagtension/line_cable_loader_base_test.cc">
+			<Option virtualFolder="Tests - SagTension/" />
+		</Unit>
 		<Unit filename="sagtension/line_cable_reloader_test.cc">
 			<Option virtualFolder="Tests - SagTension/" />
 		</Unit>
 		<Unit filename="sagtension/line_cable_sagger_test.cc">
+			<Option virtualFolder="Tests - SagTension/" />
+		</Unit>
+		<Unit filename="sagtension/line_cable_unloader_test.cc">
 			<Option virtualFolder="Tests - SagTension/" />
 		</Unit>
 		<Unit filename="sagtension/sag_tension_cable_test.cc">
@@ -144,7 +150,7 @@
 		<Unit filename="transmissionline/cable_test.cc">
 			<Option virtualFolder="Tests - TransmissionLine/" />
 		</Unit>
-		<Unit filename="transmissionline/cable_unit_load_calculator_test.cc">
+		<Unit filename="transmissionline/cable_unit_load_solver_test.cc">
 			<Option virtualFolder="Tests - TransmissionLine/" />
 		</Unit>
 		<Unit filename="transmissionline/catenary_solver_test.cc">

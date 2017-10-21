@@ -745,9 +745,11 @@ WARN_LOGFILE           = "./doxygen.log"
 
 INPUT                  = ../include/models/base \
                          ../include/models/sagtension \
+			 ../include/models/thermalrating \
 			 ../include/models/transmissionline \
 			 ../src/base \
                          ../src/sagtension \
+			 ../src/thermalrating \
 			 ../src/transmissionline
 
 # This tag can be used to specify the character encoding of the source files

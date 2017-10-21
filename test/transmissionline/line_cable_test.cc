@@ -6,6 +6,7 @@
 #include "gtest/gtest.h"
 
 #include "factory.h"
+#include "models/base/helper.h"
 
 class LineCableTest : public ::testing::Test {
  protected:
@@ -50,6 +51,26 @@ TEST_F(LineCableTest, AddConnection) {
   connection.index_attachment = 0;
   index = l_->AddConnection(connection);
   EXPECT_EQ(1, index);
+}
+
+TEST_F(LineCableTest, CatenaryRulingSpan) {
+  Catenary3d catenary = l_->CatenaryRulingSpan();
+
+  // checks tension
+  const double value = catenary.tension_horizontal();
+  EXPECT_EQ(6000.0, helper::Round(value, 1));
+
+  // checks unit weight
+  Vector3d weight_unit = catenary.weight_unit();
+  EXPECT_EQ(0.000, helper::Round(weight_unit.x(), 3));
+  EXPECT_EQ(0.000, helper::Round(weight_unit.y(), 3));
+  EXPECT_EQ(1.094, helper::Round(weight_unit.z(), 3));
+
+  // checks spacing
+  Vector3d spacing = catenary.spacing_endpoints();
+  EXPECT_EQ(1200, helper::Round(spacing.x(), 0));
+  EXPECT_EQ(0, helper::Round(spacing.y(), 0));
+  EXPECT_EQ(0, helper::Round(spacing.z(), 0));
 }
 
 TEST_F(LineCableTest, DeleteConnection) {

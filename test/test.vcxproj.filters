@@ -75,9 +75,6 @@
     <ClCompile Include="transmissionline\cable_test.cc">
       <Filter>Tests TransmissionLine</Filter>
     </ClCompile>
-    <ClCompile Include="transmissionline\cable_unit_load_calculator_test.cc">
-      <Filter>Tests TransmissionLine</Filter>
-    </ClCompile>
     <ClCompile Include="transmissionline\catenary_solver_test.cc">
       <Filter>Tests TransmissionLine</Filter>
     </ClCompile>
@@ -140,6 +137,15 @@
     </ClCompile>
     <ClCompile Include="thermalrating\transient_cable_temperature_solver_test.cc">
       <Filter>Tests ThermalRating</Filter>
+    </ClCompile>
+    <ClCompile Include="transmissionline\cable_unit_load_solver_test.cc">
+      <Filter>Tests TransmissionLine</Filter>
+    </ClCompile>
+    <ClCompile Include="sagtension\line_cable_loader_base_test.cc">
+      <Filter>Tests SagTension</Filter>
+    </ClCompile>
+    <ClCompile Include="sagtension\line_cable_unloader_test.cc">
+      <Filter>Tests SagTension</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

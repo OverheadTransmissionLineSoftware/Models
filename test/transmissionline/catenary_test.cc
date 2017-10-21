@@ -51,7 +51,7 @@ TEST_F(Catenary2dTest, Coordinate) {
   EXPECT_EQ(0, helper::Round(coord.x, 1));
   EXPECT_EQ(0, helper::Round(coord.y, 1));
 
-  // inclined geometry
+  // inclined geometry - origin between end points
   Vector2d spacing(1000, 100);
   c_.set_spacing_endpoints(spacing);
 
@@ -66,6 +66,54 @@ TEST_F(Catenary2dTest, Coordinate) {
   coord = c_.Coordinate(1, true);
   EXPECT_EQ(1000, helper::Round(coord.x, 1));
   EXPECT_EQ(100, helper::Round(coord.y, 1));
+
+  // inclined geometry - origin beyond end points
+  spacing = Vector2d(1000, 300);
+  c_.set_spacing_endpoints(spacing);
+
+  coord = c_.Coordinate(0, true);
+  EXPECT_EQ(0, helper::Round(coord.x, 1));
+  EXPECT_EQ(0, helper::Round(coord.y, 1));
+
+  coord = c_.Coordinate(0.5, true);
+  EXPECT_EQ(517.9, helper::Round(coord.x, 1));
+  EXPECT_EQ(89.8, helper::Round(coord.y, 1));
+
+  coord = c_.Coordinate(1, true);
+  EXPECT_EQ(1000, helper::Round(coord.x, 1));
+  EXPECT_EQ(300, helper::Round(coord.y, 1));
+
+  // declined geometry - origin between end points
+  spacing = Vector2d(1000, -100);
+  c_.set_spacing_endpoints(spacing);
+
+  coord = c_.Coordinate(0, true);
+  EXPECT_EQ(0, helper::Round(coord.x, 1));
+  EXPECT_EQ(0, helper::Round(coord.y, 1));
+
+  coord = c_.Coordinate(0.5, true);
+  EXPECT_EQ(493.8, helper::Round(coord.x, 1));
+  EXPECT_EQ(-112.5, helper::Round(coord.y, 1));
+
+  coord = c_.Coordinate(1, true);
+  EXPECT_EQ(1000, helper::Round(coord.x, 1));
+  EXPECT_EQ(-100, helper::Round(coord.y, 1));
+
+  // declined geometry - origin beyond end points
+  spacing = Vector2d(1000, -300);
+  c_.set_spacing_endpoints(spacing);
+
+  coord = c_.Coordinate(0, true);
+  EXPECT_EQ(0, helper::Round(coord.x, 1));
+  EXPECT_EQ(0, helper::Round(coord.y, 1));
+
+  coord = c_.Coordinate(0.5, true);
+  EXPECT_EQ(482.1, helper::Round(coord.x, 1));
+  EXPECT_EQ(-210.2, helper::Round(coord.y, 1));
+
+  coord = c_.Coordinate(1, true);
+  EXPECT_EQ(1000, helper::Round(coord.x, 1));
+  EXPECT_EQ(-300, helper::Round(coord.y, 1));
 }
 
 TEST_F(Catenary2dTest, CoordinateChord) {
@@ -112,6 +160,21 @@ TEST_F(Catenary2dTest, LengthSlack) {
   Vector2d spacing_endpoints(1000, 500);
   c_.set_spacing_endpoints(spacing_endpoints);
   EXPECT_EQ(9.36, helper::Round(c_.LengthSlack(), 2));
+}
+
+TEST_F(Catenary2dTest, Sag) {
+  double value = -999999;
+
+  // checks max sag
+  value = c_.Sag();
+  EXPECT_EQ(62.83, helper::Round(value, 2));
+
+  // checks sag at various position fractions
+  value = c_.Sag(0.25);
+  EXPECT_EQ(46.94, helper::Round(value, 2));
+
+  value = c_.Sag(0.75);
+  EXPECT_EQ(46.94, helper::Round(value, 2));
 }
 
 TEST_F(Catenary2dTest, Tension) {
@@ -254,6 +317,21 @@ TEST_F(Catenary3dTest, CoordinateChord) {
   EXPECT_EQ(1000, helper::Round(coord.x, 1));
   EXPECT_EQ(0, helper::Round(coord.y, 1));
   EXPECT_EQ(100, helper::Round(coord.z, 1));
+}
+
+TEST_F(Catenary3dTest, Sag) {
+  double value = -999999;
+
+  // checks max sag
+  value = c_.Sag();
+  EXPECT_EQ(62.83, helper::Round(value, 2));
+
+  // checks sag at various position fractions
+  value = c_.Sag(0.25);
+  EXPECT_EQ(46.94, helper::Round(value, 2));
+
+  value = c_.Sag(0.75);
+  EXPECT_EQ(46.94, helper::Round(value, 2));
 }
 
 TEST_F(Catenary3dTest, SwingAngle) {
