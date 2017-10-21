@@ -59,7 +59,7 @@ double Convert(const double& value,
                const double& exponent,
                const bool& is_numerator) {
   // adjusts the factor based on the exponent
-  double factor_adj = pow(factor, exponent);
+  double factor_adj = std::pow(factor, exponent);
 
   // inverts factor if unit value is not in the numerator
   if (is_numerator == false) {

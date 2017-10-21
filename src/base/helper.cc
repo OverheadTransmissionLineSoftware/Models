@@ -68,7 +68,7 @@ std::list<std::string> Parse(const std::string& str,
 }
 
 double Round(const double& number, const int& precision) {
-  return std::round(number * pow(10, precision)) / pow(10, precision);
+  return std::round(number * std::pow(10, precision)) / std::pow(10, precision);
 }
 
 }  // namespace helper

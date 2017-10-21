@@ -60,21 +60,21 @@ double Vector2d::Angle(const bool& is_enabled_negative_angles) const {
 
       if (0 <= x_) {  // quadrant I
         angle = units::ConvertAngle(
-            atan(y_ / x_),
+            std::atan(y_ / x_),
             units::AngleConversionType::kRadiansToDegrees);
       } else {  // quadrant II
         angle = 180 - units::ConvertAngle(
-            std::abs(atan(y_ / x_)),
+            std::abs(std::atan(y_ / x_)),
             units::AngleConversionType::kRadiansToDegrees);
       }
     } else {
       if (x_ <= 0) {  // quadrant III
         angle = 180 + units::ConvertAngle(
-            std::abs(atan(y_ / x_)),
+            std::abs(std::atan(y_ / x_)),
             units::AngleConversionType::kRadiansToDegrees);
       } else {  // quadrant IV
         angle = 360 - units::ConvertAngle(
-            std::abs(atan(y_ / x_)),
+            std::abs(std::atan(y_ / x_)),
             units::AngleConversionType::kRadiansToDegrees);
       }
     }
@@ -89,7 +89,7 @@ double Vector2d::Angle(const bool& is_enabled_negative_angles) const {
 }
 
 double Vector2d::Magnitude() const {
-  return sqrt( pow(x_, 2) + pow(y_, 2) );
+  return sqrt(std::pow(x_, 2) + std::pow(y_, 2));
 }
 
 /// Converts the vector into the radial coordinate system (magnitude and angle)
@@ -111,8 +111,8 @@ void Vector2d::Rotate(const double& angle_rotation) {
   const double angle_radians =
       units::ConvertAngle(angle_new,
                           units::AngleConversionType::kDegreesToRadians);
-  x_ = magnitude * cos(angle_radians);
-  y_ = magnitude * sin(angle_radians);
+  x_ = magnitude * std::cos(angle_radians);
+  y_ = magnitude * std::sin(angle_radians);
 }
 
 void Vector2d::Scale(const double& factor_scale) {
@@ -185,7 +185,7 @@ double Vector3d::Angle(const Plane2dType& plane,
 }
 
 double Vector3d::Magnitude() const {
-  return sqrt( pow(x_, 2) + pow(y_, 2) + pow(z_, 2) );
+  return sqrt(std::pow(x_, 2) + std::pow(y_, 2) + std::pow(z_, 2));
 }
 
 /// The planar vector components are assigned to a 2D vector. The rotation is
