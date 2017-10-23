@@ -5,12 +5,12 @@
 		<Option title="test" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
-		<Option virtualFolders="Header Files/;Source Files/;Tests - Base/;Tests - ThermalRating/;Tests - TransmissionLine/;Tests - SagTension/;" />
+		<Option virtualFolders="Header Files/;Source Files/;Tests - Base/;Tests - Sagging/;Tests - SagTension/;Tests - ThermalRating/;Tests - TransmissionLine/;" />
 		<Build>
 			<Target title="debug">
 				<Option output="debug/test" prefix_auto="1" extension_auto="1" />
 				<Option object_output="debug/obj/" />
-				<Option external_deps="../lib/libotlsmodels_based.a;../lib/libotlsmodels_sagtensiond.a;../lib/libotlsmodels_thermalratingd.a;../lib/libotlsmodels_transmissionlined.a;" />
+				<Option external_deps="../lib/libotlsmodels_based.a;../lib/libotlsmodels_saggingd.a;../lib/libotlsmodels_sagtensiond.a;../lib/libotlsmodels_thermalratingd.a;../lib/libotlsmodels_transmissionlined.a;" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Option projectLinkerOptionsRelation="2" />
@@ -18,6 +18,7 @@
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
+					<Add library="../lib/libotlsmodels_saggingd.a" />
 					<Add library="../lib/libotlsmodels_sagtensiond.a" />
 					<Add library="../lib/libotlsmodels_thermalratingd.a" />
 					<Add library="../lib/libotlsmodels_transmissionlined.a" />
@@ -27,7 +28,7 @@
 			<Target title="release">
 				<Option output="release/test" prefix_auto="1" extension_auto="1" />
 				<Option object_output="release/obj/" />
-				<Option external_deps="../lib/libotlsmodels_base.a;../lib/libotlsmodels_sagtension.a;../lib/libotlsmodels_thermalrating.a;../lib/libotlsmodels_transmissionline.a;" />
+				<Option external_deps="../lib/libotlsmodels_base.a;../lib/libotlsmodels_sagging.a../lib/libotlsmodels_sagtension.a;../lib/libotlsmodels_thermalrating.a;../lib/libotlsmodels_transmissionline.a;" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Option projectLinkerOptionsRelation="2" />
@@ -36,6 +37,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
+					<Add library="../lib/libotlsmodels_sagging.a" />
 					<Add library="../lib/libotlsmodels_sagtension.a" />
 					<Add library="../lib/libotlsmodels_thermalrating.a" />
 					<Add library="../lib/libotlsmodels_transmissionline.a" />
@@ -74,6 +76,18 @@
 		</Unit>
 		<Unit filename="factory.h">
 			<Option virtualFolder="Header Files/" />
+		</Unit>
+		<Unit filename="sagging/cable_sag_position_corrector_test.cc">
+			<Option virtualFolder="Tests - Sagging/" />
+		</Unit>
+		<Unit filename="sagging/dyno_sagger_test.cc">
+			<Option virtualFolder="Tests - Sagging/" />
+		</Unit>
+		<Unit filename="sagging/stopwatch_sagger_test.cc">
+			<Option virtualFolder="Tests - Sagging/" />
+		</Unit>
+		<Unit filename="sagging/transit_sagger_test.cc">
+			<Option virtualFolder="Tests - Sagging/" />
 		</Unit>
 		<Unit filename="sagtension/cable_component_elongation_model_test.cc">
 			<Option virtualFolder="Tests - SagTension/" />

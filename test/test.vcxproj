@@ -68,7 +68,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\lib;..\external\googletest\googletest\msvc\x64\Debug\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>otlsmodels_sagtensiond.lib;otlsmodels_thermalratingd.lib;otlsmodels_transmissionlined.lib;otlsmodels_based.lib;gtestd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>otlsmodels_sagtensiond.lib;otlsmodels_saggingd.lib;otlsmodels_thermalratingd.lib;otlsmodels_transmissionlined.lib;otlsmodels_based.lib;gtestd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -90,7 +90,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\lib;..\external\googletest\googletest\msvc\x64\Release\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>otlsmodels_sagtension.lib;otlsmodels_thermalrating.lib;otlsmodels_transmissionline.lib;otlsmodels_base.lib;gtest.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>otlsmodels_sagtension.lib;otlsmodels_sagging.lib;otlsmodels_thermalrating.lib;otlsmodels_transmissionline.lib;otlsmodels_base.lib;gtest.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -103,6 +103,10 @@
     <ClCompile Include="base\units_test.cc" />
     <ClCompile Include="base\vector_test.cc" />
     <ClCompile Include="factory.cc" />
+    <ClCompile Include="sagging\cable_sag_position_corrector_test.cc" />
+    <ClCompile Include="sagging\dyno_sagger_test.cc" />
+    <ClCompile Include="sagging\stopwatch_sagger_test.cc" />
+    <ClCompile Include="sagging\transit_sagger_test.cc" />
     <ClCompile Include="sagtension\cable_component_elongation_model_test.cc" />
     <ClCompile Include="sagtension\cable_elongation_model_test.cc" />
     <ClCompile Include="sagtension\cable_state_test.cc" />
