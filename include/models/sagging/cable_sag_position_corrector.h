@@ -147,11 +147,11 @@ class CableSagPositionCorrector {
   ///   The cable length for the clipped analysis.
   mutable double length_clipped_;
 
-  /// \var length_pulley_
+  /// \var length_pulleyed_
   ///   The cable length for the pulley analysis.
   mutable double length_pulleyed_;
 
-  /// \var line_cable_
+  /// \var linecable_
   ///   The line cable.
   const LineCable* linecable_;
 
