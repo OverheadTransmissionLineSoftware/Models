@@ -103,6 +103,8 @@ enum class UnitSystem {
   kMetric
 };
 
+const double kGravityImperial = 1.0 / 0.0310810;
+const double kGravityMetric = 1.0 / 0.101972;
 const double kPi = 3.14159265358979;
 
 /// \brief Converts the angle value.

@@ -7,14 +7,26 @@
 
 StopwatchSagger::StopwatchSagger() {
   catenary_ = Catenary3d();
-  sag_ = -999999;
+  units_ = units::UnitSystem::kNull;
+
+  length_ = -999999;
+  velocity_wave_ = -999999;
+
+  is_updated_ = false;
 }
 
 StopwatchSagger::~StopwatchSagger() {
 }
 
 double StopwatchSagger::TimeReturn(const int& wave) const {
-  return wave * std::sqrt(sag_ / 1.00625);
+  // updates class if necessary
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return -999999;
+    }
+  }
+
+  return (wave * 2 * length_) / velocity_wave_;
 }
 
 bool StopwatchSagger::Validate(const bool& is_included_warnings,
@@ -38,5 +50,52 @@ Catenary3d StopwatchSagger::catenary() const {
 
 void StopwatchSagger::set_catenary(const Catenary3d& catenary) {
   catenary_ = catenary;
-  sag_ = catenary_.Sag();
+  is_updated_ = false;
+}
+
+void StopwatchSagger::set_units(const units::UnitSystem& units) {
+  units_ = units;
+  is_updated_ = false;
+}
+
+units::UnitSystem StopwatchSagger::units() const {
+  return units_;
+}
+
+bool StopwatchSagger::IsUpdated() const {
+  if (is_updated_ == true) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+bool StopwatchSagger::Update() const {
+  // updates the length and velocity
+  is_updated_ = UpdateLengthAndVelocity();
+  if (is_updated_ == false) {
+    return false;
+  }
+
+  // if it reaches this point, update was successful
+  return true;
+}
+
+bool StopwatchSagger::UpdateLengthAndVelocity() const {
+  // calculates the length
+  length_ = catenary_.Length();
+
+  // calculates the velocity of a traveling wave
+  double gravity = 0;
+  if (units_ == units::UnitSystem::kImperial) {
+    gravity = units::kGravityImperial;
+  } else if (units_ == units::UnitSystem::kMetric) {
+    gravity = units::kGravityMetric;
+  } else {
+    return false;
+  }
+
+  velocity_wave_ = std::sqrt(gravity * catenary_.Constant());
+
+  return true;
 }

@@ -22,6 +22,7 @@ class StopwatchSaggerTest : public ::testing::Test {
 
     // builds fixture
     s_.set_catenary(catenary);
+    s_.set_units(units::UnitSystem::kImperial);
   }
 
   ~StopwatchSaggerTest() {

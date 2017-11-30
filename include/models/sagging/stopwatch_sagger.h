@@ -6,6 +6,7 @@
 
 #include <list>
 
+#include "models/base/units.h"
 #include "models/transmissionline/catenary.h"
 
 /// \par OVERVIEW
@@ -45,14 +46,48 @@ class StopwatchSagger {
   ///   The catenary.
   void set_catenary(const Catenary3d& catenary);
 
+  /// \brief Sets the units.
+  /// \param[in] units
+  ///   The unit system.
+  void set_units(const units::UnitSystem& units);
+
+  /// \brief Gets the units.
+  /// \return The unit system.
+  units::UnitSystem units() const;
+
  private:
+  /// \brief Determines if class is updated.
+  /// \return A boolean indicating if class is updated.
+  bool IsUpdated() const;
+
+  /// \brief Updates cached member variables and modifies control variables if
+  ///    update is required.
+  /// \return A boolean indicating if class updates completed successfully.
+  bool Update() const;
+
+  /// \brief Updates the catenary length and wave velocity.
+  /// \return If the values have been successfully updated.
+  bool UpdateLengthAndVelocity() const;
+
   /// \var catenary_
   ///   The hyperbolic curve that models the cable position and tension.
   Catenary3d catenary_;
 
-  /// \var sag_
-  ///   The catenary sag.
-  double sag_;
+  /// \var is_updated_
+  ///   An indicator that tells if the class has been updated.
+  mutable bool is_updated_;
+
+  /// \var length_
+  ///   The catenary length.
+  mutable double length_;
+
+  /// \var units_
+  ///   The unit system.
+  units::UnitSystem units_;
+
+  /// \var velocity_wave_
+  ///   The velocity of the wave along the catenary.
+  mutable double velocity_wave_;
 };
 
 #endif  // OTLS_MODELS_SAGGING_STOPWATCHSAGGER_H_
