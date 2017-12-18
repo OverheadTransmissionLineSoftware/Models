@@ -11,13 +11,12 @@ Catenary2d::Catenary2d() {
   tension_horizontal_ = -999999;
   weight_unit_ = -999999;
 
-  is_updated_points_end_ = true;
+  is_updated_points_end_ = false;
 }
 
 Catenary2d::~Catenary2d() {
 }
 
-/// \f[ \frac{H}{w} = \frac{HorizontalTension}{UnitWeight} \f]
 double Catenary2d::Constant() const {
   return tension_horizontal_ / weight_unit_;
 }
@@ -26,8 +25,6 @@ double Catenary2d::ConstantMinimum(const double& spacing_endpoints) {
   return spacing_endpoints / 2;
 }
 
-/// Solves for length and direction from origin, and then converts to
-/// coordinates.
 Point2d<double> Catenary2d::Coordinate(const double& position_fraction,
                                        const bool& is_shifted_origin) const {
   Point2d<double> coordinate;
@@ -124,11 +121,6 @@ Point2d<double> Catenary2d::CoordinateChord(
   return coordinate_chord;
 }
 
-/// If the lowpoint is within the curve section being used, the length from the
-/// origin to the left endpoint and the length from the origin to the right
-/// endpoint are summed. If the origin is beyond an endpoint, the length to the
-/// closest endpoint is treated as negative.
-/// \see Catenary2d::LengthFromOrigin
 double Catenary2d::Length() const {
   double length = -999999;
 
@@ -166,6 +158,56 @@ double Catenary2d::LengthSlack() const {
   }
 
   return Length() - spacing_endpoints().Magnitude();
+}
+
+double Catenary2d::PositionFraction(const double& tangent_angle) const {
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return -999999;
+    }
+  }
+
+  double position_fraction_lower = 0;
+  double position_fraction_upper = 1;
+  double position_fraction_target = -999999;
+  double tangent_angle_position = -999999;
+  int iter = 0;
+  const int kIterMax = 100;
+
+  while ((0.001 < std::abs(tangent_angle - tangent_angle_position)
+      || (0.0001 < position_fraction_upper - position_fraction_lower))
+      && (iter < kIterMax)) {
+
+    // updates position along curve
+    position_fraction_target = (position_fraction_upper +
+                                position_fraction_lower) / 2;
+
+    // gets a tangent angle at the position along curve
+    tangent_angle_position = TangentAngle(position_fraction_target,
+                                          AxisDirectionType::kPositive);
+
+    // compares against attachment spacing, update limits
+    if (tangent_angle_position == tangent_angle) {
+      break;
+    } else if (tangent_angle_position < tangent_angle) {
+      position_fraction_lower = position_fraction_target;
+    } else if (tangent_angle < tangent_angle_position) {
+      position_fraction_upper = position_fraction_target;
+    }
+
+    // checks iterator, increment or exit
+    if (iter < kIterMax) {
+      iter++;
+    } else {
+      break;
+    }
+  }
+
+  if (iter < kIterMax) {
+    return position_fraction_target;
+  } else {
+    return -999999;
+  }
 }
 
 double Catenary2d::PositionFractionOrigin() const {
@@ -245,10 +287,6 @@ double Catenary2d::TangentAngle(const double& position_fraction,
   return tangent_angle;
 }
 
-/// The slope at the position is calculated, and then adjusted to a unit vector
-/// based on the direction the vector is pointing.
-/// Slope equation is:
-/// \f[ Slope = sinh \left( \frac{x}{\frac{H}{w}} \right) \f]
 Vector2d Catenary2d::TangentVector(const double& position_fraction,
                                    const AxisDirectionType& direction) const {
   Vector2d tangent_vector;
@@ -291,10 +329,6 @@ double Catenary2d::Tension(const double& position_fraction) const {
          * std::cosh(coordinate.x / (tension_horizontal_ / weight_unit_));
 }
 
-/// A tangent unit vector is calculated and then multiplied by the tension magnitude.
-/// The tension magnitude equation is:
-/// \f[ Tension = H cosh \left( \frac{x}{\frac{H}{w}} \right) \f]
-/// @see Catenary2d::TangentVector
 Vector2d Catenary2d::Tension(const double& position_fraction,
                              const AxisDirectionType& direction) const {
   Vector2d vector_tangent;
@@ -305,7 +339,7 @@ Vector2d Catenary2d::Tension(const double& position_fraction,
     }
   }
 
-  // gets a unit vector and scale according to tension magnitude
+  // gets a unit vector and scales according to tension magnitude
   vector_tangent = TangentVector(position_fraction, direction);
   const double magnitude = Tension(position_fraction);
   vector_tangent.Scale(magnitude);
@@ -323,13 +357,12 @@ double Catenary2d::TensionAverage(const int& num_points) const {
   }
 
   if (num_points == 0) {
-
     // calculates using Ehrenburg approximation
     const double h = tension_horizontal_;
     const double w = weight_unit_;
     const double l = Length();
 
-    const double k1 = (std::pow(h, 2) / (2 * w * l));
+    const double k1 = std::pow(h, 2) / (2 * w * l);
     const double k2 = std::sinh(point_end_right_.x / (h / w))
                       * std::cosh(point_end_right_.x / (h / w));
     const double k3 = std::sinh(point_end_left_.x / (h / w))
@@ -339,10 +372,9 @@ double Catenary2d::TensionAverage(const int& num_points) const {
     tension_average = k1 * (k2 - k3 + k4);
 
   } else if (0 < num_points) {
-
     // calculates average tension using evenly spaced points
     double sum = 0;
-    const double kNumPoints = num_points;  // convert int to double
+    const double kNumPoints = num_points;
 
     for (int iter = 0; iter <= kNumPoints; iter++) {
 
@@ -462,9 +494,6 @@ double Catenary2d::weight_unit() const {
   return weight_unit_;
 }
 
-/// The function is a derivation of the equation for curve length.
-/// @see Catenary2d::CurveLengthFromOrigin
-/// \f[ x = \frac{H}{w} sinh^{-1} \left(\frac{L}{\frac{H}{w}}\right) \f]
 double Catenary2d::CoordinateX(
     const double& length_origin_to_position,
     const AxisDirectionType& direction_origin_to_position) const {
@@ -473,20 +502,17 @@ double Catenary2d::CoordinateX(
   const double w = weight_unit_;
 
   double coordinate_x = -999999;
-
-  // BOL from origin - negative x coordinate
   if (direction_origin_to_position == AxisDirectionType::kNegative) {
+    // left of origin - negative x coordinate
     coordinate_x = -(h / w) * (std::asinh(l / (h / w)));
-  }
-  // AOL from origin - positive x coordinate
-  else if (direction_origin_to_position == AxisDirectionType::kPositive) {
+  } else if (direction_origin_to_position == AxisDirectionType::kPositive) {
+    // right of origin - positive x coordinate
     coordinate_x = (h / w) * (std::asinh(l / (h / w)));
   }
 
   return coordinate_x;
 }
 
-/// \f[ y = \frac{H}{w} \cosh \left(\frac{x}{\frac{H}{w}-1}\right) \f]
 double Catenary2d::CoordinateY(
     const double& length_origin_to_position,
     const AxisDirectionType& direction_origin_to_position) const {
@@ -499,7 +525,6 @@ double Catenary2d::CoordinateY(
 }
 
 bool Catenary2d::IsUpdated() const {
-
   if (is_updated_points_end_ == true) {
     return true;
   } else {
@@ -507,7 +532,6 @@ bool Catenary2d::IsUpdated() const {
   }
 }
 
-/// \f[ CurveLength = \left| \frac{H}{w} sinh^{-1} \left(\frac{x}{\frac{H}{w}}\right) \right| \f]
 double Catenary2d::LengthFromOrigin(const Point2d<double>& coordinate) const {
   const double x = coordinate.x;
   const double h = tension_horizontal_;
@@ -516,57 +540,10 @@ double Catenary2d::LengthFromOrigin(const Point2d<double>& coordinate) const {
   return std::abs((h / w) * std::sinh(x / (h / w)));
 }
 
-double Catenary2d::PositionFraction(const double& tangent_angle) const {
-  double position_fraction_lower = 0;
-  double position_fraction_upper = 1;
-  double position_fraction_target = -999999;
-  double tangent_angle_position = -999999;
-  int iter = 0;
-  const int kIterMax = 100;
-
-  while ((0.001 < std::abs(tangent_angle - tangent_angle_position)
-      || (0.0001 < position_fraction_upper - position_fraction_lower))
-      && (iter < kIterMax)) {
-
-    // updates position along curve
-    position_fraction_target = (position_fraction_upper +
-                                position_fraction_lower) / 2;
-
-    // gets a tangent angle at the position along curve
-    tangent_angle_position = TangentAngle(position_fraction_target,
-                                          AxisDirectionType::kPositive);
-
-    // compares against attachment spacing, update limits
-    if (tangent_angle_position == tangent_angle) {
-      break;
-    } else if (tangent_angle_position < tangent_angle) {
-      position_fraction_lower = position_fraction_target;
-    } else if (tangent_angle < tangent_angle_position) {
-      position_fraction_upper = position_fraction_target;
-    }
-
-    // checks iterator, increment or exit
-    if (iter < kIterMax) {
-      iter++;
-    } else {
-      break;
-    }
-  }
-
-  if (iter < kIterMax) {
-    return position_fraction_target;
-  } else {
-    return -999999;
-  }
-}
-
 bool Catenary2d::Update() const {
+  is_updated_points_end_ = UpdateEndPoints();
   if (is_updated_points_end_ == false) {
-
-    is_updated_points_end_ = UpdateEndPoints();
-    if (is_updated_points_end_ == false) {
-      return false;
-    }
+    return false;
   }
 
   // if it reaches this point, update was successful
@@ -578,7 +555,7 @@ bool Catenary2d::UpdateEndPoints() const {
   const double w = weight_unit_;
   const double a = spacing_endpoints_.x();
   const double b = spacing_endpoints_.y();
-  const double z = (a/2) / (h/w);
+  const double z = (a / 2) / (h / w);
 
   // solves for left endpoint coordinate (Ehrenburg)
   point_end_left_.x = (h / w) * (std::asinh((b * z) / (a * std::sinh(z))) - z);
@@ -1097,7 +1074,7 @@ bool Catenary3d::UpdateCatenary2d() const {
   Vector2d spacing_endpoints_2d;
   spacing_endpoints_2d.set_y(b * (v / w));
   spacing_endpoints_2d.set_x(
-      std::sqrt(std::pow(c,2) - std::pow(spacing_endpoints_2d.y(), 2)));
+      std::sqrt(std::pow(c, 2) - std::pow(spacing_endpoints_2d.y(), 2)));
 
   // sets catenary spacing and unit weight
   catenary_2d_.set_spacing_endpoints(spacing_endpoints_2d);
