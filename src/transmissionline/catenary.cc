@@ -11,7 +11,10 @@ Catenary2d::Catenary2d() {
   tension_horizontal_ = -999999;
   weight_unit_ = -999999;
 
-  is_updated_points_end_ = false;
+  length_ = -999999;
+  length_left_ = -999999;
+
+  is_updated_ = true;
 }
 
 Catenary2d::~Catenary2d() {
@@ -35,53 +38,9 @@ Point2d<double> Catenary2d::Coordinate(const double& position_fraction,
     }
   }
 
-  // calculates length from left end to position
-  double length_left_to_position = position_fraction * Length();
-
-  // calculates length from origin to left endpoint
-  const double length_origin_to_left = LengthFromOrigin(point_end_left_);
-
-  // solves for length from origin and direction from origin
-  double length_origin_to_position;
-  AxisDirectionType direction_origin_to_position;
-
-  // select how to calculate length and position from origin based on
-  // endpoint coordinates
-
-  if (point_end_left_.x < 0 && point_end_right_.x < 0) {
-    // both endpoints are left from origin
-    length_origin_to_position = length_origin_to_left -
-                                length_left_to_position;
-    direction_origin_to_position = AxisDirectionType::kNegative;
-  } else if (point_end_left_.x < 0 && 0 < point_end_right_.x) {
-    // one endpoint left from origin, one endpoint right from origin
-    if (length_left_to_position < length_origin_to_left) {
-      // left from origin
-      length_origin_to_position = length_origin_to_left -
-                                  length_left_to_position;
-      direction_origin_to_position = AxisDirectionType::kNegative;
-    } else if (length_left_to_position == length_origin_to_left) {
-      // at origin
-      length_origin_to_position = 0;
-      direction_origin_to_position = AxisDirectionType::kPositive;
-    } else if (length_origin_to_left < length_left_to_position) {
-      // right from origin
-      length_origin_to_position = length_left_to_position -
-                                  length_origin_to_left;
-      direction_origin_to_position = AxisDirectionType::kPositive;
-    }
-  } else if (0 < point_end_left_.x && 0 < point_end_right_.x) {
-    // both endpoints are AOL of origin
-    length_origin_to_position = length_origin_to_left +
-                                length_left_to_position;
-    direction_origin_to_position = AxisDirectionType::kPositive;
-  }
-
   // solves for catenary coordinate
-  coordinate.x = CoordinateX(length_origin_to_position,
-                             direction_origin_to_position);
-  coordinate.y = CoordinateY(length_origin_to_position,
-                             direction_origin_to_position);
+  coordinate.x = CoordinateX(position_fraction);
+  coordinate.y = CoordinateY(coordinate.x);
 
   // shifts coordinate origin if requested
   if (is_shifted_origin == true) {
@@ -130,24 +89,7 @@ double Catenary2d::Length() const {
     }
   }
 
-  // length from origin to left end
-  double length_origin_to_left = -999999;
-  if (point_end_left_.x < 0) {
-    length_origin_to_left = LengthFromOrigin(point_end_left_);
-  } else if (0 <= point_end_left_.x) {
-    length_origin_to_left = -LengthFromOrigin(point_end_left_);
-  }
-
-  // length from origin to right end
-  double length_origin_to_right = -999999;
-  if (point_end_right_.x < 0) {
-    length_origin_to_right = -LengthFromOrigin(point_end_right_);
-  } else if (0 <= point_end_right_.x) {
-    length_origin_to_right = LengthFromOrigin(point_end_right_);
-  }
-
-  length = length_origin_to_left + length_origin_to_right;
-  return length;
+  return length_;
 }
 
 double Catenary2d::LengthSlack() const {
@@ -157,7 +99,7 @@ double Catenary2d::LengthSlack() const {
     }
   }
 
-  return Length() - spacing_endpoints().Magnitude();
+  return length_ - spacing_endpoints().Magnitude();
 }
 
 double Catenary2d::PositionFraction(const double& tangent_angle) const {
@@ -167,47 +109,19 @@ double Catenary2d::PositionFraction(const double& tangent_angle) const {
     }
   }
 
-  double position_fraction_lower = 0;
-  double position_fraction_upper = 1;
-  double position_fraction_target = -999999;
-  double tangent_angle_position = -999999;
-  int iter = 0;
-  const int kIterMax = 100;
+  // converts angle to radians and solves for slope
+  const double angle_radians =
+      units::ConvertAngle(tangent_angle,
+                          units::AngleConversionType::kDegreesToRadians);
+  const double& slope = std::tan(angle_radians);
 
-  while ((0.001 < std::abs(tangent_angle - tangent_angle_position)
-      || (0.0001 < position_fraction_upper - position_fraction_lower))
-      && (iter < kIterMax)) {
+  // uses inverse slope function to get x coordinate
+  const double& h = tension_horizontal_;
+  const double& w = weight_unit_;
+  const double x = (h / w) * std::asinh(slope);
 
-    // updates position along curve
-    position_fraction_target = (position_fraction_upper +
-                                position_fraction_lower) / 2;
-
-    // gets a tangent angle at the position along curve
-    tangent_angle_position = TangentAngle(position_fraction_target,
-                                          AxisDirectionType::kPositive);
-
-    // compares against attachment spacing, update limits
-    if (tangent_angle_position == tangent_angle) {
-      break;
-    } else if (tangent_angle_position < tangent_angle) {
-      position_fraction_lower = position_fraction_target;
-    } else if (tangent_angle < tangent_angle_position) {
-      position_fraction_upper = position_fraction_target;
-    }
-
-    // checks iterator, increment or exit
-    if (iter < kIterMax) {
-      iter++;
-    } else {
-      break;
-    }
-  }
-
-  if (iter < kIterMax) {
-    return position_fraction_target;
-  } else {
-    return -999999;
-  }
+  // returns position fraction
+  return ConvertToPositionFraction(x);
 }
 
 double Catenary2d::PositionFractionOrigin() const {
@@ -267,12 +181,11 @@ double Catenary2d::TangentAngle(const double& position_fraction,
     }
   }
 
-  // gets coordinate at position
-  const Point2d<double> coordinate = Coordinate(position_fraction);
+  // gets x coordinate at position
+  const double x = CoordinateX(position_fraction);
 
   // calculates slope at position
-  const double slope = std::sinh(coordinate.x
-                                 / (tension_horizontal_/weight_unit_));
+  const double slope = std::sinh(x / (tension_horizontal_/weight_unit_));
 
   // converts to degrees
   double tangent_angle = units::ConvertAngle(
@@ -322,11 +235,11 @@ double Catenary2d::Tension(const double& position_fraction) const {
     }
   }
 
-  // gets coordinate
-  Point2d<double> coordinate = Coordinate(position_fraction);
+  // gets x coordinate
+  const double x = CoordinateX(position_fraction);
 
   return tension_horizontal_
-         * std::cosh(coordinate.x / (tension_horizontal_ / weight_unit_));
+         * std::cosh(x / (tension_horizontal_ / weight_unit_));
 }
 
 Vector2d Catenary2d::Tension(const double& position_fraction,
@@ -358,9 +271,9 @@ double Catenary2d::TensionAverage(const int& num_points) const {
 
   if (num_points == 0) {
     // calculates using Ehrenburg approximation
-    const double h = tension_horizontal_;
-    const double w = weight_unit_;
-    const double l = Length();
+    const double& h = tension_horizontal_;
+    const double& w = weight_unit_;
+    const double& l = length_;
 
     const double k1 = std::pow(h, 2) / (2 * w * l);
     const double k2 = std::sinh(point_end_right_.x / (h / w))
@@ -467,19 +380,19 @@ bool Catenary2d::Validate(const bool& is_included_warnings,
 void Catenary2d::set_spacing_endpoints(const Vector2d& spacing_endpoints) {
   spacing_endpoints_ = spacing_endpoints;
 
-  is_updated_points_end_ = false;
+  is_updated_ = false;
 }
 
 void Catenary2d::set_tension_horizontal(const double& tension_horizontal) {
   tension_horizontal_ = tension_horizontal;
 
-  is_updated_points_end_ = false;
+  is_updated_ = false;
 }
 
 void Catenary2d::set_weight_unit(const double& weight_unit) {
   weight_unit_ = weight_unit;
 
-  is_updated_points_end_ = false;
+  is_updated_ = false;
 }
 
 Vector2d Catenary2d::spacing_endpoints() const {
@@ -494,55 +407,66 @@ double Catenary2d::weight_unit() const {
   return weight_unit_;
 }
 
-double Catenary2d::CoordinateX(
-    const double& length_origin_to_position,
-    const AxisDirectionType& direction_origin_to_position) const {
-  const double l = length_origin_to_position;
-  const double h = tension_horizontal_;
-  const double w = weight_unit_;
+double Catenary2d::ConvertToPositionFraction(const double& x) const {
+  // calculates length from origin
+  const double length_from_origin = LengthFromOrigin(x);
 
-  double coordinate_x = -999999;
-  if (direction_origin_to_position == AxisDirectionType::kNegative) {
-    // left of origin - negative x coordinate
-    coordinate_x = -(h / w) * (std::asinh(l / (h / w)));
-  } else if (direction_origin_to_position == AxisDirectionType::kPositive) {
-    // right of origin - positive x coordinate
-    coordinate_x = (h / w) * (std::asinh(l / (h / w)));
-  }
+  // determines length from left end point
+  const double length_left_to_position = length_from_origin - length_left_;
 
-  return coordinate_x;
+  // converts to fraction and returns
+  return length_left_to_position / length_;
 }
 
-double Catenary2d::CoordinateY(
-    const double& length_origin_to_position,
-    const AxisDirectionType& direction_origin_to_position) const {
-  const double x = CoordinateX(length_origin_to_position,
-                               direction_origin_to_position);
-  const double h = tension_horizontal_;
-  const double w = weight_unit_;
+double Catenary2d::CoordinateX(const double& position_fraction) const {
+  // converts position fraction to length
+  const double length_left_to_position = position_fraction * length_;
+
+  // determines length and direction relative to origin
+  // this may seem like the wrong operator (+), but it's not
+  // the left length may already be negative based on direction from origin
+  const double length_from_origin = length_left_to_position + length_left_;
+
+  // converts to x coordinate and returns
+  // uses inverse of the LengthFromOrigin method
+  const double& h = tension_horizontal_;
+  const double& w = weight_unit_;
+
+  return (h / w) * (std::asinh(length_from_origin / (h / w)));
+}
+
+double Catenary2d::CoordinateY(const double& x) const {
+  const double& h = tension_horizontal_;
+  const double& w = weight_unit_;
 
   return (h / w) * (std::cosh(x / (h / w)) - 1);
 }
 
 bool Catenary2d::IsUpdated() const {
-  if (is_updated_points_end_ == true) {
+  if (is_updated_ == true) {
     return true;
   } else {
     return false;
   }
 }
 
-double Catenary2d::LengthFromOrigin(const Point2d<double>& coordinate) const {
-  const double x = coordinate.x;
-  const double h = tension_horizontal_;
-  const double w = weight_unit_;
+double Catenary2d::LengthFromOrigin(const double& x) const {
+  const double& h = tension_horizontal_;
+  const double& w = weight_unit_;
 
-  return std::abs((h / w) * std::sinh(x / (h / w)));
+  return (h / w) * std::sinh(x / (h / w));
 }
 
 bool Catenary2d::Update() const {
-  is_updated_points_end_ = UpdateEndPoints();
-  if (is_updated_points_end_ == false) {
+  // updates end points
+  is_updated_ = UpdateEndPoints();
+  if (is_updated_ == false) {
+    return false;
+  }
+
+  // updates lengths
+  is_updated_ = UpdateLengths();
+  if (is_updated_ == false) {
     return false;
   }
 
@@ -551,21 +475,29 @@ bool Catenary2d::Update() const {
 }
 
 bool Catenary2d::UpdateEndPoints() const {
-  const double h = tension_horizontal_;
-  const double w = weight_unit_;
-  const double a = spacing_endpoints_.x();
-  const double b = spacing_endpoints_.y();
-  const double z = (a / 2) / (h / w);
+  const double& h = tension_horizontal_;
+  const double& w = weight_unit_;
+  const double& a = spacing_endpoints_.x();
+  const double& b = spacing_endpoints_.y();
+  const double& z = (a / 2) / (h / w);
 
   // solves for left endpoint coordinate (Ehrenburg)
   point_end_left_.x = (h / w) * (std::asinh((b * z) / (a * std::sinh(z))) - z);
-  point_end_left_.y = CoordinateY(LengthFromOrigin(point_end_left_),
-                                  AxisDirectionType::kNegative);
+  point_end_left_.y = CoordinateY(point_end_left_.x);
 
   // solves for right endpoint coordinate (Ehrenburg)
   point_end_right_.x = (h / w) * (std::asinh((b * z) / (a * std::sinh(z))) + z);
-  point_end_right_.y = CoordinateY(LengthFromOrigin(point_end_right_),
-                                   AxisDirectionType::kPositive);
+  point_end_right_.y = CoordinateY(point_end_right_.x);
+
+  return true;
+}
+
+bool Catenary2d::UpdateLengths() const {
+  // solves for length and direction from origin to left end point
+  length_left_ = LengthFromOrigin(point_end_left_.x);
+
+  // solves for the length from left to right end point
+  length_ = LengthFromOrigin(point_end_right_.x) - length_left_;
 
   return true;
 }

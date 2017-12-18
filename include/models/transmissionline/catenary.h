@@ -194,37 +194,35 @@ class Catenary2d {
   double weight_unit() const;
 
  private:
-  /// \brief Gets the x coordinate of the catenary.
-  /// \param[in] length_origin_to_position
-  ///   The length of the curve from the origin to the position.
-  /// \param[in] direction_origin_to_position
-  ///   The direction from the origin to the position.
-  /// \return The x coordinate for the specified position.
-  /// This function removes the H/w constant ordinate shift.
-  double CoordinateX(
-      const double& length_origin_to_position,
-      const AxisDirectionType& direction_origin_to_position) const;
+  /// \brief Converts to position fraction.
+  /// \param[in] x
+  ///   The x coordinate.
+  /// \return The position fraction.
+  double ConvertToPositionFraction(const double& x) const;
 
-  /// \brief Gets the y coordinate of the catenary.
-  /// \param[in] length_origin_to_position
-  ///   The length of the curve from the origin to the position.
-  /// \param[in] direction_origin_to_position
-  ///   The direction from the origin to the position.
-  /// \return The y coordinate for the specified position.
+  /// \brief Gets the x coordinate.
+  /// \param[in] position_fraction
+  ///   The position fraction.
+  /// \return The x coordinate.
+  double CoordinateX(const double& position_fraction) const;
+
+  /// \brief Gets the y coordinate.
+  /// \param[in] x
+  ///   The x coordinate.
+  /// \return The y coordinate.
   ///  This function removes the H/w constant ordinate shift.
-  double CoordinateY(
-      const double& length_origin_to_position,
-      const AxisDirectionType& direction_origin_to_position) const;
+  double CoordinateY(const double& x) const;
 
   /// \brief Determines if class is updated.
   /// \return A boolean indicating if class is updated.
   bool IsUpdated() const;
 
-  /// \brief Gets the length from the origin for the specified position.
-  /// \param[in] coordinate
-  ///   The coordinate for the specified position.
-  /// \return The curve length from the catenary origin to the coordinate.
-  double LengthFromOrigin(const Point2d<double>& coordinate) const;
+  /// \brief Gets the length from the origin.
+  /// \param[in] x
+  ///   The x coordinate.
+  /// \return The length from the origin to the x coordinate. The sign (+/-)
+  ///   indicates the x-axis direction.
+  double LengthFromOrigin(const double& x) const;
 
   /// \brief Updates cached member variables and modifies control variables if
   ///   update is required.
@@ -234,6 +232,10 @@ class Catenary2d {
   /// \brief Updates the end point coordinates.
   /// \return A boolean indicating the success status of the update.
   bool UpdateEndPoints() const;
+
+  /// \brief Updates the cached lengths.
+  /// \return A boolean indicating the success status of the update.
+  bool UpdateLengths() const;
 
   /// \brief Validates whether the H/w is appropriate for the end point spacing.
   /// \param[in] is_included_warnings
@@ -247,9 +249,19 @@ class Catenary2d {
       const bool& is_included_warnings = true,
       std::list<ErrorMessage>* messages = nullptr) const;
 
-  /// \var is_updated_points_end_
-  ///   An indicator that tells if the end point coordinates are updated.
-  mutable bool is_updated_points_end_;
+  /// \var is_updated_
+  ///   An indicator that tells if the class is updated.
+  mutable bool is_updated_;
+
+  /// \var length_
+  ///   The length from the left end point to the right end point. This should
+  ///   always be positive.
+  mutable double length_;
+
+  /// \var length_left_
+  ///   The length along the curve from the origin to the left end point. The
+  ///   sign (+/-) indicates the x-axis direction.
+  mutable double length_left_;
 
   /// \var point_end_left_
   ///   The coordinate point for the left end of the catenary.
