@@ -43,6 +43,6 @@ specific [releases](https://github.com/OverheadTransmissionLineSoftware/Models/r
 
 ## Get Involved!
 This is an open source effort to create transmission line design software. This
-software is [licensed](https://github.com/OverheadTransmissionLineSoftware/Models/blob/master/UNLICENSE)
+software is [licensed](https://github.com/OverheadTransmissionLineSoftware/Models/blob/master/LICENSE.md)
  in the public domain, so we can contribute to this collectively without
 worrying about intellectual property.
