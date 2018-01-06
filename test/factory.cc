@@ -22,10 +22,9 @@ Cable* BuildCable() {
   cable->area_physical = kAreaPhysical;
   cable->diameter = units::ConvertLength(
       1.108, units::LengthConversionType::kInchesToFeet);
-  cable->name = "DRAKE";
+  cable->name = "ACSR Drake";
   cable->strength_rated = 31500;
   cable->temperature_properties_components = 70;
-  cable->type_construction = "ASCR";
   cable->weight_unit = 1.094;
 
   // sets entire cable thermal properties

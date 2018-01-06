@@ -153,12 +153,6 @@ struct Cable {
   ///   be temperature-dependent.
   double temperature_properties_components;
 
-  /// \var type_construction
-  ///   The type of construction, usually abbreviated, which typically
-  ///   indicates which materials the cable has, and if it contains a
-  ///   reinforcing core component.
-  std::string type_construction;
-
   /// \var weight_unit
   ///   The weight per unit length of the entire cable.
   double weight_unit;

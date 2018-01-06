@@ -37,7 +37,6 @@ Cable::Cable() {
   name = "";
   strength_rated = -999999;
   temperature_properties_components = -999999;
-  type_construction = "";
   weight_unit = -999999;
 }
 
