@@ -30,8 +30,8 @@ const double kLengthMilesToFeet = 5280.0;
 const double kLengthMillimetersToMeters = 1.0 / 1000.0;
 
 // pressure conversion factors
-const double kStressMegaPascalToPascal = 1.0 / 1000000;
-const double kStressPascalToMegaPascal = 1000000;
+const double kStressMegaPascalToPascal = 1000000;
+const double kStressPascalToMegaPascal = 1.0 / 1000000;
 const double kStressPascalToPsf = 1.0 / 47.88026;
 const double kStressPsfToPascal = 47.88026;
 const double kStressPsfToPsi = 1.0 / 144.0;

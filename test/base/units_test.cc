@@ -110,12 +110,14 @@ TEST(Units, ConvertStress) {
 
   // converts pascal to megapascal and back again
   value1 = 1000;
-  value2 = units::ConvertStress(value1,
-                                units::StressConversionType::kMegaPascalToPascal);
+  value2 = units::ConvertStress(
+    value1,
+    units::StressConversionType::kPascalToMegaPascal);
   EXPECT_EQ(0.001, helper::Round(value2, 3));
 
-  value1 = units::ConvertStress(value2,
-                                units::StressConversionType::kPascalToMegaPascal);
+  value1 = units::ConvertStress(
+    value2,
+    units::StressConversionType::kMegaPascalToPascal);
   EXPECT_EQ(1000, helper::Round(value1, 0));
 
   // converts pascal to psf and back again
