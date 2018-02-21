@@ -17,10 +17,22 @@
 ///
 /// \par HORIZONTAL TENSION
 ///
-/// This is the typical value that is solved for. The remaining catenary parameters
-/// must be known, as well as a specific target type.
+/// Horizontal tension is the value that is solved for. The remaining catenary
+/// parameters (i.e. spacing, unit weight) must be known.
 ///
-/// The horizontal tension is often solved numerically.
+/// \par TARGET TYPE/POSITION/VALUE
+///
+/// The target is the desired result for the catenary. The target type can be:
+/// - constant
+/// - length
+/// - sag
+/// - tension
+///
+/// Some of the results vary along the catenary, so the position must also be
+/// specified.
+///
+/// The target value is directly converted to horizontal tension if possible. If
+/// not, the horizontal tension is iterated until it produces the target value.
 class CatenarySolver {
  public:
   /// \par OVERVIEW
@@ -172,7 +184,7 @@ class CatenarySolver {
 
   /// \var position_target_
   ///   The target position fraction along the catenary curve. If the position
-  ///   isn't needed, set to -1.
+  ///   isn't needed or the maximum value is to be used, set to -1.
   double position_target_;
 
   /// \var type_target_

@@ -48,7 +48,9 @@ bool CatenarySolver::Validate(
   message.title = "CATENARY SOLVER";
 
   // validates position-target
-  if ((position_target_ < 0) || (1 < position_target_)) {
+  if (position_target_ == -1) {
+    // indicates position isn't needed or to use maximum - no errors
+  } else if ((position_target_ < 0) || (1 < position_target_)) {
     is_valid = false;
     if (messages != nullptr) {
       message.description = "Invalid target position";
@@ -540,5 +542,9 @@ double CatenarySolver::UpdateCatenaryTension(
   catenary_.set_tension_horizontal(tension_horizontal);
 
   // returns tension at specified position
-  return catenary_.Tension(position_fraction);
+  if (position_target_ == -1) {
+    return catenary_.TensionMax();
+  } else {
+    return catenary_.Tension(position_fraction);
+  }
 }
