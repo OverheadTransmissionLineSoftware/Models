@@ -5,6 +5,8 @@
 
 #include <vector>
 
+#include "models/base/helper.h"
+
 TransitSagger::TransitSagger() {
   catenary_ = Catenary3d();
   point_transit_ = Point3d<double>();
@@ -244,7 +246,12 @@ bool TransitSagger::UpdateAngleLow() const {
   // updates the angle from transit to catenary
   angle_low_ = AngleVertical(point_transit_, point_catenary_low_);
 
-  return true;
+  // checks angle to make sure transit isn't directly above catenary
+  if (helper::Round(angle_low_, 0) == -90) {
+    return false;
+  } else {
+    return true;
+  }
 }
 
 bool TransitSagger::UpdatePointCatenaryLow() const {
