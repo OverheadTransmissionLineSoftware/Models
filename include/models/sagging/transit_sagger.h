@@ -42,6 +42,13 @@
 /// This angle can be used to sag a transmission cable by setting the view of
 /// the transit at the specified angle, and then varying the cable tension until
 /// the cable position intersects the transit view.
+///
+/// \par TARGET POINT
+///
+/// The target point is an extension of the transit angle. It lies along the
+/// transit-to-low angle line, at the opposite catenary end point. The target
+/// position can only be calculated if the transit is positioned along the x-z
+/// plane (i.e. y coordinate = 0).
 class TransitSagger {
  public:
   /// \brief Default constructor.
@@ -61,6 +68,12 @@ class TransitSagger {
   /// \brief Gets the catenary position for the low angle point.
   /// \return The catenary position of the low angle point.
   Point3d<double> PointCatenaryLow() const;
+
+  /// \brief Gets the target point.
+  /// \return The target point.
+  /// The method only returns a valid result if the transit is located along the
+  /// x-z plane (i.e. zero y coordinate).
+  Point3d<double> PointTarget() const;
 
   /// \brief Validates member variables.
   /// \param[in] is_included_warnings

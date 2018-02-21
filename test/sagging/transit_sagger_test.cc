@@ -96,18 +96,57 @@ TEST_F(TransitSaggerTest, PointCatenaryLow) {
   // checks looking ahead-downward from transit, transit on y-axis
   t_.set_point_transit(Point3d<double>(0, 0, -50));
   point = t_.PointCatenaryLow();
-  EXPECT_EQ(706.354, helper::Round(point.x, 3));
-  EXPECT_EQ(0.000, helper::Round(point.y, 3));
-  EXPECT_EQ(-56.415, helper::Round(point.z, 3));
+  EXPECT_EQ(706.35, helper::Round(point.x, 2));
+  EXPECT_EQ(0.00, helper::Round(point.y, 2));
+  EXPECT_EQ(-56.41, helper::Round(point.z, 2));
 
   // checks looking ahead-downward from transit, transit offset from y-axis
   // moving transit away from y-axis gives a slightly better shot at true
   // catenary sag point
   t_.set_point_transit(Point3d<double>(0, 100, -50));
   point = t_.PointCatenaryLow();
-  EXPECT_EQ(707.245, helper::Round(point.x, 3));
-  EXPECT_EQ(0.000, helper::Round(point.y, 3));
-  EXPECT_EQ(-56.423, helper::Round(point.z, 3));
+  EXPECT_EQ(707.24, helper::Round(point.x, 2));
+  EXPECT_EQ(0.000, helper::Round(point.y, 2));
+  EXPECT_EQ(-56.42, helper::Round(point.z, 2));
+}
+
+TEST_F(TransitSaggerTest, PointTarget) {
+  Point3d<double> point;
+
+  // checks looking ahead-downward from transit, transit on y-axis
+  t_.set_point_transit(Point3d<double>(0, 0, -50));
+  point = t_.PointTarget();
+  EXPECT_EQ(2000.00, helper::Round(point.x, 2));
+  EXPECT_EQ(0.00, helper::Round(point.y, 2));
+  EXPECT_EQ(-68.16, helper::Round(point.z, 2));
+
+  // checks looking ahead-upward from transit, transit on y-axis
+  t_.set_point_transit(Point3d<double>(0, 0, -100));
+  point = t_.PointTarget();
+  EXPECT_EQ(2000.00, helper::Round(point.x, 2));
+  EXPECT_EQ(0.00, helper::Round(point.y, 2));
+  EXPECT_EQ(-0.91, helper::Round(point.z, 2));
+
+  // checks looking back-upward from transit, transit on y-axis
+  t_.set_point_transit(Point3d<double>(2000, 0, -100));
+  point = t_.PointTarget();
+  EXPECT_EQ(0.00, helper::Round(point.x, 2));
+  EXPECT_EQ(0.00, helper::Round(point.y, 2));
+  EXPECT_EQ(-34.76, helper::Round(point.z, 2));
+
+  // checks looking back-downward from transit, transit on y-axis
+  t_.set_point_transit(Point3d<double>(2000, 0, -50));
+  point = t_.PointTarget();
+  EXPECT_EQ(0.00, helper::Round(point.x, 2));
+  EXPECT_EQ(0.00, helper::Round(point.y, 2));
+  EXPECT_EQ(-60.72, helper::Round(point.z, 2));
+
+  // checks transit offset from y-axis
+  t_.set_point_transit(Point3d<double>(0, 100, -100));
+  point = t_.PointTarget();
+  EXPECT_EQ(-999999.00, helper::Round(point.x, 2));
+  EXPECT_EQ(-999999.00, helper::Round(point.y, 2));
+  EXPECT_EQ(-999999.00, helper::Round(point.z, 2));
 }
 
 TEST_F(TransitSaggerTest, Validate) {

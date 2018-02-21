@@ -59,6 +59,39 @@ Point3d<double> TransitSagger::PointCatenaryLow() const {
   return point_catenary_low_;
 }
 
+Point3d<double> TransitSagger::PointTarget() const {
+  // updates class if necessary
+  if (IsUpdated() == false) {
+    if (Update() == false) {
+      return Point3d<double>();
+    }
+  }
+
+  // checks if transit is in x-z plane
+  if (point_transit_.y != 0) {
+    return Point3d<double>();
+  }
+
+  Point3d<double> point;
+
+  // solves x-coordinate by extending to opposite catenary end
+  if (point_transit_.x < point_catenary_low_.x) {
+    point.x = catenary_.spacing_endpoints().x();
+  } else if (point_catenary_low_.x <= point_transit_.x) {
+    point.x = 0;
+  }
+
+  // no y-coordinate, this is in the x-z plane
+  point.y = 0;
+
+  // solves z-coordinate
+  point.z = helper::LinearY(point_transit_.x, point_transit_.z,
+                            point_catenary_low_.x, point_catenary_low_.z,
+                            point.x);
+
+  return point;
+}
+
 bool TransitSagger::Validate(const bool& is_included_warnings,
                              std::list<ErrorMessage>* messages) const {
   // initializes
