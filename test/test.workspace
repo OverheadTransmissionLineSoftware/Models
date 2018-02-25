@@ -7,8 +7,8 @@
 			<Depends filename="../build/codeblocks/otlsmodels_transmissionline.cbp" />
 		</Project>
 		<Project filename="../build/codeblocks/otlsmodels_thermalrating.cbp">
-			<Depends filename="otlsmodels_base.cbp" />
-			<Depends filename="otlsmodels_transmissionline.cbp" />
+			<Depends filename="../build/codeblocks/otlsmodels_base.cbp" />
+			<Depends filename="../build/codeblocks/otlsmodels_transmissionline.cbp" />
 		</Project>
 		<Project filename="../build/codeblocks/otlsmodels_transmissionline.cbp">
 			<Depends filename="../build/codeblocks/otlsmodels_base.cbp" />
