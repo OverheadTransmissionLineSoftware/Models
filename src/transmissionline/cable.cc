@@ -14,8 +14,9 @@ CableComponent::CableComponent() {
 
 CableComponent::~CableComponent() {}
 
-bool CableComponent::Validate(const bool& is_included_warnings,
-                              std::list<ErrorMessage>* messages_error) const {
+bool CableComponent::Validate(
+    const bool& /*is_included_warnings*/,
+    std::list<ErrorMessage>* /*messages_error*/) const {
   // initializes
   bool is_valid = true;
   ErrorMessage message;

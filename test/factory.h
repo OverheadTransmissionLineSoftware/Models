@@ -37,11 +37,8 @@ namespace factory {
   LineCable* BuildLineCable();
 
   /// \brief This function builds a line structure.
-  /// \param[in] structure
-  ///   The structure to be used in the line structure. If left as nullptr,
-  ///    the factory will build its own structure.
   /// \return A line structure.
-  LineStructure* BuildLineStructure(const Structure* structure = nullptr);
+  LineStructure* BuildLineStructure();
 
   /// \brief This function builds a sag-tension cable.
   SagTensionCable* BuildSagTensionCable();

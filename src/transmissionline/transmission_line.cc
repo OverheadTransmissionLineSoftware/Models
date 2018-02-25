@@ -98,11 +98,10 @@ int TransmissionLine::AddLineCable(const LineCable& line_cable) {
     const int index_attachment_list = connection_list.index_attachment;
 
     // checks if list connection indexes are larger than new connection indexes
-    if (index_structure <= index_structure_list) {
-      if (index_attachment < index_attachment_list) {
-        // position is found
-        break;
-      }
+    if ((index_structure <= index_structure_list)
+         && (index_attachment < index_attachment_list)) {
+      // position is found
+      break;
     }
 
     iter++;
@@ -349,10 +348,8 @@ bool TransmissionLine::ModifyLineStructure(const int& index,
 const std::vector<Point3d<double>>* TransmissionLine::PointsXyzAlignment()
     const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return nullptr;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return nullptr;
   }
 
   return &points_xyz_alignment_;
@@ -361,10 +358,8 @@ const std::vector<Point3d<double>>* TransmissionLine::PointsXyzAlignment()
 const std::vector<Point3d<double>>* TransmissionLine::PointsXyzLineStructures()
     const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return nullptr;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return nullptr;
   }
 
   return &points_xyz_structures_;
@@ -373,10 +368,8 @@ const std::vector<Point3d<double>>* TransmissionLine::PointsXyzLineStructures()
 Point3d<double> TransmissionLine::PointXyzAlignment(const double& station)
     const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return Point3d<double>();
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return Point3d<double>();
   }
 
   return PointXyzAlignmentFromStation(station);
@@ -385,10 +378,8 @@ Point3d<double> TransmissionLine::PointXyzAlignment(const double& station)
 Point3d<double> TransmissionLine::PointXyzLineStructure(
     const int& index) const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return Point3d<double>();
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return Point3d<double>();
   }
 
   // checks if index is valid
@@ -403,10 +394,8 @@ Point3d<double> TransmissionLine::PointXyzLineStructureAttachment(
     const int& index_structure,
     const int& index_attachment) const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return Point3d<double>();
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return Point3d<double>();
   }
 
   // checks if structure index is valid
@@ -629,30 +618,18 @@ void TransmissionLine::DeleteInvalidLineStructures() {
 }
 
 bool TransmissionLine::IsUpdated() const {
-  if ((is_updated_points_xyz_alignment_ == true)
-      || (is_updated_points_xyz_structures_ == true)) {
-    return true;
-  } else {
-    return false;
-  }
+  return (is_updated_points_xyz_alignment_ == true)
+      || (is_updated_points_xyz_structures_ == true);
 }
 
 bool TransmissionLine::IsValidLineCableIndex(const int& index) const {
   const int kSize = line_cables_.size();
-  if ((0 <= index) && (index < kSize)) {
-    return true;
-  } else {
-    return false;
-  }
+  return (0 <= index) && (index < kSize);
 }
 
 bool TransmissionLine::IsValidLineStructureIndex(const int& index) const {
   const int kSize = line_structures_.size();
-  if ((0 <= index) && (index < kSize)) {
-    return true;
-  } else {
-    return false;
-  }
+  return (0 <= index) && (index < kSize);
 }
 
 Point3d<double> TransmissionLine::PointXyzAlignmentFromStation(
@@ -787,7 +764,6 @@ bool TransmissionLine::UpdatePointsXyzAlignment() const {
 bool TransmissionLine::UpdatePointsXyzLineStructures() const {
   // initializes
   points_xyz_structures_.clear();
-  Vector2d vector(0, 0);
 
   // iterates over all of the line structures
   for (auto iter = line_structures_.cbegin(); iter != line_structures_.cend();

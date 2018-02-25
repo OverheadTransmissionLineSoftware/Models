@@ -11,7 +11,7 @@ CableState::CableState() {
 CableState::~CableState() {
 }
 
-bool CableState::Validate(const bool& is_included_warnings,
+bool CableState::Validate(const bool& /*is_included_warnings*/,
                           std::list<ErrorMessage>* messages) const {
   // initializes
   bool is_valid = true;

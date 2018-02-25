@@ -19,10 +19,8 @@ CatenarySolver::~CatenarySolver() {
 
 Catenary3d CatenarySolver::Catenary() const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return Catenary3d();
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return Catenary3d();
   }
 
   return catenary_;
@@ -30,17 +28,15 @@ Catenary3d CatenarySolver::Catenary() const {
 
 double CatenarySolver::TensionHorizontal() const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return -999999;
   }
 
   return catenary_.tension_horizontal();
 }
 
 bool CatenarySolver::Validate(
-    const bool& is_included_warnings,
+    const bool& /*is_included_warnings*/,
     std::list<ErrorMessage>* messages) const {
   // initializes
   bool is_valid = true;
@@ -196,11 +192,7 @@ const Vector3d CatenarySolver::weight_unit() const {
 }
 
 bool CatenarySolver::IsUpdated() const {
-  if (is_updated_ == true) {
-    return true;
-  } else {
-    return false;
-  }
+ return is_updated_ == true;
 }
 
 bool CatenarySolver::SolveHorizontalTensionFromConstant() const {

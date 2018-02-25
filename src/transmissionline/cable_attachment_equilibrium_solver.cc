@@ -21,10 +21,8 @@ CableAttachmentEquilibriumSolver::~CableAttachmentEquilibriumSolver() {
 
 double CableAttachmentEquilibriumSolver::AngleEquilibrium() const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return -999999;
   }
 
   return angle_hardware_equilibrium_;
@@ -32,10 +30,8 @@ double CableAttachmentEquilibriumSolver::AngleEquilibrium() const {
 
 double CableAttachmentEquilibriumSolver::TensionImbalance() const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return -999999;
   }
 
   return tension_imbalance_.Magnitude();
@@ -166,11 +162,7 @@ void CableAttachmentEquilibriumSolver::set_direction_catenaries(
 }
 
 bool CableAttachmentEquilibriumSolver::IsUpdated() const {
-  if (is_updated_ == true) {
-    return true;
-  } else {
-    return false;
-  }
+  return is_updated_ == true;
 }
 
 bool CableAttachmentEquilibriumSolver::Update() const {

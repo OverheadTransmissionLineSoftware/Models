@@ -38,10 +38,8 @@ double CableElongationModel::Load(
     const CableElongationModel::ComponentType& type_component,
     const double& strain) const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return -999999;
   }
 
   double load = -999999;
@@ -60,10 +58,8 @@ double CableElongationModel::Slope(
     const CableElongationModel::ComponentType& type_component,
     const double& strain) const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return -999999;
   }
 
   double slope = -999999;
@@ -82,10 +78,8 @@ double CableElongationModel::Strain(
     const CableElongationModel::ComponentType& type_component,
     const double& load) const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return -999999;
   }
 
   double strain = -999999;
@@ -159,17 +153,15 @@ bool CableElongationModel::Validate(
   }
 
   // validates component-core
-  if (cable_->IsEnabled(SagTensionCable::ComponentType::kCore) == true) {
-    if (model_core_.Validate(is_included_warnings, messages) == false) {
-      is_valid = false;
-    }
+  if ((cable_->IsEnabled(SagTensionCable::ComponentType::kCore) == true)
+      && (model_core_.Validate(is_included_warnings, messages) == false)) {
+    is_valid = false;
   }
 
   // validates component-shell
-  if (cable_->IsEnabled(SagTensionCable::ComponentType::kShell)) {
-    if (model_shell_.Validate(is_included_warnings, messages) == false) {
-      is_valid = false;
-    }
+  if ((cable_->IsEnabled(SagTensionCable::ComponentType::kShell))
+      && (model_shell_.Validate(is_included_warnings, messages) == false)) {
+    is_valid = false;
   }
 
   // validates components-strain-limit
@@ -241,12 +233,7 @@ CableStretchState CableElongationModel::state_stretch() const {
 }
 
 bool CableElongationModel::IsUpdated() const {
-  if ((is_updated_stretch_ == true)
-      && (is_updated_state_)) {
-    return true;
-  } else {
-    return false;
-  }
+  return (is_updated_stretch_ == true) && (is_updated_state_);
 }
 
 double CableElongationModel::LoadCombined(const double& strain) const {
@@ -307,9 +294,9 @@ double CableElongationModel::StrainCombined(
 
     // determines if core and/or shell can be compressed
     bool is_compressible_core =
-        (cable_->component_core()->modulus_compression_elastic_area() == 0);
+        cable_->component_core()->modulus_compression_elastic_area() == 0;
     bool is_compressible_shell =
-        (cable_->component_shell()->modulus_compression_elastic_area() == 0);
+        cable_->component_shell()->modulus_compression_elastic_area() == 0;
 
     if ((is_compressible_core == false) && (is_compressible_shell == false)) {
       // cable has no compressive ability, returns minimum value

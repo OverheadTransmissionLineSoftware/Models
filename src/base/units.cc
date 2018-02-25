@@ -8,7 +8,7 @@
 namespace units {
 
 // angle conversion factors
-const double kAngleDegreesToRadians = (kPi / 180.0);
+const double kAngleDegreesToRadians = kPi / 180.0;
 const double kAngleRadiansToDegrees = 180.0 / kPi;
 
 // force conversion factors

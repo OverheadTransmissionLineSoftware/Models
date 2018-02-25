@@ -23,10 +23,8 @@ LineCableUnloader::~LineCableUnloader() {
 
 double LineCableUnloader::LengthUnloaded() const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return -999999;
   }
 
   return length_unloaded_;
@@ -148,13 +146,9 @@ double LineCableUnloader::temperature_unloaded() const {
 }
 
 bool LineCableUnloader::IsUpdated() const {
-  if ((LineCableLoaderBase::IsUpdated() == true)
+  return (LineCableLoaderBase::IsUpdated() == true)
       && (is_updated_model_unloaded_ == true)
-      && (is_updated_length_unloaded_ == true)) {
-    return true;
-  } else {
-    return false;
-  }
+      && (is_updated_length_unloaded_ == true);
 }
 
 bool LineCableUnloader::Update() const {

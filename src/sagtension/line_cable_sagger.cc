@@ -18,10 +18,8 @@ LineCableSagger::~LineCableSagger() {
 
 double LineCableSagger::CapacityAllowable(const int& index) const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return -999999;
   }
 
   const CableConstraint& constraint = constraints_design_->at(index);
@@ -44,10 +42,8 @@ double LineCableSagger::CapacityAllowable(const int& index) const {
 
 double LineCableSagger::CatenaryConstantActual(const int& index) const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return -999999;
   }
 
   const Catenary3d& catenary = catenaries_constraints_actual_.at(index);
@@ -56,10 +52,8 @@ double LineCableSagger::CatenaryConstantActual(const int& index) const {
 
 int LineCableSagger::IndexConstraintControlling() const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -9999;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return -9999;
   }
 
   return index_constraint_controlling_;
@@ -67,10 +61,8 @@ int LineCableSagger::IndexConstraintControlling() const {
 
 double LineCableSagger::LimitConstraintSaggedLineCable() const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return -999999;
   }
 
   return line_cable_->constraint().limit;
@@ -78,10 +70,8 @@ double LineCableSagger::LimitConstraintSaggedLineCable() const {
 
 double LineCableSagger::TensionHorizontalActual(const int& index) const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return -999999;
   }
 
   const Catenary3d& catenary = catenaries_constraints_actual_.at(index);
@@ -90,10 +80,8 @@ double LineCableSagger::TensionHorizontalActual(const int& index) const {
 
 double LineCableSagger::TensionSupportActual(const int& index) const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return -999999;
   }
 
   const Catenary3d& catenary = catenaries_constraints_actual_.at(index);
@@ -178,11 +166,7 @@ void LineCableSagger::set_line_cable(LineCable* line_cable) {
 }
 
 bool LineCableSagger::IsUpdated() const {
-  if (is_updated_linecable_constraint_limit_ == true) {
-    return true;
-  } else {
-    return false;
-  }
+  return is_updated_linecable_constraint_limit_ == true;
 }
 
 bool LineCableSagger::Update() const {

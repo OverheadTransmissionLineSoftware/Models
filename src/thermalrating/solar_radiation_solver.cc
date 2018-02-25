@@ -30,10 +30,8 @@ SolarRadiationSolver::~SolarRadiationSolver() {
 
 double SolarRadiationSolver::AltitudeSun() const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return -999999;
   }
 
   return altitude_sun_;
@@ -41,10 +39,8 @@ double SolarRadiationSolver::AltitudeSun() const {
 
 double SolarRadiationSolver::AzimuthSun() const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return -999999;
   }
 
   return azimuth_sun_;
@@ -52,16 +48,14 @@ double SolarRadiationSolver::AzimuthSun() const {
 
 double SolarRadiationSolver::Radiation() const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return -999999;
   }
 
   return radiation_;
 }
 
-bool SolarRadiationSolver::Validate(const bool& is_included_warnings,
+bool SolarRadiationSolver::Validate(const bool& /*is_included_warnings*/,
                                     std::list<ErrorMessage>* messages) const {
   // initializes
   bool is_valid = true;
@@ -258,11 +252,7 @@ double SolarRadiationSolver::FactorElevationCorrection() const {
 }
 
 bool SolarRadiationSolver::IsUpdated() const {
-  if (is_updated_ == true) {
-    return true;
-  } else {
-    return false;
-  }
+  return is_updated_ == true;
 }
 
 bool SolarRadiationSolver::SolveAltitudeSolar(

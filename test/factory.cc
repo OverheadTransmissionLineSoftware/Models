@@ -254,19 +254,14 @@ LineCable* BuildLineCable() {
   return line_cable;
 }
 
-LineStructure* BuildLineStructure(const Structure* structure) {
-  // builds structure if necessary
-  if (structure == nullptr) {
-    structure = factory::BuildStructure();
-  }
-
+LineStructure* BuildLineStructure() {
   // sets line placement and orientation
   LineStructure* line_structure = new LineStructure();
   line_structure->set_height_adjustment(0);
   line_structure->set_offset(0);
   line_structure->set_rotation(0);
   line_structure->set_station(0);
-  line_structure->set_structure(structure);
+  line_structure->set_structure(factory::BuildStructure());
 
   // adds hardware
   line_structure->AttachHardware(0, factory::BuildHardware());

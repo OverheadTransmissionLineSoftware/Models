@@ -14,7 +14,7 @@ AlignmentPoint::AlignmentPoint() {
 AlignmentPoint::~AlignmentPoint() {
 }
 
-bool AlignmentPoint::Validate(const bool& is_included_warnings,
+bool AlignmentPoint::Validate(const bool& /*is_included_warnings*/,
                               std::list<ErrorMessage>* messages) const {
   // initializes
   bool is_valid = true;
@@ -127,11 +127,7 @@ bool Alignment::IsValidStation(const double& station) const {
   const AlignmentPoint& point_back = points_.back();
 
   // checks if the station value is within range
-  if ((point_front.station <= station) && (station <= point_back.station)) {
-    return true;
-  } else {
-    return false;
-  }
+  return (point_front.station <= station) && (station <= point_back.station);
 }
 
 int Alignment::ModifyPoint(const int& index, const AlignmentPoint& point) {
@@ -171,10 +167,9 @@ bool Alignment::Validate(const bool& is_included_warnings,
       is_valid = false;
     }
 
-    if (point_prev != nullptr) {
-      if (point.station < point_prev->station) {
-        message.description = "Invalid point sorting";
-      }
+    if ((point_prev != nullptr)
+         && (point.station < point_prev->station)) {
+      message.description = "Invalid point sorting";
     }
 
     point_prev = &point;
@@ -189,9 +184,5 @@ const std::list<AlignmentPoint>* Alignment::points() const {
 
 bool Alignment::IsValidPointIndex(const int& index) const {
   const int kSize = points_.size();
-  if ((0 <= index) && (index < kSize)) {
-    return true;
-  } else {
-    return false;
-  }
+  return (0 <= index) && (index < kSize);
 }

@@ -24,10 +24,8 @@ TransientCableTemperatureSolver::~TransientCableTemperatureSolver() {
 const std::list<TemperaturePoint>*
     TransientCableTemperatureSolver::PointsTemperature() const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return nullptr;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return nullptr;
   }
 
   return &points_temperature_;
@@ -177,11 +175,7 @@ CableHeatTransferState TransientCableTemperatureSolver::HeatTransferState(
 }
 
 bool TransientCableTemperatureSolver::IsUpdated() const {
-  if (is_updated_ == true) {
-    return true;
-  } else {
-    return false;
-  }
+  return is_updated_ == true;
 }
 
 double TransientCableTemperatureSolver::TemperatureNew(

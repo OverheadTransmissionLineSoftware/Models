@@ -28,25 +28,23 @@ std::list<Point3d<double>> CablePositionLocator::PointsCable(
   std::list<Point3d<double>> points;
 
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return points;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return points;
   }
 
   // determines if span index is valid
   if ((index_span < 0) || (size_connections_ - 1 < index_span)) {
     return points;
   }
-  
+
   // gets cable attachment points
   const Point3d<double>& point_back = points_cable_[index_span];
   const Point3d<double>& point_ahead = points_cable_[index_span + 1];
-  
+
   // creates a catenary
   Vector2d spacing_xy(point_ahead.x - point_back.x,
                       point_ahead.y - point_back.y);
-  
+
   Vector3d spacing(spacing_xy.Magnitude(), 0, point_ahead.z - point_back.z);
 
   Catenary3d catenary;
@@ -87,10 +85,8 @@ std::list<Point3d<double>> CablePositionLocator::PointsCable(
 const std::vector<Point3d<double>>* CablePositionLocator::PointsCableAttachment()
     const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return nullptr;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return nullptr;
   }
 
   return &points_cable_;
@@ -176,7 +172,7 @@ bool CablePositionLocator::Validate(const bool& is_included_warnings,
       }
     }
   }
-  
+
   // validates update process
   if (Update() == false) {
     is_valid = false;
@@ -245,7 +241,7 @@ bool CablePositionLocator::InitializeConnectionData() const {
   }
 
   const LineCable& line_cable = *std::next(line_cables->cbegin(), index_cable_);
-  
+
   // adds data for every connection
   const std::list<LineCableConnection>* connections = line_cable.connections();
   int index = 0;
@@ -260,7 +256,7 @@ bool CablePositionLocator::InitializeConnectionData() const {
     // calculates structure attachment point and caches
     const Point3d<double>& point = line_->PointXyzLineStructureAttachment(
         index_structure,
-        connection.index_attachment);    
+        connection.index_attachment);
     if (point.x == -999999) {
       return false;
     } else {
@@ -269,7 +265,7 @@ bool CablePositionLocator::InitializeConnectionData() const {
 
     // gets hardware
     const Hardware* hardware =
-        line_structure->hardwares()->at(index_attachment);    
+        line_structure->hardwares()->at(index_attachment);
     if (hardware == nullptr) {
       return false;
     } else {
@@ -284,12 +280,12 @@ bool CablePositionLocator::InitializeConnectionData() const {
 
 bool CablePositionLocator::InitializeContainers() const {
   // gets the line cable
-  const std::list<LineCable>* line_cables = line_->line_cables();  
+  const std::list<LineCable>* line_cables = line_->line_cables();
   const LineCable& line_cable = *std::next(line_cables->cbegin(), index_cable_);
 
-  // caches the number of connections  
+  // caches the number of connections
   size_connections_ = line_cable.connections()->size();
-  
+
   // resizes containers to match connection count
   hardwares_.clear();
   hardwares_.resize(size_connections_, nullptr);
@@ -317,7 +313,7 @@ bool CablePositionLocator::InitializePointsHardware() const {
       points_hardware_[index] = point;
       continue;
     }
-    
+
     // gets structure attachment points for back, current, and ahead structure
     const Point3d<double>& point_back = points_structure_[index - 1];
     const Point3d<double>& point_current = points_structure_[index];
@@ -356,11 +352,7 @@ bool CablePositionLocator::InitializePointsHardware() const {
 }
 
 bool CablePositionLocator::IsUpdated() const {
-  if (is_updated_ == true) {
-    return true;
-  } else {
-    return false;
-  }
+  return is_updated_ == true;
 }
 
 bool CablePositionLocator::SolveCablePosition() const {
@@ -384,33 +376,26 @@ bool CablePositionLocator::SolveCablePosition() const {
   }
 
   // returns based on whether solution converged
-  if (iter < 100) {
-    return true;
-  } else {
-    return false;
-  }
+  return iter < 100;
 }
 
 bool CablePositionLocator::Update() const {
-  // updates catenary-cable-reloaded
+  // resizes containers to match connection size
+  is_updated_ = InitializeContainers();
   if (is_updated_ == false) {
-    // resizes containers to match connection size
-    is_updated_ = InitializeContainers();
-    if (is_updated_ == false) {
-      return false;
-    }
-    
-    // intializes cached connection data
-    is_updated_ = InitializeConnectionData();
-    if (is_updated_ == false) {
-      return false;
-    }
+    return false;
+  }
 
-    // solves for the cable position
-    is_updated_ = SolveCablePosition();
-    if (is_updated_ == false) {
-      return false;
-    }
+  // intializes cached connection data
+  is_updated_ = InitializeConnectionData();
+  if (is_updated_ == false) {
+    return false;
+  }
+
+  // solves for the cable position
+  is_updated_ = SolveCablePosition();
+  if (is_updated_ == false) {
+    return false;
   }
 
   // if it reaches this point, update was successful
@@ -422,7 +407,7 @@ bool CablePositionLocator::UpdatePointsCable() const {
   for (int index = 0; index < size_connections_; index++) {
     const Point3d<double>& point_structure = points_structure_[index];
     const SphericalPoint3d<double>& point_hardware = points_hardware_[index];
-    
+
     // converts hardware spherical point to cartesian point
     // adds to structure xyz point to solve
     const double angle_x_rad =
@@ -475,7 +460,7 @@ double CablePositionLocator::UpdatePointsHardware() const {
     if ((index == 0) || (index == size_connections_ - 1)) {
       continue;
     }
-    
+
     // gets cable attachment points for back, current, and ahead attachments
     const Point3d<double>& point_back = points_cable_[index - 1];
     const Point3d<double>& point_current = points_cable_[index];
@@ -484,7 +469,7 @@ double CablePositionLocator::UpdatePointsHardware() const {
     // updates back catenary
     spacing_horizontal.set_x(point_current.x - point_back.x);
     spacing_horizontal.set_y(point_current.y - point_back.y);
-    
+
     spacing.set_x(spacing_horizontal.Magnitude());
     spacing.set_z(point_current.z - point_back.z);
 
@@ -493,7 +478,7 @@ double CablePositionLocator::UpdatePointsHardware() const {
     // updates ahead catenary
     spacing_horizontal.set_x(point_ahead.x - point_current.x);
     spacing_horizontal.set_y(point_ahead.y - point_current.y);
-    
+
     spacing.set_x(spacing_horizontal.Magnitude());
     spacing.set_z(point_ahead.z - point_current.z);
 

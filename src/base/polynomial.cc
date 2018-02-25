@@ -26,10 +26,8 @@ Polynomial Polynomial::Derivative() const {
   Polynomial derivative;
 
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return derivative;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return derivative;
   }
 
   derivative = *derivative_;
@@ -42,16 +40,14 @@ int Polynomial::OrderMax() const {
 
 double Polynomial::Slope(const double& x) const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return -999999;
   }
 
   return derivative_->Y(x);
 }
 
-bool Polynomial::Validate(const bool& is_included_warnings,
+bool Polynomial::Validate(const bool& /*is_included_warnings*/,
                           std::list<ErrorMessage>* messages) const {
   // initializes
   bool is_valid = true;
@@ -87,10 +83,8 @@ bool Polynomial::Validate(const bool& is_included_warnings,
 double Polynomial::X(const double& y, const int& decimal_precision_y,
                      const double& x_guess) const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return -999999;
   }
 
   // converts to decimal precision
@@ -152,12 +146,7 @@ void Polynomial::set_coefficients(const std::vector<double>* coefficients) {
 }
 
 bool Polynomial::IsUpdated() const {
-
-  if (is_updated_derivative_ == true) {
-    return true;
-  } else {
-    return false;
-  }
+ return is_updated_derivative_ == true;
 }
 
 bool Polynomial::Update() const {

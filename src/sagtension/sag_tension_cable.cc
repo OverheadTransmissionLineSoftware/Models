@@ -183,11 +183,7 @@ void SagTensionCableComponent::UpdateIsEnabled() {
   }
 
   // updates enabled status
-  if ((is_valid_creep == true) && (is_valid_loadstrain == true)) {
-    is_enabled_ = true;
-  } else {
-    is_enabled_ = false;
-  }
+  is_enabled_ = ((is_valid_creep == true) && (is_valid_loadstrain == true));
 }
 
 SagTensionCable::SagTensionCable() {
@@ -204,11 +200,7 @@ bool SagTensionCable::IsEnabled(
     const bool& is_enabled_core = component_sagtension_core_.IsEnabled();
     const bool& is_enabled_shell = component_sagtension_shell_.IsEnabled();
 
-    if ((is_enabled_core == true) || (is_enabled_shell == true)) {
-      return true;
-    } else {
-      return false;
-    }
+    return (is_enabled_core == true) || (is_enabled_shell == true);
   } else if (type_component == SagTensionCable::ComponentType::kCore) {
     return component_sagtension_core_.IsEnabled();
   } else if (type_component == SagTensionCable::ComponentType::kShell) {
@@ -258,19 +250,17 @@ bool SagTensionCable::Validate(const bool& is_included_warnings,
   }
 
   // validates component-core
-  if (component_sagtension_core_.IsEnabled() == true) {
-    if (component_sagtension_core_.Validate(is_included_warnings,
-                                            messages) == false) {
-      is_valid = false;
-    }
+  if ((component_sagtension_core_.IsEnabled() == true)
+      && (component_sagtension_core_.Validate(is_included_warnings,
+                                              messages) == false)) {
+    is_valid = false;
   }
 
   // validates component-shell
-  if (component_sagtension_shell_.IsEnabled() == true) {
-    if (component_sagtension_shell_.Validate(is_included_warnings,
-                                             messages) == false) {
-      is_valid = false;
-    }
+  if ((component_sagtension_shell_.IsEnabled() == true)
+      && (component_sagtension_shell_.Validate(is_included_warnings,
+                                               messages) == false)) {
+    is_valid = false;
   }
 
   // returns validation status

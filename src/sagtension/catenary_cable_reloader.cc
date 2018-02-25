@@ -21,10 +21,8 @@ CatenaryCableReloader::~CatenaryCableReloader() {
 
 Catenary3d CatenaryCableReloader::CatenaryReloaded() const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return Catenary3d();
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return Catenary3d();
   }
 
   return catenary_reloaded_;
@@ -32,10 +30,8 @@ Catenary3d CatenaryCableReloader::CatenaryReloaded() const {
 
 double CatenaryCableReloader::LengthUnloaded() const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return -999999;
   }
 
   // creates an unloader using the reference cable models
@@ -49,10 +45,8 @@ double CatenaryCableReloader::LengthUnloaded() const {
 
 double CatenaryCableReloader::TensionHorizontal() const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return -999999;
   }
 
   return catenary_reloaded_.tension_horizontal();
@@ -218,11 +212,7 @@ bool CatenaryCableReloader::InitializeStrainer() const {
 }
 
 bool CatenaryCableReloader::IsUpdated() const {
-  if (is_updated_catenary_reloaded_ == true) {
-    return true;
-  } else {
-    return false;
-  }
+  return is_updated_catenary_reloaded_ == true;
 }
 
 double CatenaryCableReloader::LengthDifference(
@@ -333,11 +323,7 @@ bool CatenaryCableReloader::SolveReloadedCatenaryTension() const {
   // returns success status
   if (iter < iter_max) {
     // does one last sanity check to see if lengths match
-    if (point_current.y < 0.1) {
-      return true;
-    } else {
-      return false;
-    }
+    return point_current.y < 0.1;
   } else {
     return false;
   }

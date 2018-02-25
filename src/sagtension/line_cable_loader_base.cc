@@ -20,10 +20,8 @@ LineCableLoaderBase::~LineCableLoaderBase() {
 
 CableStretchState LineCableLoaderBase::StretchStateCreep() const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return CableStretchState();
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return CableStretchState();
   }
 
   return state_stretch_creep_;
@@ -31,10 +29,8 @@ CableStretchState LineCableLoaderBase::StretchStateCreep() const {
 
 CableStretchState LineCableLoaderBase::StretchStateLoad() const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return CableStretchState();
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return CableStretchState();
   }
 
   return state_stretch_load_;
@@ -177,12 +173,8 @@ bool LineCableLoaderBase::InitializeLineCableModels() const {
 }
 
 bool LineCableLoaderBase::IsUpdated() const {
-  if ((is_updated_catenary_constraint_ == true)
-      && (is_updated_stretch_ == true)) {
-    return true;
-  } else {
-    return false;
-  }
+  return (is_updated_catenary_constraint_ == true)
+      && (is_updated_stretch_ == true);
 }
 
 Vector3d LineCableLoaderBase::UnitLoad(

@@ -241,7 +241,7 @@ bool LineCable::Validate(const bool& is_included_warnings,
   return is_valid;
 }
 
-bool LineCable::ValidateConnections(const bool& is_included_warnings,
+bool LineCable::ValidateConnections(const bool& /*is_included_warnings*/,
                                     std::list<ErrorMessage>* messages) const {
   // initializes
   bool is_valid = true;
@@ -338,9 +338,5 @@ const WeatherLoadCase* LineCable::weathercase_stretch_load() const {
 
 bool LineCable::IsValidConnectionIndex(const int& index) const {
   const int kSize = connections_.size();
-  if ((0 <= index) && (index < kSize)) {
-    return true;
-  } else {
-    return false;
-  }
+  return (0 <= index) && (index < kSize);
 }

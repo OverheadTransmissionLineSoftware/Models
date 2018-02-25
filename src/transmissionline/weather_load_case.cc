@@ -16,7 +16,7 @@ WeatherLoadCase::WeatherLoadCase() {
 WeatherLoadCase::~WeatherLoadCase() {
 }
 
-bool WeatherLoadCase::Validate(const bool& is_included_warnings,
+bool WeatherLoadCase::Validate(const bool& /*is_included_warnings*/,
                                std::list<ErrorMessage>* messages) const {
   // initializes
   bool is_valid = true;

@@ -25,10 +25,8 @@ SteadyCableCurrentSolver::~SteadyCableCurrentSolver() {
 
 double SteadyCableCurrentSolver::Current() const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return -999999;
   }
 
   return current_;
@@ -36,10 +34,8 @@ double SteadyCableCurrentSolver::Current() const {
 
 CableHeatTransferState SteadyCableCurrentSolver::StateHeatTransfer() const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return CableHeatTransferState();
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return CableHeatTransferState();
   }
 
   return state_;
@@ -148,11 +144,7 @@ const ThermalRatingWeather* SteadyCableCurrentSolver::weather() const {
 }
 
 bool SteadyCableCurrentSolver::IsUpdated() const {
-  if (is_updated_ == true) {
-    return true;
-  } else {
-    return false;
-  }
+  return is_updated_ == true;
 }
 
 bool SteadyCableCurrentSolver::SolveCurrent() const {

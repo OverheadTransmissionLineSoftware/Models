@@ -28,10 +28,8 @@ CableComponentElongationModel::~CableComponentElongationModel() {
 
 double CableComponentElongationModel::Load(const double& strain) const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return -999999;
   }
 
   // returns load for state model
@@ -42,10 +40,8 @@ double CableComponentElongationModel::Load(const double& strain) const {
 std::vector<Point2d<double>> CableComponentElongationModel::PointsRegions()
     const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return std::vector<Point2d<double>>(3);
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return std::vector<Point2d<double>>(3);
   }
 
   return points_state_;
@@ -53,10 +49,8 @@ std::vector<Point2d<double>> CableComponentElongationModel::PointsRegions()
 
 double CableComponentElongationModel::Slope(const double& strain) const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return -999999;
   }
 
   // returns slope for state model
@@ -66,10 +60,8 @@ double CableComponentElongationModel::Slope(const double& strain) const {
 
 double CableComponentElongationModel::Strain(const double& load) const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return -999999;
   }
 
   // returns strain for state model
@@ -79,10 +71,8 @@ double CableComponentElongationModel::Strain(const double& load) const {
 
 double CableComponentElongationModel::StrainThermal() const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return -999999;
   }
 
   return strain_thermal_state_;
@@ -277,12 +267,7 @@ double CableComponentElongationModel::ConvertToStrain(
 }
 
 bool CableComponentElongationModel::IsUpdated() const {
-  if ((is_updated_state_ == true)
-      && (is_updated_stretch_ == true)) {
-    return true;
-  } else {
-    return false;
-  }
+  return (is_updated_state_ == true) && (is_updated_stretch_ == true);
 }
 
 double CableComponentElongationModel::Load(
@@ -408,9 +393,9 @@ double CableComponentElongationModel::Slope(
   double slope = -999999;
 
   // creates friendly names for points
-  const Point2d<double>& point_unloaded = points_state_.at(0);
-  const Point2d<double>& point_polynomial_start = points_state_.at(1);
-  const Point2d<double>& point_polynomial_end = points_state_.at(2);
+  const Point2d<double>& point_unloaded = points.at(0);
+  const Point2d<double>& point_polynomial_start = points.at(1);
+  const Point2d<double>& point_polynomial_end = points.at(2);
 
   // selects region based on strain value
   if (strain < point_unloaded.x) {
@@ -433,9 +418,7 @@ double CableComponentElongationModel::Slope(
       return -999999;
     }
 
-    slope = SlopePolynomial(*polynomial,
-                            strain_thermal_state_,
-                            strain);
+    slope = SlopePolynomial(*polynomial, strain_thermal, strain);
   } else if (point_polynomial_end.x <= strain) {
     // extrapolated region
     if (type_polynomial == SagTensionCableComponent::PolynomialType::kCreep) {

@@ -13,7 +13,7 @@ StructureAttachment::~StructureAttachment() {
 }
 
 bool StructureAttachment::Validate(
-    const bool& is_included_warnings,
+    const bool& /*is_included_warnings*/,
     std::list<ErrorMessage>* messages) const {
   // initializes
   bool is_valid = true;

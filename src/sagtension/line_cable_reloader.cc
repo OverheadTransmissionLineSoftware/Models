@@ -18,10 +18,8 @@ LineCableReloader::~LineCableReloader() {
 
 Catenary3d LineCableReloader::CatenaryReloaded() const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return Catenary3d();
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return Catenary3d();
   }
 
   return catenary_reloaded_;
@@ -29,10 +27,8 @@ Catenary3d LineCableReloader::CatenaryReloaded() const {
 
 CableState LineCableReloader::StateReloaded() const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return CableStretchState();
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return CableStretchState();
   }
 
   return model_reloaded_.state();
@@ -41,10 +37,8 @@ CableState LineCableReloader::StateReloaded() const {
 double LineCableReloader::TensionAverageComponent(
     const CableElongationModel::ComponentType& type_component) const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return -999999;
   }
 
   // gets total strain
@@ -57,10 +51,8 @@ double LineCableReloader::TensionAverageComponent(
 
 double LineCableReloader::TensionHorizontal() const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return -999999;
   }
 
   return catenary_reloaded_.tension_horizontal();
@@ -72,10 +64,8 @@ double LineCableReloader::TensionHorizontal() const {
 double LineCableReloader::TensionHorizontalComponent(
     const CableElongationModel::ComponentType& type_component) const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return -999999;
   }
 
   // gets average tension of component
@@ -173,13 +163,9 @@ const WeatherLoadCase* LineCableReloader::weathercase_reloaded() const {
 }
 
 bool LineCableReloader::IsUpdated() const {
-  if ((LineCableLoaderBase::IsUpdated() == true)
+  return (LineCableLoaderBase::IsUpdated() == true)
       && (is_updated_model_reloaded_ == true)
-      && (is_updated_catenary_reloaded_ == true)) {
-    return true;
-  } else {
-    return false;
-  }
+      && (is_updated_catenary_reloaded_ == true);
 }
 
 bool LineCableReloader::Update() const {

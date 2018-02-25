@@ -48,10 +48,9 @@ bool LineStructure::Validate(
   // validates assemblies
   for (auto iter = hardwares_.cbegin(); iter != hardwares_.cend(); iter++) {
     const Hardware* hardware = *iter;
-    if (hardware != nullptr) {
-      if (hardware->Validate(is_included_warnings, messages) == false) {
-        is_valid = false;
-      }
+    if ((hardware != nullptr)
+         && (hardware->Validate(is_included_warnings, messages) == false)) {
+      is_valid = false;
     }
   }
 
@@ -157,9 +156,5 @@ bool LineStructure::IsValidIndex(const int& index) const {
 
   // checks for valid structure attachment index
   const int kSize = structure_->attachments.size();
-  if ((0 <= index) && (index < kSize)) {
-    return true;
-  } else {
-    return false;
-  }
+  return (0 <= index) && (index < kSize);
 }
