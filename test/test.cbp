@@ -46,9 +46,9 @@
 		<Compiler>
 			<Add option="-std=c++11" />
 			<Add option="-Wall" />
+			<Add directory=".." />
 			<Add directory="../include" />
 			<Add directory="../external/googletest/googletest/include" />
-			<Add directory="../test" />
 		</Compiler>
 		<Linker>
 			<Add option="-pthread" />

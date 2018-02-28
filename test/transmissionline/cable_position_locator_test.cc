@@ -5,8 +5,8 @@
 
 #include "gtest/gtest.h"
 
-#include "factory.h"
 #include "models/base/helper.h"
+#include "test/factory.h"
 
 class CablePositionLocatorTest : public ::testing::Test {
  protected:

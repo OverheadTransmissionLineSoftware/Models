@@ -5,9 +5,9 @@
 
 #include "gtest/gtest.h"
 
-#include "factory.h"
 #include "models/base/helper.h"
 #include "models/base/units.h"
+#include "test/factory.h"
 
 class LineCableReloaderTest : public ::testing::Test {
  protected:

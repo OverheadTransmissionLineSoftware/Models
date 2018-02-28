@@ -5,7 +5,7 @@
 
 #include "gtest/gtest.h"
 
-#include "factory.h"
+#include "test/factory.h"
 
 class LineStructureTest : public ::testing::Test {
  protected:

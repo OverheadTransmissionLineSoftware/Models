@@ -5,8 +5,8 @@
 
 #include "gtest/gtest.h"
 
-#include "factory.h"
 #include "models/base/helper.h"
+#include "test/factory.h"
 
 class TransientCableTemperatureSolverTest : public ::testing::Test {
  protected:

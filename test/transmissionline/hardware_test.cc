@@ -5,7 +5,7 @@
 
 #include "gtest/gtest.h"
 
-#include "factory.h"
+#include "test/factory.h"
 
 class HardwareTest : public ::testing::Test {
  protected:
