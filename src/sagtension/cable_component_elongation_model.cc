@@ -352,9 +352,9 @@ void CableComponentElongationModel::PointsRegions(
     const double& temperature,
     const double& load_limit_polynomial,
     const double& load_stretch,
-    std::vector<Point2d<double>>& points) const {
+    std::vector<Point2d<double>>* points) const {
   // initializes vector
-  points.clear();
+  points->clear();
 
   // calculates the thermal strain
   const double strain_thermal = StrainThermal(temperature);
@@ -380,9 +380,9 @@ void CableComponentElongationModel::PointsRegions(
       point_unloaded.y);
 
   // adds points to vector
-  points.push_back(point_unloaded);
-  points.push_back(point_polynomial_start);
-  points.push_back(point_polynomial_end);
+  points->push_back(point_unloaded);
+  points->push_back(point_polynomial_start);
+  points->push_back(point_polynomial_end);
 }
 
 double CableComponentElongationModel::Slope(
@@ -624,7 +624,7 @@ bool CableComponentElongationModel::UpdateState(const CableState& state) const {
                 state.temperature,
                 *component_->load_limit_polynomial(state.type_polynomial),
                 load_stretch_,
-                points_state_);
+                &points_state_);
 
   return true;
 }
@@ -663,14 +663,14 @@ bool CableComponentElongationModel::UpdateStretch() const {
                 state_stretch_->temperature,
                 *component_->load_limit_polynomial(type),
                 0,
-                points_stretch_creep_);
+                &points_stretch_creep_);
 
   type = SagTensionCableComponent::PolynomialType::kLoadStrain;
   PointsRegions(polynomial_loadstrain_,
                 state_stretch_->temperature,
                 *component_->load_limit_polynomial(type),
                 0,
-                points_stretch_load_);
+                &points_stretch_load_);
 
   // creates an interface for the model the stretch is being transferred from
   const SagTensionCableComponent::PolynomialType* type_polynomial_from =
@@ -770,7 +770,6 @@ bool CableComponentElongationModel::UpdateStretch() const {
 
     // updates either left or right point based on current point
     if (point_current.x < point_left.x) {
-
       point_right.x = point_left.x;
       point_right.y = point_left.y;
       point_left.x = point_current.x;
@@ -778,7 +777,6 @@ bool CableComponentElongationModel::UpdateStretch() const {
 
     } else if ((point_left.x < point_current.x)
         && (point_current.x < point_right.x)) {
-
       if (point_current.y < target_solution) {
         point_right.x = point_current.x;
         point_right.y = point_current.y;
@@ -788,7 +786,6 @@ bool CableComponentElongationModel::UpdateStretch() const {
       }
 
     } else if (point_right.x < point_current.x) {
-
       point_left.x = point_right.x;
       point_left.y = point_right.y;
       point_right.x = point_current.x;

@@ -1,8 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef OTLS_MODELS_TRANSMISSIONLINE_ALIGNMENT_H_
-#define OTLS_MODELS_TRANSMISSIONLINE_ALIGNMENT_H_
+#ifndef MODELS_TRANSMISSIONLINE_ALIGNMENT_H_
+#define MODELS_TRANSMISSIONLINE_ALIGNMENT_H_
 
 #include <list>
 
@@ -119,4 +119,4 @@ class Alignment {
   std::list<AlignmentPoint> points_;
 };
 
-#endif  // OTLS_MODELS_TRANSMISSIONLINE_ALIGNMENT_H_
+#endif  // MODELS_TRANSMISSIONLINE_ALIGNMENT_H_

@@ -32,7 +32,7 @@ class AlignmentTest : public ::testing::Test {
     point.station = 0;
 
     a_.AddPoint(point);
-    
+
     // builds dependency object - point
     point = AlignmentPoint();
     point.elevation = 0;
@@ -92,7 +92,7 @@ TEST_F(AlignmentTest, DeletePoint) {
   AlignmentPoint point;
   auto points = a_.points();
   bool status = false;
-  
+
   // deletes the middle point
   status = a_.DeletePoint(1);
 
@@ -148,7 +148,7 @@ TEST_F(AlignmentTest, ModifyPoint) {
   AlignmentPoint point;
   auto points = a_.points();
   int index = 0;
-  
+
   // modifies the middle point
   auto iter = std::next(points->cbegin(), 1);
   point = *iter;

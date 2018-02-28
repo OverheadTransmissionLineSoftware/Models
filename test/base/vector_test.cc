@@ -8,7 +8,7 @@
 #include "models/base/helper.h"
 
 TEST(Vector2d, Angle) {
-  Vector2d v(0,0);
+  Vector2d v(0, 0);
 
   // quadrant I
   v.set_x(1);

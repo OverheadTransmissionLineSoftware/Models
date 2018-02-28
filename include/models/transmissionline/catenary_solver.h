@@ -1,8 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef OTLS_MODELS_TRANSMISSIONLINE_CATENARYSOLVER_H_
-#define OTLS_MODELS_TRANSMISSIONLINE_CATENARYSOLVER_H_
+#ifndef MODELS_TRANSMISSIONLINE_CATENARY_SOLVER_H_
+#define MODELS_TRANSMISSIONLINE_CATENARY_SOLVER_H_
 
 #include <list>
 
@@ -196,4 +196,4 @@ class CatenarySolver {
   double value_target_;
 };
 
-#endif  // OTLS_MODELS_TRANSMISSIONLINE_CATENARYSOLVER_H_
+#endif  // MODELS_TRANSMISSIONLINE_CATENARY_SOLVER_H_

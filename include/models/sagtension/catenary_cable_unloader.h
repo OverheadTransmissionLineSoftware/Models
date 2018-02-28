@@ -1,8 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef OTLS_MODELS_SAGTENSION_CATENARYCABLEUNLOADER_H_
-#define OTLS_MODELS_SAGTENSION_CATENARYCABLEUNLOADER_H_
+#ifndef MODELS_SAGTENSION_CATENARY_CABLE_UNLOADER_H_
+#define MODELS_SAGTENSION_CATENARY_CABLE_UNLOADER_H_
 
 #include <list>
 
@@ -86,4 +86,4 @@ class CatenaryCableUnloader {
   mutable CableStrainer strainer_;
 };
 
-#endif  // OTLS_MODELS_SAGTENSION_CATENARYCABLEUNLOADER_H_
+#endif  // MODELS_SAGTENSION_CATENARY_CABLE_UNLOADER_H_

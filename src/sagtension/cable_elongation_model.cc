@@ -291,7 +291,6 @@ double CableElongationModel::StrainCombined(
 
   // load is less than all points in the sorted collection
   if (load <= point_regions_min.y) {
-
     // determines if core and/or shell can be compressed
     bool is_compressible_core =
         cable_->component_core()->modulus_compression_elastic_area() == 0;
@@ -342,7 +341,6 @@ double CableElongationModel::StrainCombined(
   double slope_line =-999999;
 
   while ((precision < std::abs(point_current.y - load)) && (iter < 100)) {
-
     // calculates new strain value by using tangent line between points,
     // extrapolates using line
     slope_line = (point_right.y - point_left.y)
@@ -354,7 +352,6 @@ double CableElongationModel::StrainCombined(
 
     // current point is left of left/right points
     if (point_current.x < point_left.x) {
-
       point_right.x = point_left.x;
       point_right.y = point_left.y;
 
@@ -364,7 +361,6 @@ double CableElongationModel::StrainCombined(
     // current point is between left/right points
     } else if ((point_left.x <= point_current.x)
          && (point_current.x <= point_right.x)) {
-
       if (point_current.y < load) {
           point_left.x = point_current.x;
           point_left.y = point_current.y;
@@ -375,7 +371,6 @@ double CableElongationModel::StrainCombined(
 
     // current point is right of left/right points
     } else if (point_right.x < point_current.x) {
-
       point_left.x = point_right.x;
       point_left.y = point_right.y;
 
@@ -574,7 +569,6 @@ bool CableElongationModel::ValidateComponentsStrainLimit(
         messages->push_back(message);
       }
     }
-
   }
 
   // checks shell, if enabled

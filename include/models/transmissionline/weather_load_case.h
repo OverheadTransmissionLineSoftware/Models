@@ -1,10 +1,11 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef OTLS_MODELS_TRANSMISSIONLINE_WEATHERLOADCASE_H_
-#define OTLS_MODELS_TRANSMISSIONLINE_WEATHERLOADCASE_H_
+#ifndef MODELS_TRANSMISSIONLINE_WEATHER_LOAD_CASE_H_
+#define MODELS_TRANSMISSIONLINE_WEATHER_LOAD_CASE_H_
 
 #include <list>
+#include <string>
 
 #include "models/base/error_message.h"
 
@@ -51,4 +52,4 @@ struct WeatherLoadCase {
   double thickness_ice;
 };
 
-#endif  // OTLS_MODELS_TRANSMISSIONLINE_WEATHERLOADCASE_H_
+#endif  // MODELS_TRANSMISSIONLINE_WEATHER_LOAD_CASE_H_

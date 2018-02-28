@@ -1,8 +1,10 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef OTLS_MODELS_THERMALRATING_STEADYCABLECURRENTSOLVER_H_
-#define OTLS_MODELS_THERMALRATING_STEADYCABLECURRENTSOLVER_H_
+#ifndef MODELS_THERMALRATING_STEADY_CABLE_CURRENT_SOLVER_H_
+#define MODELS_THERMALRATING_STEADY_CABLE_CURRENT_SOLVER_H_
+
+#include <list>
 
 #include "models/base/error_message.h"
 #include "models/base/units.h"
@@ -151,4 +153,4 @@ class SteadyCableCurrentSolver {
   const ThermalRatingWeather* weather_;
 };
 
-#endif  // OTLS_MODELS_THERMALRATING_STEADYCABLECURRENTSOLVER_H_
+#endif  // MODELS_THERMALRATING_STEADY_CABLE_CURRENT_SOLVER_H_

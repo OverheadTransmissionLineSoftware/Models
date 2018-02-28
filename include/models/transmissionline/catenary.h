@@ -1,8 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef OTLS_MODELS_TRANSMISSIONLINE_CATENARY_H_
-#define OTLS_MODELS_TRANSMISSIONLINE_CATENARY_H_
+#ifndef MODELS_TRANSMISSIONLINE_CATENARY_H_
+#define MODELS_TRANSMISSIONLINE_CATENARY_H_
 
 #include <list>
 #include <string>
@@ -528,4 +528,4 @@ class Catenary3d {
   Vector3d weight_unit_;
 };
 
-#endif  // OTLS_MODELS_TRANSMISSIONLINE_CATENARY_H_
+#endif  // MODELS_TRANSMISSIONLINE_CATENARY_H_

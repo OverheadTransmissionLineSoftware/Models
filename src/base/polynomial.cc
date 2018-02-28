@@ -105,7 +105,6 @@ double Polynomial::X(const double& y, const int& decimal_precision_y,
   // iterates until the value is within tolerance
   int iter = 0;
   while (precision_y < std::abs(point_function.y) && (iter < 100)) {
-
     // calculates y value for shifted polynomial and derivative
     point_function.y = polynomial_shifted.Y(point_function.x);
     point_derivative.y = derivative_->Y(point_derivative.x);
@@ -127,7 +126,6 @@ double Polynomial::Y(const double& x) const {
 
   const int order_max = OrderMax();
   for (int order = 0; order <= order_max; order++) {
-
     const double& coefficient =  coefficients_->at(order);
     y = y + (coefficient * std::pow(x, order));
   }
@@ -146,14 +144,12 @@ void Polynomial::set_coefficients(const std::vector<double>* coefficients) {
 }
 
 bool Polynomial::IsUpdated() const {
- return is_updated_derivative_ == true;
+  return is_updated_derivative_ == true;
 }
 
 bool Polynomial::Update() const {
-
   // updates derivative
   if (is_updated_derivative_ == false) {
-
     is_updated_derivative_ = UpdateDerivative();
     if (is_updated_derivative_ == false) {
       return false;
@@ -164,13 +160,11 @@ bool Polynomial::Update() const {
 }
 
 bool Polynomial::UpdateDerivative() const {
-
   const int order_max = OrderMax();
 
   // calculates derivative coefficients
   coefficients_derivative_.clear();
   for (int order = 0; order <= order_max; order++) {
-
     if (order != 0) {
       const double& coefficient_function = coefficients_->at(order);
       double coefficient_derivative = coefficient_function * order;

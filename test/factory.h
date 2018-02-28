@@ -1,8 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef OTLS_MODELS_TEST_FACTORY_H_
-#define OTLS_MODELS_TEST_FACTORY_H_
+#ifndef TEST_FACTORY_H_
+#define TEST_FACTORY_H_
 
 #include "models/sagtension/cable_elongation_model.h"
 #include "models/sagtension/sag_tension_cable.h"
@@ -63,6 +63,6 @@ namespace factory {
   /// \brief Destroys the sag-tension cable and any data referenced by it.
   void DestroySagTensionCable(SagTensionCable* cable);
 
-} // namespace factory
+}  // namespace factory
 
-#endif  // OTLS_MODELS_TEST_FACTORY_H_
+#endif  // TEST_FACTORY_H_

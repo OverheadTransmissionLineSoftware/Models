@@ -1,8 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef OTLS_MODELS_BASE_VECTOR_H_
-#define OTLS_MODELS_BASE_VECTOR_H_
+#ifndef MODELS_BASE_VECTOR_H_
+#define MODELS_BASE_VECTOR_H_
 
 /// \par OVERVIEW
 ///
@@ -196,4 +196,4 @@ class Vector3d {
   double z_;
 };
 
-#endif  // OTLS_MODELS_BASE_VECTOR_H_
+#endif  // MODELS_BASE_VECTOR_H_

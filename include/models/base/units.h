@@ -1,8 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef OTLS_MODELS_BASE_UNITS_H_
-#define OTLS_MODELS_BASE_UNITS_H_
+#ifndef MODELS_BASE_UNITS_H_
+#define MODELS_BASE_UNITS_H_
 
 // This namespace separates unit types (angles, force, length, etc) to make the
 // interface easier to use and more extensible. Where unit conversions require
@@ -192,4 +192,4 @@ double ConvertTemperature(const double& value,
 
 }  // namespace units
 
-#endif  // OTLS_MODELS_BASE_UNITS_H_
+#endif  // MODELS_BASE_UNITS_H_

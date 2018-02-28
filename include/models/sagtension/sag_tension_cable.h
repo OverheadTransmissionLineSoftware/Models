@@ -1,10 +1,11 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef OTLS_MODELS_SAGTENSION_SAGTENSIONCABLE_H_
-#define OTLS_MODELS_SAGTENSION_SAGTENSIONCABLE_H_
+#ifndef MODELS_SAGTENSION_SAG_TENSION_CABLE_H_
+#define MODELS_SAGTENSION_SAG_TENSION_CABLE_H_
 
 #include <list>
+#include <vector>
 
 #include "models/base/error_message.h"
 #include "models/transmissionline/cable.h"
@@ -178,4 +179,4 @@ class SagTensionCable {
   SagTensionCableComponent component_sagtension_shell_;
 };
 
-#endif  // OTLS_MODELS_SAGTENSION_SAGTENSIONCABLE_H_
+#endif  // MODELS_SAGTENSION_SAG_TENSION_CABLE_H_

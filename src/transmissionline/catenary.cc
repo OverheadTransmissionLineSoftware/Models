@@ -264,7 +264,6 @@ double Catenary2d::TensionAverage(const int& num_points) const {
     const double kNumPoints = num_points;
 
     for (int iter = 0; iter <= kNumPoints; iter++) {
-
       const double position_fraction = iter / kNumPoints;
       const double tension_magnitude = Tension(position_fraction);
       sum = sum + tension_magnitude;
@@ -719,7 +718,6 @@ Vector3d Catenary3d::TangentVector(const double& position_fraction,
   // only applicable when endpoint spacing has a vertical component, and
   // transverse load is present
   if (spacing_endpoints_.z() != 0 && weight_unit_.y() != 0) {
-
     Vector2d spacing_endpoints_2d = catenary_2d_.spacing_endpoints();
     double angle_endpoints_2d = spacing_endpoints_2d.Angle(true);
     double angle_endpoints_3d = spacing_endpoints_.Angle(Plane2dType::kXz,
@@ -915,7 +913,6 @@ bool Catenary3d::IsUpdated() const {
 
 bool Catenary3d::Update() const {
   if (is_updated_catenary_2d_ == false) {
-
     is_updated_catenary_2d_ = UpdateCatenary2d();
     if (is_updated_catenary_2d_ == false) {
       return false;

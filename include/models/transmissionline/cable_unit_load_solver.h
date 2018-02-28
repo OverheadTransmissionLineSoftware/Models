@@ -1,8 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef OTLS_MODELS_TRANSMISSIONLINE_CABLEUNITLOADSOLVER_H_
-#define OTLS_MODELS_TRANSMISSIONLINE_CABLEUNITLOADSOLVER_H_
+#ifndef MODELS_TRANSMISSIONLINE_CABLE_UNIT_LOAD_SOLVER_H_
+#define MODELS_TRANSMISSIONLINE_CABLE_UNIT_LOAD_SOLVER_H_
 
 #include <list>
 
@@ -77,4 +77,4 @@ class CableUnitLoadSolver {
   const double* weight_unit_cable_;
 };
 
-#endif  // OTLS_MODELS_TRANSMISSIONLINE_CABLEUNITLOADSOLVER_H_
+#endif  // MODELS_TRANSMISSIONLINE_CABLE_UNIT_LOAD_SOLVER_H_

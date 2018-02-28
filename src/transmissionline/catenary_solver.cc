@@ -192,7 +192,7 @@ const Vector3d CatenarySolver::weight_unit() const {
 }
 
 bool CatenarySolver::IsUpdated() const {
- return is_updated_ == true;
+  return is_updated_ == true;
 }
 
 bool CatenarySolver::SolveHorizontalTensionFromConstant() const {
@@ -243,7 +243,6 @@ bool CatenarySolver::SolveHorizontalTensionFromLength() const {
   unsigned int iter = 0;
   const int iter_max = 100;
   while (0.01 < std::abs(point_left.x - point_right.x) && (iter <= iter_max)) {
-
     // gets current point x value using left and right points
     // calculates tangent line between points, extrapolates using line
     double slope_line = (point_right.y - point_left.y)
@@ -257,7 +256,6 @@ bool CatenarySolver::SolveHorizontalTensionFromLength() const {
 
     // updates either left or right point based on current point
     if (point_current.x < point_left.x) {
-
       point_right.x = point_left.x;
       point_right.y = point_left.y;
       point_left.x = point_current.x;
@@ -265,7 +263,6 @@ bool CatenarySolver::SolveHorizontalTensionFromLength() const {
 
     } else if ((point_left.x < point_current.x)
         && (point_current.x < point_right.x)) {
-
       if (point_current.y < target_solution) {
         point_right.x = point_current.x;
         point_right.y = point_current.y;
@@ -275,7 +272,6 @@ bool CatenarySolver::SolveHorizontalTensionFromLength() const {
       }
 
     } else if (point_right.x < point_current.x) {
-
       point_left.x = point_right.x;
       point_left.y = point_right.y;
       point_right.x = point_current.x;
@@ -328,7 +324,6 @@ bool CatenarySolver::SolveHorizontalTensionFromSag() const {
   unsigned int iter = 0;
   const int iter_max = 100;
   while (0.01 < std::abs(point_left.x - point_right.x) && (iter <= iter_max)) {
-
     // gets current point x value using left and right points
     // calculates tangent line between points, extrapolates using line
     double slope_line = (point_right.y - point_left.y)
@@ -342,7 +337,6 @@ bool CatenarySolver::SolveHorizontalTensionFromSag() const {
 
     // updates either left or right point based on current point
     if (point_current.x < point_left.x) {
-
       point_right.x = point_left.x;
       point_right.y = point_left.y;
       point_left.x = point_current.x;
@@ -350,7 +344,6 @@ bool CatenarySolver::SolveHorizontalTensionFromSag() const {
 
     } else if ((point_left.x < point_current.x)
         && (point_current.x < point_right.x)) {
-
       if (point_current.y < target_solution) {
         point_right.x = point_current.x;
         point_right.y = point_current.y;
@@ -360,7 +353,6 @@ bool CatenarySolver::SolveHorizontalTensionFromSag() const {
       }
 
     } else if (point_right.x < point_current.x) {
-
       point_left.x = point_right.x;
       point_left.y = point_right.y;
       point_right.x = point_current.x;
@@ -414,7 +406,6 @@ bool CatenarySolver::SolveHorizontalTensionFromTension() const {
   unsigned int iter = 0;
   const int iter_max = 100;
   while (0.01 < std::abs(point_left.x - point_right.x) && (iter <= iter_max)) {
-
     // gets current point x value using left and right points
     // calculates tangent line between points, extrapolates using line
     double slope_line = (point_right.y - point_left.y)
@@ -428,7 +419,6 @@ bool CatenarySolver::SolveHorizontalTensionFromTension() const {
 
     // updates either left or right point based on current point
     if (point_current.x < point_left.x) {
-
       point_right.x = point_left.x;
       point_right.y = point_left.y;
       point_left.x = point_current.x;
@@ -436,7 +426,6 @@ bool CatenarySolver::SolveHorizontalTensionFromTension() const {
 
     } else if ((point_left.x < point_current.x)
         && (point_current.x < point_right.x)) {
-
       if (point_current.y < target_solution) {
         point_right.x = point_current.x;
         point_right.y = point_current.y;
@@ -446,7 +435,6 @@ bool CatenarySolver::SolveHorizontalTensionFromTension() const {
       }
 
     } else if (point_right.x < point_current.x) {
-
       point_left.x = point_right.x;
       point_left.y = point_right.y;
       point_right.x = point_current.x;

@@ -1,8 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef OTLS_MODELS_BASE_POINT_H_
-#define OTLS_MODELS_BASE_POINT_H_
+#ifndef MODELS_BASE_POINT_H_
+#define MODELS_BASE_POINT_H_
 
 /// \par OVERVIEW
 ///
@@ -116,4 +116,4 @@ struct SphericalPoint3d {
   T angle_z;
 };
 
-#endif  // OTLS_MODELS_BASE_POINT_H_
+#endif  // MODELS_BASE_POINT_H_

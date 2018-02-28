@@ -1,8 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef OTLS_MODELS_SAGTENSION_LINECABLESAGGER_H_
-#define OTLS_MODELS_SAGTENSION_LINECABLESAGGER_H_
+#ifndef MODELS_SAGTENSION_LINE_CABLE_SAGGER_H_
+#define MODELS_SAGTENSION_LINE_CABLE_SAGGER_H_
 
 #include <list>
 #include <vector>
@@ -157,4 +157,4 @@ class LineCableSagger {
   mutable LineCable* line_cable_;
 };
 
-#endif  // OTLS_MODELS_SAGTENSION_LINECABLESAGGER_H_
+#endif  // MODELS_SAGTENSION_LINE_CABLE_SAGGER_H_

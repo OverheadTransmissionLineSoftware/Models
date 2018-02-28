@@ -1,10 +1,11 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef OTLS_MODELS_TRANSMISSIONLINE_LINESTRUCTURE_H_
-#define OTLS_MODELS_TRANSMISSIONLINE_LINESTRUCTURE_H_
+#ifndef MODELS_TRANSMISSIONLINE_LINE_STRUCTURE_H_
+#define MODELS_TRANSMISSIONLINE_LINE_STRUCTURE_H_
 
 #include <list>
+#include <vector>
 
 #include "models/base/error_message.h"
 #include "models/transmissionline/hardware.h"
@@ -133,4 +134,4 @@ class LineStructure {
   const Structure* structure_;
 };
 
-#endif  // OTLS_MODELS_TRANSMISSIONLINE_LINESTRUCTURE_H_
+#endif  // MODELS_TRANSMISSIONLINE_LINE_STRUCTURE_H_

@@ -1,8 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef OTLS_MODELS_TRANSMISSIONLINE_HARDWARE_H_
-#define OTLS_MODELS_TRANSMISSIONLINE_HARDWARE_H_
+#ifndef MODELS_TRANSMISSIONLINE_HARDWARE_H_
+#define MODELS_TRANSMISSIONLINE_HARDWARE_H_
 
 #include <list>
 #include <string>
@@ -60,4 +60,4 @@ struct Hardware {
   double weight;
 };
 
-#endif  // OTLS_MODELS_TRANSMISSIONLINE_HARDWARE_H_
+#endif  // MODELS_TRANSMISSIONLINE_HARDWARE_H_

@@ -1,10 +1,11 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef OTLS_MODELS_SAGTENSION_CABLECOMPONENTELONGATIONMODEL_H_
-#define OTLS_MODELS_SAGTENSION_CABLECOMPONENTELONGATIONMODEL_H_
+#ifndef MODELS_SAGTENSION_CABLE_COMPONENT_ELONGATION_MODEL_H_
+#define MODELS_SAGTENSION_CABLE_COMPONENT_ELONGATION_MODEL_H_
 
 #include <list>
+#include <vector>
 
 #include "models/base/error_message.h"
 #include "models/base/point.h"
@@ -252,7 +253,7 @@ class CableComponentElongationModel {
                      const double& temperature,
                      const double& load_limit_polynomial,
                      const double& load_stretch,
-                     std::vector<Point2d<double>>& points) const;
+                     std::vector<Point2d<double>>* points) const;
 
   /// \brief Gets the slope for the specified parameters.
   /// \param[in] type_polynomial
@@ -451,4 +452,4 @@ class CableComponentElongationModel {
   const double* temperature_reference_;
 };
 
-#endif  // OTLS_MODELS_SAGTENSION_CABLECOMPONENTELONGATIONMODEL_H_
+#endif  // MODELS_SAGTENSION_CABLE_COMPONENT_ELONGATION_MODEL_H_

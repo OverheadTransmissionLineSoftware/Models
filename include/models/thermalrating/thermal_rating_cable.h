@@ -1,8 +1,10 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef OTLS_MODELS_THERMALRATING_THERMALRATINGCABLE_H_
-#define OTLS_MODELS_THERMALRATING_THERMALRATINGCABLE_H_
+#ifndef MODELS_THERMALRATING_THERMAL_RATING_CABLE_H_
+#define MODELS_THERMALRATING_THERMAL_RATING_CABLE_H_
+
+#include <list>
 
 #include "models/base/error_message.h"
 #include "models/transmissionline/cable.h"
@@ -123,4 +125,4 @@ class ThermalRatingCable {
   ThermalRatingCableComponent component_thermalrating_shell_;
 };
 
-#endif  // OTLS_MODELS_THERMALRATING_THERMALRATINGCABLE_H_
+#endif  // MODELS_THERMALRATING_THERMAL_RATING_CABLE_H_

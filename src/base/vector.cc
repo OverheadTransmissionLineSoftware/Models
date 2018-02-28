@@ -26,9 +26,8 @@ double Vector2d::Angle(const bool& is_enabled_negative_angles) const {
 
   // uses trigonometry to solve for angle of vector
   if (x_ == 0 || y_ == 0) {
-
-    // The vector lies on an axis, so this returns an angle constant.
-    // Ex: For values on the positive horizontal axis (0 degrees), this helps
+    // the vector lies on an axis, so this returns an angle constant
+    // ex: for values on the positive horizontal axis (0 degrees), this helps
     // return 0 instead of 359.99999....
     if (x_ == 0) {
       if (0 < y_) {
@@ -40,10 +39,9 @@ double Vector2d::Angle(const bool& is_enabled_negative_angles) const {
             3 * (units::kPi / 2),
             units::AngleConversionType::kRadiansToDegrees);
       } else {
-        return angle; // both x_ and y_ are zero, returns invalid answer
+        return angle;  // both x_ and y_ are zero, returns invalid answer
       }
     } else {  // y_ == 0
-
       if (0 < x_) {
         angle = 0;
       } else if (x_ < 0) {
@@ -51,13 +49,12 @@ double Vector2d::Angle(const bool& is_enabled_negative_angles) const {
             2 * (units::kPi / 2),
             units::AngleConversionType::kRadiansToDegrees);
       } else {
-        return angle; // both x_ and y_ are zero, returns invalid answer
+        return angle;  // both x_ and y_ are zero, returns invalid answer
       }
     }
   } else {
     // selects the quadrant and calculate using arc tangent function
     if (0 <= y_) {
-
       if (0 <= x_) {  // quadrant I
         angle = units::ConvertAngle(
             std::atan(y_ / x_),

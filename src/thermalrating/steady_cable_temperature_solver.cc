@@ -180,7 +180,6 @@ bool SteadyCableTemperatureSolver::SolveTemperatureAndState() const {
   unsigned int iter = 0;
   const int iter_max = 100;
   while (0.1 < std::abs(point_left.x - point_right.x) && (iter <= iter_max)) {
-
     // gets current point x value using left and right points
     // calculates tangent line between points, extrapolates using line
     double slope_line = (point_right.y - point_left.y)
@@ -195,7 +194,6 @@ bool SteadyCableTemperatureSolver::SolveTemperatureAndState() const {
 
     // updates either left or right point based on current point
     if (point_current.x < point_left.x) {
-
       point_right.x = point_left.x;
       point_right.y = point_left.y;
       point_left.x = point_current.x;
@@ -203,7 +201,6 @@ bool SteadyCableTemperatureSolver::SolveTemperatureAndState() const {
 
     } else if ((point_left.x < point_current.x)
         && (point_current.x < point_right.x)) {
-
       if (point_current.y < target_solution) {
         point_right.x = point_current.x;
         point_right.y = point_current.y;
@@ -213,7 +210,6 @@ bool SteadyCableTemperatureSolver::SolveTemperatureAndState() const {
       }
 
     } else if (point_right.x < point_current.x) {
-
       point_left.x = point_right.x;
       point_left.y = point_right.y;
       point_right.x = point_current.x;

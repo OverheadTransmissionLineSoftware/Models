@@ -1,10 +1,11 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef OTLS_MODELS_TRANSMISSIONLINE_TRANSMISSIONLINE_H_
-#define OTLS_MODELS_TRANSMISSIONLINE_TRANSMISSIONLINE_H_
+#ifndef MODELS_TRANSMISSIONLINE_TRANSMISSION_LINE_H_
+#define MODELS_TRANSMISSIONLINE_TRANSMISSION_LINE_H_
 
 #include <list>
+#include <vector>
 
 #include "models/base/point.h"
 #include "models/base/vector.h"
@@ -279,7 +280,7 @@ class TransmissionLine {
                                               const double& distance_station,
                                               const double& distance_elevation,
                                               const double& rotation_xy,
-                                              Vector2d& vector_xy) const;
+                                              Vector2d* vector_xy) const;
 
   /// \brief Updates cached member variables and modifies control variables if
   ///    update is required.
@@ -344,4 +345,4 @@ class TransmissionLine {
   mutable std::vector<Point3d<double>> points_xyz_structures_;
 };
 
-#endif  // OTLS_MODELS_TRANSMISSIONLINE_TRANSMISSIONLINE_H_
+#endif  // MODELS_TRANSMISSIONLINE_TRANSMISSION_LINE_H_

@@ -1,8 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef OTLS_MODELS_SAGTENSION_CABLESTATE_H_
-#define OTLS_MODELS_SAGTENSION_CABLESTATE_H_
+#ifndef MODELS_SAGTENSION_CABLE_STATE_H_
+#define MODELS_SAGTENSION_CABLE_STATE_H_
 
 #include <list>
 
@@ -66,4 +66,4 @@ struct CableStretchState : public CableState {
   double load;
 };
 
-#endif  // OTLS_MODELS_SAGTENSION_CABLESTATE_H_
+#endif  // MODELS_SAGTENSION_CABLE_STATE_H_

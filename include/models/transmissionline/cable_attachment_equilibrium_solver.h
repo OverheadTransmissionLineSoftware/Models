@@ -1,8 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef OTLS_MODELS_TRANSMISSIONLINE_CABLEATTACHMENTEQUILIBRIUMSOLVER_H_
-#define OTLS_MODELS_TRANSMISSIONLINE_CABLEATTACHMENTEQUILIBRIUMSOLVER_H_
+#ifndef MODELS_TRANSMISSIONLINE_CABLE_ATTACHMENT_EQUILIBRIUM_SOLVER_H_
+#define MODELS_TRANSMISSIONLINE_CABLE_ATTACHMENT_EQUILIBRIUM_SOLVER_H_
 
 #include <list>
 
@@ -27,7 +27,7 @@
 /// - Imbalance: The difference between the cable and hardware force vectors.
 ///   This helps determine how close the cable attachment is to static
 ///   equilibrium.
-/// 
+///
 /// \par COORDINATE SYSTEM
 ///
 /// The origin coincides with the cable attachment, which is where static
@@ -175,4 +175,4 @@ class CableAttachmentEquilibriumSolver {
   mutable Vector3d tension_imbalance_;
 };
 
-#endif  // OTLS_MODELS_TRANSMISSIONLINE_CABLEATTACHMENTEQUILIBRIUMSOLVER_H_
+#endif  // MODELS_TRANSMISSIONLINE_CABLE_ATTACHMENT_EQUILIBRIUM_SOLVER_H_

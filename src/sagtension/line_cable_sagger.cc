@@ -144,7 +144,8 @@ bool LineCableSagger::Validate(const bool& is_included_warnings,
   return is_valid;
 }
 
-const std::vector<CableConstraint>* LineCableSagger::constraints_design() const {
+const std::vector<CableConstraint>*
+    LineCableSagger::constraints_design() const {
   return constraints_design_;
 }
 
@@ -172,7 +173,6 @@ bool LineCableSagger::IsUpdated() const {
 bool LineCableSagger::Update() const {
   // updates line cable constraint limit
   if (is_updated_linecable_constraint_limit_ == false) {
-
     is_updated_linecable_constraint_limit_ = UpdateLineCableConstraintLimit();
     if (is_updated_linecable_constraint_limit_ == false) {
       return false;

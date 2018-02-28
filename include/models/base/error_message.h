@@ -1,8 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef OTLS_MODELS_BASE_ERRORMESSAGE_H_
-#define OTLS_MODELS_BASE_ERRORMESSAGE_H_
+#ifndef MODELS_BASE_ERROR_MESSAGE_H_
+#define MODELS_BASE_ERROR_MESSAGE_H_
 
 #include <string>
 
@@ -20,4 +20,4 @@ struct ErrorMessage {
   std::string title;
 };
 
-#endif  // OTLS_MODELS_BASE_ERRORMESSAGE_H_
+#endif  // MODELS_BASE_ERROR_MESSAGE_H_

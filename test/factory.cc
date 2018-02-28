@@ -3,6 +3,9 @@
 
 #include "factory.h"
 
+#include <list>
+#include <vector>
+
 #include "models/base/units.h"
 
 namespace factory {

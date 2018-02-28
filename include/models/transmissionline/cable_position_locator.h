@@ -1,8 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef OTLS_MODELS_TRANSMISSIONLINE_CABLEPOSITIONLOCATOR_H_
-#define OTLS_MODELS_TRANSMISSIONLINE_CABLEPOSITIONLOCATOR_H_
+#ifndef MODELS_TRANSMISSIONLINE_CABLE_POSITION_LOCATOR_H_
+#define MODELS_TRANSMISSIONLINE_CABLE_POSITION_LOCATOR_H_
 
 #include <list>
 #include <vector>
@@ -83,7 +83,7 @@ class CablePositionLocator {
   /// \param[in] direction_wind
   ///   The direction of the wind.
   void set_direction_wind(const AxisDirectionType& direction_wind);
-  
+
   /// \brief Sets the line cable index.
   /// \param[in] index_line_cable
   ///   The line cable index.
@@ -208,4 +208,4 @@ class CablePositionLocator {
   const Vector3d* weight_unit_;
 };
 
-#endif  // OTLS_MODELS_TRANSMISSIONLINE_CABLEPOSITIONLOCATOR_H_
+#endif  // MODELS_TRANSMISSIONLINE_CABLE_POSITION_LOCATOR_H_

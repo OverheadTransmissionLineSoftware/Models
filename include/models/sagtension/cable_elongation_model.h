@@ -1,8 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef OTLS_MODELS_SAGTENSION_CABLEELONGATIONMODEL_H_
-#define OTLS_MODELS_SAGTENSION_CABLEELONGATIONMODEL_H_
+#ifndef MODELS_SAGTENSION_CABLE_ELONGATION_MODEL_H_
+#define MODELS_SAGTENSION_CABLE_ELONGATION_MODEL_H_
 
 #include <list>
 #include <vector>
@@ -300,4 +300,4 @@ class CableElongationModel {
   mutable CableStretchState state_stretch_shell_;
 };
 
-#endif  // OTLS_MODELS_SAGTENSION_CABLEELONGATIONMODEL_H_
+#endif  // MODELS_SAGTENSION_CABLE_ELONGATION_MODEL_H_

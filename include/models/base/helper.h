@@ -1,8 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef OTLS_MODELS_BASE_HELPER_H_
-#define OTLS_MODELS_BASE_HELPER_H_
+#ifndef MODELS_BASE_HELPER_H_
+#define MODELS_BASE_HELPER_H_
 
 #include <list>
 #include <string>
@@ -70,4 +70,4 @@ double Round(const double& number, const int& precision);
 
 }  // namespace helper
 
-#endif  // OTLS_MODELS_BASE_HELPER_H_
+#endif  // MODELS_BASE_HELPER_H_

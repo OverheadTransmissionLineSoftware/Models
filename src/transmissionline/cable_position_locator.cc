@@ -82,7 +82,8 @@ std::list<Point3d<double>> CablePositionLocator::PointsCable(
   return points;
 }
 
-const std::vector<Point3d<double>>* CablePositionLocator::PointsCableAttachment()
+const std::vector<Point3d<double>>*
+    CablePositionLocator::PointsCableAttachment()
     const {
   // updates class if necessary
   if ((IsUpdated() == false) && (Update() == false)) {
@@ -364,7 +365,7 @@ bool CablePositionLocator::SolveCablePosition() const {
   double tension_imbalance = -999999;
   int iter = 0;
   const double precision = 5;
-  while((precision <= std::abs(tension_imbalance)) && (iter < 100)) {
+  while ((precision <= std::abs(tension_imbalance)) && (iter < 100)) {
     // updates hardware points
     // does a force balance at all points and gets the max tension imbalance
     tension_imbalance = UpdatePointsHardware();

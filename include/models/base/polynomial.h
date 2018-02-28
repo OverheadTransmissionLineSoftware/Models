@@ -1,8 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef OTLS_MODELS_BASE_POLYNOMIAL_H_
-#define OTLS_MODELS_BASE_POLYNOMIAL_H_
+#ifndef MODELS_BASE_POLYNOMIAL_H_
+#define MODELS_BASE_POLYNOMIAL_H_
 
 #include <list>
 #include <vector>
@@ -25,7 +25,7 @@ class Polynomial {
   /// \brief Alternate constructor.
   /// \param[in] coefficients
   ///   A list of coefficients.
-  Polynomial(const std::vector<double>* coefficients);
+  explicit Polynomial(const std::vector<double>* coefficients);
 
   /// \brief Destructor.
   ~Polynomial();
@@ -115,4 +115,4 @@ class Polynomial {
   mutable bool is_updated_derivative_;
 };
 
-#endif  // OTLS_MODELS_BASE_POLYNOMIAL_H_
+#endif  // MODELS_BASE_POLYNOMIAL_H_

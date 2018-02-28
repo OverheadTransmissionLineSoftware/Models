@@ -661,8 +661,9 @@ Point3d<double> TransmissionLine::PointXyzAlignmentFromStation(
 
   // calculates station and elevation distances
   const double distance_station = station - point_align_back.station;
-  const double slope = (point_align_ahead.elevation - point_align_back.elevation)
-                       / (point_align_ahead.station - point_align_back.station);
+  const double slope =
+      (point_align_ahead.elevation - point_align_back.elevation)
+      / (point_align_ahead.station - point_align_back.station);
   const double distance_elevation = slope * distance_station;
 
   // gets an xy vector along the previous alignment path
@@ -678,21 +679,21 @@ Point3d<double> TransmissionLine::PointXyzAlignmentFromStation(
   return PointXyzAlignmentFromVector(point_xyz_back, distance_station,
                                      distance_elevation,
                                      point_align_back.rotation,
-                                     vector_alignment);
+                                     &vector_alignment);
 }
 
 Point3d<double> TransmissionLine::PointXyzAlignmentFromVector(
     const Point3d<double>& point_xyz, const double& distance_station,
     const double& distance_elevation, const double& rotation_xy,
-    Vector2d& vector_xy) const {
+    Vector2d* vector_xy) const {
   // rotates and scales xy vector to new position
-  vector_xy.Rotate(rotation_xy);
-  vector_xy.Scale(distance_station / vector_xy.Magnitude());
+  vector_xy->Rotate(rotation_xy);
+  vector_xy->Scale(distance_station / vector_xy->Magnitude());
 
   // calculates new point
   Point3d<double> point;
-  point.x = point_xyz.x + vector_xy.x();
-  point.y = point_xyz.y + vector_xy.y();
+  point.x = point_xyz.x + vector_xy->x();
+  point.y = point_xyz.y + vector_xy->y();
   point.z = point_xyz.z + distance_elevation;
 
   return point;
@@ -748,7 +749,7 @@ bool TransmissionLine::UpdatePointsXyzAlignment() const {
           distance_station,
           distance_elevation,
           point_align_prev->rotation,
-          vector);
+          &vector);
 
       points_xyz_alignment_.push_back(point);
     }

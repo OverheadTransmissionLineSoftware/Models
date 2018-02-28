@@ -1,8 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef OTLS_MODELS_BASE_GEOMETRICSHAPES_H_
-#define OTLS_MODELS_BASE_GEOMETRICSHAPES_H_
+#ifndef MODELS_BASE_GEOMETRIC_SHAPES_H_
+#define MODELS_BASE_GEOMETRIC_SHAPES_H_
 
 #include <list>
 
@@ -14,8 +14,11 @@
 /// be inherited by a unique shape.
 class Shape {
  public:
-  Shape() {};
-  ~Shape() {};
+  /// \brief Constructor.
+  Shape() {}
+
+  /// \brief Destructor.
+  ~Shape() {}
 
   /// \brief The area of the shape cross section.
   virtual double AreaCrossSection() const = 0;
@@ -83,4 +86,4 @@ class Cylinder : public Shape {
   double length_;
 };
 
-#endif  // OTLS_MODELS_BASE_GEOMETRICSHAPES_H_
+#endif  // MODELS_BASE_GEOMETRIC_SHAPES_H_

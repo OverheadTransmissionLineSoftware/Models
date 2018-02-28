@@ -266,16 +266,13 @@ bool CatenaryCableReloader::SolveReloadedCatenaryTension() const {
   const double precision = 0.01;
   while (precision < std::abs(point_left.x - point_right.x)
          && (iter < iter_max)) {
-
     // gets current point horizontal tension using left and right points
     if ((point_left.y > target_solution)
         && (target_solution > point_right.y)) {
-
       // gets average of left and right points
       point_current.x = (point_left.x + point_right.x) / 2;
 
     } else {
-
       // calculates tangent line between points, extrapolate using line
       double slope_line = (point_right.y - point_left.y)
           / (point_right.x - point_left.x);
@@ -289,7 +286,6 @@ bool CatenaryCableReloader::SolveReloadedCatenaryTension() const {
 
     // current point is left of left/right points
     if (point_current.x < point_left.x) {
-
       point_right.x = point_left.x;
       point_right.y = point_left.y;
 
@@ -299,7 +295,6 @@ bool CatenaryCableReloader::SolveReloadedCatenaryTension() const {
     // current point is between left/right points
     } else if ((point_left.x < point_current.x) &&
         (point_current.x < point_right.x)) {
-
       if (point_current.y < target_solution) {
         point_right.x = point_current.x;
         point_right.y = point_current.y;
@@ -310,7 +305,6 @@ bool CatenaryCableReloader::SolveReloadedCatenaryTension() const {
 
     // current point is right of left/right points
     } else if (point_right.x < point_current.x) {
-
       point_left.x = point_right.x;
       point_left.y = point_right.y;
 

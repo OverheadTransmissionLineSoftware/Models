@@ -13,7 +13,7 @@ class CableHeatTransferSolverTest : public ::testing::Test {
   CableHeatTransferSolverTest() {
     // gets thermal rating cable from factory
     cable_ = factory::BuildThermalRatingCable();
-    
+
     // builds weather
     weather_ = new ThermalRatingWeather();
     weather_->angle_wind = 90;

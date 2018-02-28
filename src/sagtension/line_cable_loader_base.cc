@@ -284,7 +284,6 @@ bool LineCableLoaderBase::UpdateConstraintCableModel() const {
 
   while ((precision < std::abs(point_current.y - target_solution))
       && (iter < iter_max)) {
-
     // solves for new stretch value is calculated for current point
     slope_line = (point_right.y - point_left.y)
                   / (point_right.x - point_left.x);
@@ -302,7 +301,6 @@ bool LineCableLoaderBase::UpdateConstraintCableModel() const {
 
     // current point is left of left/right points
     if (point_current.x < point_left.x) {
-
       point_right.x = point_left.x;
       point_right.y = point_left.y;
       point_left.x = point_current.x;
@@ -311,7 +309,6 @@ bool LineCableLoaderBase::UpdateConstraintCableModel() const {
     // current point is between left/right points
     } else if ((point_left.x <= point_current.x)
         && (point_current.x <= point_right.x)) {
-
       if (point_current.y < target_solution) {
         point_right.x = point_current.x;
         point_right.y = point_current.y;
@@ -322,7 +319,6 @@ bool LineCableLoaderBase::UpdateConstraintCableModel() const {
 
     // current point is right of left/right points
     } else if (point_right.x < point_current.x) {
-
       point_left.x = point_right.x;
       point_left.y = point_right.y;
       point_right.x = point_current.x;
@@ -380,7 +376,8 @@ bool LineCableLoaderBase::UpdateLoadStretch() const {
     } else {
       state_stretch_creep_.load = reloader.CatenaryReloaded().TensionAverage();
       state_stretch_creep_.temperature = model_creep_.state().temperature;
-      state_stretch_creep_.type_polynomial = model_creep_.state().type_polynomial;
+      state_stretch_creep_.type_polynomial =
+          model_creep_.state().type_polynomial;
     }
   }
 
