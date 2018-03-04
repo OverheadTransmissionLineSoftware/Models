@@ -12,11 +12,31 @@ Build the OTLS-Models libraries.
 Build the GoogleTest libraries.
 * See the `external` directory for instructions.
 
-## Linux
-To build the test executable open the `test/test.workspace` file and select
-the build configuration (debug/release).
+## CMake
+To build the debug executable:
+```
+mkdir <repository_root>/build-debug
+cd <repository_root>/build-debug
+cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DMODELS_BUILD_TESTS=True ../build/cmake
+cmake --build .
+```
 
-## Windows
+To build the release executable:
+```
+mkdir <repository_root>/build-release
+cd <repository_root>/build-release
+cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DMODELS_BUILD_TESTS=True ../build/cmake
+cmake --build .
+```
+
+The executable will be located at: `build-<configuration>/test/test`
+
+## Codeblocks
+To build the test executable open the `test/test.workspace` file and select
+the build configuration (debug/release). The executable will be located at:
+`test/<configuration>/test`.
+
+## Visual Studio
 To build the test executable open the `test/test.sln` file and select the build
 configuration (Debug/Release). Only configurations for the x64 platform are
-supported.
+supported. The executable will be located at: `test/<configuration>/test.exe`.
