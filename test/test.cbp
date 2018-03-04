@@ -10,7 +10,7 @@
 			<Target title="debug">
 				<Option output="debug/test" prefix_auto="1" extension_auto="1" />
 				<Option object_output="debug/obj/" />
-				<Option external_deps="../build/codeblocks/debug/libotlsmodels_based.a;../build/codeblocks/debug/libotlsmodels_sagtensiond.a;../build/codeblocks/debug/libotlsmodels_thermalratingd.a;../build/codeblocks/debug/libotlsmodels_transmissionlined.a;" />
+				<Option external_deps="../lib/libotlsmodels_based.a;../lib/libotlsmodels_sagtensiond.a;../lib/libotlsmodels_thermalratingd.a;../lib/libotlsmodels_transmissionlined.a;" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Option projectLinkerOptionsRelation="2" />
@@ -18,16 +18,16 @@
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
-					<Add library="../build/codeblocks/debug/libotlsmodels_sagtensiond.a" />
-					<Add library="../build/codeblocks/debug/libotlsmodels_thermalratingd.a" />
-					<Add library="../build/codeblocks/debug/libotlsmodels_transmissionlined.a" />
-					<Add library="../build/codeblocks/debug/libotlsmodels_based.a" />
+					<Add library="../lib/libotlsmodels_sagtensiond.a" />
+					<Add library="../lib/libotlsmodels_thermalratingd.a" />
+					<Add library="../lib/libotlsmodels_transmissionlined.a" />
+					<Add library="../lib/libotlsmodels_based.a" />
 				</Linker>
 			</Target>
 			<Target title="release">
 				<Option output="release/test" prefix_auto="1" extension_auto="1" />
 				<Option object_output="release/obj/" />
-				<Option external_deps="../build/codeblocks/release/libotlsmodels_base.a;../build/codeblocks/release/libotlsmodels_sagtension.a;../build/codeblocks/release/libotlsmodels_thermalrating.a;../build/codeblocks/release/libotlsmodels_transmissionline.a;" />
+				<Option external_deps="../lib/libotlsmodels_base.a;../lib/libotlsmodels_sagtension.a;../lib/libotlsmodels_thermalrating.a;../lib/libotlsmodels_transmissionline.a;" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Option projectLinkerOptionsRelation="2" />
@@ -36,10 +36,10 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="../build/codeblocks/release/libotlsmodels_sagtension.a" />
-					<Add library="../build/codeblocks/release/libotlsmodels_thermalrating.a" />
-					<Add library="../build/codeblocks/release/libotlsmodels_transmissionline.a" />
-					<Add library="../build/codeblocks/release/libotlsmodels_base.a" />
+					<Add library="../lib/libotlsmodels_sagtension.a" />
+					<Add library="../lib/libotlsmodels_thermalrating.a" />
+					<Add library="../lib/libotlsmodels_transmissionline.a" />
+					<Add library="../lib/libotlsmodels_base.a" />
 				</Linker>
 			</Target>
 		</Build>
