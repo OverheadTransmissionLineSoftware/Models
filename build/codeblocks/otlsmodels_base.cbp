@@ -8,7 +8,7 @@
 		<Option virtualFolders="Header Files/;Source Files/;" />
 		<Build>
 			<Target title="debug">
-				<Option output="debug/otlsmodels_based" prefix_auto="1" extension_auto="1" />
+				<Option output="../../lib/otlsmodels_based" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
 				<Option object_output="debug/otlsmodels_base/" />
 				<Option type="2" />
@@ -18,7 +18,7 @@
 				</Compiler>
 			</Target>
 			<Target title="release">
-				<Option output="release/otlsmodels_base" prefix_auto="1" extension_auto="1" />
+				<Option output="../../lib/otlsmodels_base" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
 				<Option object_output="release/otlsmodels_base/" />
 				<Option type="2" />

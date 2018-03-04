@@ -8,25 +8,25 @@
 		<Option virtualFolders="Header Files/;Source Files/;" />
 		<Build>
 			<Target title="debug">
-				<Option output="debug/otlsmodels_thermalratingd" prefix_auto="1" extension_auto="1" />
+				<Option output="../../lib/otlsmodels_thermalratingd" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
 				<Option object_output="debug/otlsmodels_thermalrating/" />
-				<Option external_deps="debug/libotlsmodels_transmissionlined.a" />
+				<Option external_deps="../../lib/libotlsmodels_transmissionlined.a" />
 				<Option type="2" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
-					<Add library="debug/libotlsmodels_based.a" />
-					<Add library="debug/libotlsmodels_transmissionlined.a" />
+					<Add library="../../lib/libotlsmodels_based.a" />
+					<Add library="../../lib/libotlsmodels_transmissionlined.a" />
 				</Linker>
 			</Target>
 			<Target title="release">
-				<Option output="release/otlsmodels_thermalrating" prefix_auto="1" extension_auto="1" />
+				<Option output="../../lib/otlsmodels_thermalrating" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
 				<Option object_output="release/otlsmodels_thermalrating/" />
-				<Option external_deps="release/libotlsmodels_transmissionline.a" />
+				<Option external_deps="../../lib/libotlsmodels_transmissionline.a" />
 				<Option type="2" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -34,8 +34,8 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="release/libotlsmodels_base.a" />
-					<Add library="release/libotlsmodels_transmissionline.a" />
+					<Add library="../../lib/libotlsmodels_base.a" />
+					<Add library="../../lib/libotlsmodels_transmissionline.a" />
 				</Linker>
 			</Target>
 		</Build>
