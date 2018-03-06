@@ -6,7 +6,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # defines settings
 PATH_OCLINT=$1
 OPTIONS=$(cat $DIR/options.conf)
-COMPILER_OPTIONS='-std=c++11 -Wall -g -Iinclude -Iexternal/googletest/googletest/include -Itest -c'
+COMPILER_OPTIONS='-std=c++11 -Wall -g -I.. -I../include -I../external/googletest/googletest/include -c'
 
 # generates a list of files
 FILES=$(find $DIR/../src/ $DIR/../test/ -type f -name \*.cc -print)
