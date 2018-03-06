@@ -23,10 +23,8 @@ TransitSagger::~TransitSagger() {
 
 double TransitSagger::AngleLow() const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return -999999;
   }
 
   return angle_low_;
@@ -34,10 +32,8 @@ double TransitSagger::AngleLow() const {
 
 double TransitSagger::FactorControl() const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return -999999;
   }
 
   // gets the sag at the catenary low point
@@ -52,10 +48,8 @@ double TransitSagger::FactorControl() const {
 
 Point3d<double> TransitSagger::PointCatenaryLow() const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return Point3d<double>();
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return Point3d<double>();
   }
 
   return point_catenary_low_;
@@ -63,10 +57,8 @@ Point3d<double> TransitSagger::PointCatenaryLow() const {
 
 Point3d<double> TransitSagger::PointTarget() const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return Point3d<double>();
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return Point3d<double>();
   }
 
   // checks if transit is in x-z plane
@@ -186,11 +178,7 @@ double TransitSagger::AngleVertical(const Point3d<double>& point_from,
 }
 
 bool TransitSagger::IsUpdated() const {
-  if (is_updated_ == true) {
-    return true;
-  } else {
-    return false;
-  }
+  return is_updated_ == true;
 }
 
 double TransitSagger::PositionCatenaryLowAngle(
@@ -247,11 +235,7 @@ bool TransitSagger::UpdateAngleLow() const {
   angle_low_ = AngleVertical(point_transit_, point_catenary_low_);
 
   // checks angle to make sure transit isn't directly above catenary
-  if (helper::Round(angle_low_, 0) == -90) {
-    return false;
-  } else {
-    return true;
-  }
+  return helper::Round(angle_low_, 0) != -90;
 }
 
 bool TransitSagger::UpdatePointCatenaryLow() const {

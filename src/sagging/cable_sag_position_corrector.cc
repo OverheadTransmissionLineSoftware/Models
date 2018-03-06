@@ -24,10 +24,8 @@ CableSagPositionCorrector::~CableSagPositionCorrector() {
 
 std::vector<double> CableSagPositionCorrector::ClippingOffsets() const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return std::vector<double>();
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return std::vector<double>();
   }
 
   // creates a container
@@ -61,10 +59,8 @@ std::vector<double> CableSagPositionCorrector::ClippingOffsets() const {
 
 std::vector<double> CableSagPositionCorrector::SagCorrections() const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return std::vector<double>();
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return std::vector<double>();
   }
 
   // creates a container
@@ -157,11 +153,7 @@ void CableSagPositionCorrector::set_points_attachment(
 }
 
 bool CableSagPositionCorrector::IsUpdated() const {
-  if (is_updated_ == true) {
-    return true;
-  } else {
-    return false;
-  }
+  return is_updated_ == true;
 }
 
 double CableSagPositionCorrector::LengthCatenaries(

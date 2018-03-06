@@ -20,10 +20,8 @@ StopwatchSagger::~StopwatchSagger() {
 
 double StopwatchSagger::TimeReturn(const int& wave) const {
   // updates class if necessary
-  if (IsUpdated() == false) {
-    if (Update() == false) {
-      return -999999;
-    }
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return -999999;
   }
 
   return (wave * 2 * length_) / velocity_wave_;
@@ -63,11 +61,7 @@ units::UnitSystem StopwatchSagger::units() const {
 }
 
 bool StopwatchSagger::IsUpdated() const {
-  if (is_updated_ == true) {
-    return true;
-  } else {
-    return false;
-  }
+  return is_updated_ == true;
 }
 
 bool StopwatchSagger::Update() const {
