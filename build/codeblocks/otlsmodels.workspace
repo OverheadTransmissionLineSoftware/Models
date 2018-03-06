@@ -2,6 +2,10 @@
 <CodeBlocks_workspace_file>
 	<Workspace title="OTLS-Models">
 		<Project filename="otlsmodels_base.cbp" />
+		<Project filename="otlsmodels_sagging.cbp">
+			<Depends filename="otlsmodels_base.cbp" />
+			<Depends filename="otlsmodels_transmissionline.cbp" />
+		</Project>
 		<Project filename="otlsmodels_sagtension.cbp">
 			<Depends filename="otlsmodels_base.cbp" />
 			<Depends filename="otlsmodels_transmissionline.cbp" />

@@ -12,6 +12,10 @@ set (TEST_SRC_FILES
   ${OTLSMODELS_SOURCE_DIR}/test/base/polynomial_test.cc
   ${OTLSMODELS_SOURCE_DIR}/test/base/units_test.cc
   ${OTLSMODELS_SOURCE_DIR}/test/base/vector_test.cc
+  ${OTLSMODELS_SOURCE_DIR}/test/sagging/cable_sag_position_corrector_test.cc
+  ${OTLSMODELS_SOURCE_DIR}/test/sagging/dyno_sagger_test.cc
+  ${OTLSMODELS_SOURCE_DIR}/test/sagging/stopwatch_sagger_test.cc
+  ${OTLSMODELS_SOURCE_DIR}/test/sagging/transit_sagger_test.cc
   ${OTLSMODELS_SOURCE_DIR}/test/sagtension/cable_component_elongation_model_test.cc
   ${OTLSMODELS_SOURCE_DIR}/test/sagtension/cable_elongation_model_test.cc
   ${OTLSMODELS_SOURCE_DIR}/test/sagtension/cable_state_test.cc
@@ -57,6 +61,7 @@ add_executable (otlsmodels_test ${TEST_SRC_FILES})
 # links to libraries
 target_link_libraries (otlsmodels_test LINK_PUBLIC
   otlsmodels_sagtension
+  otlsmodels_sagging
   otlsmodels_thermalrating
   otlsmodels_transmissionline
   otlsmodels_base

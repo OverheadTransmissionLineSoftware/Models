@@ -23,6 +23,12 @@ This library contains classes/methods that model a transmission line in 3D.
   * Catenary position/tension
   * Weathercases
 
+### Sagging
+This library contains classes/methods that model the cable during
+sagging/installation.
+* Sag corrections and clipping offsets
+* Transit, dyno, and stopwatch sagging methods
+
 ### SagTension
 This library contains classes/methods that model cable sag-tension behavior.
 * Experimental Plastic Elongation (EPE) Cable Model

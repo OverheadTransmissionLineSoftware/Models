@@ -2,6 +2,10 @@
 <CodeBlocks_workspace_file>
 	<Workspace title="OTLS Models Test">
 		<Project filename="../build/codeblocks/otlsmodels_base.cbp" />
+		<Project filename="../build/codeblocks/otlsmodels_sagging.cbp">
+			<Depends filename="../build/codeblocks/otlsmodels_base.cbp" />
+			<Depends filename="../build/codeblocks/otlsmodels_transmissionline.cbp" />
+		</Project>
 		<Project filename="../build/codeblocks/otlsmodels_sagtension.cbp">
 			<Depends filename="../build/codeblocks/otlsmodels_base.cbp" />
 			<Depends filename="../build/codeblocks/otlsmodels_transmissionline.cbp" />
@@ -15,6 +19,7 @@
 		</Project>
 		<Project filename="test.cbp">
 			<Depends filename="../build/codeblocks/otlsmodels_base.cbp" />
+			<Depends filename="../build/codeblocks/otlsmodels_sagging.cbp" />
 			<Depends filename="../build/codeblocks/otlsmodels_sagtension.cbp" />
 			<Depends filename="../build/codeblocks/otlsmodels_thermalrating.cbp" />
 			<Depends filename="../build/codeblocks/otlsmodels_transmissionline.cbp" />

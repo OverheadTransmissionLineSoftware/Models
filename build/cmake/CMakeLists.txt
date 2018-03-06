@@ -9,6 +9,7 @@ set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../lib)
 
 # searches for individual library cmake files
 add_subdirectory (base)
+add_subdirectory (sagging)
 add_subdirectory (sagtension)
 add_subdirectory (thermalrating)
 add_subdirectory (transmissionline)

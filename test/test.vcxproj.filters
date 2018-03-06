@@ -20,6 +20,9 @@
     <Filter Include="Tests ThermalRating">
       <UniqueIdentifier>{20e8a7a4-a940-48ba-998b-6f23230c463c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests Sagging">
+      <UniqueIdentifier>{253a4ed6-4998-4364-9b52-2f780454c930}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="factory.h">
@@ -146,6 +149,18 @@
     </ClCompile>
     <ClCompile Include="sagtension\line_cable_unloader_test.cc">
       <Filter>Tests SagTension</Filter>
+    </ClCompile>
+    <ClCompile Include="sagging\cable_sag_position_corrector_test.cc">
+      <Filter>Tests Sagging</Filter>
+    </ClCompile>
+    <ClCompile Include="sagging\dyno_sagger_test.cc">
+      <Filter>Tests Sagging</Filter>
+    </ClCompile>
+    <ClCompile Include="sagging\stopwatch_sagger_test.cc">
+      <Filter>Tests Sagging</Filter>
+    </ClCompile>
+    <ClCompile Include="sagging\transit_sagger_test.cc">
+      <Filter>Tests Sagging</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
