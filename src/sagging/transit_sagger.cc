@@ -205,7 +205,7 @@ double TransitSagger::PositionCatenaryLowAngle(
   for (int i = 0; i < num_points; i++) {
     const double angle = AngleVertical(point_transit_, points[i]);
     if (angle < angle_low) {
-      angle_low= angle;
+      angle_low = angle;
       index_low = i;
     }
   }

@@ -1,8 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef OTLS_MODELS_SAGGING_CABLESAGPOSITIONCORRECTOR_H_
-#define OTLS_MODELS_SAGGING_CABLESAGPOSITIONCORRECTOR_H_
+#ifndef MODELS_SAGGING_CABLE_SAG_POSITION_CORRECTOR_H_
+#define MODELS_SAGGING_CABLE_SAG_POSITION_CORRECTOR_H_
 
 #include <list>
 #include <vector>
@@ -160,4 +160,4 @@ class CableSagPositionCorrector {
   const std::vector<Point3d<double>>* points_attachment_;
 };
 
-#endif  // OTLS_MODELS_SAGGING_CABLESAGPOSITIONCORRECTOR_H_
+#endif  // MODELS_SAGGING_CABLE_SAG_POSITION_CORRECTOR_H_

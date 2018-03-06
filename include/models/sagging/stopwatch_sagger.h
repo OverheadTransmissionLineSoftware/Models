@@ -1,8 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef OTLS_MODELS_SAGGING_STOPWATCHSAGGER_H_
-#define OTLS_MODELS_SAGGING_STOPWATCHSAGGER_H_
+#ifndef MODELS_SAGGING_STOPWATCH_SAGGER_H_
+#define MODELS_SAGGING_STOPWATCH_SAGGER_H_
 
 #include <list>
 
@@ -90,4 +90,4 @@ class StopwatchSagger {
   mutable double velocity_wave_;
 };
 
-#endif  // OTLS_MODELS_SAGGING_STOPWATCHSAGGER_H_
+#endif  // MODELS_SAGGING_STOPWATCH_SAGGER_H_

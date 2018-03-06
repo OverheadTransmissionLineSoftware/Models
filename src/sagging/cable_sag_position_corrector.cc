@@ -322,7 +322,6 @@ bool CableSagPositionCorrector::UpdatePulleyState() const {
 
     // updates either left or right point based on current point
     if (point_current.x < point_left.x) {
-
       point_right.x = point_left.x;
       point_right.y = point_left.y;
       point_left.x = point_current.x;
@@ -330,7 +329,6 @@ bool CableSagPositionCorrector::UpdatePulleyState() const {
 
     } else if ((point_left.x < point_current.x)
         && (point_current.x < point_right.x)) {
-
       if (point_current.y < target_solution) {
         point_right.x = point_current.x;
         point_right.y = point_current.y;
@@ -340,7 +338,6 @@ bool CableSagPositionCorrector::UpdatePulleyState() const {
       }
 
     } else if (point_right.x < point_current.x) {
-
       point_left.x = point_right.x;
       point_left.y = point_right.y;
       point_right.x = point_current.x;

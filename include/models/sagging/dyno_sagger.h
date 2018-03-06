@@ -1,8 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 // For more information, please refer to <http://unlicense.org/>
 
-#ifndef OTLS_MODELS_SAGGING_DYNOSAGGER_H_
-#define OTLS_MODELS_SAGGING_DYNOSAGGER_H_
+#ifndef MODELS_SAGGING_DYNO_SAGGER_H_
+#define MODELS_SAGGING_DYNO_SAGGER_H_
 
 #include <list>
 
@@ -71,4 +71,4 @@ class DynoSagger {
   SpanEndLocation location_;
 };
 
-#endif  // OTLS_MODELS_SAGGING_DYNOSAGGER_H_
+#endif  // MODELS_SAGGING_DYNO_SAGGER_H_
