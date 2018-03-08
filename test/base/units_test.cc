@@ -145,15 +145,51 @@ TEST(Units, ConvertTemperature) {
   double value1 = 0;
   double value2 = 0;
 
+  // converts kelvin to rankine and back again
+  value1 = 100;
+  value2 = units::ConvertTemperature(
+      value1,
+      units::TemperatureConversionType::kKelvinToRankine);
+  EXPECT_EQ(180.00, helper::Round(value2, 2));
+
+  value1 = units::ConvertTemperature(
+      value2,
+      units::TemperatureConversionType::kRankineToKelvin);
+  EXPECT_EQ(100.00, helper::Round(value1, 2));
+
+  // converts kelvin to celsius and back again
+  value1 = 0;
+  value2 = units::ConvertTemperature(
+      value1,
+      units::TemperatureConversionType::kKelvinToCelsius);
+  EXPECT_EQ(-273.15, helper::Round(value2, 2));
+
+  value1 = units::ConvertTemperature(
+      value2,
+      units::TemperatureConversionType::kCelsiusToKelvin);
+  EXPECT_EQ(0.00, helper::Round(value1, 2));
+
+  // converts rankine to fahrenheit and back again
+  value1 = 0;
+  value2 = units::ConvertTemperature(
+      value1,
+      units::TemperatureConversionType::kRankineToFahrenheit);
+  EXPECT_EQ(-459.67, helper::Round(value2, 2));
+
+  value1 = units::ConvertTemperature(
+      value2,
+      units::TemperatureConversionType::kFahrenheitToRankine);
+  EXPECT_EQ(0.00, helper::Round(value1, 2));
+
   // converts celsius to fahrenheit and back again
   value1 = 20;
   value2 = units::ConvertTemperature(
       value1,
       units::TemperatureConversionType::kCelsiusToFahrenheit);
-  EXPECT_EQ(68, helper::Round(value2, 0));
+  EXPECT_EQ(68.00, helper::Round(value2, 2));
 
-  value2 = units::ConvertTemperature(
-      value1,
+  value1 = units::ConvertTemperature(
+      value2,
       units::TemperatureConversionType::kFahrenheitToCelsius);
-  EXPECT_EQ(20, helper::Round(value1, 0));
+  EXPECT_EQ(20.00, helper::Round(value1, 2));
 }

@@ -85,8 +85,8 @@ Cable* BuildCable() {
 
   component.capacity_heat = units::ConvertTemperature(
       41.316,
-      units::TemperatureConversionType::kFahrenheitToCelsius,
-      1, false, false);
+      units::TemperatureConversionType::kRankineToKelvin,
+      1, false);
   component.coefficient_expansion_linear_thermal = 0.0000064;
   component.coefficients_polynomial_creep = coefficients_creep;
   component.coefficients_polynomial_loadstrain = coefficients_loadstrain;
@@ -143,8 +143,8 @@ Cable* BuildCable() {
 
   component.capacity_heat = units::ConvertTemperature(
       180.203,
-      units::TemperatureConversionType::kFahrenheitToCelsius,
-      1, false, false);
+      units::TemperatureConversionType::kRankineToKelvin,
+      1, false);
   component.coefficient_expansion_linear_thermal = 0.0000128;
   component.coefficients_polynomial_creep = coefficients_creep;
   component.coefficients_polynomial_loadstrain = coefficients_loadstrain;

@@ -66,7 +66,13 @@ enum class StressConversionType {
 enum class TemperatureConversionType {
   kNull,
   kCelsiusToFahrenheit,
-  kFahrenheitToCelsius
+  kCelsiusToKelvin,
+  kFahrenheitToCelsius,
+  kFahrenheitToRankine,
+  kKelvinToCelsius,
+  kKelvinToRankine,
+  kRankineToFahrenheit,
+  kRankineToKelvin
 };
 
 /// \par OVERVIEW
@@ -181,16 +187,16 @@ double ConvertStress(const double& value,
 /// \param[in] is_numerator
 ///   A boolean indicating if the unit being converted from is in the
 ///   numerator.
-/// \param[in] include_shift
-///   A flag that indicates if the value is to be shifted to the new scale
-///   datum during the conversion. This flag does not affect how the value is
-///   scaled.
 /// \return The converted value.
+/// This function will apply any applicable scaling and shifting factors. For
+/// relative temperatures (difference, range, etc), a conversion type should
+/// be used that does not apply shifting. For example, to convert a celsius
+/// temperature difference to a fahrenheit temperature difference, use the
+/// Kelvin->Rankine conversion type.
 double ConvertTemperature(const double& value,
                           const TemperatureConversionType& type,
                           const int& exponent = 1,
-                          const bool& is_numerator = true,
-                          const bool& include_shift = true);
+                          const bool& is_numerator = true);
 
 }  // namespace units
 

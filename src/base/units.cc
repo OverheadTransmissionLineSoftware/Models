@@ -38,8 +38,15 @@ const double kStressPsfToPsi = 1.0 / 144.0;
 const double kStressPsiToPsf = 144.0;
 
 // temperature conversion factors
-const double kTemperatureCelsiusToFahrenheit = 1.8;
-const double kTemperatureFahrenheitToCelsius = 1.0 / 1.8;
+const double kTemperatureKelvinToRankine = 1.8;
+const double kTemperatureRankineToKelvin = 1.0 / 1.8;
+
+const double kTemperatureShiftCelsiusToFahrenheit = 32;
+const double kTemperatureShiftCelsiusToKelvin = 273.15;
+const double kTemperatureShiftFahrenheitToCelsius = -32;
+const double kTemperatureShiftFahrenheitToRankine = 459.67;
+const double kTemperatureShiftKelvinToCelsius = -273.15;
+const double kTemperatureShiftRankineToFahrenheit = -459.67;
 
 /// \brief This is a generic function that converts a value by multiplication.
 /// \param[in] value
@@ -153,26 +160,29 @@ double ConvertStress(const double& value,
 double ConvertTemperature(const double& value,
                           const TemperatureConversionType& type,
                           const int& exponent,
-                          const bool& is_numerator,
-                          const bool& include_shift) {
-  if (type == TemperatureConversionType::kCelsiusToFahrenheit) {
-    double value_adj = Convert(value, kTemperatureCelsiusToFahrenheit, exponent,
-                               is_numerator);
+                          const bool& is_numerator) {
+  double value_conv = -999999;
 
-    if (include_shift == true) {
-      return value_adj + 32;
-    } else {
-      return value_adj;
-    }
+  if (type == TemperatureConversionType::kCelsiusToFahrenheit) {
+    value_conv = Convert(value, kTemperatureKelvinToRankine, exponent,
+                         is_numerator);
+    return value_conv + kTemperatureShiftCelsiusToFahrenheit;
+  } else if (type == TemperatureConversionType::kCelsiusToKelvin) {
+    return value + kTemperatureShiftCelsiusToKelvin;
   } else if (type == TemperatureConversionType::kFahrenheitToCelsius) {
-    double value_adj = -999999;
-    if (include_shift == true) {
-      value_adj = value - 32;
-    } else {
-      value_adj = value;
-    }
-    return Convert(value_adj, kTemperatureFahrenheitToCelsius, exponent,
+    value_conv = value + kTemperatureShiftFahrenheitToCelsius;
+    return Convert(value_conv, kTemperatureRankineToKelvin, exponent,
                    is_numerator);
+  } else if (type == TemperatureConversionType::kFahrenheitToRankine) {
+    return value + kTemperatureShiftFahrenheitToRankine;
+  } else if (type == TemperatureConversionType::kKelvinToCelsius) {
+    return value + kTemperatureShiftKelvinToCelsius;
+  } else if (type == TemperatureConversionType::kKelvinToRankine) {
+    return Convert(value, kTemperatureKelvinToRankine, exponent, is_numerator);
+  } else if (type == TemperatureConversionType::kRankineToFahrenheit) {
+    return value + kTemperatureShiftRankineToFahrenheit;
+  } else if (type == TemperatureConversionType::kRankineToKelvin) {
+    return Convert(value, kTemperatureRankineToKelvin, exponent, is_numerator);
   } else {
     return -999999;
   }
