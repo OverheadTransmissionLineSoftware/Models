@@ -66,6 +66,11 @@ Point3d<double> TransitSagger::PointTarget() const {
     return Point3d<double>();
   }
 
+  // checks for no transverse catenary load
+  if (catenary_.weight_unit().y() != 0) {
+    return Point3d<double>();
+  }
+
   Point3d<double> point;
 
   // solves x-coordinate by extending to opposite catenary end

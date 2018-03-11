@@ -48,7 +48,8 @@
 /// The target point is an extension of the transit angle. It lies along the
 /// transit-to-low angle line, at the opposite catenary end point. The target
 /// position can only be calculated if the transit is positioned along the x-z
-/// plane (i.e. y coordinate = 0).
+/// plane (i.e. y coordinate = 0), and there no transverse catenary loading
+/// (i.e. y component of unit load = 0).
 class TransitSagger {
  public:
   /// \brief Default constructor.
