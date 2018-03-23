@@ -51,3 +51,11 @@ TEST_F(StopwatchSaggerTest, TimeReturn) {
 TEST_F(StopwatchSaggerTest, Validate) {
   EXPECT_TRUE(s_.Validate(true, nullptr));
 }
+
+TEST_F(StopwatchSaggerTest, VelocityWave) {
+  double value = -999999;
+
+  // checks wave velocity
+  value = s_.VelocityWave();
+  EXPECT_EQ(401.1, helper::Round(value, 1));
+}

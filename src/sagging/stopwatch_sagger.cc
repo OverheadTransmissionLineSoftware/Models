@@ -42,6 +42,15 @@ bool StopwatchSagger::Validate(const bool& is_included_warnings,
   return is_valid;
 }
 
+double StopwatchSagger::VelocityWave() const {
+  // updates class if necessary
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return -999999;
+  }
+
+  return velocity_wave_;
+}
+
 Catenary3d StopwatchSagger::catenary() const {
   return catenary_;
 }

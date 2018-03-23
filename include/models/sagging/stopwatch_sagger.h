@@ -37,6 +37,10 @@ class StopwatchSagger {
   bool Validate(const bool& is_included_warnings = true,
                 std::list<ErrorMessage>* messages = nullptr) const;
 
+  /// \brief Gets the traveling wave velocity.
+  /// \return The traveling wave velocity.
+  double VelocityWave() const;
+
   /// \brief Gets the catenary.
   /// \return The catenary.
   Catenary3d catenary() const;
