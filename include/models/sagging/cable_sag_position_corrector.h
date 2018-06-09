@@ -64,6 +64,16 @@ class CableSagPositionCorrector {
   /// \brief Destructor.
   ~CableSagPositionCorrector();
 
+  /// \brief Gets the catenaries for the clipped state.
+  /// \return The catenaries for the clipped state. If the solution failed, a
+  ///   nullptr is returned.
+  const std::vector<Catenary3d>* CatenariesClipped() const;
+
+  /// \brief Gets the catenaries for the pulley state.
+  /// \return The catenaries for the pulley state. If the solution failed, a
+  ///   nullptr is returned.
+  const std::vector<Catenary3d>* CatenariesPulleyed() const;
+
   /// \brief Gets the clipping offsets.
   /// \return If the clipping offsets.
   std::vector<double> ClippingOffsets() const;

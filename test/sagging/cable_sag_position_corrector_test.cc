@@ -50,6 +50,74 @@ class CableSagPositionCorrectorTest : public ::testing::Test {
   CableSagPositionCorrector c_;
 };
 
+TEST_F(CableSagPositionCorrectorTest, CatenariesClipped) {
+  double value = -999999;
+
+  // checks catenary horizontal tensions
+  const std::vector<Catenary3d>* catenaries = c_.CatenariesClipped();
+
+  value = (*catenaries)[0].tension_horizontal();
+  EXPECT_EQ(6000.0, helper::Round(value, 1));
+
+  value = (*catenaries)[1].tension_horizontal();
+  EXPECT_EQ(6000.0, helper::Round(value, 1));
+
+  value = (*catenaries)[2].tension_horizontal();
+  EXPECT_EQ(6000.0, helper::Round(value, 1));
+
+  value = (*catenaries)[3].tension_horizontal();
+  EXPECT_EQ(6000.0, helper::Round(value, 1));
+
+  value = (*catenaries)[4].tension_horizontal();
+  EXPECT_EQ(6000.0, helper::Round(value, 1));
+
+  value = (*catenaries)[5].tension_horizontal();
+  EXPECT_EQ(6000.0, helper::Round(value, 1));
+
+  value = (*catenaries)[6].tension_horizontal();
+  EXPECT_EQ(6000.0, helper::Round(value, 1));
+
+  value = (*catenaries)[7].tension_horizontal();
+  EXPECT_EQ(6000.0, helper::Round(value, 1));
+
+  value = (*catenaries)[8].tension_horizontal();
+  EXPECT_EQ(6000.0, helper::Round(value, 1));
+}
+
+TEST_F(CableSagPositionCorrectorTest, CatenariesPulleyed) {
+  double value = -999999;
+
+  // checks catenary horizontal tensions
+  const std::vector<Catenary3d>* catenaries = c_.CatenariesPulleyed();
+
+  value = (*catenaries)[0].tension_horizontal();
+  EXPECT_EQ(5730.5, helper::Round(value, 1));
+
+  value = (*catenaries)[1].tension_horizontal();
+  EXPECT_EQ(5800.4, helper::Round(value, 1));
+
+  value = (*catenaries)[2].tension_horizontal();
+  EXPECT_EQ(5900.9, helper::Round(value, 1));
+
+  value = (*catenaries)[3].tension_horizontal();
+  EXPECT_EQ(6073.2, helper::Round(value, 1));
+
+  value = (*catenaries)[4].tension_horizontal();
+  EXPECT_EQ(6069.6, helper::Round(value, 1));
+
+  value = (*catenaries)[5].tension_horizontal();
+  EXPECT_EQ(6073.2, helper::Round(value, 1));
+
+  value = (*catenaries)[6].tension_horizontal();
+  EXPECT_EQ(5900.9, helper::Round(value, 1));
+
+  value = (*catenaries)[7].tension_horizontal();
+  EXPECT_EQ(5800.4, helper::Round(value, 1));
+
+  value = (*catenaries)[8].tension_horizontal();
+  EXPECT_EQ(5730.5, helper::Round(value, 1));
+}
+
 TEST_F(CableSagPositionCorrectorTest, ClippingOffsets) {
   double value = -999999;
 
