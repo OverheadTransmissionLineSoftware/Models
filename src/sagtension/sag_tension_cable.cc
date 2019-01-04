@@ -98,6 +98,24 @@ bool SagTensionCableComponent::Validate(
     }
   }
 
+  // validates scale-polynomial-x
+  if (component_base_->scale_polynomial_x < 0) {
+    is_valid = false;
+    if (messages != nullptr) {
+      message.description = "Invalid scaling factor for polynomial x-axis";
+      messages->push_back(message);
+    }
+  }
+
+  // validates scale-polynomial-y
+  if (component_base_->scale_polynomial_y < 0) {
+    is_valid = false;
+    if (messages != nullptr) {
+      message.description = "Invalid scaling factor for polynomial y-axis";
+      messages->push_back(message);
+    }
+  }
+
   return is_valid;
 }
 
@@ -150,6 +168,14 @@ void SagTensionCableComponent::set_component_base(
   } else {
     UpdateIsEnabled();
   }
+}
+
+const double* SagTensionCableComponent::scale_polynomial_x() const {
+  return &component_base_->scale_polynomial_x;
+}
+
+const double* SagTensionCableComponent::scale_polynomial_y() const {
+  return &component_base_->scale_polynomial_y;
 }
 
 /// The routine searches the component polynomial coefficients. If non-zero

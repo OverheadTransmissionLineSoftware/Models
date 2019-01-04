@@ -24,10 +24,12 @@
 /// describe the cable elongation under various thermal and stretch parameters.
 ///
 /// The polynomials can model the non-linear elongation of the component, and
-/// are based on empirical test data. The polynomial coefficients must be
-/// provided using the following units:
-///   - X axis = percent strain
-///   - Y axis = load
+/// are typically based on empirical test data. The elongation model axes are
+/// strain (x-axis) and load (y-axis), however it is common in the industry for
+/// polynomials to be defined in alternate units, such as percent strain for the
+/// x-axis. Changing the axis units to match the consistent units of other class
+/// parameters could require redefining the polynomial. To account for this, a
+/// scaling factor is provided for each axis so the coefficients can remain.
 ///
 /// Cable components have two polynomials: creep and load-strain. The
 /// load-strain polynomial describes how the component elongates under load. The
@@ -45,9 +47,8 @@
 /// (x) axis. The temperature difference from reference temperature and the
 /// thermal expansion coefficient determine the thermal strain shift.
 /// The polynomial coefficients are not adjusted for thermal strain shifts.
-/// Instead, strain values are converted to percent strain values at the
-/// polynomial reference temperature whenever a polynomial calculation is
-/// needed.
+/// Instead, strain values are adjusted to the polynomial reference temperature
+/// whenever a polynomial calculation is needed.
 ///
 /// \par STRETCH
 ///
@@ -108,14 +109,14 @@ class CableComponentElongationModel {
 
   /// \brief Gets the slope of a tangent line.
   /// \param[in] strain
-  ///   The strain value (x-axis)
+  ///   The strain value (x-axis).
   /// \return The slope of a tangent line.
   double Slope(const double& strain) const;
 
   /// \brief Gets the strain.
   /// \param[in] load
   ///   The load value (y-axis).
-  /// \return A strain value..
+  /// \return A strain value.
   double Strain(const double& load) const;
 
   /// \brief Gets the thermal strain.
@@ -169,25 +170,23 @@ class CableComponentElongationModel {
   const double* temperature_reference() const;
 
  private:
-  /// \brief Converts to a percent strain value for use with the thermally
-  ///   unshifted polynomial at reference temperature.
-  /// \param[in] strain
-  ///   The strain value (x-axis)
-  /// \param[in] strain_thermal
-  ///   The thermal strain to reference temperature.
-  /// \return A percent strain value for use with the polynomial.
-  double ConvertToPercentStrainPolynomial(const double& strain,
-                                          const double& strain_thermal) const;
-
   /// \brief Converts to a strain value.
-  /// \param[in] percent_strain_polynomial
-  ///   The percent strain value (x-axis) of the polynomial at reference
-  ///   temperature.
+  /// \param[in] strain_polynomial
+  ///   The polynomial strain value (x-axis) at reference temperature.
   /// \param[in] strain_thermal
   ///   The thermal strain from reference temperature.
   /// \return A strain value at component temperature.
-  double ConvertToStrain(const double& percent_strain_polynomial,
+  double ConvertToStrain(const double& strain_polynomial,
                          const double& strain_thermal) const;
+
+  /// \brief Converts to a polynomial strain value at reference temperature.
+  /// \param[in] strain
+  ///   The strain value (x-axis).
+  /// \param[in] strain_thermal
+  ///   The thermal strain to reference temperature.
+  /// \return A strain value for use with the polynomial.
+  double ConvertToStrainPolynomial(const double& strain,
+                                   const double& strain_thermal) const;
 
   /// \brief Determines if class is updated.
   /// \return A boolean indicating if class is updated.
@@ -320,6 +319,8 @@ class CableComponentElongationModel {
   /// \param[in] load
   ///   The load value (y-axis).
   /// \return The strain from the polynomial.
+  /// This method returns a true strain value that includes the polynomial
+  /// scaling factor.
   double StrainPolynomial(const Polynomial& polynomial,
                           const double& strain_thermal,
                           const double& load) const;
