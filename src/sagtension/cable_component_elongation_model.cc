@@ -887,7 +887,7 @@ bool CableComponentElongationModel::ValidatePolynomialShape(
       if (messages != nullptr) {
         message.description = "Slope of creep polynomial tangent is negative "
                               "at strain = "
-                              + helper::DoubleToFormattedString(strain, 4);
+                              + helper::DoubleToString(strain, 6);
         messages->push_back(message);
       }
     }
@@ -900,7 +900,7 @@ bool CableComponentElongationModel::ValidatePolynomialShape(
         message.description = "Slope of creep polynomial tangent is greater "
                               "than the tension elastic area modulus at "
                               "strain = "
-                              + helper::DoubleToFormattedString(strain, 4);
+                              + helper::DoubleToString(strain, 6);
         messages->push_back(message);
       }
     }
@@ -925,7 +925,7 @@ bool CableComponentElongationModel::ValidatePolynomialShape(
       if (messages != nullptr) {
         message.description = "Slope of load-strain polynomial tangent is "
                               "negative at strain = "
-                              + helper::DoubleToFormattedString(strain, 4);
+                              + helper::DoubleToString(strain, 6);
         messages->push_back(message);
       }
     }
@@ -938,7 +938,7 @@ bool CableComponentElongationModel::ValidatePolynomialShape(
         message.description = "Slope of load-strain polynomial tangent is "
                               "greater than the tension elastic area modulus "
                               "at strain = "
-                              + helper::DoubleToFormattedString(strain, 4);
+                              + helper::DoubleToString(strain, 6);
         messages->push_back(message);
       }
     }
