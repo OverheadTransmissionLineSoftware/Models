@@ -21,14 +21,18 @@ namespace helper {
 /// characters for comparison.
 int CompareStrings(const std::string& str1, const std::string& str2);
 
-/// \brief Converts a double precision number to a formatted string.
+/// \brief Converts a double precision number to a string.
 /// \param[in] value
 ///   The value to be converted.
-/// \param[in] precision_decimal
-///   The precision to round the number.
-/// \return A string representation of the rounded number.
-std::string DoubleToFormattedString(const double& value,
-                                    const int& precision_decimal);
+/// \param[in] precision
+///   The precision (significant figures).
+/// \param[in] is_fixed_decimal
+///   A flag that indicates if the precision is to apply to decimal digits only.
+///   Enabling this will set the number of decimal digits equal to the
+///   precision.
+/// \return A string representation of the number.
+std::string DoubleToString(const double& value, const int& precision,
+                           const bool& is_fixed_decimal = false);
 
 /// \brief Determines if the string is numeric.
 /// \param[in] str

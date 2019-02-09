@@ -22,6 +22,26 @@ CableSagPositionCorrector::CableSagPositionCorrector() {
 CableSagPositionCorrector::~CableSagPositionCorrector() {
 }
 
+const std::vector<Catenary3d>* CableSagPositionCorrector::CatenariesClipped()
+    const {
+  // updates class if necessary
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return nullptr;
+  }
+
+  return &catenaries_clipped_;
+}
+
+const std::vector<Catenary3d>* CableSagPositionCorrector::CatenariesPulleyed()
+    const {
+  // updates class if necessary
+  if ((IsUpdated() == false) && (Update() == false)) {
+    return nullptr;
+  }
+
+  return &catenaries_pulleyed_;
+}
+
 std::vector<double> CableSagPositionCorrector::ClippingOffsets() const {
   // updates class if necessary
   if ((IsUpdated() == false) && (Update() == false)) {

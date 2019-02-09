@@ -25,15 +25,30 @@ TEST(Helper, CompareStrings) {
   EXPECT_EQ(1, helper::CompareStrings(str1, str2));
 }
 
-TEST(Helper, DoubleToFormattedString) {
+TEST(Helper, DoubleToString) {
   std::string str;
-  const double value = 3.14159;
+  double value = 0;
 
-  str = helper::DoubleToFormattedString(value, 0);
-  EXPECT_EQ("3", str);
+  // tests entire number precision
+  value = 1.23456789;
+  str = helper::DoubleToString(value, 6);
+  EXPECT_EQ("1.23457", str);
 
-  str = helper::DoubleToFormattedString(value, 2);
-  EXPECT_EQ("3.14", str);
+  value = 12345;
+  str = helper::DoubleToString(value, 6);
+  EXPECT_EQ("12345", str);
+
+  // tests fixed decimal precision
+  value = 1.23456789;
+  str = helper::DoubleToString(value, 3, true);
+  EXPECT_EQ("1.235", str);
+
+  value = 12345;
+  str = helper::DoubleToString(value, 3, true);
+  EXPECT_EQ("12345.000", str);
+
+  // scientific notation is not tested
+  // exponent formatting is compiler-specific
 }
 
 TEST(Helper, IsNumeric) {

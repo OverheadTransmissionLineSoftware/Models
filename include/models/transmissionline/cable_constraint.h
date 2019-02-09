@@ -5,6 +5,7 @@
 #define MODELS_TRANSMISSIONLINE_CABLE_CONSTRAINT_H_
 
 #include <list>
+#include <string>
 
 #include "models/base/error_message.h"
 #include "models/transmissionline/weather_load_case.h"
@@ -64,6 +65,10 @@ struct CableConstraint {
   /// \var limit
   ///   The limit that the cable cannot exceed.
   double limit;
+
+  /// \var note
+  ///   A generic note string (optional).
+  std::string note;
 
   /// \var type_limit
   ///   The type of constraint, which determines how the constraint is defined.

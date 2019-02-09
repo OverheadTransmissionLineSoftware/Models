@@ -10,6 +10,8 @@ CableComponent::CableComponent() {
   load_limit_polynomial_loadstrain = -999999;
   modulus_compression_elastic_area = -999999;
   modulus_tension_elastic_area = -999999;
+  scale_polynomial_x = -999999;
+  scale_polynomial_y = -999999;
 }
 
 CableComponent::~CableComponent() {}

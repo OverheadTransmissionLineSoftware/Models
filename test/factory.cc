@@ -103,6 +103,9 @@ Cable* BuildCable() {
       units::ConvertStress(37000 * 100, units::StressConversionType::kPsiToPsf)
            * kAreaPhysical;
 
+  component.scale_polynomial_x = 0.01;
+  component.scale_polynomial_y = 1;
+
   cable->component_core = component;
 
   // builds shell component
@@ -160,6 +163,9 @@ Cable* BuildCable() {
   component.modulus_tension_elastic_area =
       units::ConvertStress(64000 * 100, units::StressConversionType::kPsiToPsf)
            * kAreaPhysical;
+
+  component.scale_polynomial_x = 0.01;
+  component.scale_polynomial_y = 1;
 
   cable->component_shell = component;
 

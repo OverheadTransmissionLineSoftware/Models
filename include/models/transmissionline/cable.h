@@ -43,12 +43,14 @@ struct CableComponent {
 
   /// \var coefficients_polynomial_creep
   ///   The polynomial coefficients that model how the cable component
-  ///   permanently elongates due to creep after a given number of years.
+  ///   permanently elongates due to creep after a given number of years. The
+  ///   polynomial x-axis is strain based and the y-axis is load based.
   std::vector<double> coefficients_polynomial_creep;
 
   /// \var coefficients_polynomial_loadstrain
   ///   The polynomial coefficients that model how the cable component
-  ///   elongates due to load.
+  ///   elongates due to load. The polynomial x-axis is strain based and the
+  ///   y-axis is load based.
   std::vector<double> coefficients_polynomial_loadstrain;
 
   /// \var load_limit_polynomial_creep
@@ -68,6 +70,18 @@ struct CableComponent {
   ///   The elastic area modulus of the cable component when tensioned. This
   ///   is typically used when modeling how a cable unloads when stretched.
   double modulus_tension_elastic_area;
+
+  /// \var scale_polynomial_x
+  ///   The factor to convert polynomial x values to strain. This allows
+  ///   polynomials to be defined in user-friendly units and converted to
+  ///   actual strain for calculations when needed.
+  double scale_polynomial_x;
+
+  /// \var scale_polynomial_y
+  ///   The factor to convert polynomial y values to load. This allows
+  ///   polynomials to be defined in user-friendly units and converted to
+  ///   actual load for calculations when needed.
+  double scale_polynomial_y;
 };
 
 /// \par OVERVIEW

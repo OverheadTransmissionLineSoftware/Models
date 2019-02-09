@@ -650,7 +650,7 @@ bool CableElongationModel::ValidateComponentsStrainUnloaded(
                      - strain_unloaded_unstretched_shell;
       message.description = "Unloaded unstretched strain difference between "
                             "shell and core = "
-                            + helper::DoubleToFormattedString(value, 5);
+                            + helper::DoubleToString(value, 6);
       messages->push_back(message);
     }
   }

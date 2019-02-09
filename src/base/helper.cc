@@ -25,15 +25,17 @@ int CompareStrings(const std::string& str1, const std::string& str2) {
   return str1.length() > str2.length();
 }
 
-std::string DoubleToFormattedString(const double& value,
-                                    const int& precision_decimal) {
-  double value_rounded = helper::Round(value, precision_decimal);
-
-  // creates a string stream to convert double to a string and returns
-  // the string stream removes any trailing characters from the rounded number
+std::string DoubleToString(const double& value,
+                           const int& precision,
+                           const bool& is_fixed_decimal) {
   std::ostringstream stream;
-  stream.precision(precision_decimal);
-  stream << std::fixed << value_rounded;
+
+  if (is_fixed_decimal == true) {
+    stream << std::fixed;
+  }
+
+  stream.precision(precision);
+  stream << value;
   return stream.str();
 }
 

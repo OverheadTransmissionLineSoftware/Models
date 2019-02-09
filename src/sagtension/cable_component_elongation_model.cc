@@ -249,21 +249,21 @@ const double* CableComponentElongationModel::temperature_reference() const {
   return temperature_reference_;
 }
 
-double CableComponentElongationModel::ConvertToPercentStrainPolynomial(
-    const double& strain,
+double CableComponentElongationModel::ConvertToStrain(
+    const double& strain_polynomial,
     const double& strain_thermal) const {
-  // shifts strain at component temperature to reference temperature to align
-  // with polynomial
-  // multiplies to convert to % strain
-  return (strain - strain_thermal) * 100;
+  // applies scaling to convert to strain
+  // shifts away from polynomial reference temperature
+  return (strain_polynomial * *component_->scale_polynomial_x())
+         + strain_thermal;
 }
 
-double CableComponentElongationModel::ConvertToStrain(
-    const double& percent_strain_polynomial,
+double CableComponentElongationModel::ConvertToStrainPolynomial(
+    const double& strain,
     const double& strain_thermal) const {
-  // shifts percent strain at polynomial reference temperature to component
-  // temperature, then divides to convert to strain
-  return (percent_strain_polynomial / 100) + strain_thermal;
+  // shifts to polynomial reference temperature
+  // applies scaling to convert to polynomial strain
+  return (strain - strain_thermal) / *component_->scale_polynomial_x();
 }
 
 bool CableComponentElongationModel::IsUpdated() const {
@@ -338,13 +338,13 @@ double CableComponentElongationModel::LoadPolynomial(
     const Polynomial& polynomial,
     const double& strain_thermal,
     const double& strain) const {
-  // converts units to percent strain
-  double percent_strain_polynomial =
-      ConvertToPercentStrainPolynomial(strain,
-                                       strain_thermal);
+  // converts to polynomial strain
+  const double strain_polynomial =
+      ConvertToStrainPolynomial(strain, strain_thermal);
 
   // gets load from the polynomial
-  return polynomial.Y(percent_strain_polynomial);
+  // applies scaling to convert polynomial load to load
+  return polynomial.Y(strain_polynomial) * *component_->scale_polynomial_y();
 }
 
 void CableComponentElongationModel::PointsRegions(
@@ -439,13 +439,16 @@ double CableComponentElongationModel::SlopePolynomial(
     const double& strain_thermal,
     const double& strain) const {
   // adjusts the strain (x-value) to align with the unshifted polynomial
-  double percent_strain_polynomial =
-      ConvertToPercentStrainPolynomial(strain,
-                                       strain_thermal);
+  const double strain_polynomial =
+      ConvertToStrainPolynomial(strain, strain_thermal);
+
+  // gets ratio between polynomial scaling factors
+  const double kRatio = *component_->scale_polynomial_y()
+                        / *component_->scale_polynomial_x();
 
   // gets the slope tangent from the polynomial
-  // multiplies to convert to load/strain slope
-  return polynomial.Slope(percent_strain_polynomial) * 100;
+  // adjusts using scaling factor ratio
+  return polynomial.Slope(strain_polynomial) * kRatio;
 }
 
 double CableComponentElongationModel::Strain(
@@ -517,15 +520,14 @@ double CableComponentElongationModel::StrainPolynomial(
     const Polynomial& polynomial,
     const double& strain_thermal,
     const double& load) const {
-  // gets raw strain from polynomial
-  const double percent_strain_polynomial = polynomial.X(
+  // gets strain from polynomial
+  const double strain_polynomial = polynomial.X(
       load,  // target value
       2,     // precision
       0.1);  // initial guess
 
-  // converts polynomial percent strain at reference temperature to strain at
-  // component temperature
-  return ConvertToStrain(percent_strain_polynomial, strain_thermal);
+  // converts polynomial strain to nominal strain
+  return ConvertToStrain(strain_polynomial, strain_thermal);
 }
 
 double CableComponentElongationModel::StrainThermal(
@@ -885,7 +887,7 @@ bool CableComponentElongationModel::ValidatePolynomialShape(
       if (messages != nullptr) {
         message.description = "Slope of creep polynomial tangent is negative "
                               "at strain = "
-                              + helper::DoubleToFormattedString(strain, 4);
+                              + helper::DoubleToString(strain, 6);
         messages->push_back(message);
       }
     }
@@ -898,7 +900,7 @@ bool CableComponentElongationModel::ValidatePolynomialShape(
         message.description = "Slope of creep polynomial tangent is greater "
                               "than the tension elastic area modulus at "
                               "strain = "
-                              + helper::DoubleToFormattedString(strain, 4);
+                              + helper::DoubleToString(strain, 6);
         messages->push_back(message);
       }
     }
@@ -923,7 +925,7 @@ bool CableComponentElongationModel::ValidatePolynomialShape(
       if (messages != nullptr) {
         message.description = "Slope of load-strain polynomial tangent is "
                               "negative at strain = "
-                              + helper::DoubleToFormattedString(strain, 4);
+                              + helper::DoubleToString(strain, 6);
         messages->push_back(message);
       }
     }
@@ -936,7 +938,7 @@ bool CableComponentElongationModel::ValidatePolynomialShape(
         message.description = "Slope of load-strain polynomial tangent is "
                               "greater than the tension elastic area modulus "
                               "at strain = "
-                              + helper::DoubleToFormattedString(strain, 4);
+                              + helper::DoubleToString(strain, 6);
         messages->push_back(message);
       }
     }

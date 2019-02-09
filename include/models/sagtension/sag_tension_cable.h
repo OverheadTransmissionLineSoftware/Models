@@ -67,18 +67,26 @@ class SagTensionCableComponent {
   const double* load_limit_polynomial(const PolynomialType& type_polynomial)
       const;
 
-  /// \brief Gets the compression elastic area modulus of the cable component.
-  /// \return The compression elastic area modulus of the cable component.
+  /// \brief Gets the compression elastic area modulus.
+  /// \return The compression elastic area modulus.
   const double* modulus_compression_elastic_area() const;
 
-  /// \brief Gets the tension elastic area modulus of the cable component.
-  /// \return The tension elastic area modulus of the cable component.
+  /// \brief Gets the tension elastic area modulus.
+  /// \return The tension elastic area modulus.
   const double* modulus_tension_elastic_area() const;
 
   /// \brief Sets the base cable component.
   /// \param[in] component_base
   ///   The base cable component.
   void set_component_base(const CableComponent* component_base);
+
+  /// \brief Gets the scaling factor for the polynomial x-axis.
+  /// \return The scaling factor for the polynomial x-axis.
+  const double* scale_polynomial_x() const;
+
+  /// \brief Gets the scaling factor for the polynomial y-axis.
+  /// \return The scaling factor for the polynomial y-axis.
+  const double* scale_polynomial_y() const;
 
  private:
   /// \brief Updates if the component is enabled.
